@@ -1,0 +1,25 @@
+.nav-links a {
+  border-radius: 15px;
+  height: 100%;
+  width: 100%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.nav-links li span {
+  opacity: 0;
+}
+
+.nav-links li a:hover {
+  opacity: 1;
+}
+
+.nav-links li a i {
+  min-width: 65px;
+  text-align: center;
+  height: 50px;
+  border-radius: 12px;
+  line-height: 50px;
+}
