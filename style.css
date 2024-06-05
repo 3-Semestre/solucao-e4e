@@ -62,103 +62,112 @@ body {
     width: calc(100% - 100px);
 }
 
-.sidebar.active ~ .conteudo {
-  margin-left: 250px;
-  width: calc(100% - 250px);
+.sidebar.active~.conteudo {
+    margin-left: 250px;
+    width: calc(100% - 250px);
 }
 
-h3 {
-  margin: 30px 0;
-  margin-left: 380px;
-}
-
-nav[aria-label="breadcrumb"] {
-  margin: 20px 0;
-  margin-left: 380px;
-}
-
-.conteudo-interno {
+.register {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    align-self: center;
-    gap: 20px;
+    gap: 2rem;
 }
 
-.BoxProfessores {
-  background-color: rgba(168, 182, 191, 0.4);
-  color: #282D38;
-  border: rgba(168, 182, 191, 0.4) 1px solid;
-  border-radius: 10px;
-  width: 40%;
-  height: 35rem;
+.photo-student {
+    width: 30vw;
+    height: 85vh;
+    background-color: #a8b6bfa4;
+    border-radius: 5%;
+    text-align: center;
 }
 
-.BoxProfessores img {
-   padding: 20px 20px 20px 20px;
-   width: 240px;
-   height: 250px;
+.content-student {
+    width: 50vw;
+    height: 85vh;
+    background-color: #a8b6bfa4;
+    border-radius: 5%;
+    padding: 1%;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
 }
 
-.BoxFoto {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  padding-top: 50px;
-  width:15%;
-  height: 35rem;
-}
-
-form {
-    padding: 20px;
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 20px;
-    align-items: flex-start;
-}
-
-fieldset {
-    border: none;
-    padding: 10px;
-    margin-bottom: 20px;
-}
-
-legend {
-    color: #072B59;
+.title-personal-information p{
+    font-size: 24px;
     font-weight: bold;
-    font-size: 20px;
-    padding: 0 10px;
+    color: #072B59;
 }
 
-label {
-    display: block;
-    margin-top: 10px;
-    color: #282D38;
-    font-size: 18px;
-  }
-
-input, select {
-    width: 90%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    color: #282D38;
-    font-size: 14px;
+.form-label{
+    font-size: 16px !important;
+    font-weight: bold;
+    color: #072B59;
 }
 
-.btn-primary {
-    background-color: #1F1F1F !important;
-    border: #1f1f1f 1px solid !important;
-    margin-top: 10px !important;
+.form-control{
+    width: 20vw !important;
 }
 
-#ultimo_quadrante {
+.form-select{
+    width: 20vw !important;
+}
+
+.button button{
+    background-color: #072B59 !important;
+    border: none;
+    font-weight: bold;
+}
+
+.title-contact p{
+    font-size: 24px;
+    font-weight: bold;
+    color: #072B59;
+}
+
+.title-course p{
+    font-size: 24px;
+    font-weight: bold;
+    color: #072B59;
+}
+
+.line{
+    width: 100%;
+    height: 1px;
+    background-color: #072B59;
+    transform: rotate(90deg);
+}
+
+#nivel{
     position: relative;
-    bottom: 160px;
+    bottom: 2vh;
 }
 
-.form-select {
-    margin-bottom: 10px !important;
+#nivelTitle{
+    position: relative;
+    bottom: 2vh;
+}
+
+#nicho{
+    position: relative;
+    bottom: 2vh;
+}
+
+#nichoTitle{
+    position: relative;
+    bottom: 2vh;
+}
+
+.line {
+    width: 2px; /* Defina a largura da linha */
+    height: 70vh; /* Defina a altura da linha */
+    background-color: black; /* Defina a cor da linha */
+    border: none; /* Remova a borda padrão do <hr> */
+    transform: rotate(0deg); /* Rotacione o <hr> em 90 graus */
+    transform-origin: left center; /* Ajuste a origem da rotação */
+}
+
+.photo-student img {
+    align-items: center;
+    flex-direction: column;
+    width: 15vw;
 }
