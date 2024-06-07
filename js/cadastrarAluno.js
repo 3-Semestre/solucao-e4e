@@ -1,4 +1,4 @@
-async function cadastrarAgenda() {
+async function cadastrarAluno() {
     const nome = document.getElementById("input_nome").value;
     const cpf = document.getElementById("input_cpf").value;
     const dataNascimento = document.getElementById("input_data").value;
@@ -10,51 +10,37 @@ async function cadastrarAgenda() {
     const dadosAgenda = {
         "nomeCompleto": nome,
         "cpf": cpf,
-        "dataNascimento": dataNascimento,
+        // "dataNascimento": dataNascimento,
         "telefone": telefone,
         "email": email,
-        "profissao": profissao,
+        // "profissao": profissao,
         "senha": senha,
         "nivelAcesso": {
             "id": 1
         }
     }
 
-    const respostaCadastro = await fetch("http://localhost:8080/usuarios/alunos", {
+    const respostaCadastro = await fetch("http://localhost:8080/usuarios/aluno", {
         method: "POST",
         body: JSON.stringify(dadosAgenda),
         headers: { "Content-type": "application/json; charset=UTF-8" }
     });
 
     if (respostaCadastro.status == 201) {
+        Swal.fire({
+            icon: "success",
+            title: "Aluno cadastrado com sucesso!",
+            showConfirmButton: false,
+            timer: 1500
+        });
+
         console.log("cadastro realizado com sucesso")
     } else {
-        alert("Ocorreu um erro ao cadastrar")
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Erro ao realizar o cadastro!",
+        });
     }
 }
 
-document.getElementById('botaoCadastro').addEventListener('click', function () {
-    console.log("aaaaa")
-    try {
-        cadastrarAgenda()
-    } catch {
-        console.log(e) 
-    }
-});
-
-
-/*
-{
-    "nomeCompleto": "Kauan",
-    "cpf": "454.066.693-20",
- "dataNascimento": "2002-09-09",
-    "telefone": "11993788173",
-    "email": "kauan@email.com",
-    "profissao": "profissao",
-    "senha": "bananaKQ1935",
-    "profissao": "Engenheiro",
-    "nivelAcesso": {
-        "id": 1
-    }
-}
-    */

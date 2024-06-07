@@ -104,6 +104,10 @@ body {
     color: #072B59;
 }
 
+.content-student span{
+    color: red;
+}
+
 .form-control{
     width: 20vw !important;
 }
