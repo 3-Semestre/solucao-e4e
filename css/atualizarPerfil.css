@@ -9,21 +9,23 @@ body {
     display: flex;
 }
 
-/* NAV BAR */
-
 .sidebar {
     background-color: #072B59;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100px;
-    height: 100vh;
+    width: 5vw;
+    height: 100%;
     transition: all .3s ease;
     padding: 0.6rem 0.3rem;
 }
 
+.sidebar .nav-links a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
 .sidebar.active {
-    width: 250px;
+    width: 15vw;
 }
 
 .nav-links {
@@ -41,13 +43,13 @@ body {
     color: #fff;
     font-size: 24px;
     display: flex;
-    align-items: center;
     text-decoration: none;
 }
 
 .nav-links li span {
     opacity: 0;
     transition: opacity 0.3s ease;
+    font-size: 20px;
 }
 
 .sidebar.active .nav-links li span {
@@ -69,109 +71,113 @@ body {
 
 .register {
     display: flex;
-    justify-content: center;
     gap: 2rem;
+    flex-direction: column;
 }
 
-.photo-student {
-    width: 30vw;
-    height: 85vh;
-    background-color: #a8b6bfa4;
-    border-radius: 5%;
-    text-align: center;
-}
-
-.content-student {
-    width: 50vw;
-    height: 85vh;
-    background-color: #a8b6bfa4;
-    border-radius: 5%;
-    padding: 1%;
+.content-professor {
+    width: 100%;
+    height: 80vh;
+    background-color: #a8b6bf40;
+    border-radius: 2%;
     display: flex;
-    justify-content: center;
-    gap: 1rem;
+    justify-content: space-between;
+    padding: 5px 10px 15px 20px;
 }
 
-.title-personal-information p{
+.title-personal-information p {
     font-size: 24px;
     font-weight: bold;
     color: #072B59;
 }
 
-.form-label{
+.form-label {
     font-size: 16px !important;
     font-weight: bold;
     color: #072B59;
 }
 
-.content-student span{
+.content-professor span {
     color: red;
 }
 
-.form-control{
-    width: 20vw !important;
+.form-control {
+    width: 35vw !important;
 }
 
-.form-select{
-    width: 20vw !important;
+.form-select {
+    width: 35vw !important;
 }
 
-.button button{
+.button button {
     background-color: #072B59 !important;
     border: none;
     font-weight: bold;
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    margin-left: auto;
+    position: relative;
+    bottom: 2vh;
 }
 
-.title-contact p{
+.button button:hover {
+    background-color: #8c959a99 !important;
+    color: #072B59;
+}
+
+.title-course p {
     font-size: 24px;
     font-weight: bold;
     color: #072B59;
 }
 
-.title-course p{
-    font-size: 24px;
+.photo-professor img {
+    align-items: center;
+    flex-direction: column;
+    width: 18vw;
+    border-radius: 5%;
+}
+
+.photo-professor h5 {
+    font-size: 17px;
     font-weight: bold;
     color: #072B59;
 }
 
-.line{
-    width: 100%;
-    height: 1px;
-    background-color: #072B59;
-    transform: rotate(90deg);
+.photo-professor p {
+    font-size: 14px;
+    color: #072B59;
 }
 
-#nivel{
-    position: relative;
-    bottom: 2vh;
+.photo-professor {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
 }
 
-#nivelTitle{
+.professor-information {
+    top: 2vh;
     position: relative;
-    bottom: 2vh;
 }
 
-#nicho{
-    position: relative;
-    bottom: 2vh;
+.buttons-professor {
+    display: flex;
+    justify-content: space-between;
 }
 
-#nichoTitle{
-    position: relative;
-    bottom: 2vh;
+.buttons-professor button {
+    background-color: #a8b6bf40 !important;
+    border: none;
+    font-weight: bold;
+    color: #072B59;
 }
 
 .line {
-    width: 2px; /* Defina a largura da linha */
-    height: 70vh; /* Defina a altura da linha */
-    background-color: black; /* Defina a cor da linha */
-    border: none; /* Remova a borda padrão do <hr> */
-    transform: rotate(0deg); /* Rotacione o <hr> em 90 graus */
-    transform-origin: left center; /* Ajuste a origem da rotação */
+    border: 1px solid #072B59;
+    width: 100%;
 }
 
-.photo-student img {
-    align-items: center;
-    flex-direction: column;
-    width: 15vw;
+.nav-links li img{
+    width: 30px;
+    height: 30px;
 }

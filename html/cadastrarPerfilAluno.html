@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Aluno</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/atualizarPerfil.css">
 
-    <script defer src="script.js"></script>
+    <script defer src="../js/script.js"></script>
     <script src="js/cadastrarAluno.js"></script>
 
-    <!-- Importação do SweetAlert2 -->
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -24,36 +24,48 @@
         <ul class="nav-links">
             <li>
                 <a href="#" id="toggle-btn">
-                    <i class="fas fa-bars"></i>
+                    <img src="../imgs/menu-aberto.png" alt="">
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <i class="fas fa-house"></i>
-                    <span>Página Inicial</span>
+                    <img src="../imgs/botao-home.png" alt="">
+                    <span>Início</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <i class="fas fa-calendar-days"></i>
-                    <span>Calendário</span>
+                <img src="../imgs/calendar-days.png" alt="">
+                    <span>Agenda</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Moodle</span>
+                    <img src="../imgs/students.png" alt="">
+                    <span>Alunos</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <i class="fas fa-user"></i>
+                    <img src="../imgs/professor.png" alt="">
+                    <span>Professores</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../imgs/perfil.png" alt="">
                     <span>Perfil</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <i class="fas fa-arrow-right-from-bracket"></i>
+                    <img src="../imgs/moodle.png" alt="">
+                    <span>Moodle</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../imgs/sair.png" alt="">
                     <span>Sair</span>
                 </a>
             </li>
@@ -65,18 +77,30 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Página Inicial</a></li>
                 <li class="breadcrumb-item"><a href="#">Alunos</a></li>
-                <li class="breadcrumb-item active" aria-current="page" id="titulo_breadcrump">Cadastrar Aluno</li>
+                <li class="breadcrumb-item active" aria-current="page" id="titulo_breadcrump">Perfil</li>
             </ol>
         </nav>
 
         <div class="register">
-            <div class="photo-student">
-                <img src="../imagem-do-usuario-com-fundo-preto.png" alt="Foto do Professor">
-                <div class="name-student">
-                    <h5>Aluno</h5>
+            <div class="buttons-professor">
+                <h2>Nome do Aluno</h2>
+                <button type="button" class="btn btn-primary" id="botaoStatus">-</button>
+            </div>
+            <div class="photo-professor">
+                <img src="../imgs/imagem-do-usuario-com-fundo-preto.png" alt="Foto do Aluno">
+                <div class="professor-information">
+                    <h5>Nome:</h5>
+                    <p>-</p>
+                    <h5>Nível Inglês:</h5>
+                    <p>-</p>
+                    <h5>Nicho:</h5>
+                    <p>-</p>
+                    <h5>E-mail:</h5>
+                    <p>-</p>
                 </div>
             </div>
-            <div class="content-student">
+            <hr class="line">
+            <div class="content-professor">
                 <div class="content-personal-information">
                     <div class="container mt-5">
                         <form id="cadastroForm">
@@ -99,37 +123,19 @@
                                     maxlength="10" required>
                             </div>
                             <div class="mb-3">
-                                <label for="input_profissao" class="form-label"><span>*</span>Profissão:</label>
-                                <input type="text" class="form-control" id="input_profissao"
-                                    placeholder="Analista de Dados" required>
+                                <label for="input_telefone" class="form-label"><span>*</span>Telefone:</label>
+                                <input type="text" class="form-control" id="input_telefone" placeholder="+11 99999-9999"
+                                    maxlength="15" required>
                             </div>
                             <div class="mb-3">
-                                <label for="input_senha" class="form-label"><span>*</span>Senha:</label>
-                                <input type="password" class="form-control" id="input_senha" placeholder="********"
-                                    maxlength="8" required>
-                            </div>
-                            <br>
-                            <div class="button">
-                                <button type="submit" class="btn btn-primary" id="botaoCadastro">Cadastrar</button>
+                                <label for="input_email" class="form-label"><span>*</span>Email:</label>
+                                <input type="email" class="form-control" id="input_email" placeholder="nome@exemplo.com"
+                                    required>
                             </div>
                     </div>
                 </div>
-                <div class="content-contact">
+                <div class="content-course">
                     <div class="container mt-5">
-                        <div class="title-contact">
-                            <p>Contato</p>
-                        </div>
-                        <div class="mb-3">
-                            <label for="input_telefone" class="form-label"><span>*</span>Telefone:</label>
-                            <input type="text" class="form-control" id="input_telefone" placeholder="+11 99999-9999"
-                                maxlength="15" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="input_email" class="form-label"><span>*</span>Email:</label>
-                            <input type="email" class="form-control" id="input_email" placeholder="nome@exemplo.com"
-                                required>
-                        </div>
-                        <br><br>
                         <div class="title-course">
                             <p>Curso</p>
                         </div>
@@ -153,11 +159,16 @@
                                 <option value="5">Moradores Exterior</option>
                             </select>
                         </div>
+                        <br><br><br><br><br><br><br><br><br>
+                            <div class="button">
+                                <button type="submit" class="btn btn-primary" id="botaoCadastro">Cadastrar</button>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </body>
 
 </html>
@@ -167,11 +178,46 @@
         event.preventDefault(); // Impede o envio do formulário
 
         try {
-            cadastrarAluno();
+            if (validarFormulario()) {
+                exibirConfirmacao();
+            } else {
+                // Lógica para exibir mensagem de erro, se necessário
+            }
         } catch (e) {
             console.log(e);
         }
     });
+
+    function validarFormulario() {
+        // Adicione sua lógica de validação aqui
+        // Por exemplo, verificar se todos os campos obrigatórios estão preenchidos
+        const cpf = document.getElementById('input_cpf').value.trim();
+        const telefone = document.getElementById('input_telefone').value.trim();
+        // Adicione outras verificações conforme necessário
+        return cpf !== '' && telefone !== ''; // Retorna true se válido, false caso contrário
+    }
+
+    function exibirConfirmacao() {
+        Swal.fire({
+            title: "Deseja salvar as alterações?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Salvar",
+            denyButtonText: `Não salvar`,
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: 'green',  
+            denyButtonColor: '#870000',        
+            cancelButtonColor: '#aaa',      
+            background: '#f2f2f2',          
+            color: '#333'                   
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({title: "Salvo!", icon: "success", confirmButtonColor: 'green'});
+            } else if (result.isDenied) {
+                Swal.fire({title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green'});
+            }
+        });
+    }
 
     document.getElementById('input_cpf').addEventListener('input', function (e) {
         let value = e.target.value;

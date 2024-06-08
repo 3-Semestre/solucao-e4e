@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100&display=swap');
+
+* {
+    font-family: "DM Sans", sans-serif;
+}
+
+body {
+    margin: 0;
+    display: flex;
+}
+
+.sidebar {
+    background-color: #072B59;
+    position: fixed;
+    width: 5vw;
+    height: 100%;
+    transition: all .3s ease;
+    padding: 0.6rem 0.3rem;
+}
+
+.sidebar .nav-links a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.sidebar.active {
+    width: 15vw;
+}
+
+.nav-links {
+    margin-top: 2em;
+    padding: 0;
+    list-style: none;
+}
+
+.nav-links li {
+    padding: 15px;
+    margin: 0.8em auto;
+}
+
+.nav-links a {
+    color: #fff;
+    font-size: 24px;
+    display: flex;
+    text-decoration: none;
+}
+
+.nav-links li span {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 20px;
+}
+
+.sidebar.active .nav-links li span {
+    opacity: 1;
+    padding-left: 10px;
+}
+
+.conteudo {
+    margin-left: 100px;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    padding: 20px;
+    width: calc(100% - 100px);
+}
+
+.sidebar.active~.conteudo {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+
+.buttons-professor {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttons-professor button {
+    background-color: #a8b6bf40 !important;
+    border: none;
+    font-weight: bold;
+    color: #072B59;
+}
+
+.nav-links li img {
+    width: 30px;
+    height: 30px;
+}
+
+.conteudo p{
+    font-weight: bold;
+}
+
+.box{
+    width: 20vw;
+    height: 20vh;
+    border: 1px solid #072B59;
+    border-radius: 5%;
+    box-shadow: 5px 5px 5px #888;
+    display: flex;
+    gap: 5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.agendamentos{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.data{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.content p{
+    line-height: 0.8;
+}

@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100&display=swap');
+
+* {
+    font-family: "DM Sans", sans-serif;
+}
+
+body {
+    margin: 0;
+    display: flex;
+}
+
+.sidebar {
+    background-color: #072B59;
+    position: fixed;
+    width: 5vw;
+    height: 100%;
+    transition: all .3s ease;
+    padding: 0.6rem 0.3rem;
+}
+
+.sidebar .nav-links a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.sidebar.active {
+    width: 15vw;
+}
+
+.nav-links {
+    margin-top: 2em;
+    padding: 0;
+    list-style: none;
+}
+
+.nav-links li {
+    padding: 15px;
+    margin: 0.8em auto;
+}
+
+.nav-links a {
+    color: #fff;
+    font-size: 24px;
+    display: flex;
+    text-decoration: none;
+}
+
+.nav-links li span {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 20px;
+}
+
+.sidebar.active .nav-links li span {
+    opacity: 1;
+    padding-left: 10px;
+}
+
+.conteudo {
+    margin-left: 100px;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    padding: 20px;
+    width: calc(100% - 100px);
+}
+
+.sidebar.active~.conteudo {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+
+.buttons-professor {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttons-professor button {
+    background-color: #a8b6bf40 !important;
+    border: none;
+    font-weight: bold;
+    color: #072B59;
+}
+
+.nav-links li img {
+    width: 30px;
+    height: 30px;
+}
+
+.dados {
+    width: 100%;
+    height: 20vh;
+    background-color: #a8b6bf40;
+    border-radius: 2%;
+}
+
+.filter {
+    width: 100%;
+    height: 7vh;
+    background-color: #072B59;
+    display: flex;
+    justify-content: space-around;
+    gap: 10rem;
+    border-radius: 2%;
+    align-items: center;
+}
+
+.filter p {
+    color: white;
+    font-weight: bold;
+    position: relative;
+    right: 34vw;
+    top: 1vh;
+}
+
+.filter img {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    right: 7vw;
+}
+
+.button-filter button {
+    background-color: #FFF !important;
+    border: none;
+    font-weight: bold;
+    color: #072B59;
+    position: relative;
+    left: 7vw;
+}
+
+.button-filter button:hover {
+    color: #072B59;
+}
+
+.inputs {
+    display: flex;
+    justify-content: space-around;
+}
+
+.line {
+    border: 1px solid #072B59;
+    width: 100%;
+}
+
+label {
+    color: #072B59;
+    font-weight: bold;
+    position: relative;
+    top: 0.5vh;
+}
+
+.dados-student {
+    display: flex;
+    background-color: #FFF;
+    align-items: center;
+    justify-content: space-around;
+    gap: 58vw;
+}
+
+.photo-student img {
+    width: 3vw;
+    border-radius: 50%;
+}
+
+.photo-student p {
+    color: #072B59;
+    font-weight: bold;
+    position: relative;
+    top: 1vh;
+}
+
+.photo-student {
+    display: flex;
+    gap: 2vw;
+    align-items: center;
+    padding: 3vw;   
+}
+
+.lixeira img {
+    width: 3vw;
+    cursor: pointer;
+}

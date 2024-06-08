@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Alunos</title>
+    <link rel="stylesheet" href="../css/visualizarAlunos.css">
+
+    <script defer src="../js/script.js"></script>
+    <script src="js/cadastrarAluno.js"></script>
+
+    <!-- Importação do SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="sidebar">
+        <ul class="nav-links">
+            <li>
+                <a href="#" id="toggle-btn">
+                    <img src="../imgs/menu-aberto.png" alt="">
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../imgs/botao-home.png" alt="">
+                    <span>Início</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../imgs/calendar-days.png" alt="">
+                    <span>Agenda</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../imgs/students.png" alt="">
+                    <span>Alunos</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../imgs/professor.png" alt="">
+                    <span>Professores</span>
+                </a>
+            </li>
+            <li>
+                <a href="atualizarPerfilProfessor.html">
+                    <img src="../imgs/perfil.png" alt="">
+                    <span>Perfil</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../imgs/moodle.png" alt="">
+                    <span>Moodle</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../imgs/sair.png" alt="">
+                    <span>Sair</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="conteudo">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Página Inicial</a></li>
+                <li class="breadcrumb-item"><a href="#">Alunos</a></li>
+                <li class="breadcrumb-item active" aria-current="page" id="titulo_breadcrump">Visualizar</li>
+            </ol>
+        </nav>
+
+        <div class="buttons-professor">
+            <h2>Joseph Smith</h2>
+            <button type="button" class="btn btn-primary" id="botaoCadastro">Atuando</button>
+        </div>
+        <br>
+        <div class="dados">
+            <div class="filter">
+                <img src="../imgs/filter.png" alt="">
+                <p>Filtros</p>
+                <div class="button-filter">
+                    <button type="button" class="btn btn-primary" id="botaoFilter">Aplicar</button>
+                </div>
+            </div>
+            <br>
+            <div class="inputs">
+                <!-- Nome: <input type="text" id="input_nome" class="form-control" placeholder="Nome">
+                CPF: <input type="text" id="input_cpf" class="form-control" placeholder="CPF">
+                Nicho: <input type="text" id="input_nicho" class="form-control" placeholder="Nicho">
+                Nível: <input type="text" id="input_nivel" class="form-control" placeholder="Nível"> -->
+                <div class="mb-3 d-flex justify-content-center align-items-center">
+                    <label for="input_nome" class="form-label me-3">Nome:</label>
+                    <input type="text" class="form-control" id="input_nome" placeholder="Nome do Aluno" required>
+                </div>
+                <div class="mb-3 d-flex justify-content-center align-items-center">
+                    <label for="input_cpf" class="form-label me-3">CPF:</label>
+                    <input type="text" class="form-control" id="input_cpf" placeholder="000.000.000-00" maxlength="14"
+                        required>
+                </div>
+                <div class="mb-3 d-flex justify-content-center align-items-center">
+                    <label for="nivel" class="form-label me-3">Nicho:</label>
+                    <select class="form-select" id="nivel" aria-label="Default select example" required>
+                        <option value="" selected>Selecione uma opção</option>
+                        <option value="1">Avançado</option>
+                        <option value="2">Intermediário</option>
+                        <option value="3">Básico</option>
+                    </select>
+                </div>
+                <div class="mb-3 d-flex justify-content-center align-items-center">
+                    <label for="nivel" class="form-label me-3">Nível:</label>
+                    <select class="form-select" id="nivel" aria-label="Default select example" required>
+                        <option value="" selected>Selecione uma opção</option>
+                        <option value="1">Avançado</option>
+                        <option value="2">Intermediário</option>
+                        <option value="3">Básico</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="dados-student">
+                <div class="photo-student">
+                    <img src="../imgs/student.jpg" alt="">
+                    <p>Susan Morgan</p>
+                </div>
+                <div class="lixeira" id="lixeira">
+                    <img src="../imgs/trash-bin.png" alt="">
+                </div>
+            </div>
+            <hr class="line">
+            
+        </div>
+</body>
+
+</html>
+
+<script>
+
+    document.getElementById('input_cpf').addEventListener('input', function (e) {
+        let value = e.target.value;
+        value = value.replace(/\D/g, '');
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        e.target.value = value;
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('lixeira').addEventListener('click', function() {
+        Swal.fire({
+            title: "Deseja excluir esse aluno?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Sim",
+            denyButtonText: `Não`,
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: 'green',  
+            denyButtonColor: '#870000',        
+            cancelButtonColor: '#aaa',      
+            background: '#f2f2f2',          
+            color: '#333'                   
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green'});
+            } else if (result.isDenied) {
+                Swal.fire({title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green'});
+            }
+        });
+    });
+});
+</script>
