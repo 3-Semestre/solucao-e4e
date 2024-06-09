@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/atualizarPerfil.css">
 
     <script defer src="../js/script.js"></script>
-    <script src="js/cadastrarAluno.js"></script>
+    <script src="../js/cadastrarAluno.js"></script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -35,7 +35,7 @@
             </li>
             <li>
                 <a href="#">
-                <img src="../imgs/calendar-days.png" alt="">
+                    <img src="../imgs/calendar-days.png" alt="">
                     <span>Agenda</span>
                 </a>
             </li>
@@ -132,6 +132,11 @@
                                 <input type="email" class="form-control" id="input_email" placeholder="nome@exemplo.com"
                                     required>
                             </div>
+                            <div class="mb-3">
+                                <label for="input_profissao" class="form-label"><span>*</span>Profissao:</label>
+                                <input type="text" class="form-control" id="input_profissao" placeholder="nome@exemplo.com"
+                                    required>
+                            </div>
                     </div>
                 </div>
                 <div class="content-course">
@@ -160,9 +165,9 @@
                             </select>
                         </div>
                         <br><br><br><br><br><br><br><br><br>
-                            <div class="button">
-                                <button type="submit" class="btn btn-primary" id="botaoCadastro">Cadastrar</button>
-                            </div>
+                        <div class="button">
+                            <button type="submit" class="btn btn-primary" id="botaoCadastro">Cadastrar</button>
+                        </div>
                         </form>
                     </div>
                 </div>
@@ -175,48 +180,21 @@
 
 <script>
     document.getElementById('cadastroForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Impede o envio do formulário
+        event.preventDefault();
 
-        try {
-            if (validarFormulario()) {
-                exibirConfirmacao();
-            } else {
-                // Lógica para exibir mensagem de erro, se necessário
+        if (validarFormulario()) {
+            try {
+                cadastrarAluno()
+            } catch (e) {
+                console.log(e);
             }
-        } catch (e) {
-            console.log(e);
         }
     });
 
     function validarFormulario() {
-        // Adicione sua lógica de validação aqui
-        // Por exemplo, verificar se todos os campos obrigatórios estão preenchidos
         const cpf = document.getElementById('input_cpf').value.trim();
         const telefone = document.getElementById('input_telefone').value.trim();
-        // Adicione outras verificações conforme necessário
-        return cpf !== '' && telefone !== ''; // Retorna true se válido, false caso contrário
-    }
-
-    function exibirConfirmacao() {
-        Swal.fire({
-            title: "Deseja salvar as alterações?",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: "Salvar",
-            denyButtonText: `Não salvar`,
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: 'green',  
-            denyButtonColor: '#870000',        
-            cancelButtonColor: '#aaa',      
-            background: '#f2f2f2',          
-            color: '#333'                   
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({title: "Salvo!", icon: "success", confirmButtonColor: 'green'});
-            } else if (result.isDenied) {
-                Swal.fire({title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green'});
-            }
-        });
+        return cpf !== '' && telefone !== '';
     }
 
     document.getElementById('input_cpf').addEventListener('input', function (e) {
