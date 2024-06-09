@@ -27,23 +27,92 @@ async function cadastrarAluno() {
     });
 
     if (respostaCadastro.status == 201) {
-        /*
         Swal.fire({
             icon: "success",
             title: "Aluno cadastrado com sucesso!",
             showConfirmButton: false,
+
             timer: 1500
         });
-*/
         console.log("cadastro realizado com sucesso")
-    }/*
-     else {
-        Swal.fire({Erro in
-            icon: "error",
-            title: "Oops...",
-            text: "Houve um erro ao realizar o cadastro!",
+    } if (respostaCadastro.status == 409) {
+        erroCpf()
+    }
+    else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro ao cadastrar',
+            showConfirmButton: false,
+            text: 'Por favor, revise os dados inseridos e tente novamente. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
+            footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>'
         });
-    }*/
-    
+    }
+
+    function erroCpf() {
+        const inputCpf = document.getElementById("input_cpf");
+        inputCpf.classList.add("input-error");
+
+        let errorMessage = document.getElementById("cpf-error-message");
+        if (!errorMessage) {
+            let errorMessage = document.getElementById("cpf-error-message");
+            errorMessage = document.createElement("div");
+            errorMessage.id = "cpf-error-message";
+            errorMessage.className = "error-message";
+            errorMessage.textContent = "O CPF informado já está cadastrado.";
+            inputCpf.parentNode.appendChild(errorMessage);
+        }
+    }
+
+    document.getElementById("input_cpf").addEventListener("input", function () {
+        this.classList.remove("input-error");
+        const errorMessage = document.getElementById("cpf-error-message");
+        if (errorMessage) {
+            errorMessage.remove();
+        }
+    });
 }
+
+async function buscarNivelIngles() {
+
+    const resposta = await fetch("http://localhost:8080/nivel-ingles");
+
+    const listaNichos = await resposta.json();
+
+    const select = document.getElementById("select_nivel");
+
+    select.innerHTML += listaNichos.map((nicho) => {
+        return `<option value="${nicho.id}">${tratarNome(nicho.nome)}</option>`;
+    }).join('');
+}
+
+
+async function buscarNichos() {
+    const resposta = await fetch("http://localhost:8080/nichos");
+
+    const listaNichos = await resposta.json();
+
+    const select = document.getElementById("select_nicho");
+
+    select.innerHTML += listaNichos.map((nicho) => {
+        return `<option value="${nicho.id}">${tratarNome(nicho.nome)}</option>`;
+    }).join('');
+}
+
+function tratarNome(nichoNome) {
+    let nomeTratado = nichoNome.replace(/_/g, ' ');
+
+    let palavras = nomeTratado.split(' ');
+
+    palavras = palavras.map(palavra => {
+        return palavra.charAt(0).toUpperCase() + palavra.slice(1).toLowerCase();
+    });
+
+    nomeTratado = palavras.join(' ');
+
+    return nomeTratado;
+}
+
+buscarNivelIngles()
+buscarNichos()
+
 
