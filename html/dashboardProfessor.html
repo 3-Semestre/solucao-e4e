@@ -9,6 +9,7 @@
 
     <script defer src="../js/script.js"></script>
     <script src="js/cadastrarAluno.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
 
     <!-- Importação do SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -72,12 +73,21 @@
     </nav>
 
     <div class="conteudo">
-        <p>Próximos Agendamentos</p>
+        <br>
         <div class="buttons-professor">
             <h2>Joseph Smith</h2>
+            <p class="none">Próximos Agendamentos</p>
+            <p class="none">Próximos Agendamentos</p>
+            <p class="none"></p>
             <button type="button" class="btn btn-primary" id="botaoCadastro">Atuando</button>
         </div>
         <br>
+        <div class="title-agendamento">
+            <p>Próximos Agendamentos</p>
+            <p class="none">Próximos Agendamentos</p>
+            <p class="none">Próximos Agendamentos</p>
+            <p class="none">Próximos Agendamentos</p>
+        </div>
         <div class="agendamentos">
             <div class="box">
                 <div class="data">
@@ -113,43 +123,175 @@
                 </div>
             </div>
         </div>
+        <br><br>
+        <hr class="line">
+        <br><br>
+        <div class="content-kpis">
+            <div class="title-agendamento">
+                <p>KPI's</p>
+                <p class="none">Próximos Agendamentos</p>
+                <p class="none">Próximos Agendamentos</p>
+                <p class="none">Próximos Agendamentos</p>
+                <p class="none">Próx</p>
+            </div>
+            <div class="kpis">
+                <div class="box-kpis">
+                    <div class="line-box">
+                    </div>
+                    <div class="content-kpis">
+                        <p>Novos Agendamentos</p>
+                        <h2>55</h2>
+                        <div class="variação">
+                            <div class="seta-baixo">
+                            </div>
+                            <div class="porcentagem">
+                                <p class="ruim">70,00 %</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-kpis">
+                    <div class="line-box">
+                    </div>
+                    <div class="content-kpis">
+                        <p>Confirmação de Agendamento</p>
+                        <h2>30<span>min</span></h2>
+                        <div class="variação">
+                            <div class="seta-cima">
+                            </div>
+                            <div class="porcentagem">
+                                <p class="bom">10,00 %</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-chart">
+                    <span id="title-chart">Agendamentos</span>
+                    <canvas id="meuGrafico"></canvas>
+                    <div class="box-buttons">
+                        <button type="button" class="btn btn-primary" id="botaoChartN">NÃO CONCLUÍDOS</button>
+                        <button type="button" class="btn btn-primary" id="botaoChart">CONCLUÍDOS</button>
+                    </div>
+                </div>
+            </div>
+            <div class="kpis2">
+                <div class="box-kpis">
+                    <div class="line-box">
+                    </div>
+                    <div class="content-kpis">
+                        <p>Alunos Novos</p>
+                        <h2>15</h2>
+                        <div class="variação">
+                            <div class="seta-cima">
+                            </div>
+                            <div class="porcentagem">
+                                <p class="bom">20,53 %</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-kpis">
+                    <div class="line-box">
+                    </div>
+                    <div class="content-kpis">
+                        <p>Cancelamento</p>
+                        <h2>2</h2>
+                        <div class="variação">
+                            <div id="seta-baixo">
+                            </div>
+                            <div class="porcentagem">
+                                <p class="bom">70,00 %</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-kpis-none">
+                    <div class="line-box-none">
+                    </div>
+                    <div class="content-kpis">
+                        <p>Cancelamento</p>
+                        <h2>2</h2>
+                        <div class="variação">
+                            <div class="seta-none">
+                            </div>
+                            <div class="porcentagem">
+                                <p class="bom-none">70,00 %</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="line2">
+            <br>
+            <div class="title-agendamento">
+                <p>Taxa de Cancelamento</p>
+                <p class="none">Próximos Agendamentos</p>
+                <p class="none">Próximos Agendamentos</p>
+                <p class="none">Próximos Agendamentos</p>
+            </div>
+            <br><br>
+            <div class="box-chart2">
+                <canvas id="meuGrafico2"></canvas>
+            </div>
+        </div>
+
     </div>
+
+    <script>
+
+        const dados = {
+            labels: [
+                'Não Concluídos',
+                'Concluídos'
+            ],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [300, 170],
+                backgroundColor: [
+                    'rgba(7, 43, 89, 1)',
+                    'rgba(52, 209, 191, 1)'
+                ],
+                hoverOffset: 4
+            }]
+        };
+
+        // Configurações do primeiro gráfico de rosca
+        var configuracao = {
+            type: 'doughnut',
+            data: dados,
+            options: {}
+        };
+
+        // Renderiza o primeiro gráfico de rosca
+        var meuGrafico = new Chart(document.getElementById('meuGrafico'), configuracao);
+
+
+        // Dados para o segundo gráfico de área
+        var dados2 = {
+            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            datasets: [{
+                label: 'Taxa de Cancelamento',
+                data: [12, 19, 3, 5, 2, 3, 7, 1, 9, 2, 15, 12],
+                fill: true,
+                backgroundColor: 'rgba(7, 43, 89, 0.5)', // Adiciona uma opacidade
+                borderColor: 'rgba(7, 43, 89, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        // Configurações do segundo gráfico de área
+        var configuracao2 = {
+            type: 'line',
+            data: dados2,
+            options: {}
+        };
+
+        // Renderiza o segundo gráfico de área
+        var meuGrafico2 = new Chart(document.getElementById('meuGrafico2'), configuracao2);
+
+
+    </script>
+
 </body>
 
 </html>
-
-<script>
-
-    document.getElementById('input_cpf').addEventListener('input', function (e) {
-        let value = e.target.value;
-        value = value.replace(/\D/g, '');
-        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-        e.target.value = value;
-    });
-
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('lixeira').addEventListener('click', function () {
-            Swal.fire({
-                title: "Deseja excluir esse aluno?",
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonText: "Sim",
-                denyButtonText: `Não`,
-                cancelButtonText: "Cancelar",
-                confirmButtonColor: 'green',
-                denyButtonColor: '#870000',
-                cancelButtonColor: '#aaa',
-                background: '#f2f2f2',
-                color: '#333'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({ title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green' });
-                } else if (result.isDenied) {
-                    Swal.fire({ title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green' });
-                }
-            });
-        });
-    });
-</script>
