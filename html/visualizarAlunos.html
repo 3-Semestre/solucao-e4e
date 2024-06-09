@@ -95,10 +95,6 @@
             </div>
             <br>
             <div class="inputs">
-                <!-- Nome: <input type="text" id="input_nome" class="form-control" placeholder="Nome">
-                CPF: <input type="text" id="input_cpf" class="form-control" placeholder="CPF">
-                Nicho: <input type="text" id="input_nicho" class="form-control" placeholder="Nicho">
-                Nível: <input type="text" id="input_nivel" class="form-control" placeholder="Nível"> -->
                 <div class="mb-3 d-flex justify-content-center align-items-center">
                     <label for="input_nome" class="form-label me-3">Nome:</label>
                     <input type="text" class="form-control" id="input_nome" placeholder="Nome do Aluno" required>
@@ -109,8 +105,8 @@
                         required>
                 </div>
                 <div class="mb-3 d-flex justify-content-center align-items-center">
-                    <label for="nivel" class="form-label me-3">Nicho:</label>
-                    <select class="form-select" id="nivel" aria-label="Default select example" required>
+                    <label for="nicho" class="form-label me-3" id="select_nicho">Nicho:</label>
+                    <select class="form-select" id="nicho" aria-label="Default select example" required>
                         <option value="" selected>Selecione uma opção</option>
                         <option value="1">Avançado</option>
                         <option value="2">Intermediário</option>
@@ -118,7 +114,7 @@
                     </select>
                 </div>
                 <div class="mb-3 d-flex justify-content-center align-items-center">
-                    <label for="nivel" class="form-label me-3">Nível:</label>
+                    <label for="nivel" class="form-label me-3" id="select_nivel">Nível:</label>
                     <select class="form-select" id="nivel" aria-label="Default select example" required>
                         <option value="" selected>Selecione uma opção</option>
                         <option value="1">Avançado</option>
@@ -128,7 +124,7 @@
                 </div>
             </div>
 
-            <div class="dados-student">
+            <div class="dados-student" id="card_dados">
                 <div class="photo-student">
                     <img src="../imgs/student.jpg" alt="">
                     <p>Susan Morgan</p>
@@ -138,7 +134,7 @@
                 </div>
             </div>
             <hr class="line">
-            
+
         </div>
 </body>
 
@@ -155,27 +151,27 @@
         e.target.value = value;
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('lixeira').addEventListener('click', function() {
-        Swal.fire({
-            title: "Deseja excluir esse aluno?",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: "Sim",
-            denyButtonText: `Não`,
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: 'green',  
-            denyButtonColor: '#870000',        
-            cancelButtonColor: '#aaa',      
-            background: '#f2f2f2',          
-            color: '#333'                   
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green'});
-            } else if (result.isDenied) {
-                Swal.fire({title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green'});
-            }
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('lixeira').addEventListener('click', function () {
+            Swal.fire({
+                title: "Deseja excluir esse aluno?",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Sim",
+                denyButtonText: `Não`,
+                cancelButtonText: "Cancelar",
+                confirmButtonColor: 'green',
+                denyButtonColor: '#870000',
+                cancelButtonColor: '#aaa',
+                background: '#f2f2f2',
+                color: '#333'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({ title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green' });
+                } else if (result.isDenied) {
+                    Swal.fire({ title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green' });
+                }
+            });
         });
     });
-});
 </script>
