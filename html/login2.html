@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/login2.css">
-    <title>Document</title>
+    <title>Login</title>
 </head>
 <body>
     <form action="">
@@ -24,8 +24,17 @@
             <input type="checkbox" />
             <p>Lembrar-me</p>
           </div>
-        <button>Entrar</button> 
+        <button onclick="entrar()">Entrar</button> 
       </form>
+
+      <script>
+        function entrar() {
+            // Aqui você pode adicionar validação do formulário, se necessário
+            
+            // Redirecionar para a página da dashboard
+            window.location = "../html/dashboardProfessor.html";
+        }
+    </script>
   
 </body>
 </html>

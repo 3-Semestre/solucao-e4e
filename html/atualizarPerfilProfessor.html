@@ -28,31 +28,49 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="dashboardProfessor.html">
                     <img src="../imgs/botao-home.png" alt="">
                     <span>Início</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                <img src="../imgs/calendar-days.png" alt="">
-                    <span>Agenda</span>
+                    <img src="../imgs/calendar-days.png" alt="">
+                    <button class="dropdown-btn">Agenda
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="#">Agendar</a>
+                        <a href="#">Histórico</a>
+                    </div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <img src="../imgs/students.png" alt="">
-                    <span>Alunos</span>
+                    <button class="dropdown-btn">Alunos
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="visualizarAlunos.html">Visualizar</a>
+                        <a href="cadastrarPerfilAluno.html">Cadastrar</a>
+                    </div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <img src="../imgs/professor.png" alt="">
-                    <span>Professores</span>
+                    <button class="dropdown-btn">Professores
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="atualizarPerfilProfessor.html">Visualizar</a>
+                        <a href="#">Cadastrar</a>
+                    </div>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="atualizarPerfilProfessor.html">
                     <img src="../imgs/perfil.png" alt="">
                     <span>Perfil</span>
                 </a>
@@ -64,7 +82,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="login2.html">
                     <img src="../imgs/sair.png" alt="">
                     <span>Sair</span>
                 </a>
@@ -159,7 +177,8 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="nivel" class="form-label" id="nivelTitle"><span>*</span>Horário de Atendimento:</label>
+                            <label for="nivel" class="form-label" id="nivelTitle"><span>*</span>Horário de
+                                Atendimento:</label>
                             <select class="form-select" id="nivel" aria-label="Default select example" required>
                                 <option value="" selected>Selecione uma opção</option>
                                 <option value="1">Avançado</option>
@@ -168,7 +187,8 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="nicho" class="form-label" id="nichoTitle"><span>*</span>Horário de Intervalo:</label>
+                            <label for="nicho" class="form-label" id="nichoTitle"><span>*</span>Horário de
+                                Intervalo:</label>
                             <select class="form-select" id="nicho" aria-label="Default select example" required>
                                 <option value="" selected>Selecione uma opção</option>
                                 <option value="1">Infantil</option>
@@ -179,9 +199,9 @@
                             </select>
                         </div>
                         <br><br>
-                            <div class="button">
-                                <button type="submit" class="btn btn-primary" id="botaoAtualizar">Atualizar</button>
-                            </div>
+                        <div class="button">
+                            <button type="submit" class="btn btn-primary" id="botaoAtualizar">Atualizar</button>
+                        </div>
                         </form>
                     </div>
                 </div>
@@ -192,6 +212,25 @@
 </html>
 
 <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        for (var i = 0; i < dropdown.length; i++) {
+            dropdown[i].addEventListener("click", function (e) {
+                e.preventDefault();
+                // Remove a linha que adicionava a classe "active"
+                // this.classList.toggle("active");
+                var dropdownContent = this.parentElement.nextElementSibling;
+                if (dropdownContent.style.display === "block") {
+                    dropdownContent.style.display = "none";
+                } else {
+                    dropdownContent.style.display = "block";
+                }
+            });
+        }
+    });
+
+
     document.getElementById('cadastroForm').addEventListener('submit', function (event) {
         event.preventDefault(); // Impede o envio do formulário
 
@@ -223,19 +262,19 @@
             confirmButtonText: "Salvar",
             denyButtonText: `Não salvar`,
             cancelButtonText: "Cancelar",
-            confirmButtonColor: 'green',  
-            denyButtonColor: '#870000',        
-            cancelButtonColor: '#aaa',      
-            background: '#f2f2f2',          
-            color: '#333'                   
+            confirmButtonColor: 'green',
+            denyButtonColor: '#870000',
+            cancelButtonColor: '#aaa',
+            background: '#f2f2f2',
+            color: '#333'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({title: "Salvo!", icon: "success", confirmButtonColor: 'green'});
-                } else if (result.isDenied) {
-                    Swal.fire({title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green'});
-                }
-            });
-        }
+                Swal.fire({ title: "Salvo!", icon: "success", confirmButtonColor: 'green' });
+            } else if (result.isDenied) {
+                Swal.fire({ title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green' });
+            }
+        });
+    }
 
     document.getElementById('input_cpf').addEventListener('input', function (e) {
         let value = e.target.value;
