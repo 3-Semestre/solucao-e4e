@@ -1,23 +1,32 @@
 async function buscarAlunos() {
 
-    const resposta = await fetch("https://660f44ad356b87a55c510d25.mockapi.io/agendas");
+    const resposta = await fetch("http://localhost:8080/usuarios/aluno");
 
     const listaAlunos = await resposta.json();
 
-    const cardsAlunos = document.getElementById("cards_games");
+    console.log(listaAlunos);
 
-    cardsAlunos.innerHTML = listaAlunos.map((aluno) => {
+    cardsAlunos = document.getElementById("listagem")
+
+    cardsAlunos.innerHTML += listaAlunos.map((aluno) => {
         return `
-       <div class="photo-student">
-                    <img src="../imgs/student.jpg" alt="Foto de perfil">
+      <div class="dados-student" id="card_dados">
+                <div class="photo-student">
+                    <img src="../imgs/perfil_blue.png" alt="">
                     <p>${aluno.nomeCompleto}</p>
                 </div>
-                <div class="lixeira" id="lixeira">
-                    <img src="../imgs/trash-bin.png" alt="Ícone de lixeira">
+                <div class="lixeira" id="lixeira_${aluno.id}">
+                    <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirALuno()">
                 </div>
+            </div>
+            <hr class="line">
     `
 
     }).join('');
+    
 }
-
-buscarAlunos();
+try{
+    buscarAlunos()
+} catch (e){
+    console.log(e)
+}
