@@ -100,3 +100,13 @@ body::before {
   .esqueceu-senha {
     text-align: center;
   }
+
+  .mensagem-erro {
+    background-color: #ffcccc; 
+    color: #cc0000;
+    padding: 10px; 
+    border: 1px solid #cc0000; 
+    border-radius: 5px; 
+    margin-top: 10px;
+  }
+  
