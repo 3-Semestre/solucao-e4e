@@ -28,7 +28,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="dashboardProfessor.html">
                     <img src="../imgs/botao-home.png" alt="">
                     <span>Início</span>
                 </a>
@@ -36,19 +36,37 @@
             <li>
                 <a href="#">
                     <img src="../imgs/calendar-days.png" alt="">
-                    <span>Agenda</span>
+                    <button class="dropdown-btn">Agenda
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="#">Agendar</a>
+                        <a href="#">Histórico</a>
+                    </div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <img src="../imgs/students.png" alt="">
-                    <span>Alunos</span>
+                    <button class="dropdown-btn">Alunos
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="visualizarAlunos.html">Visualizar</a>
+                        <a href="cadastrarPerfilAluno.html">Cadastrar</a>
+                    </div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <img src="../imgs/professor.png" alt="">
-                    <span>Professores</span>
+                    <button class="dropdown-btn">Professores
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="atualizarPerfilProfessor.html">Visualizar</a>
+                        <a href="#">Cadastrar</a>
+                    </div>
                 </a>
             </li>
             <li>
@@ -64,7 +82,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="login2.html">
                     <img src="../imgs/sair.png" alt="">
                     <span>Sair</span>
                 </a>
@@ -128,7 +146,7 @@
         <br><br>
         <div class="content-kpis">
             <div class="title-agendamento">
-                <p>KPI's</p>
+                <p id="kpi">KPI's</p>
                 <p class="none">Próximos Agendamentos</p>
                 <p class="none">Próximos Agendamentos</p>
                 <p class="none">Próximos Agendamentos</p>
@@ -288,6 +306,23 @@
 
         // Renderiza o segundo gráfico de área
         var meuGrafico2 = new Chart(document.getElementById('meuGrafico2'), configuracao2);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var dropdown = document.getElementsByClassName("dropdown-btn");
+            for (var i = 0; i < dropdown.length; i++) {
+                dropdown[i].addEventListener("click", function (e) {
+                    e.preventDefault();
+                    // Remove a linha que adicionava a classe "active"
+                    // this.classList.toggle("active");
+                    var dropdownContent = this.parentElement.nextElementSibling;
+                    if (dropdownContent.style.display === "block") {
+                        dropdownContent.style.display = "none";
+                    } else {
+                        dropdownContent.style.display = "block";
+                    }
+                });
+            }
+        });
 
 
     </script>

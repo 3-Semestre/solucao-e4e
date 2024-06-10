@@ -77,7 +77,7 @@ body {
 
 .content-professor {
     width: 100%;
-    height: 80vh;
+    height: 100vh;
     background-color: #a8b6bf40;
     border-radius: 2%;
     display: flex;
@@ -117,7 +117,7 @@ body {
     flex-direction: row-reverse !important;
     margin-left: auto;
     position: relative;
-    bottom: 2vh;
+    top: 21vh;
 }
 
 .button button:hover {
@@ -177,11 +177,98 @@ body {
     width: 100%;
 }
 
-.nav-links li img{
+.nav-links li img {
     width: 30px;
     height: 30px;
 }
 
+.dropdown-btn {
+    padding-left: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    display: block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+}
+
+.dropdown-container {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.sidebar .dropdown-btn{
+    color: rgba(255, 255, 255, 0);
+}
+
+.sidebar.active .dropdown-btn{
+    color: white;
+}
+
+.dropdown-container a {
+    font-size: 15px;
+    color: white; 
+}
+
+.hidden {
+    display: none;
+}
+
+@media only screen and (max-device-width: 430px) {
+
+    .dropdown-btn{
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0);  
+    }
+
+    .dropdown-container a{
+        font-size: 10px;
+    }
+
+
+    .sidebar {
+        width: 15vw;
+    }
+
+    .sidebar.active .nav-links li span {
+        display: none;
+    }
+
+    #toggle-btn {
+        display: none;
+    }
+
+    .photo-professor{
+        display: flex;
+        flex-direction: column;
+        align-items: unset;
+    }
+    
+    .content-professor{
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    .button button{
+        position: relative;
+        right: 31vw;
+        bottom: 20vh;
+    }
+
+    .form-control{
+        width: 50vw !important;
+    }
+
+    .form-select{
+        width: 50vw !important;
+    }
+}
 .input-error {
     border-color: red;
 }

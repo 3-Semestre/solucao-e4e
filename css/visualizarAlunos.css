@@ -52,7 +52,7 @@ body {
     font-size: 20px;
 }
 
-.sidebar.active .nav-links li span {
+.sidebar.active .nav-links li span{
     opacity: 1;
     padding-left: 10px;
 }
@@ -173,10 +173,161 @@ label {
     display: flex;
     gap: 2vw;
     align-items: center;
-    padding: 3vw;   
+    padding: 3vw;
 }
 
 .lixeira img {
     width: 3vw;
     cursor: pointer;
+}
+
+.dropdown-btn {
+    padding-left: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    display: block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+}
+
+.dropdown-container {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.sidebar .dropdown-btn{
+    color: rgba(255, 255, 255, 0);
+}
+
+.sidebar.active .dropdown-btn{
+    color: white;
+}
+
+.dropdown-container a {
+    font-size: 15px;
+    color: white; 
+}
+
+.hidden {
+    display: none;
+}
+
+@media only screen and (max-device-width: 430px) {
+
+    .dropdown-btn{
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0);  
+    }
+
+    .dropdown-container a{
+        font-size: 10px;
+    }
+
+    .sidebar {
+        width: 16vw;
+    }
+
+    .sidebar.active .nav-links li span {
+        display: none;
+    }
+
+    #toggle-btn {
+        display: none;
+    }
+
+    .conteudo {
+        position: relative;
+        right: 8vw;
+    }
+
+    .inputs {
+        flex-direction: column;
+        text-align: left !important;
+    }
+
+    .inputs input {
+        width: 45vw;
+    }
+
+    .inputs select {
+        width: 45vw;
+    }
+
+    .inputs label {
+        text-align: left !important;
+    }
+
+    #input_cpf {
+        position: relative;
+        left: 1.5vw;
+    }
+
+    #input_nicho {
+        position: relative;
+        right: 0.5vw;
+    }
+
+    #input_nivel {
+        position: relative;
+        left: 0.4vw;
+    }
+
+    #cpf {
+        position: relative;
+        right: 2vw;
+    }
+
+    #nicho {
+        position: relative;
+        right: 0.5vw;
+    }
+
+    #nivel {
+        position: relative;
+        right: 1vw;
+    }
+
+    .dados {
+        height: 33vh;
+    }
+
+    .filter img {
+        left: 0vw;
+        height: 3vh;
+    }
+
+    .lixeira img {
+        position: relative;
+        right: 0vw;
+        width: 8vw;
+    }
+
+    .photo-student img {
+        width: 8vw;
+    }
+
+    .button-filter button {
+        position: relative;
+        left: 0vw;
+    }
+
+    .dados-student {
+        gap: 2vw;
+    }
+
+    .filter {
+        gap: 0vw;
+    }
+
+    .filter p {
+        right: 0vw;
+    }
+
+
 }

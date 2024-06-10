@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Aluno</title>
-    <link rel="stylesheet" href="../css/atualizarPerfil.css">
+    <!-- <link rel="stylesheet" href="../css/atualizarPerfil.css"> -->
+    <link rel="stylesheet" href="../css/cadastrarPerfil.css">
 
     <script defer src="../js/script.js"></script>
     <script src="../js/cadastrarAluno.js"></script>
@@ -28,7 +29,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="dashboardProfessor.html">
                     <img src="../imgs/botao-home.png" alt="">
                     <span>Início</span>
                 </a>
@@ -36,23 +37,41 @@
             <li>
                 <a href="#">
                     <img src="../imgs/calendar-days.png" alt="">
-                    <span>Agenda</span>
+                    <button class="dropdown-btn">Agenda
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="#">Agendar</a>
+                        <a href="#">Histórico</a>
+                    </div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <img src="../imgs/students.png" alt="">
-                    <span>Alunos</span>
+                    <button class="dropdown-btn">Alunos
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="visualizarAlunos.html">Visualizar</a>
+                        <a href="cadastrarPerfilAluno.html">Cadastrar</a>
+                    </div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <img src="../imgs/professor.png" alt="">
-                    <span>Professores</span>
+                    <button class="dropdown-btn">Professores
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="atualizarPerfilProfessor.html">Visualizar</a>
+                        <a href="#">Cadastrar</a>
+                    </div>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="atualizarPerfilProfessor.html">
                     <img src="../imgs/perfil.png" alt="">
                     <span>Perfil</span>
                 </a>
@@ -64,7 +83,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="login2.html">
                     <img src="../imgs/sair.png" alt="">
                     <span>Sair</span>
                 </a>
@@ -82,7 +101,7 @@
         </nav>
 
         <div class="register">
-            <div class="buttons-professor">
+            <!-- <div class="buttons-professor">
                 <h2>Nome do Aluno</h2>
                 <button type="button" class="btn btn-primary" id="botaoStatus">-</button>
             </div>
@@ -99,7 +118,8 @@
                     <p>-</p>
                 </div>
             </div>
-            <hr class="line">
+            <hr class="line"> -->
+            <br>
             <div class="content-professor">
                 <div class="content-personal-information">
                     <div class="container mt-5">
@@ -176,6 +196,24 @@
 </html>
 
 <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        for (var i = 0; i < dropdown.length; i++) {
+            dropdown[i].addEventListener("click", function (e) {
+                e.preventDefault();
+                // Remove a linha que adicionava a classe "active"
+                // this.classList.toggle("active");
+                var dropdownContent = this.parentElement.nextElementSibling;
+                if (dropdownContent.style.display === "block") {
+                    dropdownContent.style.display = "none";
+                } else {
+                    dropdownContent.style.display = "block";
+                }
+            });
+        }
+    });
+    
     document.getElementById('cadastroForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
