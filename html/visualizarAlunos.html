@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/visualizarAlunos.css">
 
     <script defer src="../js/script.js"></script>
-    <script src="js/cadastrarAluno.js"></script>
+    <script src="../js/visualizarAlunos.js"></script>
 
     <!-- Importação do SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -89,7 +89,7 @@
         </ul>
     </nav>
 
-    <div class="conteudo">
+    <div class="conteudo" id="listagem">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Página Inicial</a></li>
@@ -141,18 +141,6 @@
                     </select>
                 </div>
             </div>
-
-            <div class="dados-student" id="card_dados">
-                <div class="photo-student">
-                    <img src="../imgs/student.jpg" alt="">
-                    <p>Susan Morgan</p>
-                </div>
-                <div class="lixeira" id="lixeira">
-                    <img src="../imgs/trash-bin.png" alt="">
-                </div>
-            </div>
-            <hr class="line">
-
         </div>
 </body>
 
@@ -187,28 +175,27 @@
         e.target.value = value;
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('lixeira').addEventListener('click', function () {
-            Swal.fire({
-                title: "Deseja excluir esse aluno?",
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonText: "Sim",
-                denyButtonText: `Não`,
-                cancelButtonText: "Cancelar",
-                confirmButtonColor: 'green',
-                denyButtonColor: '#870000',
-                cancelButtonColor: '#aaa',
-                background: '#f2f2f2',
-                color: '#333'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({ title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green' });
-                } else if (result.isDenied) {
-                    Swal.fire({ title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green' });
-                }
-            });
+    function excluirALuno() {
+        Swal.fire({
+            title: "Deseja excluir esse aluno?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Sim",
+            denyButtonText: `Não`,
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: 'green',
+            denyButtonColor: '#870000',
+            cancelButtonColor: '#aaa',
+            background: '#f2f2f2',
+            color: '#333'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({ title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green' });
+            } else if (result.isDenied) {
+                Swal.fire({ title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green' });
+            }
         });
-    });
+
+    }
 
 </script>

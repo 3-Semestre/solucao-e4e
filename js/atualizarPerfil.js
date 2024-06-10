@@ -1,5 +1,4 @@
 async function atualizarAluno() {
-    console.log("a")
     const id = sessionStorage.getItem('id');
     const nome = document.getElementById("input_nome").value;
     const cpf = document.getElementById("input_cpf").value;
@@ -19,7 +18,7 @@ async function atualizarAluno() {
         "dataNascimento": dataNascimento,
         "senha": senha,
         "nivelAcesso": {
-            "id": 3
+            "id": 1
         },
         "situacao": {
             "id": 1
@@ -38,7 +37,7 @@ async function atualizarAluno() {
         const usuario = await respostaCadastro.json();
         salvarInformacoes(usuario)
         Swal.fire({ title: "Salvo!", icon: "success", confirmButtonColor: 'green' });
-        atualizarNichoUsuario()
+        atualizarNivelIngles()
     } else {
         Swal.fire({
             icon: 'error',
@@ -47,6 +46,45 @@ async function atualizarAluno() {
             text: 'Por favor, revise os dados inseridos e tente novamente. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
             footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>'
         });
+    }
+}
+
+async function atualizarNivelIngles() {
+    const id = sessionStorage.getItem('id');
+    const nivelAnteriores = JSON.parse(sessionStorage.getItem('nivel')) || [];
+
+    const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="nivel_"]');
+    const novosnivel = Array.from(checkboxes)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => parseInt(checkbox.id.split('_')[1]))
+        .filter(nivel => !nivelAnteriores.includes(nivel));
+
+    if (novosnivel.length > 0) {
+        for (const nivelIngles of novosnivel) {
+            const dadosNivel = {
+                usuario: { id: id },
+                nivelIngles: { id: nivelIngles }
+            };
+
+            try {
+                const respostaCadastro = await fetch(`http://localhost:8080/usuario-nivel-ingles`, {
+                    method: "POST",
+                    body: JSON.stringify(dadosNivel),
+                    headers: { "Content-type": "application/json; charset=UTF-8" }
+                });
+
+                if (respostaCadastro.status == 201) {
+                    console.log(`Nicho ${nicho} atualizado com sucesso`);
+                    atualizarNichoUsuario();
+                } else {
+                    console.log(`Erro ao atualizar nicho ${nicho}`);
+                    return;
+                }
+            } catch (e) {
+                console.log(e);
+                return;
+            }
+        }
     }
 }
 
@@ -61,7 +99,7 @@ async function atualizarNichoUsuario() {
         .map(checkbox => parseInt(checkbox.id.split('_')[1]))
         .filter(nicho => !nichosAnteriores.includes(nicho));
 
-    if (novosNichos.length > 0) {g
+    if (novosNichos.length > 0) {
         for (const nicho of novosNichos) {
             const dadosNicho = {
                 usuario: { id: id },
