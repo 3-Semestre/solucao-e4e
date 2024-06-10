@@ -31,6 +31,7 @@ async function autenticar() {
     }
 
     function salvarInformacoes(usuario) {
+        sessionStorage.id = usuario.id;
         sessionStorage.cpf = usuario.cpf;
         sessionStorage.dataNascimento = usuario.dataNasc;
         sessionStorage.email = usuario.email; sessionStorage
@@ -39,7 +40,7 @@ async function autenticar() {
         sessionStorage.profissao = usuario.profissao;
         sessionStorage.telefone = usuario.telefone;
 
-        check = document.getElementById("check_lembrar")
+        let check = document.getElementById("check_lembrar")
         console.log(check)
         console.log(check.checked)
         if (check.checked) {
@@ -54,6 +55,14 @@ async function autenticar() {
 
 function exibirMensagemErro() {
     document.getElementById('mensagemErro').style.display = 'block';
+
+    document.getElementById("input_email").addEventListener("input", function () {
+        document.getElementById('mensagemErro').style.display = 'none';
+    });
+    
+    document.getElementById("input_senha").addEventListener("input", function () {
+        document.getElementById('mensagemErro').style.display = 'none';
+    });
 }
 
 function preencherDadosLogin() {
