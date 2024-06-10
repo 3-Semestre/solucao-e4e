@@ -2,7 +2,6 @@ function exibirDadosPerfil() {
     var cpf = sessionStorage.getItem('cpf');
     var dataNascimento = sessionStorage.getItem('dataNascimento');
     var email = sessionStorage.getItem('email');
-    var nivel_acesso = sessionStorage.getItem('nivel_acesso');
     var nomeCompleto = sessionStorage.getItem('nomeCompleto');
     var profissao = sessionStorage.getItem('profissao');
     var telefone = sessionStorage.getItem('telefone');
@@ -75,6 +74,9 @@ async function buscarNichoUsuario() {
     const respostaNicho = await resposta.json();
     var nicho = document.getElementById("nicho");
 
+    const nichos = respostaNicho.map(nivel => nivel.nicho.id);
+    sessionStorage.setItem('nichos', JSON.stringify(nichos));
+
     for (let i = 0; i < respostaNicho.length; i++) {
         var nichoNomeTratado = tratarNome(respostaNicho[i].nicho.nome);
         if (i == respostaNicho.length - 1) {
@@ -89,6 +91,7 @@ async function buscarNichoUsuario() {
         if (checkbox) {
             checkbox.checked = true;
         }
+        checkbox.id = `nicho_${nichoUsuario.nicho.id}`;
     });
 }
 
