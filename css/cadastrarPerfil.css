@@ -269,3 +269,12 @@ body {
         width: 50vw !important;
     }
 }
+.input-error {
+    border-color: red;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.875em;
+    margin-top: 0.25em;
+}

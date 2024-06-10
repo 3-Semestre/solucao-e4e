@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../css/cadastrarPerfil.css">
 
     <script defer src="../js/script.js"></script>
-    <script src="js/cadastrarAluno.js"></script>
+    <script src="../js/cadastrarAluno.js"></script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -37,6 +37,7 @@
             <li>
                 <a href="#">
                     <img src="../imgs/calendar-days.png" alt="">
+<<<<<<< HEAD
                     <button class="dropdown-btn">Agenda
                         <i class="fa fa-caret-down"></i>
                     </button>
@@ -44,6 +45,9 @@
                         <a href="#">Agendar</a>
                         <a href="#">Histórico</a>
                     </div>
+=======
+                    <span>Agenda</span>
+>>>>>>> 09199ea40139a99ac482ca78af0ea95b0486d40e
                 </a>
             </li>
             <li>
@@ -96,7 +100,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Página Inicial</a></li>
                 <li class="breadcrumb-item"><a href="#">Alunos</a></li>
-                <li class="breadcrumb-item active" aria-current="page" id="titulo_breadcrump">Perfil</li>
+                <li class="breadcrumb-item active" aria-current="page" id="titulo_breadcrump">Cadastrar Alunos</li>
             </ol>
         </nav>
 
@@ -151,6 +155,16 @@
                                 <input type="email" class="form-control" id="input_email" placeholder="nome@exemplo.com"
                                     required>
                             </div>
+                            <div class="mb-3">
+                                <label for="input_profissao" class="form-label"><span>*</span>Profissao:</label>
+                                <input type="text" class="form-control" id="input_profissao" placeholder="Professor"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="input_senha" class="form-label"><span>*</span>Senha:</label>
+                                <input type="password" class="form-control" id="input_senha" placeholder="******"
+                                    required>
+                            </div>
                     </div>
                 </div>
                 <div class="content-course">
@@ -160,22 +174,14 @@
                         </div>
                         <div class="mb-3">
                             <label for="nivel" class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>
-                            <select class="form-select" id="nivel" aria-label="Default select example" required>
+                            <select class="form-select" aria-label="Default select example" id="select_nivel" required>
                                 <option value="" selected>Selecione uma opção</option>
-                                <option value="1">Avançado</option>
-                                <option value="2">Intermediário</option>
-                                <option value="3">Básico</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="nicho" class="form-label" id="nichoTitle"><span>*</span>Nicho:</label>
-                            <select class="form-select" id="nicho" aria-label="Default select example" required>
+                            <select class="form-select" aria-label="Default select example" id="select_nicho" required>
                                 <option value="" selected>Selecione uma opção</option>
-                                <option value="1">Infantil</option>
-                                <option value="2">Business</option>
-                                <option value="3">Técnico</option>
-                                <option value="4">Testes Internacionais</option>
-                                <option value="5">Moradores Exterior</option>
                             </select>
                         </div>
                         <br><br><br><br><br><br><br><br><br>
@@ -212,48 +218,21 @@
     });
     
     document.getElementById('cadastroForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Impede o envio do formulário
+        event.preventDefault();
 
-        try {
-            if (validarFormulario()) {
-                exibirConfirmacao();
-            } else {
-                // Lógica para exibir mensagem de erro, se necessário
+        if (validarFormulario()) {
+            try {
+                cadastrarAluno()
+            } catch (e) {
+                console.log(e);
             }
-        } catch (e) {
-            console.log(e);
         }
     });
 
     function validarFormulario() {
-        // Adicione sua lógica de validação aqui
-        // Por exemplo, verificar se todos os campos obrigatórios estão preenchidos
         const cpf = document.getElementById('input_cpf').value.trim();
         const telefone = document.getElementById('input_telefone').value.trim();
-        // Adicione outras verificações conforme necessário
-        return cpf !== '' && telefone !== ''; // Retorna true se válido, false caso contrário
-    }
-
-    function exibirConfirmacao() {
-        Swal.fire({
-            title: "Deseja salvar as alterações?",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: "Salvar",
-            denyButtonText: `Não salvar`,
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: 'green',
-            denyButtonColor: '#870000',
-            cancelButtonColor: '#aaa',
-            background: '#f2f2f2',
-            color: '#333'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({ title: "Salvo!", icon: "success", confirmButtonColor: 'green' });
-            } else if (result.isDenied) {
-                Swal.fire({ title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green' });
-            }
-        });
+        return cpf !== '' && telefone !== '';
     }
 
     document.getElementById('input_cpf').addEventListener('input', function (e) {
@@ -272,4 +251,6 @@
         value = value.replace(/(\d{5})(\d)/, '$1-$2');
         e.target.value = value.substring(0, 15);
     });
+
+
 </script>
