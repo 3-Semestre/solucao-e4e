@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/dashboardProfessor.css">
 
     <script defer src="../js/script.js"></script>
-    <script src="js/cadastrarAluno.js"></script>
+    <script src="js/plotarGrafico.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
 
     <!-- Importação do SweetAlert2 -->
@@ -256,33 +256,6 @@
     </div>
 
     <script>
-
-        const dados = {
-            labels: [
-                'Não Concluídos',
-                'Concluídos'
-            ],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [300, 170],
-                backgroundColor: [
-                    'rgba(7, 43, 89, 1)',
-                    'rgba(52, 209, 191, 1)'
-                ],
-                hoverOffset: 4
-            }]
-        };
-
-        // Configurações do primeiro gráfico de rosca
-        var configuracao = {
-            type: 'doughnut',
-            data: dados,
-            options: {}
-        };
-
-        // Renderiza o primeiro gráfico de rosca
-        var meuGrafico = new Chart(document.getElementById('meuGrafico'), configuracao);
-
 
         // Dados para o segundo gráfico de área
         var dados2 = {
