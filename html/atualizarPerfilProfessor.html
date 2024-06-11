@@ -178,30 +178,29 @@
                                 <label class="form-label" id="nichoTitle"><span>*</span>Nicho:</label>
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" id="horario">
                             <label for="input_atendimento" class="form-label" id="nivelTitle"><span>*</span>Horário de
                                 Atendimento:</label>
                             <input type="time" class="form-control" id="input_atendimento_inicio" readonly required>
                             <input type="time" class="form-control" id="input_atendimento_fim" readonly required>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" id="horario">
                             <label for="input_intervalo" class="form-label" id="nichoTitle"><span>*</span>Horário de
                                 Intervalo:</label>
                             <input type="time" class="form-control" id="input_intervalo_inicio" readonly required>
                             <input type="time" class="form-control" id="input_intervalo_fim" readonly required>
                         </div>
                         <br><br>
-                        <div style="display: flex; flex-direction: row;">
-                            <div class="button">
-                                <button type="submit" class="btn btn-primary" id="botaoAtualizar">Atualizar</button>
+                        <div class="buttons">
+                            <div class="button"  id="botaoAtualizar">
+                                <button type="submit" class="btn btn-primary">Atualizar</button>
                             </div>
-                            <div class="button">
-                                <button style="display: none;" class="btn btn-primary" id="botaoConfirmar">Salvar
+                            <div class="button" style="display: none;" id="botaoConfirmar">
+                                <button  class="btn btn-primary">Salvar
                                     Alterações</button>
                             </div>
-                            <div class="button">
-                                <button style="display: none;" class="btn btn-primary"
-                                    id="botaoCancelar">Cancelar</button>
+                            <div class="button" style="display: none;" id="botaoCancelar">
+                                <button class="btn btn-primary">Cancelar</button>
                             </div>
                         </div>
                         </form>

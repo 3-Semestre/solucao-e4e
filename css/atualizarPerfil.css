@@ -1,0 +1,309 @@
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100&display=swap');
+
+* {
+    font-family: "DM Sans", sans-serif;
+}
+
+body {
+    margin: 0;
+    display: flex;
+}
+
+.sidebar {
+    background-color: #072B59;
+    position: fixed;
+    width: 5vw;
+    height: 100%;
+    transition: all .3s ease;
+    padding: 0.6rem 0.3rem;
+}
+
+.sidebar .nav-links a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.sidebar.active {
+    width: 15vw;
+}
+
+.nav-links {
+    margin-top: 2em;
+    padding: 0;
+    list-style: none;
+}
+
+.nav-links li {
+    padding: 15px;
+    margin: 0.8em auto;
+}
+
+.nav-links a {
+    color: #fff;
+    font-size: 24px;
+    display: flex;
+    text-decoration: none;
+}
+
+.nav-links li span {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 20px;
+}
+
+.sidebar.active .nav-links li span {
+    opacity: 1;
+    padding-left: 10px;
+}
+
+.conteudo {
+    margin-left: 100px;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    padding: 20px;
+    width: calc(100% - 100px);
+}
+
+.sidebar.active~.conteudo {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+
+.register {
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+}
+
+.content-professor {
+    width: 100%;
+    height: 96vh;
+    background-color: #a8b6bf40;
+    border-radius: 2%;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px 15px 20px;
+}
+
+.title-personal-information p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #072B59;
+}
+
+.form-label {
+    font-size: 16px !important;
+    font-weight: bold;
+    color: #072B59;
+}
+
+.content-professor span {
+    color: red;
+}
+
+.form-control {
+    width: 35vw !important;
+}
+
+.form-select {
+    width: 35vw !important;
+}
+
+.button button {
+    background-color: #072B59 !important;
+    border: none;
+    font-weight: bold;
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    margin-left: auto;
+    position: relative;
+    bottom: 2vh;
+}
+
+.button button:hover {
+    background-color: #8c959a99 !important;
+    color: #072B59;
+}
+
+.title-course p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #072B59;
+}
+
+.photo-professor img {
+    align-items: center;
+    flex-direction: column;
+    width: 18vw;
+    border-radius: 5%;
+}
+
+.photo-professor h5 {
+    font-size: 17px;
+    font-weight: bold;
+    color: #072B59;
+}
+
+.photo-professor p {
+    font-size: 14px;
+    color: #072B59;
+}
+
+.photo-professor {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.professor-information {
+    top: 2vh;
+    position: relative;
+}
+
+.buttons-professor {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttons-professor button {
+    background-color: #a8b6bf40 !important;
+    border: none;
+    font-weight: bold;
+    color: #072B59;
+}
+
+.line {
+    border: 1px solid #072B59;
+    width: 100%;
+}
+
+.nav-links li img {
+    width: 30px;
+    height: 30px;
+}
+
+.dropdown-btn {
+    padding-left: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    display: block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+}
+
+.dropdown-container {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.sidebar .dropdown-btn {
+    color: rgba(255, 255, 255, 0);
+}
+
+.sidebar.active .dropdown-btn {
+    color: white;
+}
+
+.dropdown-container a {
+    font-size: 15px;
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
+
+.horario {
+    display: flex;
+    gap: 6rem;
+    align-items: flex-start;
+}
+
+#horario {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+}
+
+.buttons {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 1rem;
+    position: relative;
+}
+
+@media only screen and (max-device-width: 430px) {
+
+    .dropdown-btn {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0);
+    }
+
+    .dropdown-container a {
+        font-size: 10px;
+    }
+
+
+    .sidebar {
+        width: 15vw;
+    }
+
+    .sidebar.active .nav-links li span {
+        display: none;
+    }
+
+    #toggle-btn {
+        display: none;
+    }
+
+    .buttons-professor {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .buttons-professor button {
+        width: 22vw;
+    }
+
+    .photo-professor {
+        display: flex;
+        flex-direction: column;
+        align-items: unset;
+    }
+
+    .content-professor {
+        display: flex;
+        flex-direction: column;
+        height: 160vh;
+        justify-content: right;
+    }
+
+    .form-control {
+        width: 50vw !important;
+    }
+
+    .form-select {
+        width: 50vw !important;
+    }
+
+    .buttons {
+        display: grid !important;
+        left: 0;
+        justify-content: start;
+        justify-items: start;
+    }
+
+    .horario {
+        display: flex;
+        flex-direction: column;
+        gap: 1vh;
+    }
+
+
+}
