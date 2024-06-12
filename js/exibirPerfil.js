@@ -1,4 +1,5 @@
 function exibirDadosPerfil() {
+    console.log("teste")
     var cpf = sessionStorage.getItem('cpf');
     var dataNascimento = sessionStorage.getItem('dataNascimento');
     var email = sessionStorage.getItem('email');
@@ -111,11 +112,9 @@ function tratarNome(nichoNome) {
 
 async function buscarHorario() {
     const id = sessionStorage.getItem('id');
-    
+
     const resposta = await fetch(`http://localhost:8080/horario-professor/${id}`);
     const respostaHorario = await resposta.json();
-    
-    console.log(resposta)
 
     var horario = document.getElementById("horario");
     var horarioAtendimentoInicio = document.getElementById("input_atendimento_inicio");
@@ -183,4 +182,3 @@ window.onload = function () {
     buscarNivelInglesUsuario();
     buscarNichoUsuario();
 };
-

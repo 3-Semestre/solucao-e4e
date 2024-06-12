@@ -1,5 +1,6 @@
 async function plotarProximosAgendamentos() {
     const resposta = await fetch("http://localhost:7000/dashboard/ultimos-3-agendamentos-professor");
+    console.log(resposta)
     const listaAgendamentos = await resposta.json();
     console.log(listaAgendamentos);
 

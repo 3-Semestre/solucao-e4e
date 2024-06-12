@@ -29,7 +29,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="dashboardProfessor.html">
                     <img src="../imgs/botao-home.png" alt="">
                     <span>Início</span>
                 </a>
@@ -37,19 +37,37 @@
             <li>
                 <a href="#">
                     <img src="../imgs/calendar-days.png" alt="">
-                    <span>Agenda</span>
+                    <button class="dropdown-btn">Agenda
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="#">Agendar</a>
+                        <a href="#">Histórico</a>
+                    </div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <img src="../imgs/students.png" alt="">
-                    <span>Alunos</span>
+                    <button class="dropdown-btn">Alunos
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="visualizarAlunos.html">Visualizar</a>
+                        <a href="cadastrarPerfilAluno.html">Cadastrar</a>
+                    </div>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <img src="../imgs/professor.png" alt="">
-                    <span>Professores</span>
+                    <button class="dropdown-btn">Professores
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="atualizarPerfilProfessor.html">Visualizar</a>
+                        <a href="#">Cadastrar</a>
+                    </div>
                 </a>
             </li>
             <li>
@@ -65,14 +83,13 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="login2.html">
                     <img src="../imgs/sair.png" alt="">
                     <span>Sair</span>
                 </a>
             </li>
         </ul>
     </nav>
-
     <div class="conteudo">
         <br>
         <div class="buttons-professor">
@@ -232,41 +249,11 @@
             </div>
             <br><br>
             <div class="box-chart2">
-                <canvas id="meuGrafico2"></canvas>
+                <canvas id="chartCancelamento"></canvas>
             </div>
         </div>
 
     </div>
-
-    <script>
-   
-
-        // Dados para o segundo gráfico de área
-        var dados2 = {
-            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            datasets: [{
-                label: 'Taxa de Cancelamento',
-                data: [12, 19, 3, 5, 2, 3, 7, 1, 9, 2, 15, 12],
-                fill: true,
-                backgroundColor: 'rgba(7, 43, 89, 0.5)', // Adiciona uma opacidade
-                borderColor: 'rgba(7, 43, 89, 1)',
-                borderWidth: 1
-            }]
-        };
-
-        // Configurações do segundo gráfico de área
-        var configuracao2 = {
-            type: 'line',
-            data: dados2,
-            options: {}
-        };
-
-        // Renderiza o segundo gráfico de área
-        var meuGrafico2 = new Chart(document.getElementById('meuGrafico2'), configuracao2);
-
-
-    </script>
-
 </body>
 
 </html>
