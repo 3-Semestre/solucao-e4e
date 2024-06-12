@@ -20,6 +20,8 @@ async function cadastrarAluno() {
         }
     }
 
+    console.log(dadosAluno);
+
     const respostaCadastro = await fetch("http://localhost:8080/usuarios/aluno", {
         method: "POST",
         body: JSON.stringify(dadosAluno),
@@ -31,20 +33,20 @@ async function cadastrarAluno() {
             icon: "success",
             title: "Aluno cadastrado com sucesso!",
             showConfirmButton: false,
-
             timer: 1500
         });
         console.log("cadastro realizado com sucesso")
-    } if (respostaCadastro.status == 409) {
+        window.location.href = "visualizarAlunos.html"
+    } else if (respostaCadastro.status == 409) {
         erroCpf()
-    }
-    else {
+    } else {
         Swal.fire({
             icon: 'error',
             title: 'Erro ao cadastrar',
             showConfirmButton: false,
             text: 'Por favor, revise os dados inseridos e tente novamente. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
-            footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>'
+            footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
+            timer: 1500
         });
     }
 
