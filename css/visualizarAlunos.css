@@ -153,8 +153,7 @@ label {
     display: flex;
     background-color: #FFF;
     align-items: center;
-    justify-content: space-around;
-    gap: 58vw;
+    justify-content: space-between;
 }
 
 .photo-student img {

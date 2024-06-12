@@ -186,7 +186,7 @@ body {
 
 .porcentagem p {
     position: relative;
-    top: 1vh;
+    top: 0vh;
     right: 0.5vw;
 }
 
@@ -198,6 +198,7 @@ body {
     border-top: 7px solid green;
     position: relative;
     right: 1.5vw;
+    bottom: 1vh;
 }
 
 .seta-baixo {
@@ -208,6 +209,7 @@ body {
     border-top: 7px solid red;
     position: relative;
     right: 1.5vw;
+    bottom: 1vh;
 }
 
 .seta-cima {
@@ -218,6 +220,7 @@ body {
     border-bottom: 7px solid green;
     position: relative;
     right: 1.5vw;
+    bottom: 1vh;
 }
 
 .bom {

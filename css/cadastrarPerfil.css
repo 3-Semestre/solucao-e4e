@@ -252,7 +252,7 @@ body {
     .content-professor{
         display: flex;
         flex-direction: column;
-        height: 100vh;
+        height: 120vh;
     }
 
     .button button{
@@ -267,6 +267,11 @@ body {
 
     .form-select{
         width: 50vw !important;
+    }
+
+    #botaoCadastro{
+        position: relative;
+        top: -19vh;
     }
 }
 .input-error {

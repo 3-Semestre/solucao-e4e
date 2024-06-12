@@ -147,24 +147,6 @@
 
 <script>
 
-    document.addEventListener('DOMContentLoaded', function () {
-        var dropdown = document.getElementsByClassName("dropdown-btn");
-        for (var i = 0; i < dropdown.length; i++) {
-            dropdown[i].addEventListener("click", function (e) {
-                e.preventDefault();
-                // Remove a linha que adicionava a classe "active"
-                // this.classList.toggle("active");
-                var dropdownContent = this.parentElement.nextElementSibling;
-                if (dropdownContent.style.display === "block") {
-                    dropdownContent.style.display = "none";
-                } else {
-                    dropdownContent.style.display = "block";
-                }
-            });
-        }
-    });
-
-
     document.getElementById('input_cpf').addEventListener('input', function (e) {
         let value = e.target.value;
         value = value.replace(/\D/g, '');

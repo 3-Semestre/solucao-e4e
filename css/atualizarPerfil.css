@@ -280,7 +280,7 @@ body {
     .content-professor {
         display: flex;
         flex-direction: column;
-        height: 160vh;
+        height: 183vh;
         justify-content: right;
     }
 
