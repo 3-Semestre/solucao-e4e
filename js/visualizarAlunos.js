@@ -15,7 +15,7 @@ async function buscarAlunos() {
                     <img src="../imgs/perfil_blue.png" alt="">
                     <p>${aluno.nomeCompleto}</p>
                 </div>
-                <div class="lixeira" id="lixeira_${aluno.id}">
+                <div class="lixeira" onclick="deletarAluno(${aluno.id})" id="lixeira_${aluno.id}">
                     <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirALuno()">
                 </div>
             </div>
@@ -29,4 +29,21 @@ try{
     buscarAlunos()
 } catch (e){
     console.log(e)
+}
+
+async function deletarAluno(id) {
+
+    const respostaDelete = await fetch(`http://localhost:8080/usuarios/aluno/${id}`, {
+        method: "DELETE",
+        headers: { "Content-type": "application/json; charset=UTF-8" }
+    });
+    
+
+    console.log(respostaDelete);
+
+    if(respostaDelete.status == 200){
+        window.location.reload()
+    } else{
+        console.log("erro no delete")
+    }
 }
