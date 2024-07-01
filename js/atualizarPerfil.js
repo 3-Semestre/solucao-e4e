@@ -18,7 +18,7 @@ async function atualizarAluno() {
         "dataNascimento": dataNascimento,
         "senha": senha,
         "nivelAcesso": {
-            "id": 1
+            "id": 3
         },
         "situacao": {
             "id": 1

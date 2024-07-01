@@ -156,27 +156,4 @@
         e.target.value = value;
     });
 
-    function excluirALuno() {
-        Swal.fire({
-            title: "Deseja excluir esse aluno?",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: "Sim",
-            denyButtonText: `Não`,
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: 'green',
-            denyButtonColor: '#870000',
-            cancelButtonColor: '#aaa',
-            background: '#f2f2f2',
-            color: '#333'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({ title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green' });
-            } else if (result.isDenied) {
-                Swal.fire({ title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green' });
-            }
-        });
-
-    }
-
 </script>

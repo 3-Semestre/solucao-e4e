@@ -55,7 +55,7 @@ async function buscarDadosCancelamento() {
         }]
     };
 
-    for (var i = 0; i < respostaDados.length - 1; i++) {
+    for (var i = 0; i < respostaDados.length; i++) {
         dadosCancelamento.datasets[0].data.push(respostaDados[i].taxa_Cancelamento);
     }
 

@@ -3,15 +3,17 @@ async function cadastrarAluno() {
     const cpf = document.getElementById("input_cpf").value;
     const dataNascimento = document.getElementById("input_data").value;
     const telefone = document.getElementById("input_telefone").value;
+    var telefoneFormatado = formatarCelular(telefone)
     const email = document.getElementById("input_email").value;
     const profissao = document.getElementById("input_profissao").value;
     const senha = document.getElementById("input_senha").value;
+
 
     const dadosAluno = {
         "nomeCompleto": nome,
         "cpf": cpf,
         "dataNascimento": dataNascimento,
-        "telefone": telefone,
+        "telefone": telefoneFormatado,
         "email": email,
         "profissao": profissao,
         "senha": senha,
@@ -36,7 +38,8 @@ async function cadastrarAluno() {
             timer: 1500
         });
         console.log("cadastro realizado com sucesso")
-        window.location.href = "visualizarAlunos.html"
+        setTimeout("location.href = 'visualizarAlunos.html'", 1500);
+ 
     } else if (respostaCadastro.status == 409) {
         erroCpf()
     } else {
@@ -98,6 +101,14 @@ async function buscarNichos() {
     select.innerHTML += listaNichos.map((nicho) => {
         return `<option value="${nicho.id}">${tratarNome(nicho.nome)}</option>`;
     }).join('');
+}
+
+function formatarCelular(telefone) {
+    let value = telefone;
+    value = value.replace(/\D/g, '');
+    value = value.replace(/(\d{2})(\d)/, '+$1 $2');
+    value = value.replace(/(\d{5})(\d)/, '$1-$2');
+    return value.substring(0, 15);
 }
 
 function tratarNome(nichoNome) {

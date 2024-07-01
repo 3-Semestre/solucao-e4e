@@ -15,7 +15,7 @@ async function buscarAlunos() {
                     <img src="../imgs/perfil_blue.png" alt="">
                     <p>${aluno.nomeCompleto}</p>
                 </div>
-                <div class="lixeira" onclick="deletarAluno(${aluno.id})" id="lixeira_${aluno.id}">
+                <div class="lixeira" onclick="confirmacaoDelete(${aluno.id})" id="lixeira_${aluno.id}">
                     <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirALuno()">
                 </div>
             </div>
@@ -23,13 +23,41 @@ async function buscarAlunos() {
     `
 
     }).join('');
-    
+
 }
-try{
+try {
     buscarAlunos()
-} catch (e){
+} catch (e) {
     console.log(e)
 }
+
+function confirmacaoDelete(id) {
+    Swal.fire({
+        title: "Deseja excluir esse aluno?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Sim",
+        denyButtonText: `Não`,
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: 'green',
+        denyButtonColor: '#870000',
+        cancelButtonColor: '#aaa',
+        background: '#f2f2f2',
+        color: '#333'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            try{
+                deletarAluno(id)
+            } catch (e) {
+                console.log(e)
+            }
+        } else if (result.isDenied) {
+            Swal.fire({ title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green' });
+        }
+    });
+}
+
+
 
 async function deletarAluno(id) {
 
@@ -37,13 +65,14 @@ async function deletarAluno(id) {
         method: "DELETE",
         headers: { "Content-type": "application/json; charset=UTF-8" }
     });
-    
+
 
     console.log(respostaDelete);
 
-    if(respostaDelete.status == 200){
+    if (respostaDelete.status == 204) {
         window.location.reload()
-    } else{
+        Swal.fire({ title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green' });
+    } else {
         console.log("erro no delete")
     }
 }
