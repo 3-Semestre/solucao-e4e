@@ -33,16 +33,16 @@ async function autenticar() {
     function salvarInformacoes(usuario) {
         sessionStorage.id = usuario.id;
         sessionStorage.cpf = usuario.cpf;
-        sessionStorage.dataNascimento = usuario.dataNasc;
+        sessionStorage.data_nascimento = usuario.dataNasc;
         sessionStorage.email = usuario.email; sessionStorage
         sessionStorage.nivel_acesso = usuario.nivelAcesso.nome;
-        sessionStorage.nomeCompleto = usuario.nomeCompleto;
+        sessionStorage.nivel_acesso_cod = usuario.nivelAcesso.id;
+        sessionStorage.nome_completo = usuario.nomeCompleto;
         sessionStorage.profissao = usuario.profissao;
         sessionStorage.telefone = usuario.telefone;
 
         let check = document.getElementById("check_lembrar")
-        console.log(check)
-        console.log(check.checked)
+
         if (check.checked) {
             localStorage.email = usuario.email; sessionStorage
             localStorage.senha = document.getElementById("input_senha").value;
