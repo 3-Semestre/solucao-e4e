@@ -1,9 +1,9 @@
 function exibirDadosPerfil() {
     console.log("teste")
     var cpf = sessionStorage.getItem('cpf');
-    var dataNascimento = sessionStorage.getItem('dataNascimento');
+    var dataNascimento = sessionStorage.getItem('data_nascimento');
     var email = sessionStorage.getItem('email');
-    var nomeCompleto = sessionStorage.getItem('nomeCompleto');
+    var nomeCompleto = sessionStorage.getItem('nome_completo');
     var profissao = sessionStorage.getItem('profissao');
     var telefone = sessionStorage.getItem('telefone');
 

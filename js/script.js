@@ -1,10 +1,10 @@
-document.getElementById('toggle-btn').addEventListener('click', function() {
+//side bar
+document.getElementById('toggle-btn').addEventListener('click', function () {
     document.querySelector('.sidebar').classList.toggle('active');
     document.querySelector('.conteudo').classList.toggle('active');
 });
 
-//aquele de cima eh o side bar
-
+//drop-down menu
 document.addEventListener('DOMContentLoaded', function () {
     var dropdown = document.getElementsByClassName("dropdown-btn");
     for (var i = 0; i < dropdown.length; i++) {
@@ -27,4 +27,37 @@ function puxarNome() {
     nomeTitulo.innerHTML = nomeCompleto;
 }
 
+function carregarNavBar() {
+    const nivelAcesso = sessionStorage.getItem('nivel_acesso_cod');
+
+    const aluno_navbar = document.getElementById("alunos_navbar");
+    const professores_navbar = document.getElementById("professores_navbar");
+
+    const horario_atendimento_form = document.getElementById("horario_atendimento_form");
+    const horario_intervalo_form = document.getElementById("horario_intervalo_form");
+    const horario_card_titulo = document.getElementById("horario_card_titulo");
+    const horario_card = document.getElementById("horario_card");
+
+    const agenda_novo_agendamento_navbar = document.getElementById("agenda_novo_agendamento_navbar");
+    
+    switch (nivelAcesso) {
+        case "1":
+            agenda_novo_agendamento_navbar.style.display = "none";
+            break;
+        case "2":
+            agenda_novo_agendamento_navbar.style.display = "none";
+            break;
+        case "3":
+            aluno_navbar.style.display = "none";
+            professores_navbar.style.display = "none";
+
+            horario_atendimento_form.style.display = "none";
+            horario_intervalo_form.style.display = "none";
+            horario_card_titulo.style.display = "none";
+            horario_card.style.display = "none";
+            break;
+    }
+}
+
+carregarNavBar() 
 puxarNome()

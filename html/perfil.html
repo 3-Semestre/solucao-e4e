@@ -11,6 +11,7 @@
 
     <!-- Importação do SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="../js/exibirPerfil.js"></script>
     <script src="../js/atualizarPerfil.js"></script>
 
@@ -41,12 +42,13 @@
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container hidden">
-                        <a href="#">Agendar</a>
-                        <a href="#">Histórico</a>
+                        <a href="#" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
+                        <a href="#" id="agenda_meus_agendamentos_navbar">Meus Agendamentos</a>
+                        <a href="#" id="agenda_historico_navbar">Histórico</a>
                     </div>
                 </a>
             </li>
-            <li>
+            <li id="alunos_navbar">
                 <a href="#">
                     <img src="../imgs/students.png" alt="">
                     <button class="dropdown-btn">Alunos
@@ -58,7 +60,7 @@
                     </div>
                 </a>
             </li>
-            <li>
+            <li id="professores_navbar">
                 <a href="#">
                     <img src="../imgs/professor.png" alt="">
                     <button class="dropdown-btn">Professores
@@ -70,8 +72,8 @@
                     </div>
                 </a>
             </li>
-            <li>
-                <a href="atualizarPerfilProfessor.html">
+            <li id="perfil_navbar">
+                <a href="perfil.html">
                     <img src="../imgs/perfil.png" alt="">
                     <span>Perfil</span>
                 </a>
@@ -112,8 +114,8 @@
                     <p id="nivel"></p>
                     <h5>Nicho:</h5>
                     <p id="nicho"></p>
-                    <h5>Horário de Atendimento:</h5>
-                    <p id="horario"></p>
+                    <h5 id="horario_card_titulo">Horário de Atendimento:</h5>
+                    <p id="horario_card"></p>
                 </div>
             </div>
             <hr class="line">
@@ -177,13 +179,13 @@
                                 <label class="form-label" id="nichoTitle"><span>*</span>Nicho:</label>
                             </div>
                         </div>
-                        <div class="mb-3" id="horario">
+                        <div class="mb-3" id="horario_atendimento_form">
                             <label for="input_atendimento" class="form-label" id="nivelTitle"><span>*</span>Horário de
                                 Atendimento:</label>
                             <input type="time" class="form-control" id="input_atendimento_inicio" readonly required>
                             <input type="time" class="form-control" id="input_atendimento_fim" readonly required>
                         </div>
-                        <div class="mb-3" id="horario">
+                        <div class="mb-3" id="horario_intervalo_form">
                             <label for="input_intervalo" class="form-label" id="nichoTitle"><span>*</span>Horário de
                                 Intervalo:</label>
                             <input type="time" class="form-control" id="input_intervalo_inicio" readonly required>
@@ -191,11 +193,11 @@
                         </div>
                         <br><br>
                         <div class="buttons">
-                            <div class="button"  id="botaoAtualizar">
+                            <div class="button" id="botaoAtualizar">
                                 <button type="submit" class="btn btn-primary">Atualizar</button>
                             </div>
                             <div class="button" style="display: none;" id="botaoConfirmar">
-                                <button  class="btn btn-primary">Salvar
+                                <button class="btn btn-primary">Salvar
                                     Alterações</button>
                             </div>
                             <div class="button" style="display: none;" id="botaoCancelar">
