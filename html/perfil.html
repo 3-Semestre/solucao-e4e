@@ -180,13 +180,13 @@
                             </div>
                         </div>
                         <div class="mb-3" id="horario_atendimento_form">
-                            <label for="input_atendimento" class="form-label" id="nivelTitle"><span>*</span>Horário de
+                            <label for="input_atendimento" class="form-label" id="horarioAtenndimentoTitle"><span>*</span>Horário de
                                 Atendimento:</label>
                             <input type="time" class="form-control" id="input_atendimento_inicio" readonly required>
                             <input type="time" class="form-control" id="input_atendimento_fim" readonly required>
                         </div>
                         <div class="mb-3" id="horario_intervalo_form">
-                            <label for="input_intervalo" class="form-label" id="nichoTitle"><span>*</span>Horário de
+                            <label for="input_intervalo" class="form-label" id="horarioPausaTitle"><span>*</span>Horário de
                                 Intervalo:</label>
                             <input type="time" class="form-control" id="input_intervalo_inicio" readonly required>
                             <input type="time" class="form-control" id="input_intervalo_fim" readonly required>
@@ -286,7 +286,7 @@
             color: '#333'
         }).then((result) => {
             if (result.isConfirmed) {
-                atualizarAluno()
+                atualizarPerfil()
                     .then(() => {
                         Swal.fire({ title: "Alterações salvas com sucesso", icon: "success", confirmButtonColor: 'green' });
                         cancelarEdicao();

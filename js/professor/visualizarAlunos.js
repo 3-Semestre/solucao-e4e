@@ -1,10 +1,7 @@
 async function buscarAlunos() {
-
     const resposta = await fetch("http://localhost:8080/usuarios/aluno");
 
     const listaAlunos = await resposta.json();
-
-    console.log(listaAlunos);
 
     cardsAlunos = document.getElementById("listagem")
 
