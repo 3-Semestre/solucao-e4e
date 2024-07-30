@@ -1,0 +1,563 @@
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100&display=swap');
+
+* {
+    font-family: "DM Sans", sans-serif;
+}
+
+body {
+    margin: 0;
+    display: flex;
+}
+
+.sidebar {
+    background-color: #072B59;
+    position: fixed;
+    width: 5vw;
+    height: 100%;
+    transition: all .3s ease;
+    padding: 0.6rem 0.3rem;
+}
+
+.sidebar .nav-links a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.sidebar.active {
+    width: 15vw;
+}
+
+.nav-links {
+    margin-top: 2em;
+    padding: 0;
+    list-style: none;
+}
+
+.nav-links li {
+    padding: 15px;
+    margin: 0.8em auto;
+}
+
+.nav-links a {
+    color: #fff;
+    font-size: 24px;
+    display: flex;
+    text-decoration: none;
+}
+
+.nav-links li span {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 20px;
+}
+
+.sidebar.active .nav-links li span {
+    opacity: 1;
+    padding-left: 10px;
+}
+
+.conteudo {
+    margin-left: 100px;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    padding: 20px;
+    width: calc(100% - 100px);
+}
+
+.sidebar.active~.conteudo {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+
+.buttons-professor {
+    display: flex;
+    justify-content: space-around;
+}
+
+.buttons-professor button {
+    background-color: #a8b6bf40 !important;
+    border: none;
+    font-weight: bold;
+    color: #072B59;
+}
+
+.nav-links li img {
+    width: 30px;
+    height: 30px;
+}
+
+.conteudo p {
+    font-weight: bold;
+}
+
+.box {
+    width: 20vw;
+    height: 20vh;
+    border: 1px solid rgba(7, 43, 89, 0.685);
+    border-radius: 5%;
+    box-shadow: 5px 5px 5px #888;
+    display: flex;
+    gap: 5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.agendamentos {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.content p {
+    line-height: 0.8;
+}
+
+.kpis {
+    width: 100%;
+    display: flex;
+    margin-top: 7vh;
+    position: relative;
+    justify-content: space-around;
+}
+
+.content-kpis {
+    display: flex;
+    flex-direction: column;
+}
+
+.content-kpis h2 {
+    font-size: 60px;
+    position: relative;
+    top: 1.5vh;
+}
+
+.content-kpis h2 span {
+    font-size: 20px;
+}
+
+.content-kpis p {
+    position: relative;
+    top: 2.5vh;
+}
+
+.line-box {
+    border: 4px solid white;
+    height: 12vh;
+    border-radius: 10px 10px 10px 10px;
+    position: relative;
+    bottom: 2vh;
+}
+
+.box-kpis {
+    width: 20vw;
+    height: 20vh;
+    background-color: #072B59;
+    border-radius: 5%;
+    box-shadow: 5px 5px 5px #888;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1rem;
+    color: white;
+}
+
+.seta {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid black;
+    position: relative;
+    right: 1.5vw;
+}
+
+.variação {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+}
+
+.porcentagem p {
+    position: relative;
+    top: 0vh;
+    right: 0.5vw;
+}
+
+#seta-baixo {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid green;
+    position: relative;
+    right: 1.5vw;
+    bottom: 1vh;
+}
+
+.seta-baixo {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid red;
+    position: relative;
+    right: 1.5vw;
+    bottom: 1vh;
+}
+
+.seta-cima {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid green;
+    position: relative;
+    right: 1.5vw;
+    bottom: 1vh;
+}
+
+.bom {
+    color: green;
+}
+
+.ruim {
+    color: red;
+}
+
+.box-chart {
+    width: 20vw;
+    height: 52vh;
+    border: 1px solid #072B59;
+    border-radius: 5%;
+    box-shadow: 5px 5px 5px #888;
+    display: flex;
+    padding: 1rem;
+    position: relative;
+    flex-direction: column;
+}
+
+.data h2 {
+    font-size: 60px;
+}
+
+.data p {
+    font-size: 20px;
+}
+
+.conteudo .title-agendamento {
+    width: 50%;
+    position: relative;
+    left: 5vw;
+    font-size: 20px;
+}
+
+.none {
+    color: rgba(255, 255, 255, 0);
+}
+
+.box-kpis-none {
+    width: 20vw;
+    height: 20vh;
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 5%;
+    box-shadow: 5px 5px 5px rgba(255, 255, 255, 0);
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1rem;
+    color: rgba(255, 255, 255, 0);
+}
+
+.line-box-none {
+    border: 4px solid rgba(255, 255, 255, 0);
+    height: 12vh;
+    border-radius: 20%;
+    position: relative;
+    bottom: 2vh;
+}
+
+.bom-none {
+    color: rgba(255, 255, 255, 0);
+}
+
+.seta-none {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid rgba(255, 255, 255, 0);
+    position: relative;
+    right: 1.5vw;
+}
+
+.kpis2 {
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: space-around;
+    bottom: 20vh;
+}
+
+.box-chart2 {
+    width: 80vw;
+    height: 90vh;
+    border: 1px solid #072B59;
+    border-radius: 5%;
+    box-shadow: 5px 5px 5px #888;
+    display: flex;
+    padding-top: 40px;
+    padding-right: 40px;
+    padding-bottom: 40px;
+    padding-left: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+#meuGrafico {
+    width: 10vw;
+
+}
+
+.box-buttons {
+    display: flex;
+    gap: 1rem;
+    position: relative;
+    top: 4vh;
+    height: 3vh;
+    justify-content: center;
+}
+
+#botaoChart {
+    background-color: rgba(52, 209, 191, 1) !important;
+    font-weight: bold;
+    font-size: 10px;
+    border: none;
+}
+
+#botaoChartN {
+    background-color: rgba(7, 43, 89, 1) !important;
+    font-weight: bold;
+    font-size: 10px;
+    border: none;
+    width: 8vw;
+}
+
+#title-chart {
+    font-weight: bold;
+    color: #072B59;
+    position: relative;
+    left: 1vw;
+    bottom: 1vh !important;
+}
+
+.line {
+    border: 1px solid #072B59;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.line2 {
+    border: 1px solid #072B59;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    position: relative;
+    bottom: 5vh;
+}
+
+.dropdown-btn {
+    padding-left: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    display: block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+}
+
+.dropdown-container {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.sidebar .dropdown-btn{
+    color: rgba(255, 255, 255, 0);
+}
+
+.sidebar.active .dropdown-btn{
+    color: white;
+}
+
+.dropdown-container a {
+    font-size: 15px;
+    color: white; 
+}
+
+.hidden {
+    display: none;
+}
+
+
+@media only screen and (max-device-width: 430px) {
+
+    .dropdown-btn{
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0);  
+    }
+
+    .dropdown-container a{
+        font-size: 10px;
+    }
+
+
+    .sidebar {
+        width: 15vw;
+    }
+
+    .sidebar.active .nav-links li span {
+        display: none;
+    }
+
+    #toggle-btn {
+        display: none;
+    }
+
+    .buttons-professor {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .buttons-professor button {
+        width: 22vw;
+    }
+
+    .buttons-professor p {
+        display: none;
+    }
+
+    .agendamentos {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: unset;
+        gap: 5vh;
+    }
+
+    .box {
+        width: 60vw;
+        height: 20vh;
+        gap: 45px;
+    }
+
+    .content p {
+        line-height: 1.6;
+    }
+
+    .box-kpis {
+        width: 60vw;
+        height: 20vh;
+        gap: 1rem;
+    }
+
+    .kpis {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .kpis2{
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        top: 5vh;
+    }
+
+    .box-chart {
+        width: 60vw;
+        height: 40vh;
+    }
+
+    #botaoChartN {
+        width: 60vw;
+    }
+    
+    .box-chart2{
+        width: 68vw;
+        height: 30vh;
+        padding: 0;
+        position: relative;
+        right: 4vw;
+    }
+
+    .none{
+        display: none;
+    }
+
+    .conteudo .title-agendamento{
+        right: 11vw;
+        position: relative;
+    }
+
+    #kpi{
+        right: 18vw;
+        position: relative;
+    }
+
+    .content-kpis p {
+        position: relative;
+        top: 0.5vh;
+    }
+
+    .variação{
+        gap: 1vw;
+    }
+
+    #seta-baixo {
+        position: relative;
+        right: 5.5vw;
+    }
+    
+    .seta-baixo {
+        position: relative;
+        right: 5.5vw;
+    }
+    
+    .seta-cima {
+        position: relative;
+        right: 5.5vw;
+    }
+
+
+    .line{
+        width: 90%;
+        position: relative;
+        right: 4vw;
+    }
+
+    .line2{
+        width: 90%;
+        position: relative;
+        right: 4vw;
+    }
+}
