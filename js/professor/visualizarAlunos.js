@@ -20,8 +20,8 @@ async function buscarAlunos() {
     `
 
     }).join('');
-
 }
+
 try {
     buscarAlunos()
 } catch (e) {
