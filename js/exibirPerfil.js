@@ -83,6 +83,7 @@ async function buscarNivelIngles() {
 
     checkboxList.innerHTML = "";
 
+
     if (nivel_acesso_cod != 3) {
         const checkboxes = listaNiveis.map(nivel => `
                 <div class="form-check">
@@ -91,19 +92,24 @@ async function buscarNivelIngles() {
                 </div>
             `).join('');
         checkboxList.innerHTML += checkboxes;
+        buscarNivelInglesUsuario()
     } else {
-        const options = listaNiveis.map((nivel) => `
-                <option value="${nivel.id}" id="nivel_${nivel.id}">${tratarNome(nivel.nome)}</option>
-            `).join('');
+        const nivelInglesUsuario = await buscarNivelInglesUsuario();
+        const options = listaNiveis.map(nivel => `
+            <option value="${nivel.id}" id="nivel_${nivel.id}" ${nivelInglesUsuario[0].nivelIngles.id === nivel.id ? 'selected' : ''}>
+                ${tratarNome(nivel.nome)}
+            </option>
+        `).join('');
         checkboxList.innerHTML += `
-                <label class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>
-                <select class="form-select" id="nivel" aria-label="Default select example" required>
-                    <option value="" selected>Selecione uma opção</option>
-                    ${options}
-                </select>
-            `;
+            <label class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>
+            <select class="form-select" id="nivel" aria-label="Default select example" required>
+                <option value="">Selecione uma opção</option>
+                ${options}
+            </select>
+        `;
     }
 }
+
 
 
 async function buscarNichos() {
@@ -119,29 +125,32 @@ async function buscarNichos() {
                 </div>
             `).join('');
         checkboxList.innerHTML += checkboxes;
+        buscarNichoUsuario();
     } else {
-        const options = listaNichos.map((nicho) => `
-                <option value="${nicho.id}" id="nivel_${nicho.id}">${tratarNome(nicho.nome)}</option>
-            `).join('');
+        const nichoUsuario = await buscarNichoUsuario();
+        const options = listaNichos.map(nicho => `
+            <option value="${nicho.id}" id="nicho_${nicho.id}" ${nichoUsuario[0].nicho.id === nicho.id ? 'selected' : ''}>
+                ${tratarNome(nicho.nome)}
+            </option>
+        `).join('');
         checkboxList.innerHTML += `
-                <select class="form-select" id="nicho" aria-label="Default select example" required>
-                    <option value="" selected>Selecione uma opção</option>
-                    ${options}
-                </select>
-            `;
+            <label class="form-label" id="nichoTitle"><span>*</span>Nicho:</label>
+            <select class="form-select" id="nicho" aria-label="Default select example" required>
+                <option value="">Selecione uma opção</option>
+                ${options}
+            </select>
+        `;
     }
 }
 
 
 async function buscarNivelInglesUsuario() {
     const resposta = await fetch(`http://localhost:8080/usuario-nivel-ingles/usuario/${id}`);
-
     const respostaNivel = await resposta.json();
 
-    console.log(respostaNivel)
+    var nivelIngles = document.getElementById("nivel");
+
     if (nivel_acesso_cod != 3) {
-        var nivelIngles = document.getElementById("nivel");
-    
         for (let i = 0; i < respostaNivel.length; i++) {
             if (i === respostaNivel.length - 1) {
                 nivelIngles.innerHTML += respostaNivel[i].nivelIngles.nome;
@@ -149,44 +158,50 @@ async function buscarNivelInglesUsuario() {
                 nivelIngles.innerHTML += respostaNivel[i].nivelIngles.nome + ", ";
             }
         }
-    
+
         respostaNivel.forEach((nivelUsuario) => {
             const checkbox = document.getElementById(`nivel_${nivelUsuario.nivelIngles.id}`);
             if (checkbox) {
                 checkbox.checked = true;
             }
         });
-    } else{
-        const nivel_ingles_input = document.getElementById("nivel");
+    } else {
+        nivelIngles.innerHTML += respostaNivel[0].nivelIngles.nome;
+        return respostaNivel;
     }
-        
-    
 }
 
 async function buscarNichoUsuario() {
     const resposta = await fetch(`http://localhost:8080/usuario-nicho/usuario/${id}`);
     const respostaNicho = await resposta.json();
+
     const nicho = document.getElementById("nicho");
 
-    const nichos = respostaNicho.map(nivel => nivel.nicho.id);
-    sessionStorage.setItem('nichos', JSON.stringify(nichos));
+    if (nivel_acesso_cod != 3) {
+        const nichos = respostaNicho.map(nivel => nivel.nicho.id);
+        sessionStorage.setItem('nichos', JSON.stringify(nichos));
 
-    for (let i = 0; i < respostaNicho.length; i++) {
-        var nichoNomeTratado = tratarNome(respostaNicho[i].nicho.nome);
-        if (i == respostaNicho.length - 1) {
-            nicho.innerHTML += nichoNomeTratado;
-        } else {
-            nicho.innerHTML += nichoNomeTratado + ", ";
+        for (let i = 0; i < respostaNicho.length; i++) {
+            var nichoNomeTratado = tratarNome(respostaNicho[i].nicho.nome);
+            if (i == respostaNicho.length - 1) {
+                nicho.innerHTML += nichoNomeTratado;
+            } else {
+                nicho.innerHTML += nichoNomeTratado + ", ";
+            }
         }
+
+        respostaNicho.forEach((nichoUsuario) => {
+            const checkbox = document.getElementById(`nicho_${nichoUsuario.nicho.id}`);
+            if (checkbox) {
+                checkbox.checked = true;
+            }
+            checkbox.id = `nicho_${nichoUsuario.nicho.id}`;
+        });
+    } else {
+        nicho.innerHTML += tratarNome(respostaNicho[0].nicho.nome);
+        return respostaNicho;
     }
 
-    respostaNicho.forEach((nichoUsuario) => {
-        const checkbox = document.getElementById(`nicho_${nichoUsuario.nicho.id}`);
-        if (checkbox) {
-            checkbox.checked = true;
-        }
-        checkbox.id = `nicho_${nichoUsuario.nicho.id}`;
-    });
 }
 
 
@@ -194,6 +209,4 @@ window.onload = function () {
     exibirDadosPerfil();
     buscarNivelIngles();
     buscarNichos();
-    buscarNivelInglesUsuario();
-    //buscarNichoUsuario();
 };
