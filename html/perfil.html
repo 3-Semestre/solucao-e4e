@@ -9,7 +9,6 @@
 
     <script defer src="../js/script.js"></script>
 
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="../js/exibirPerfil.js"></script>
@@ -43,8 +42,8 @@
                     </button>
                     <div class="dropdown-container hidden">
                         <a href="#" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
-                        <a href="#" id="agenda_meus_agendamentos_navbar">Meus Agendamentos</a>
-                        <a href="#" id="agenda_historico_navbar">Histórico</a>
+                        <a href="Aluno/agendamentosAluno.html" id="agenda_meus_agendamentos_navbar">Agendamentos</a>
+                        <a href="Aluno/historicoAgendamentoAluno.html" id="agenda_historico_navbar">Histórico</a>
                     </div>
                 </a>
             </li>
@@ -180,13 +179,13 @@
                             </div>
                         </div>
                         <div class="mb-3" id="horario_atendimento_form">
-                            <label for="input_atendimento" class="form-label" id="nivelTitle"><span>*</span>Horário de
+                            <label for="input_atendimento" class="form-label" id="horarioAtenndimentoTitle"><span>*</span>Horário de
                                 Atendimento:</label>
                             <input type="time" class="form-control" id="input_atendimento_inicio" readonly required>
                             <input type="time" class="form-control" id="input_atendimento_fim" readonly required>
                         </div>
                         <div class="mb-3" id="horario_intervalo_form">
-                            <label for="input_intervalo" class="form-label" id="nichoTitle"><span>*</span>Horário de
+                            <label for="input_intervalo" class="form-label" id="horarioPausaTitle"><span>*</span>Horário de
                                 Intervalo:</label>
                             <input type="time" class="form-control" id="input_intervalo_inicio" readonly required>
                             <input type="time" class="form-control" id="input_intervalo_fim" readonly required>
@@ -286,7 +285,7 @@
             color: '#333'
         }).then((result) => {
             if (result.isConfirmed) {
-                atualizarAluno()
+                atualizarPerfil()
                     .then(() => {
                         Swal.fire({ title: "Alterações salvas com sucesso", icon: "success", confirmButtonColor: 'green' });
                         cancelarEdicao();

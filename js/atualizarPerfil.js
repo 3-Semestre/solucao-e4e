@@ -1,4 +1,4 @@
-async function atualizarAluno() {
+async function atualizarPerfil() {
     const id = sessionStorage.getItem('id');
     const nome = document.getElementById("input_nome").value;
     const cpf = document.getElementById("input_cpf").value;
@@ -8,8 +8,9 @@ async function atualizarAluno() {
     const email = document.getElementById("input_email").value;
     const profissao = document.getElementById("input_profissao").value;
     const senha = document.getElementById("input_senha").value;
-
-    const dadosAluno = {
+    const nivel_acesso = sessionStorage.getItem('nivel_acesso_cod');
+    
+    const dados = {
         "nomeCompleto": nome,
         "cpf": cpf,
         "telefone": telefone,
@@ -18,26 +19,34 @@ async function atualizarAluno() {
         "dataNascimento": dataNascimento,
         "senha": senha,
         "nivelAcesso": {
-            "id": 3
+            "id": nivel_acesso
         },
         "situacao": {
             "id": 1
         }
     }
 
-    console.log(dadosAluno)
+    function retornaNivelRequisicao() {
+        if (nivel_acesso === "1") {
+            return "representante-legal"
+        } else if (nivel_acesso === "2") {
+            return "professor"
+        } else if (nivel_acesso === "3") {
+            return "aluno"
+        }
+    }
 
-    const respostaCadastro = await fetch(`http://localhost:8080/usuarios/professor/${id}`, {
+
+    const respostaCadastro = await fetch(`http://localhost:8080/usuarios/${retornaNivelRequisicao()}/${id}`, {
         method: "PUT",
-        body: JSON.stringify(dadosAluno),
+        body: JSON.stringify(dados),
         headers: { "Content-type": "application/json; charset=UTF-8" }
     });
 
     if (respostaCadastro.status == 200) {
         const usuario = await respostaCadastro.json();
         salvarInformacoes(usuario)
-        Swal.fire({ title: "Salvo!", icon: "success", confirmButtonColor: 'green' });
-        atualizarNivelIngles()
+        //atualizarNivelIngles()
     } else {
         Swal.fire({
             icon: 'error',
@@ -115,6 +124,7 @@ async function atualizarNichoUsuario() {
 
                 if (respostaCadastro.status == 201) {
                     console.log(`Nicho ${nicho} atualizado com sucesso`);
+                    Swal.fire({ title: "Salvo!", icon: "success", confirmButtonColor: 'green' });
                     exibirDadosPerfil();
                 } else {
                     console.log(`Erro ao atualizar nicho ${nicho}`);
@@ -131,12 +141,13 @@ async function atualizarNichoUsuario() {
 
 
 function salvarInformacoes(usuario) {
+    console.log("teste")
     sessionStorage.id = usuario.id;
     sessionStorage.cpf = usuario.cpf;
-    sessionStorage.dataNascimento = usuario.dataNasc;
+    sessionStorage.data_nascimento = usuario.dataNasc;
     sessionStorage.email = usuario.email; sessionStorage
     sessionStorage.nivel_acesso = usuario.nivelAcesso.nome;
-    sessionStorage.nomeCompleto = usuario.nomeCompleto;
+    sessionStorage.nome_completo = usuario.nomeCompleto;
     sessionStorage.profissao = usuario.profissao;
     sessionStorage.telefone = usuario.telefone;
 }
