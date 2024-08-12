@@ -1,11 +1,13 @@
 const id = sessionStorage.getItem('id')
 const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
+const token = sessionStorage.getItem('token')
 let paginaAtual = 1;
 const resultadosPorPagina = 10;
 
 resultados = [];
 
 function carregarHeadersTabela() {
+    const tabela = document.getElementById("tabela_agendamento")
     switch (nivel_acesso_cod) {
         case "1":
             tabela.innerHTML += `
@@ -18,7 +20,7 @@ function carregarHeadersTabela() {
                         <th>Horário de Início</th>
                         <th>Horário de Fim</th>
                         <th>Status</th>
-                        <th>Cancelar</th>
+                        <th>Mudar Status</th>
                         </tr>
                         </thead>
             `
@@ -34,13 +36,12 @@ function carregarHeadersTabela() {
                     <th>Horário de Início</th>
                     <th>Horário de Fim</th>
                     <th>Status</th>
-                    <th>Cancelar</th>
+                    <th>Mudar Status</th>
             </tr>
             </thead>
             `
             break;
         case "3":
-            const tabela = document.getElementById("tabela_agendamento")
             tabela.innerHTML += `
             <thead>
                     <tr>
@@ -59,7 +60,14 @@ function carregarHeadersTabela() {
 }
 
 async function buscarTodosAgendamentos() {
-    const resposta = await fetch(`http://localhost:8080/agendamento/${nivel_acesso_cod}/${id}`);
+    const resposta = await fetch(`http://localhost:8080/agendamento/${nivel_acesso_cod}/${id}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
     if (!resposta.ok) {
         throw new Error('Erro ao buscar dados do servidor');
     }
@@ -79,6 +87,7 @@ function mudarPagina(pagina) {
 
     const tabela = document.getElementById("tabela_agendamento");
     tabela.innerHTML = ''; // Limpa a tabela para exibir a nova página
+    carregarHeadersTabela();
 
     const inicio = (pagina - 1) * resultadosPorPagina;
     const fim = Math.min(inicio + resultadosPorPagina, totalDados);
@@ -133,7 +142,7 @@ function preencherTabela(dados) {
                 <td>${formatarData(agendamento.data)}</td>
                 <td>${formatarHorario(agendamento.horarioInicio)}</td>
                 <td>${formatarHorario(agendamento.horarioFim)}</td>
-                <td>${Array.from(agendamento.status)[0] + agendamento.status.toLocaleLowerCase()}</td>
+                <td>${Array.from(agendamento.status)[0] + agendamento.status.slice(1).toLocaleLowerCase()}</td>
                 <td>lixin</td>
             </tr>
         </tbody>

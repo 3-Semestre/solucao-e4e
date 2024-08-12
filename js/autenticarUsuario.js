@@ -31,15 +31,14 @@ async function autenticar() {
     }
 
     function salvarInformacoes(usuario) {
+        console.log(usuario)
         sessionStorage.id = usuario.id;
         sessionStorage.cpf = usuario.cpf;
-        sessionStorage.data_nascimento = usuario.dataNasc;
         sessionStorage.email = usuario.email; sessionStorage
         sessionStorage.nivel_acesso = usuario.nivelAcesso.nome;
         sessionStorage.nivel_acesso_cod = usuario.nivelAcesso.id;
         sessionStorage.nome_completo = usuario.nomeCompleto;
-        sessionStorage.profissao = usuario.profissao;
-        sessionStorage.telefone = usuario.telefone;
+        sessionStorage.token = usuario.token;
 
         let check = document.getElementById("check_lembrar")
 

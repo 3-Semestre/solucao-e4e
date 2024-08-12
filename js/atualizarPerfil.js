@@ -40,7 +40,7 @@ async function atualizarPerfil() {
     const respostaCadastro = await fetch(`http://localhost:8080/usuarios/${retornaNivelRequisicao()}/${id}`, {
         method: "PUT",
         body: JSON.stringify(dados),
-        headers: { "Content-type": "application/json; charset=UTF-8" }
+        headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
     });
 
     if (respostaCadastro.status == 200) {
@@ -79,7 +79,7 @@ async function atualizarNivelIngles() {
                 const respostaCadastro = await fetch(`http://localhost:8080/usuario-nivel-ingles`, {
                     method: "POST",
                     body: JSON.stringify(dadosNivel),
-                    headers: { "Content-type": "application/json; charset=UTF-8" }
+                    headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
                 });
 
                 if (respostaCadastro.status == 201) {
@@ -119,7 +119,7 @@ async function atualizarNichoUsuario() {
                 const respostaCadastro = await fetch(`http://localhost:8080/usuario-nicho`, {
                     method: "POST",
                     body: JSON.stringify(dadosNicho),
-                    headers: { "Content-type": "application/json; charset=UTF-8" }
+                    headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
                 });
 
                 if (respostaCadastro.status == 201) {
