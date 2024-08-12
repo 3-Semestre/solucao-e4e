@@ -47,20 +47,20 @@
                 </a>
             </li>
             <li id="perfil_navbar">
-                <a href="perfilAluno.html">
-                    <img src="../../imgs/perfil.png" alt="">
+                <a href="perfil.html">
+                    <img src="../imgs/perfil.png" alt="">
                     <span>Perfil</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <img src="../../imgs/moodle.png" alt="">
+                    <img src="../imgs/moodle.png" alt="">
                     <span>Moodle</span>
                 </a>
             </li>
             <li>
                 <a href="../login2.html">
-                    <img src="../../imgs/sair.png" alt="">
+                    <img src="../imgs/sair.png" alt="">
                     <span>Sair</span>
                 </a>
             </li>
@@ -103,33 +103,16 @@
                 </div>
             </div>
             <table class="tabela" id="tabela_agendamento">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Assunto</th>
-                        <th>Professor</th>
-                        <th>Data</th>
-                        <th>Horário de Início</th>
-                        <th>Horário de Fim</th>
-                        <th>Status</th>
-                        <th>Cancelar</th>
-                    </tr>
-                </thead>
             </table>
+            <ul class="pagination" id="paginacao_tabela">
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Anterior">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Anterior</span>
+                  </a>
+                </li>
+              </ul>
         </div>
 </body>
 
 </html>
-
-<script>
-
-    document.getElementById('input_cpf').addEventListener('input', function (e) {
-        let value = e.target.value;
-        value = value.replace(/\D/g, '');
-        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-        e.target.value = value;
-    });
-
-</script>
