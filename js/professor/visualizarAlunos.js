@@ -1,3 +1,7 @@
+const id = sessionStorage.getItem('id')
+const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
+const token = sessionStorage.getItem('token')
+
 async function buscarAlunos() {
     const resposta = await fetch("http://localhost:8080/usuarios/aluno", {
         method: 'GET',

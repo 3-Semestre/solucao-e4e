@@ -22,17 +22,14 @@ async function cadastrarAluno() {
         "profissao": profissao,
         "senha": senha,
         "nivelAcesso": {
-            "id": 1
+            "id": 3
         }
     }
-
-    console.log(dadosAluno);
 
     const respostaCadastro = await fetch("http://localhost:8080/usuarios/aluno", {
         method: "POST",
         body: JSON.stringify(dadosAluno),
         headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
-        
     });
 
     if (respostaCadastro.status == 201) {

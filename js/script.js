@@ -24,7 +24,11 @@ function puxarNome() {
     var nomeCompleto = sessionStorage.getItem('nomeCompleto');
 
     var nomeTitulo = document.getElementById("nome_titulo");
-    nomeTitulo.innerHTML = nomeCompleto;
+    try {
+        nomeTitulo.innerHTML = nomeCompleto;
+    } catch (error) {
+        console.log("Página não utiliza nome utilitário")
+    }
 }
 
 function carregarNavBar() {

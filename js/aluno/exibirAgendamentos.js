@@ -2,7 +2,7 @@ const id = sessionStorage.getItem('id')
 const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
 const token = sessionStorage.getItem('token')
 let paginaAtual = 1;
-const resultadosPorPagina = 10;
+const resultadosPorPagina = 7;
 
 resultados = [];
 
