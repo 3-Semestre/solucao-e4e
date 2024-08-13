@@ -1,13 +1,9 @@
-const id = sessionStorage.getItem('id')
-const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
-const token = sessionStorage.getItem('token')
-
 
 async function buscarDados() {
     const resposta = await fetch("http://localhost:7000/dashboard/qtd-conclusao", {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     });
@@ -49,7 +45,7 @@ async function buscarDadosCancelamento() {
     const resposta = await fetch("http://localhost:7000/dashboard/taxa-cancelamento-mes", {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     });
