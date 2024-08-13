@@ -1,5 +1,15 @@
+const id = sessionStorage.getItem('id')
+const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
+const token = sessionStorage.getItem('token')
+
 async function buscarAlunos() {
-    const resposta = await fetch("http://localhost:8080/usuarios/aluno");
+    const resposta = await fetch("http://localhost:8080/usuarios/aluno", {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
 
     const listaAlunos = await resposta.json();
 
@@ -60,10 +70,11 @@ async function deletarAluno(id) {
 
     const respostaDelete = await fetch(`http://localhost:8080/usuarios/aluno/${id}`, {
         method: "DELETE",
-        headers: { "Content-type": "application/json; charset=UTF-8" }
+        headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
     });
 
 
+    
     console.log(respostaDelete);
 
     if (respostaDelete.status == 204) {

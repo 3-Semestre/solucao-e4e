@@ -1,9 +1,18 @@
+const id = sessionStorage.getItem('id')
+const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
+const token = sessionStorage.getItem('token')
+
+
 async function buscarDados() {
-    const resposta = await fetch("http://localhost:7000/dashboard/qtd-conclusao");
+    const resposta = await fetch("http://localhost:7000/dashboard/qtd-conclusao", {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
 
     const respostaDados = await resposta.json();
-
-    console.log(respostaDados);
 
     const dados = {
         labels: [
@@ -37,11 +46,15 @@ async function buscarDados() {
 }
 
 async function buscarDadosCancelamento() {
-    const resposta = await fetch("http://localhost:7000/dashboard/taxa-cancelamento-mes");
+    const resposta = await fetch("http://localhost:7000/dashboard/taxa-cancelamento-mes", {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
 
     const respostaDados = await resposta.json();
-
-    console.log(respostaDados);
 
     let dadosCancelamento = {
         labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],

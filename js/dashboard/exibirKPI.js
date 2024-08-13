@@ -1,5 +1,16 @@
+const id = sessionStorage.getItem('id')
+const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
+const token = sessionStorage.getItem('token')
+
 async function plotarProximosAgendamentos() {
-    const resposta = await fetch("http://localhost:7000/dashboard/ultimos-3-agendamentos-professor");
+    const resposta = await fetch("http://localhost:7000/dashboard/ultimos-3-agendamentos-professor", {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
     console.log(resposta)
     const listaAgendamentos = await resposta.json();
     console.log(listaAgendamentos);
@@ -57,20 +68,50 @@ async function plotarProximosAgendamentos() {
 
 async function plotarKPIs() {
 
-    const proximosAgendamentosFetch = await fetch("http://localhost:7000/dashboard/qtd-agendamento-mes-professor");
-    const alunosNovosFetch = await fetch("http://localhost:7000/dashboard/qtd-agendamento-mes-professor");
-    const confirmacaoAgendamento = await fetch("http://localhost:7000/dashboard/tempo-confirmacao");
-    const cancelamento = await fetch("http://localhost:7000/dashboard/qtd-cancelamento-alunos");
+    const proximosAgendamentosFetch = await fetch("http://localhost:7000/dashboard/qtd-agendamento-mes-professor", {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+    
+    const alunosNovosFetch = await fetch("http://localhost:7000/dashboard/qtd-agendamento-mes-professor", {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const confirmacaoAgendamento = await fetch("http://localhost:7000/dashboard/tempo-confirmacao", {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const cancelamento = await fetch("http://localhost:7000/dashboard/qtd-cancelamento-alunos", {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
 
     const respostaProximosAgendamentos = await proximosAgendamentosFetch.json();
     const respostaAlunosNovos = await alunosNovosFetch.json();
     const respostaConfirmacaoAgendamento = await confirmacaoAgendamento.json();
     const respostaCancelamento = await cancelamento.json();
+
+    /* Poor Debbuging practise
     console.log("PLOTANDO KPIS: ")
     console.log(`Novos agendamentos: ${respostaProximosAgendamentos}`)
     console.log(`Alunos Novos: ${respostaAlunosNovos}`)
     console.log(`Confirmacao Agendamento: ${respostaConfirmacaoAgendamento}`)
     console.log(`Resposta Cancelamento : ${respostaCancelamento}`)
+    */
 
     const cardNovoAgendamento = document.getElementById("novos-agendamentos");
 

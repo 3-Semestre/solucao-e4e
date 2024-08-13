@@ -1,10 +1,18 @@
 const id = sessionStorage.getItem('id')
 const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
+const token = sessionStorage.getItem('token')
 
 async function exibirDadosPerfil() {
     const nivel_acesso = sessionStorage.getItem('nivel_acesso').toLowerCase();
 
-    const resposta = await fetch(`http://localhost:8080/usuarios/perfil/${nivel_acesso}/${id}`);
+    const resposta = await fetch(`http://localhost:8080/usuarios/perfil/${nivel_acesso}/${id}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+;
     if (!resposta.ok) {
         throw new Error('Erro ao buscar dados do servidor');
     }
@@ -77,7 +85,14 @@ function tratarNome(nichoNome) {
 }
 
 async function buscarNivelIngles() {
-    const resposta = await fetch("http://localhost:8080/nivel-ingles");
+    const resposta = await fetch("http://localhost:8080/nivel-ingles", {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
     const listaNiveis = await resposta.json();
     const checkboxList = document.getElementById("nivelCheckboxList");
 
@@ -113,7 +128,14 @@ async function buscarNivelIngles() {
 
 
 async function buscarNichos() {
-    const resposta = await fetch("http://localhost:8080/nichos");
+    const resposta = await fetch("http://localhost:8080/nichos", {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
     const listaNichos = await resposta.json();
     const checkboxList = document.getElementById("nichoCheckboxList");
 
@@ -145,7 +167,14 @@ async function buscarNichos() {
 
 
 async function buscarNivelInglesUsuario() {
-    const resposta = await fetch(`http://localhost:8080/usuario-nivel-ingles/usuario/${id}`);
+    const resposta = await fetch(`http://localhost:8080/usuario-nivel-ingles/usuario/${id}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
     const respostaNivel = await resposta.json();
 
     var nivelIngles = document.getElementById("nivel");
@@ -172,7 +201,14 @@ async function buscarNivelInglesUsuario() {
 }
 
 async function buscarNichoUsuario() {
-    const resposta = await fetch(`http://localhost:8080/usuario-nicho/usuario/${id}`);
+    const resposta = await fetch(`http://localhost:8080/usuario-nicho/usuario/${id}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+    
     const respostaNicho = await resposta.json();
 
     const nicho = document.getElementById("nicho");

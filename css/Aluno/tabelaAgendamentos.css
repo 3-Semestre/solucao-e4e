@@ -18,3 +18,17 @@ td {
     text-align: left;
     border: 1px solid rgb(160 160 160) !important;
 }
+
+.page-item{
+    color: #072B59 !important;
+}
+
+.pagination{
+    margin-top: 3vh !important;
+    padding-bottom: 3vh !important;
+}
+
+#paginacao_atual{
+    background-color: #072B59 !important;
+    color: #ffffff !important;
+}

@@ -1,3 +1,7 @@
+const id = sessionStorage.getItem('id')
+const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
+const token = sessionStorage.getItem('token')
+
 async function cadastrarAluno() {
     const nome = document.getElementById("input_nome").value;
     const cpf = document.getElementById("input_cpf").value;
@@ -18,16 +22,14 @@ async function cadastrarAluno() {
         "profissao": profissao,
         "senha": senha,
         "nivelAcesso": {
-            "id": 1
+            "id": 3
         }
     }
-
-    console.log(dadosAluno);
 
     const respostaCadastro = await fetch("http://localhost:8080/usuarios/aluno", {
         method: "POST",
         body: JSON.stringify(dadosAluno),
-        headers: { "Content-type": "application/json; charset=UTF-8" }
+        headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
     });
 
     if (respostaCadastro.status == 201) {
@@ -79,7 +81,13 @@ async function cadastrarAluno() {
 
 async function buscarNivelIngles() {
 
-    const resposta = await fetch("http://localhost:8080/nivel-ingles");
+    const resposta = await fetch("http://localhost:8080/nivel-ingles", {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
 
     const listaNichos = await resposta.json();
 
@@ -92,7 +100,13 @@ async function buscarNivelIngles() {
 
 
 async function buscarNichos() {
-    const resposta = await fetch("http://localhost:8080/nichos");
+    const resposta = await fetch("http://localhost:8080/nichos", {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
 
     const listaNichos = await resposta.json();
 
