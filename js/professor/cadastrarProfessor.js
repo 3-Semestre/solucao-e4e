@@ -1,8 +1,4 @@
-const id = sessionStorage.getItem('id')
-const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
-const token = sessionStorage.getItem('token')
-
-async function cadastrarAluno() {
+async function cadastrarProfessor() {
     const nome = document.getElementById("input_nome").value;
     const cpf = document.getElementById("input_cpf").value;
     const dataNascimento = document.getElementById("input_data").value;
@@ -13,7 +9,7 @@ async function cadastrarAluno() {
     const senha = document.getElementById("input_senha").value;
 
 
-    const dadosAluno = {
+    const dadosProfessor = {
         "nomeCompleto": nome,
         "cpf": cpf,
         "dataNascimento": dataNascimento,
@@ -22,25 +18,31 @@ async function cadastrarAluno() {
         "profissao": profissao,
         "senha": senha,
         "nivelAcesso": {
-            "id": 3
+            "id": 2
         }
     }
 
-    const respostaCadastro = await fetch("http://localhost:8080/usuarios/aluno", {
+    const respostaCadastro = await fetch("http://localhost:8080/usuarios/professor", {
         method: "POST",
-        body: JSON.stringify(dadosAluno),
-        headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+        body: JSON.stringify(dadosProfessor),
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
     });
 
     if (respostaCadastro.status == 201) {
+        // cadastrarNicho()
+        
         Swal.fire({
             icon: "success",
-            title: "Aluno cadastrado com sucesso!",
+            title: "Professor cadastrado com sucesso!",
             showConfirmButton: false,
             timer: 1500
         });
         console.log("cadastro realizado com sucesso")
         setTimeout("location.href = 'visualizarAlunos.html'", 1500);
+        
  
     } else if (respostaCadastro.status == 409) {
         erroCpf()
@@ -77,6 +79,10 @@ async function cadastrarAluno() {
             errorMessage.remove();
         }
     });
+}
+
+async function cadastrarNicho(){
+
 }
 
 function formatarCelular(telefone) {

@@ -1,21 +1,20 @@
-const id = sessionStorage.getItem('id')
-const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
-const token = sessionStorage.getItem('token')
-
 async function plotarProximosAgendamentos() {
+    const cardsAlunos = document.getElementById("agendamentos");
+
     const resposta = await fetch("http://localhost:7000/dashboard/ultimos-3-agendamentos-professor", {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     });
 
-    console.log(resposta)
-    const listaAgendamentos = await resposta.json();
-    console.log(listaAgendamentos);
+    if(resposta.status == 204){
+        cardsAlunos.innerHTML += "Não há agendamentos a serem realizados."
+        return
+    }
 
-    const cardsAlunos = document.getElementById("agendamentos");
+    const listaAgendamentos = await resposta.json();
 
     const diasSemana = {
         "Sunday": "Domingo",
@@ -71,7 +70,7 @@ async function plotarKPIs() {
     const proximosAgendamentosFetch = await fetch("http://localhost:7000/dashboard/qtd-agendamento-mes-professor", {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     });
@@ -79,7 +78,7 @@ async function plotarKPIs() {
     const alunosNovosFetch = await fetch("http://localhost:7000/dashboard/qtd-agendamento-mes-professor", {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     });
@@ -87,7 +86,7 @@ async function plotarKPIs() {
     const confirmacaoAgendamento = await fetch("http://localhost:7000/dashboard/tempo-confirmacao", {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     });
@@ -95,7 +94,7 @@ async function plotarKPIs() {
     const cancelamento = await fetch("http://localhost:7000/dashboard/qtd-cancelamento-alunos", {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }
     });

@@ -9,6 +9,7 @@
 
     <script defer src="../js/script.js"></script>
     <script src="../js/professor/visualizarAlunos.js"></script>
+    <script src="../js/professor/visualizarProfessor.js"></script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -93,7 +94,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Página Inicial</a></li>
-                <li class="breadcrumb-item"><a href="#">Alunos</a></li>
+                <li class="breadcrumb-item" id="tipo-visualizacao"><a href="#">X</a></li>
                 <li class="breadcrumb-item active" aria-current="page" id="titulo_breadcrump">Visualizar</li>
             </ol>
         </nav>
@@ -147,6 +148,11 @@
 </html>
 
 <script>
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const tipo = urlParams.get('tipo');
+
+    document.getElementById("tipo-visualizacao").innerHTML = Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()
 
     document.getElementById('input_cpf').addEventListener('input', function (e) {
         let value = e.target.value;
@@ -156,5 +162,20 @@
         value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
         e.target.value = value;
     });
+
+    if (tipo != "aluno") {
+        buscarProfessor()
+    } else if (tipo == "aluno") {
+        buscarAlunos()
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro ao cadastrar',
+            showConfirmButton: false,
+            text: 'Não foi possivel verificar o tipo de acesso do usuario, por favor saia e entre novamente da aba. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
+            footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
+            timer: 1500
+        });
+    }
 
 </script>

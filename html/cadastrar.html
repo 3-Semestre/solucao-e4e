@@ -9,6 +9,7 @@
 
     <script defer src="../js/script.js"></script>
     <script src="../js/professor/cadastrarAluno.js"></script>
+    <script src="../js/professor/cadastrarProfessor.js"></script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -95,12 +96,12 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Página Inicial</a></li>
-                <li class="breadcrumb-item"><a href="#">Alunos</a></li>
-                <li class="breadcrumb-item active" aria-current="page" id="titulo_breadcrump">Cadastrar Alunos</li>
+                <li class="breadcrumb-item" id="tipo-breadcrump"><a href="#">X</a></li>
+                <li class="breadcrumb-item active" aria-current="page" id="titulo_breadcrump">Cadastrar <span id="tipo-cadastro">x</span></li>
             </ol>
         </nav>
 
-        <div class="register">      
+        <div class="register">
             <br>
             <div class="content-professor">
                 <div class="content-personal-information">
@@ -111,7 +112,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="input_nome" class="form-label"><span>*</span>Nome completo:</label>
-                                <input type="text" class="form-control" id="input_nome" placeholder="Nome do Aluno"
+                                <input type="text" class="form-control" id="input_nome" placeholder="Nome"
                                     required>
                             </div>
                             <div class="mb-3">
@@ -136,8 +137,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="input_profissao" class="form-label"><span>*</span>Profissão:</label>
-                                <input type="text" class="form-control" id="input_profissao" placeholder="Analista de Dados"
-                                    required>
+                                <input type="text" class="form-control" id="input_profissao"
+                                    placeholder="Analista de Dados" required>
                             </div>
                             <div class="mb-3">
                                 <label for="input_senha" class="form-label"><span>*</span>Senha:</label>
@@ -151,17 +152,13 @@
                         <div class="title-course">
                             <p>Curso</p>
                         </div>
-                        <div class="mb-3">
-                            <label for="nivel" class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>
-                            <select class="form-select" aria-label="Default select example" id="select_nivel" required>
-                                <option value="" selected>Selecione uma opção</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="nicho" class="form-label" id="nichoTitle"><span>*</span>Nicho:</label>
-                            <select class="form-select" aria-label="Default select example" id="select_nicho" required>
-                                <option value="" selected>Selecione uma opção</option>
-                            </select>
+                        <div class="horario">
+                            <div class="mb-3" id="nivelCheckboxList">
+                                <label class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>
+                            </div>
+                            <div class="mb-3" id="nichoCheckboxList">
+                                <label class="form-label" id="nichoTitle"><span>*</span>Nicho:</label>
+                            </div>
                         </div>
                         <br><br><br><br><br><br><br><br><br>
                         <div class="button">
@@ -178,13 +175,107 @@
 </html>
 
 <script>
-    
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const tipo = urlParams.get('tipo');
+
+    document.getElementById("tipo-cadastro").innerHTML = Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()
+    document.getElementById("tipo-breadcrump").innerHTML = Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()
+
+    async function buscarNivelIngles() {
+        const resposta = await fetch("http://localhost:8080/nivel-ingles", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const listaNiveis = await resposta.json();
+        const checkboxList = document.getElementById("nivelCheckboxList");
+
+        checkboxList.innerHTML = "";
+
+        if (tipo != "aluno") {
+            const checkboxes = listaNiveis.map(nivel => `
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="nivel" value="${nivel.id}" id="nivel_${nivel.id}">
+                    <label class="form-check-label" for="nivel_${nivel.id}">${tratarNome(nivel.nome)}</label>
+                </div>
+            `).join('');
+            checkboxList.innerHTML +=
+                `<label class="form-label" id="nivelTitle" name="nivel=ingles"><span>*</span>Nível de Inglês:</label>` +
+                checkboxes;
+        } else {
+            const options = listaNiveis.map(nivel => `
+            <option value="${nivel.id}" id="nivel_${nivel.id}">
+                ${tratarNome(nivel.nome)}
+            </option>
+        `).join('');
+            checkboxList.innerHTML += `
+            <label class="form-label" id="nivelTitle" name="nivel=ingles"><span>*</span>Nível de Inglês:</label>
+            <select class="form-select" id="nivel" aria-label="Default select example" required>
+                <option value="">Selecione uma opção</option>
+                ${options}
+            </select>
+        `;
+        }
+    }
+
+    async function buscarNichos() {
+        const resposta = await fetch("http://localhost:8080/nichos", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const listaNichos = await resposta.json();
+        const checkboxList = document.getElementById("nichoCheckboxList");
+
+        if (tipo != "aluno") {
+            const checkboxes = listaNichos.map(nicho => `
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="nicho" value="${nicho.id}" id="nicho_${nicho.id}">
+                <label class="form-check-label" for="nicho_${nicho.id}">${tratarNome(nicho.nome)}</label>
+                </div>
+            `).join('');
+            checkboxList.innerHTML += checkboxes;
+        } else {
+            const options = listaNichos.map(nicho => `
+            <option value="${nicho.id}">
+                ${tratarNome(nicho.nome)}
+            </option>
+        `).join('');
+            checkboxList.innerHTML += `
+            <select class="form-select" id="nicho" aria-label="Default select example" required>
+                <option value="">Selecione uma opção</option>
+                ${options}
+            </select>
+        `;
+        }
+    }
+
     document.getElementById('cadastroForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
         if (validarFormulario()) {
             try {
-                cadastrarAluno()
+                if (tipo != "aluno") {
+                    cadastrarProfessor()
+                } else if (tipo == "aluno") {
+                    cadastrarAluno()
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro ao cadastrar',
+                        showConfirmButton: false,
+                        text: 'Não foi possivel verificar o tipo de acesso do usuario, por favor saia e entre novamente da aba. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
+                        footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
+                        timer: 1500
+                    });
+                }
             } catch (e) {
                 console.log(e);
             }
@@ -214,5 +305,7 @@
         e.target.value = value.substring(0, 15);
     });
 
+    buscarNivelIngles()
+    buscarNichos()
 
 </script>
