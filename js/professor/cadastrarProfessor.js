@@ -32,8 +32,6 @@ async function cadastrarProfessor() {
     });
 
     if (respostaCadastro.status == 201) {
-        // cadastrarNicho()
-        
         Swal.fire({
             icon: "success",
             title: "Professor cadastrado com sucesso!",
@@ -41,7 +39,7 @@ async function cadastrarProfessor() {
             timer: 1500
         });
         console.log("cadastro realizado com sucesso")
-        setTimeout("location.href = 'visualizarAlunos.html'", 1500);
+        setTimeout("location.href = 'visualizar.html?tipo=professor'", 1500);
         
  
     } else if (respostaCadastro.status == 409) {

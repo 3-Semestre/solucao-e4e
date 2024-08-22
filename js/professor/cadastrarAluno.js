@@ -40,7 +40,7 @@ async function cadastrarAluno() {
             timer: 1500
         });
         console.log("cadastro realizado com sucesso")
-        setTimeout("location.href = 'visualizarAlunos.html'", 1500);
+        setTimeout("location.href = 'visualizar.html?tipo=aluno'", 1500);
  
     } else if (respostaCadastro.status == 409) {
         erroCpf()
