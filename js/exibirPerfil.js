@@ -99,7 +99,7 @@ async function buscarNivelIngles() {
     checkboxList.innerHTML = "";
 
 
-    if (nivel_acesso_cod != 3) {
+    if (nivel_acesso_cod != 1) {
         const checkboxes = listaNiveis.map(nivel => `
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="nivel" value="${nivel.id}" id="nivel_${nivel.id}">
@@ -139,7 +139,7 @@ async function buscarNichos() {
     const listaNichos = await resposta.json();
     const checkboxList = document.getElementById("nichoCheckboxList");
 
-    if (nivel_acesso_cod != 3) {
+    if (nivel_acesso_cod != 1) {
         const checkboxes = listaNichos.map(nicho => `
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="nicho" value="${nicho.id}" id="nicho_${nicho.id}">
@@ -178,7 +178,7 @@ async function buscarNivelInglesUsuario() {
 
     var nivelIngles = document.getElementById("nivel");
 
-    if (nivel_acesso_cod != 3) {
+    if (nivel_acesso_cod != 1) {
         for (let i = 0; i < respostaNivel.length; i++) {
             if (i === respostaNivel.length - 1) {
                 nivelIngles.innerHTML += respostaNivel[i].nivelIngles.nome;
@@ -212,7 +212,7 @@ async function buscarNichoUsuario() {
 
     const nicho = document.getElementById("nicho");
 
-    if (nivel_acesso_cod != 3) {
+    if (nivel_acesso_cod != 1) {
         const nichos = respostaNicho.map(nivel => nivel.nicho.id);
         sessionStorage.setItem('nichos', JSON.stringify(nichos));
 

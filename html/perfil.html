@@ -170,7 +170,7 @@
                         <div class="title-course">
                             <p>Curso</p>
                         </div>
-                        <div class="horario">
+                        <div class="horario" id="div_nivel_nicho">
                             <div class="mb-3" id="nivelCheckboxList">
                                 <label class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>
                             </div>
@@ -226,9 +226,12 @@
         horario_intervalo_form.style.display = "none";
         horario_card_titulo.style.display = "none";
         horario_card.style.display = "none";
-
-
+        div_nivel_nicho = document.getElementById("div_nivel_nicho")
+        div_nivel_nicho.style.display = "flex"
+        div_nivel_nicho.style.flexDirection = "column"
+        div_nivel_nicho.style.gap = "0px"
     }
+
 
     function editarPerfil() {
         const botaoCancela = document.getElementById("botaoCancelar");
