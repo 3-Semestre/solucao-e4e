@@ -23,7 +23,7 @@ async function autenticar() {
         salvarInformacoes(usuario)
 
         if(usuario.nivelAcesso.nome == "ALUNO"){
-            window.location.href = "aluno/dashboardAluno.html"
+            window.location.href = "dashboardAluno.html"
         } else {
             window.location.href = "dashboardProfessor.html"
         }

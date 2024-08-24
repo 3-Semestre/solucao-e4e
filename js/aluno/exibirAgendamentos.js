@@ -166,5 +166,4 @@ function formatarHorario(horario) {
 
 window.onload = function () {
     carregarHeadersTabela();
-    buscarTodosAgendamentos();
 };
