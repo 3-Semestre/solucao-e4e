@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizar Alunos</title>
+    <title>Visualizar</title>
     <link rel="stylesheet" href="../css/visualizarAlunos.css">
 
     <script defer src="../js/script.js"></script>
@@ -153,6 +153,7 @@
     const tipo = urlParams.get('tipo');
 
     document.getElementById("tipo-visualizacao").innerHTML = Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()
+    document.title += ` ${Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()}`;
 
     document.getElementById('input_cpf').addEventListener('input', function (e) {
         let value = e.target.value;

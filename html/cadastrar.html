@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Aluno</title>
+    <title>Cadastrar</title>
     <link rel="stylesheet" href="../css/cadastrarPerfil.css">
 
     <script defer src="../js/script.js"></script>
@@ -181,6 +181,7 @@
 
     document.getElementById("tipo-cadastro").innerHTML = Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()
     document.getElementById("tipo-breadcrump").innerHTML = Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()
+    document.title += ` ${Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()}`;
 
     async function buscarNivelIngles() {
         const resposta = await fetch("http://localhost:8080/nivel-ingles", {

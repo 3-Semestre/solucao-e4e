@@ -22,7 +22,7 @@ async function cadastrarAluno() {
         "profissao": profissao,
         "senha": senha,
         "nivelAcesso": {
-            "id": 3
+            "id": 1
         }
     }
 
