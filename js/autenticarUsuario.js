@@ -21,7 +21,14 @@ async function autenticar() {
     if (respostaLogin.status == 201) {
         const usuario = await respostaLogin.json();
         salvarInformacoes(usuario)
-        window.location.href = "dashboardProfessor.html"
+
+        if(usuario.nivelAcesso.nome == "ALUNO"){
+            window.location.href = "aluno/dashboardAluno.html"
+        } else {
+            window.location.href = "dashboardProfessor.html"
+        }
+        
+
     } else if (respostaLogin.status == 403) {
         exibirMensagemErro();
     }

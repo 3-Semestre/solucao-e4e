@@ -32,7 +32,7 @@ function puxarNome() {
 }
 
 function carregarNavBar() {
-    const nivelAcesso = sessionStorage.getItem('nivel_acesso_cod');
+    const nivelAcesso = sessionStorage.getItem('nivel_acesso');
 
     const aluno_navbar = document.getElementById("alunos_navbar");
     const professores_navbar = document.getElementById("professores_navbar");
@@ -45,13 +45,13 @@ function carregarNavBar() {
     const agenda_novo_agendamento_navbar = document.getElementById("agenda_novo_agendamento_navbar");
     
     switch (nivelAcesso) {
-        case "1":
+        case "REPRESENTANTE_LEGAL":
             agenda_novo_agendamento_navbar.style.display = "none";
             break;
-        case "2":
+        case "PROFESSOR_AUXILIAR":
             agenda_novo_agendamento_navbar.style.display = "none";
             break;
-        case "3":
+        case "ALUNO":
             aluno_navbar.style.display = "none";
             professores_navbar.style.display = "none";
 
