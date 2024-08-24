@@ -106,7 +106,7 @@ async function buscarNivelIngles() {
                     <label class="form-check-label" for="nivel_${nivel.id}">${tratarNome(nivel.nome)}</label>
                 </div>
             `).join('');
-        checkboxList.innerHTML += checkboxes;
+        checkboxList.innerHTML += `<label class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>` + checkboxes;
         buscarNivelInglesUsuario()
     } else {
         const nivelInglesUsuario = await buscarNivelInglesUsuario();
@@ -116,7 +116,7 @@ async function buscarNivelIngles() {
             </option>
         `).join('');
         checkboxList.innerHTML += `
-            <label class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>
+         <label class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>
             <select class="form-select" id="nivel" aria-label="Default select example" required>
                 <option value="">Selecione uma opção</option>
                 ${options}
@@ -156,7 +156,6 @@ async function buscarNichos() {
             </option>
         `).join('');
         checkboxList.innerHTML += `
-            <label class="form-label" id="nichoTitle"><span>*</span>Nicho:</label>
             <select class="form-select" id="nicho" aria-label="Default select example" required>
                 <option value="">Selecione uma opção</option>
                 ${options}
