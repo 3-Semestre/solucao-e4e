@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Aluno</title>
+    <title>Cadastrar</title>
     <link rel="stylesheet" href="../css/cadastrarPerfil.css">
 
     <script defer src="../js/script.js"></script>
@@ -29,7 +29,7 @@
                 </a>
             </li>
             <li>
-                <a href="dashboardProfessor.html">
+                <a id="dashboard_href" href="#">
                     <img src="../imgs/botao-home.png" alt="">
                     <span>Início</span>
                 </a>
@@ -42,8 +42,8 @@
                     </button>
                     <div class="dropdown-container hidden">
                         <a href="#" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
-                        <a href="#" id="agenda_meus_agendamentos_navbar">Meus Agendamentos</a>
-                        <a href="#" id="agenda_historico_navbar">Histórico</a>
+                        <a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar">Agendamentos</a>
+                        <a href="agendamentos=tipo?passadp.html" id="agenda_historico_navbar">Histórico</a>
                     </div>
                 </a>
             </li>
@@ -54,8 +54,8 @@
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container hidden">
-                        <a href="visualizarAlunos.html">Visualizar</a>
-                        <a href="cadastrarPerfilAluno.html">Cadastrar</a>
+                        <a href="visualizar.html?tipo=aluno">Visualizar</a>
+                        <a href="cadastrar.html?tipo=aluno">Cadastrar</a>
                     </div>
                 </a>
             </li>
@@ -66,8 +66,8 @@
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container hidden">
-                        <a href="atualizarPerfilProfessor.html">Visualizar</a>
-                        <a href="#">Cadastrar</a>
+                        <a href="visualizar.html?tipo=professor">Visualizar</a>
+                        <a href="cadastrar.html?tipo=professor">Cadastrar</a>
                     </div>
                 </a>
             </li>
@@ -181,6 +181,7 @@
 
     document.getElementById("tipo-cadastro").innerHTML = Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()
     document.getElementById("tipo-breadcrump").innerHTML = Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()
+    document.title += ` ${Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()}`;
 
     async function buscarNivelIngles() {
         const resposta = await fetch("http://localhost:8080/nivel-ingles", {

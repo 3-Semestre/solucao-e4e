@@ -25,7 +25,7 @@ async function buscarProfessor() {
                     <img src="../imgs/perfil_blue.png" alt="">
                     <p>${Professor.nomeCompleto}</p>
                 </div>
-                <div class="lixeira" onclick="confirmacaoDelete(${Professor.id})" id="lixeira_${Professor.id}">
+                <div class="lixeira" onclick="confirmacaoDeleteProfessor(${Professor.id})" id="lixeira_${Professor.id}">
                     <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirProfessor()">
                 </div>
             </div>
@@ -35,7 +35,7 @@ async function buscarProfessor() {
     }
 }
 
-function confirmacaoDelete(id) {
+function confirmacaoDeleteProfessor(id) {
     Swal.fire({
         title: "Deseja excluir esse Professor?",
         showDenyButton: true,

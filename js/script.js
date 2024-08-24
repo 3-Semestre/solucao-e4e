@@ -32,36 +32,30 @@ function puxarNome() {
 }
 
 function carregarNavBar() {
-    const nivelAcesso = sessionStorage.getItem('nivel_acesso');
+    const nivelAcesso = sessionStorage.getItem('nivel_acesso_cod');
 
     const aluno_navbar = document.getElementById("alunos_navbar");
     const professores_navbar = document.getElementById("professores_navbar");
-
-    const horario_atendimento_form = document.getElementById("horario_atendimento_form");
-    const horario_intervalo_form = document.getElementById("horario_intervalo_form");
-    const horario_card_titulo = document.getElementById("horario_card_titulo");
-    const horario_card = document.getElementById("horario_card");
-
     const agenda_novo_agendamento_navbar = document.getElementById("agenda_novo_agendamento_navbar");
-    
+
+    const link_dashboard = document.getElementById("dashboard_href")
+
     switch (nivelAcesso) {
-        case "REPRESENTANTE_LEGAL":
+        case "3":
+            link_dashboard.href = "dashboardProfessor.html"
             agenda_novo_agendamento_navbar.style.display = "none";
             break;
-        case "PROFESSOR_AUXILIAR":
+        case "2":
+            link_dashboard.href = "dashboardProfessor.html"
             agenda_novo_agendamento_navbar.style.display = "none";
             break;
-        case "ALUNO":
+        case "1":
+            link_dashboard.href = "dashboardAluno.html"
             aluno_navbar.style.display = "none";
             professores_navbar.style.display = "none";
-
-            horario_atendimento_form.style.display = "none";
-            horario_intervalo_form.style.display = "none";
-            horario_card_titulo.style.display = "none";
-            horario_card.style.display = "none";
             break;
     }
 }
 
-carregarNavBar() 
+carregarNavBar()
 puxarNome()
