@@ -22,7 +22,6 @@ async function autenticar() {
         const usuario = await respostaLogin.json();
         salvarInformacoes(usuario)
         window.location.href = "dashboardProfessor.html"
-
     } else if (respostaLogin.status == 403) {
         exibirMensagemErro();
     }
@@ -58,7 +57,7 @@ function exibirMensagemErro() {
     document.getElementById("input_email").addEventListener("input", function () {
         document.getElementById('mensagemErro').style.display = 'none';
     });
-    
+
     document.getElementById("input_senha").addEventListener("input", function () {
         document.getElementById('mensagemErro').style.display = 'none';
     });
