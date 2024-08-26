@@ -142,6 +142,29 @@
                     </select>
                 </div>
             </div>
+            <!-- Div exibir Aluno -->
+            <div class="dados-student" id="card_dados">
+                <div class="photo-student">
+                    <img src="../imgs/perfil_blue.png" alt="">
+                    <p>João da Silva</p>
+                </div>
+                <div class="info-student">
+                    <div class="dados-cadastrais">
+                        <p>CPF: 111.222.333-44</p>
+                        <p>Telefone: (11) 978567722</p>
+                        <p>Email: joao@gmail.com</p>
+                        <p>Data de nascimento: 01/01/2000</p>
+                    </div>
+                    <div class="dados-curso">
+                        <p>Nivel Inglês: A1</p>
+                        <p>Nicho: Conversação</p>
+                    </div>
+                </div>
+                <div class="lixeira" id="lixeira_${aluno.id}">
+                    <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirALuno()">
+                </div>
+            </div>
+            <hr class="line">
         </div>
 </body>
 

@@ -217,6 +217,22 @@ label {
     display: none;
 }
 
+.info-student {
+    display: flex;
+    width: 60%;
+    justify-content: space-between;
+}
+
+.dados-cadastrais,
+.dados-curso{
+    width: 40%;
+    padding: 10px;
+}
+
+.dados-cadastrais p, .dados-curso p {
+    margin: 5px 0;
+}
+
 @media only screen and (max-device-width: 430px) {
 
     .dropdown-btn{
