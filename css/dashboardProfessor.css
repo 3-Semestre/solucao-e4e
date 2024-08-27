@@ -9,6 +9,13 @@ body {
     display: flex;
 }
 
+.space-professor{
+    width: auto;
+    margin-left: 2px;
+    margin-right: auto;
+    display: inline-block;
+}
+
 .sidebar {
     background-color: #072B59;
     position: fixed;
@@ -91,10 +98,10 @@ body {
 }
 
 .box {
-    width: 20vw;
-    height: 20vh;
+    width: 22vw;
+    height: 25vh;
     border: 1px solid rgba(7, 43, 89, 0.685);
-    border-radius: 5%;
+    border-radius: 10px;
     box-shadow: 5px 5px 5px #888;
     display: flex;
     gap: 5rem;
@@ -124,7 +131,7 @@ body {
     display: flex;
     margin-top: 7vh;
     position: relative;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .content-kpis {
@@ -133,7 +140,7 @@ body {
 }
 
 .content-kpis h2 {
-    font-size: 60px;
+    font-size: 80px;
     position: relative;
     top: 1.5vh;
 }
@@ -149,17 +156,17 @@ body {
 
 .line-box {
     border: 4px solid #072B59;
-    height: 12vh;
-    border-radius: 20%;
+    height: 15vh;
+    border-radius: 10px;
     position: relative;
     bottom: 2vh;
 }
 
 .box-kpis {
-    width: 20vw;
-    height: 20vh;
+    width: 22vw;
+    height: 25vh;
     border: 1px solid #072B59;
-    border-radius: 5%;
+    border-radius: 10px;
     box-shadow: 5px 5px 5px #888;
     display: flex;
     gap: 1rem;
@@ -232,13 +239,13 @@ body {
 }
 
 .box-chart {
-    width: 20vw;
-    height: 52vh;
+    width: 30vw;
+    height: 60vh;
     border: 1px solid #072B59;
-    border-radius: 5%;
+    border-radius: 10px;
     box-shadow: 5px 5px 5px #888;
     display: flex;
-    padding: 1rem;
+    padding: 2rem;
     position: relative;
     flex-direction: column;
 }
@@ -263,7 +270,7 @@ body {
 }
 
 .box-kpis-none {
-    width: 20vw;
+    width: 30vw;
     height: 20vh;
     border: 1px solid rgba(255, 255, 255, 0);
     border-radius: 5%;
@@ -277,9 +284,9 @@ body {
 }
 
 .line-box-none {
-    border: 4px solid rgba(255, 255, 255, 0);
-    height: 12vh;
-    border-radius: 20%;
+    border: 4px solid ;
+    height: 15vh;
+    border-radius: 10px;
     position: relative;
     bottom: 2vh;
 }
@@ -302,15 +309,15 @@ body {
     width: 100%;
     display: flex;
     position: relative;
-    justify-content: space-around;
-    bottom: 20vh;
+    justify-content: space-between;
+    bottom: 25vh;
 }
 
 .box-chart2 {
-    width: 80vw;
+    width: 100%;
     height: 90vh;
     border: 1px solid #072B59;
-    border-radius: 5%;
+    border-radius: 10px;
     box-shadow: 5px 5px 5px #888;
     display: flex;
     padding-top: 40px;
@@ -333,23 +340,23 @@ body {
     gap: 1rem;
     position: relative;
     top: 4vh;
-    height: 3vh;
+    height: 5vh;
     justify-content: center;
 }
 
 #botaoChart {
     background-color: rgba(52, 209, 191, 1) !important;
     font-weight: bold;
-    font-size: 10px;
+    font-size: 13px;
     border: none;
 }
 
 #botaoChartN {
     background-color: rgba(7, 43, 89, 1) !important;
     font-weight: bold;
-    font-size: 10px;
+    font-size: 13px;
     border: none;
-    width: 8vw;
+    width: 10vw;
 }
 
 #title-chart {
@@ -362,22 +369,11 @@ body {
 
 .line {
     border: 1px solid #072B59;
-    width: 90%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: auto;
-}
-
-.line2 {
-    border: 1px solid #072B59;
-    width: 90%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    position: relative;
-    bottom: 5vh;
 }
 
 .dropdown-btn {
