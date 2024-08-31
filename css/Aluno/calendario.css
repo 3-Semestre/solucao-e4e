@@ -1,0 +1,315 @@
+* {
+  font-family: "DM Sans", sans-serif;
+}
+
+html {
+  --header-color: #F20505;
+  --header-button: #92a1d1;
+  --color-weekdays: #000000;
+  --box-shadow: #CBD4C2;
+  --hover: #e8faed;
+  --current-day: #072b5945;
+  --event-color: #072B59;
+  --modal-event: #ffffff;
+  --color-day: white;
+}
+
+.calendario {
+  height: 95%;
+  width: auto;
+  display: flex;
+  margin-top: 50px; /* Aqui ajusta o calendario para descer mais */
+  justify-content: center;
+  padding: 20px; /* Aumentar o padding para uma aparência mais espaçada */
+  text-align: left;
+  border-radius: 50px;
+  border: 1px solid rgb(255, 255, 255) !important;
+}
+
+
+#calendar-container {
+  max-width: 1800px; /* Aumentar a largura máxima sem esticar */
+  width: 150%;
+  background-color: #a8b6bf3d;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+
+img {
+  width: 50px;
+  border: none;
+  outline: none;
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+}
+
+.meses {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+#header {
+  padding: 10px;
+  color: var(--header-color);
+  font-size: 26px;
+  display: flex;
+}
+
+#header button {
+  background-color: var(--header-button);
+}
+
+#container {
+  width: 900px; /* Aumenta o contêiner para se adequar à largura */
+}
+
+#weekdays {
+  width: 100%;
+  display: flex;
+  justify-content: space-around; /* Centraliza os dias da semana */
+  color: var(--color-weekdays);
+  font-weight: 600;
+}
+
+#weekdays div {
+  flex: 1;
+  text-align: center; /* Centraliza o texto dentro de cada div */
+  padding: 10px;
+  
+}
+
+#calendar {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.day {
+  width: calc(100% / 7 - 10px); /* Ajuste para largura das células, considerando o espaçamento */
+  padding: 10px;
+  height: 100px;
+  cursor: pointer;
+  box-sizing: border-box;
+  background-color: var(--color-day);
+  margin: 5px;
+  box-shadow: 0px 0px 3px var(--box-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 5%;
+  font-weight: 600;
+}
+
+.day:hover {
+  background-color: var(--hover);
+}
+
+#currentDay {
+  color: #ffffff;
+  font-weight: 700;
+  background-color: var(--current-day);
+}
+
+.event {
+  font-size: 10px;
+  padding: 3px;
+  background-color: var(--event-color);
+  color: white;
+  border-radius: 5px;
+  max-height: 55px;
+  overflow: hidden;
+}
+
+.padding {
+  cursor: default !important;
+  background-color: var(--body-color) !important;
+  box-shadow: none !important;
+}
+
+.titulo-format-modal {
+  color: var(--header-color);
+  font-size: 26px;
+}
+
+.campo-format {
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+#newEventModal, #deleteEventModal {
+  display: none;
+  z-index: 20;
+  padding: 25px;
+  background-color: var(--modal-event);
+  box-shadow: 0px 0px 3px black;
+  border-radius: 8px;
+  width: 550px;
+  top: 100px;
+  position: fixed;
+  max-width: 90%;
+  box-sizing: border-box;
+
+}
+
+#newEventModal.show, #deleteEventModal.show {
+  display: block;
+}
+
+/* Estilos para o status */
+.status {
+  padding: 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  color: white;
+}
+
+.status.pendente {
+  background-color: #ffcc00; /* Amarelo */
+}
+
+.status.confirmado {
+  background-color: #28a745; /* Verde */
+}
+
+.status.concluido {
+  background-color: #007bff; /* Azul */
+}
+
+.status.cancelado {
+  background-color: #dc3545; /* Vermelho */
+}
+
+.horarios-container {
+  display: flex;
+  flex-wrap: wrap; /* Permite que os botões se movam para a linha seguinte */
+  gap: 10px;
+  max-width: 500px;
+}
+
+.time-button {
+  border-radius: 6px;
+  border: 2px solid #072B59;
+  background-color: white;
+  color: #072B59;
+  padding: 10px 20px;
+  margin: 5px 0;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s;
+  margin-bottom: 2%;
+}
+
+.time-button.selected {
+  border-radius: 6px;
+  border: 2px solid #ffffff;
+  background-color: #072B59;
+  color: white;
+}
+
+/* Estilizando o seletor de professores */
+.select-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 2px solid #072B59;
+  background-color: white;
+  color: #072B59;
+  font-size: 18px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #072B59;
+}
+
+.modal-close:hover {
+  color: #F20505; /* Cor ao passar o mouse */
+}
+
+/* Deletar evento - campos desabilitados */
+#dateInput, #deleteDateInput, #deleteProfessorInput, #deleteTimeInput {
+  width: 95.5%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 2px solid #ffffff;
+  background-color: #072B59;
+  color: white;
+  cursor: not-allowed;
+  font-size: 18px;
+}
+
+#cancelar-button, #deletar-button {
+  background-color: var(--header-color);
+}
+
+#agendar-button, #fechar-button {
+  background-color: var(--header-button);
+}
+
+#eventText {
+  font-size: 14px;
+}
+
+#modalBackDrop {
+  display: none;
+  top: 0px;
+  left: 0px;
+  z-index: 10;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+#agendar-button, #cancelar-button, #deletar-button, #fechar-button {
+  border-radius: 6px;
+  border: 2px solid #072B59;
+  background-color: white;
+  color: #072B59;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s;
+}
+
+#agendar-button {
+  background-color: var(--header-button);
+  color: white;
+  border: 2px solid var(--header-button);
+}
+
+#agendar-button:hover {
+  background-color: #072B59;
+  color: white;
+}
+
+#cancelar-button, #deletar-button, #fechar-button {
+  background-color: #d10000;
+  color: white;
+  border: 2px solid var(--header-color);
+}
+
+#cancelar-button:hover {
+  background-color: #ff0000;
+  color: white;
+}

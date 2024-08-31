@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Histórico</title>
+    <link rel="stylesheet" href="../../css/Aluno/historicoAgendamentoAluno.css">
+    <link rel="stylesheet" href="../../css/Aluno/tabelaAgendamentos.css">
+
+    <script defer src="../../js/script.js"></script>
+    <script src="../../js/visualizarAlunos.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="sidebar">
+        <ul class="nav-links">
+            <li>
+                <a href="#" id="toggle-btn">
+                    <img src="../../imgs/menu-aberto.png" alt="">
+                </a>
+            </li>
+            <li>
+                <a href="dashboardProfessor.html">
+                    <img src="../../imgs/botao-home.png" alt="">
+                    <span>Início</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../../imgs/calendar-days.png" alt="">
+                    <button class="dropdown-btn">Calendário
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="#" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
+                        <a href="agendamentosAluno.html" id="agenda_meus_agendamentos_navbar">Agendamentos</a>
+                        <a href="historicoAgendamentoAluno.html" id="agenda_historico_navbar">Histórico</a>
+                    </div>
+                </a>
+            </li>
+            <li id="perfil_navbar">
+                <a href="perfilAluno.html">
+                    <img src="../../imgs/perfil.png" alt="">
+                    <span>Perfil</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../../imgs/moodle.png" alt="">
+                    <span>Moodle</span>
+                </a>
+            </li>
+            <li>
+                <a href="../login2.html">
+                    <img src="../../imgs/sair.png" alt="">
+                    <span>Sair</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="conteudo" id="listagem">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Início</a></li>
+                <li class="breadcrumb-item"><a href="#">Calendário</a></li>
+                <li class="breadcrumb-item active" aria-current="page" id="titulo_breadcrump">Histórico</li>
+            </ol>
+        </nav>
+        <br>
+        <div class="dados">
+            <br>
+            <div class="inputs">
+                <div class="mb-3 d-flex justify-content-center align-items-center">
+                    <label for="input_nome" class="form-label me-3">Data de:</label>
+                    <input type="date" class="form-control" id="input_nome" required>
+                </div>
+                <div class="mb-3 d-flex justify-content-center align-items-center">
+                    <label for="input_nome" class="form-label me-3">até:</label>
+                    <input type="date" class="form-control" id="input_nome" required>
+                </div>
+                <div class="mb-3 d-flex justify-content-center align-items-center">
+                    <label for="input_cpf" class="form-label me-3" id="cpf">Horário de:</label>
+                    <input type="time" class="form-control" id="input_cpf"
+                        required>
+                </div>
+                <div class="mb-3 d-flex justify-content-center align-items-center">
+                    <label for="input_cpf" class="form-label me-3" id="cpf">até:</label>
+                    <input type="time" class="form-control" id="input_cpf"
+                        required>
+                </div>
+                <div class="mb-3 d-flex justify-content-center align-items-center">
+                    <label for="input_cpf" class="form-label me-3" id="cpf">Assunto:</label>
+                    <input type="text" class="form-control" id="input_cpf" placeholder="Verb To Be" maxlength="14"
+                        required>
+                </div>
+                <div class="mb-3 d-flex justify-content-center align-items-center">
+                    <label for="status" class="form-label me-3" id="select_status">Status:</label>
+                    <select class="form-select" id="status" aria-label="Default select example" required>
+                        <option value="" selected>Selecione</option>
+                        <option value="1">Cancelado</option>
+                        <option value="2">Avançado</option>
+                    </select>
+                </div>
+            </div>
+            <table class="tabela"> 
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Assunto</th>
+                        <th>Professor</th>
+                        <th>Data</th>
+                        <th>Horário de Início</th>
+                        <th>Horário de Fim</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Fulano de Tal</td>
+                        <td>Verb To Be</td>
+                        <td>Cristian</td>
+                        <td>22/05/2024</td>
+                        <td>12:00 PM</td>
+                        <td>12:30 PM</td>
+                        <td>Realizado</td>
+                    </tr>
+                    <tr>
+                        <td>Fulano de Tal</td>
+                        <td>Verb To Be</td>
+                        <td>Cristian</td>
+                        <td>22/05/2024</td>
+                        <td>12:00 PM</td>
+                        <td>12:30 PM</td>
+                        <td>Cancelado</td>
+                    </tr>
+                    <tr>
+                        <td>Fulano de Tal</td>
+                        <td>Verb To Be</td>
+                        <td>Cristian</td>
+                        <td>22/05/2024</td>
+                        <td>12:00 PM</td>
+                        <td>12:30 PM</td>
+                        <td>Cancelado</td>
+                    </tr>
+                    <tr>
+                        <td>Fulano de Tal</td>
+                        <td>Verb To Be</td>
+                        <td>Cristian</td>
+                        <td>22/05/2024</td>
+                        <td>12:00 PM</td>
+                        <td>12:30 PM</td>
+                        <td>Realizado</td>
+                    </tr>
+                    <tr>
+                        <td>Fulano de Tal</td>
+                        <td>Verb To Be</td>
+                        <td>Cristian</td>
+                        <td>22/05/2024</td>
+                        <td>12:00 PM</td>
+                        <td>12:30 PM</td>
+                        <td>Realizado</td>
+                    </tr>
+                    <tr>
+                        <td>Fulano de Tal</td>
+                        <td>Verb To Be</td>
+                        <td>Cristian</td>
+                        <td>22/05/2024</td>
+                        <td>12:00 PM</td>
+                        <td>12:30 PM</td>
+                        <td>Realizado</td>
+                    </tr>
+                    <tr>
+                        <td>Fulano de Tal</td>
+                        <td>Verb To Be</td>
+                        <td>Cristian</td>
+                        <td>22/05/2024</td>
+                        <td>12:00 PM</td>
+                        <td>12:30 PM</td>
+                        <td>Realizado</td>
+                    </tr>
+                    <tr>
+                        <td>Fulano de Tal</td>
+                        <td>Verb To Be</td>
+                        <td>Cristian</td>
+                        <td>22/05/2024</td>
+                        <td>12:00 PM</td>
+                        <td>12:30 PM</td>
+                        <td>Realizado</td>
+                    </tr>
+                    <tr>
+                        <td>Fulano de Tal</td>
+                        <td>Verb To Be</td>
+                        <td>Cristian</td>
+                        <td>22/05/2024</td>
+                        <td>12:00 PM</td>
+                        <td>12:30 PM</td>
+                        <td>Cancelado</td>
+                    </tr>
+                    <tr>
+                        <td>Fulano de Tal</td>
+                        <td>Verb To Be</td>
+                        <td>Cristian</td>
+                        <td>22/05/2024</td>
+                        <td>12:00 PM</td>
+                        <td>12:30 PM</td>
+                        <td>Realizado</td>
+                    </tr>
+                    <tr>
+                        <td>Fulano de Tal</td>
+                        <td>Verb To Be</td>
+                        <td>Cristian</td>
+                        <td>22/05/2024</td>
+                        <td>12:00 PM</td>
+                        <td>12:30 PM</td>
+                        <td>Cancelado</td>
+                    </tr>
+                    <tr>
+                        <td>Fulano de Tal</td>
+                        <td>Verb To Be</td>
+                        <td>Cristian</td>
+                        <td>22/05/2024</td>
+                        <td>12:00 PM</td>
+                        <td>12:30 PM</td>
+                        <td>Cancelado</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</body>
+
+</html>
+
+<script>
+
+    document.getElementById('input_cpf').addEventListener('input', function (e) {
+        let value = e.target.value;
+        value = value.replace(/\D/g, '');
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        e.target.value = value;
+    });
+
+</script>
