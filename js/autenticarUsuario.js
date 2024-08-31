@@ -23,7 +23,7 @@ async function autenticar() {
         salvarInformacoes(usuario)
 
         if(usuario.nivelAcesso.nome == "ALUNO"){
-            window.location.href = "aluno/dashboardAluno.html"
+            window.location.href = "dashboardAluno.html"
         } else {
             window.location.href = "dashboardProfessor.html"
         }
@@ -64,7 +64,7 @@ function exibirMensagemErro() {
     document.getElementById("input_email").addEventListener("input", function () {
         document.getElementById('mensagemErro').style.display = 'none';
     });
-    
+
     document.getElementById("input_senha").addEventListener("input", function () {
         document.getElementById('mensagemErro').style.display = 'none';
     });

@@ -36,25 +36,29 @@ async function atualizarPerfil() {
         }
     }
 
-
-    const respostaCadastro = await fetch(`http://localhost:8080/usuarios/${retornaNivelRequisicao()}/${id}`, {
-        method: "PUT",
-        body: JSON.stringify(dados),
-        headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
-    });
-
-    if (respostaCadastro.status == 200) {
-        const usuario = await respostaCadastro.json();
-        salvarInformacoes(usuario)
-        //atualizarNivelIngles()
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Erro ao cadastrar',
-            showConfirmButton: false,
-            text: 'Por favor, revise os dados inseridos e tente novamente. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
-            footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>'
+    try {
+        const respostaCadastro = await fetch(`http://localhost:8080/usuarios/${retornaNivelRequisicao()}/${sessionStorage.getItem('id')}`, {
+            method: "PUT",
+            body: JSON.stringify(dados),
+            headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
         });
+        /*
+        if (!respostaCadastro.status == 200) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro ao cadastrar',
+                showConfirmButton: false,
+                text: 'Por favor, revise os dados inseridos e tente novamente. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
+                footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>'
+            });
+        } else {
+            const usuario = await respostaCadastro.json();
+            salvarInformacoes(usuario)
+            //atualizarNivelIngles()
+        }
+            */
+    } catch (e) {
+        console.log(e)
     }
 }
 

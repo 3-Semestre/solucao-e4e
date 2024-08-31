@@ -1,5 +1,11 @@
-async function buscarAlunos() {
-    const resposta = await fetch("http://localhost:8080/usuarios/aluno", {
+const id = sessionStorage.getItem('id')
+const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
+const token = sessionStorage.getItem('token')
+
+async function buscarProfessor() {
+    cardsProfessor = document.getElementById("listagem")
+
+    const resposta = await fetch("http://localhost:8080/usuarios/professor", {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -7,30 +13,31 @@ async function buscarAlunos() {
         }
     });
 
-    const listaAlunos = await resposta.json();
+    if (resposta.status == 201) {
+        cardsProfessor.innerHTML = "Não há professores cadastrados"
+    } else {
+        const listaProfessors = await resposta.json();
 
-    cardsAlunos = document.getElementById("listagem")
-
-    cardsAlunos.innerHTML += listaAlunos.map((aluno) => {
-        return `
+        cardsProfessor.innerHTML += listaProfessors.map((Professor) => {
+            return `
       <div class="dados-student" id="card_dados">
                 <div class="photo-student">
                     <img src="../imgs/perfil_blue.png" alt="">
-                    <p>${aluno.nomeCompleto}</p>
+                    <p>${Professor.nomeCompleto}</p>
                 </div>
-                <div class="lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})" id="lixeira_${aluno.id}">
-                    <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirALuno()">
+                <div class="lixeira" onclick="confirmacaoDeleteProfessor(${Professor.id})" id="lixeira_${Professor.id}">
+                    <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirProfessor()">
                 </div>
             </div>
             <hr class="line">
     `
-
-    }).join('');
+        }).join('');
+    }
 }
 
-function confirmacaoDeleteAluno(id) {
+function confirmacaoDeleteProfessor(id) {
     Swal.fire({
-        title: "Deseja excluir esse aluno?",
+        title: "Deseja excluir esse Professor?",
         showDenyButton: true,
         showCancelButton: true,
         confirmButtonText: "Sim",
@@ -43,8 +50,8 @@ function confirmacaoDeleteAluno(id) {
         color: '#333'
     }).then((result) => {
         if (result.isConfirmed) {
-            try{
-                deletarAluno(id)
+            try {
+                deletarProfessor(id)
             } catch (e) {
                 console.log(e)
             }
@@ -56,15 +63,15 @@ function confirmacaoDeleteAluno(id) {
 
 
 
-async function deletarAluno(id) {
+async function deletarProfessor(id) {
 
-    const respostaDelete = await fetch(`http://localhost:8080/usuarios/aluno/${id}`, {
+    const respostaDelete = await fetch(`http://localhost:8080/usuarios/Professor/${id}`, {
         method: "DELETE",
         headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
     });
 
 
-    
+
     console.log(respostaDelete);
 
     if (respostaDelete.status == 204) {
