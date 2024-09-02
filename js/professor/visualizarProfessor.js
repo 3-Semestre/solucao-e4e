@@ -3,7 +3,7 @@ const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
 const token = sessionStorage.getItem('token')
 
 async function buscarProfessor() {
-    cardsProfessor = document.getElementById("listagem")
+    const cardsProfessor = document.getElementById("listagem")
 
     const resposta = await fetch("http://localhost:8080/usuarios/professor", {
         method: 'GET',
@@ -13,13 +13,14 @@ async function buscarProfessor() {
         }
     });
 
-    if (resposta.status == 201) {
-        cardsProfessor.innerHTML = "Não há professores cadastrados"
-    } else {
-        const listaProfessors = await resposta.json();
+    if (resposta.status == 204) {
+        cardsProfessor.innerHTML += "<span>Não há alunos cadastrados...<span> <br/>Cadastre um novo clicando <a href='cadastrar.html?tipo=professor'>aqui</a>"
+        return
+    }
+    const listaProfessors = await resposta.json();
 
-        cardsProfessor.innerHTML += listaProfessors.map((Professor) => {
-            return `
+    cardsProfessor.innerHTML += listaProfessors.map((Professor) => {
+        return `
       <div class="dados-student" id="card_dados">
                 <div class="photo-student">
                     <img src="../imgs/perfil_blue.png" alt="">
@@ -31,8 +32,7 @@ async function buscarProfessor() {
             </div>
             <hr class="line">
     `
-        }).join('');
-    }
+    }).join('');
 }
 
 function confirmacaoDeleteProfessor(id) {
