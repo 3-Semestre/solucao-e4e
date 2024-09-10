@@ -9,10 +9,8 @@ body {
     display: flex;
 }
 
-.space-professor{
+.spaces-professor{
     width: auto;
-    margin-left: 2px;
-    margin-right: auto;
     display: inline-block;
     font-size: 25px;
 }
@@ -157,14 +155,14 @@ body {
 
 .line-box {
     border: 4px solid #072B59;
-    height: 15vh;
+    height: 16vh;
     border-radius: 10px;
     position: relative;
     bottom: 2vh;
 }
 
 .box-kpis {
-    width: 22vw;
+    width: 20vw;
     height: 25vh;
     border: 1px solid #072B59;
     border-radius: 10px;
@@ -241,12 +239,7 @@ body {
 
 .box-chart {
     width: 30vw;
-    height: 60vh;
-    border: 1px solid #072B59;
-    border-radius: 10px;
-    box-shadow: 5px 5px 5px #888;
     display: flex;
-    padding: 2rem;
     position: relative;
     flex-direction: column;
 }
@@ -266,81 +259,27 @@ body {
 
 }
 
-.none {
-    color: rgba(255, 255, 255, 0);
-}
-
-.box-kpis-none {
-    width: 30vw;
-    height: 20vh;
-    border: 1px solid rgba(255, 255, 255, 0);
-    border-radius: 5%;
-    box-shadow: 5px 5px 5px rgba(255, 255, 255, 0);
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 1rem;
-    color: rgba(255, 255, 255, 0);
-}
-
-.line-box-none {
-    border: 4px solid ;
-    height: 15vh;
-    border-radius: 10px;
-    position: relative;
-    bottom: 2vh;
-}
-
-.bom-none {
-    color: rgba(255, 255, 255, 0);
-}
-
-.seta-none {
-    width: 0;
-    height: 0;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-bottom: 7px solid rgba(255, 255, 255, 0);
-    position: relative;
-    right: 1.5vw;
-}
-
-.kpis2 {
-    width: 100%;
-    display: flex;
-    position: relative;
-    justify-content: space-between;
-    bottom: 25vh;
-}
-
 .box-chart2 {
-    width: 100%;
-    height: 90vh;
+    width: 60vw;
     border: 1px solid #072B59;
     border-radius: 10px;
     box-shadow: 5px 5px 5px #888;
     display: flex;
-    padding-top: 40px;
-    padding-right: 40px;
-    padding-bottom: 40px;
-    padding-left: 40px;
+    padding-top: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    padding-left: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: auto;
 }
 
-#meuGrafico {
-    width: 10vw;
-
-}
-
 .box-buttons {
     display: flex;
     gap: 1rem;
     position: relative;
-    top: 4vh;
+    bottom: 4vh;
     height: 5vh;
     justify-content: center;
 }
@@ -412,6 +351,29 @@ body {
 
 .hidden {
     display: none;
+}
+
+.select-professor {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+}
+
+.select-professor select {
+    width: 26.5vw;
+    height: 5vh;
+    color: #072B59;
+    border-radius: 5px;
+    border: 1px solid #072B59;  
+}
+
+.select-professor{
+    font-size: 20px;
+}
+
+#professores{
+    font-size: 20px;
+    font-weight: bolder;
 }
 
 
