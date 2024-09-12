@@ -9,6 +9,20 @@ async function buscarDados() {
     });
 
     const respostaDados = await resposta.json();
+    var qtdAulasConcluidas = respostaDados[0].qtd_Aulas_Concluidas
+    var qtdAulasNaoConcluidas = respostaDados[0].qtd_Aulas_Nao_concluidas
+
+    console.log("Pegando quantidade de aulas concluidas e não concluidas:")
+    console.log(respostaDados)
+    if(qtdAulasConcluidas == null){
+        console.log("A quantidade de aulas concluidas é nula. Convertendo para 1.")
+        qtdAulasConcluidas = 1;
+    } 
+    
+    if(qtdAulasNaoConcluidas == null){
+        console.log("A quantidade de aulas não concluidas é nula. Convertendo para 1.")
+        qtdAulasNaoConcluidas = 1
+    }
 
     const dados = {
         labels: [
@@ -17,7 +31,7 @@ async function buscarDados() {
         ],
         datasets: [{
             label: 'Agendamentos Concluídos',
-            data: [respostaDados[0].qtd_Aulas_Concluidas, respostaDados[0].qtd_Aulas_Nao_concluidas],
+            data: [qtdAulasConcluidas, qtdAulasNaoConcluidas],
             backgroundColor: [
                 'rgba(7, 43, 89, 1)',
                 'rgba(52, 209, 191, 1)'

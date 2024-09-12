@@ -40,7 +40,7 @@ async function autenticar() {
         console.log(usuario)
         sessionStorage.id = usuario.id;
         sessionStorage.cpf = usuario.cpf;
-        sessionStorage.email = usuario.email; sessionStorage
+        sessionStorage.email = usuario.email; 
         sessionStorage.nivel_acesso = usuario.nivelAcesso.nome;
         sessionStorage.nivel_acesso_cod = usuario.nivelAcesso.id;
         sessionStorage.nome_completo = usuario.nomeCompleto;

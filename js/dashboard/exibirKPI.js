@@ -1,7 +1,6 @@
 async function plotarProximosAgendamentos() {
-    const cardsAlunos = document.getElementById("agendamentos");
 
-    const resposta = await fetch("http://localhost:7000/dashboard/ultimos-3-agendamentos-professor", {
+    const resposta = await fetch(`http://localhost:7000/dashboard/ultimos-3-agendamentos-professor/${sessionStorage.getItem('id')}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -15,7 +14,8 @@ async function plotarProximosAgendamentos() {
     }
 
     const listaAgendamentos = await resposta.json();
-
+    const cardsAlunos = document.getElementById("agendamentos");
+    
     const diasSemana = {
         "Sunday": "Domingo",
         "Monday": "Segunda-feira",
@@ -67,7 +67,7 @@ async function plotarProximosAgendamentos() {
 
 async function plotarKPIs() {
 
-    const proximosAgendamentosFetch = await fetch("http://localhost:7000/dashboard/qtd-agendamento-mes-professor", {
+    const proximosAgendamentosFetch = await fetch("http://localhost:8080/dashboard/qtd-agendamento-mes-professor", {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -75,7 +75,7 @@ async function plotarKPIs() {
         }
     });
     
-    const alunosNovosFetch = await fetch("http://localhost:7000/dashboard/qtd-agendamento-mes-professor", {
+    const alunosNovosFetch = await fetch("http://localhost:8080/dashboard/qtd-novos-alunos-mes", {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -83,7 +83,7 @@ async function plotarKPIs() {
         }
     });
 
-    const confirmacaoAgendamento = await fetch("http://localhost:7000/dashboard/tempo-confirmacao", {
+    const confirmacaoAgendamento = await fetch("http://localhost:8080/dashboard/tempo-confirmacao", {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -91,7 +91,7 @@ async function plotarKPIs() {
         }
     });
 
-    const cancelamento = await fetch("http://localhost:7000/dashboard/qtd-cancelamento-alunos", {
+    const cancelamento = await fetch("http://localhost:8080/dashboard/qtd-cancelamento-alunos", {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -104,13 +104,12 @@ async function plotarKPIs() {
     const respostaConfirmacaoAgendamento = await confirmacaoAgendamento.json();
     const respostaCancelamento = await cancelamento.json();
 
-    /* Poor Debbuging practise
     console.log("PLOTANDO KPIS: ")
     console.log(`Novos agendamentos: ${respostaProximosAgendamentos}`)
     console.log(`Alunos Novos: ${respostaAlunosNovos}`)
     console.log(`Confirmacao Agendamento: ${respostaConfirmacaoAgendamento}`)
     console.log(`Resposta Cancelamento : ${respostaCancelamento}`)
-    */
+    
 
     const cardNovoAgendamento = document.getElementById("novos-agendamentos");
 
