@@ -9,7 +9,7 @@ resultados = [];
 function carregarHeadersTabela() {
     const tabela = document.getElementById("tabela_agendamento")
     switch (nivel_acesso_cod) {
-        case "1":
+        case "3":
             tabela.innerHTML += `
             <thead>
                     <tr>
@@ -41,7 +41,7 @@ function carregarHeadersTabela() {
             </thead>
             `
             break;
-        case "3":
+        case "1":
             tabela.innerHTML += `
             <thead>
                     <tr>
@@ -70,6 +70,10 @@ async function buscarTodosAgendamentos() {
 
     if (!resposta.ok) {
         throw new Error('Erro ao buscar dados do servidor');
+    } else if (resposta.status == 204) {
+        const tabela = document.getElementById("tabela_agendamento");
+        tabela.innerHTML = 'Não há agendamentos registrados';
+        return
     }
 
     const dados = await resposta.json();
@@ -77,12 +81,13 @@ async function buscarTodosAgendamentos() {
     if (!dados || dados.length === 0) {
         throw new Error('Dados não encontrados');
     }
+
     preencherTabela(dados)
 }
 
 function mudarPagina(pagina) {
     if (pagina < 1 || pagina > Math.ceil(totalDados / resultadosPorPagina)) return;
-    
+
     paginaAtual = pagina;
 
     const tabela = document.getElementById("tabela_agendamento");
@@ -91,7 +96,7 @@ function mudarPagina(pagina) {
 
     const inicio = (pagina - 1) * resultadosPorPagina;
     const fim = Math.min(inicio + resultadosPorPagina, totalDados);
-    
+
     for (let i = inicio; i < fim; i++) {
         tabela.innerHTML += resultados[i];
     }
@@ -109,7 +114,7 @@ function atualizarPaginacao() {
             </a>
         </li>
     `;
-    
+
     const totalPaginas = Math.ceil(totalDados / resultadosPorPagina);
     for (let i = 1; i <= totalPaginas; i++) {
         paginacao.innerHTML += `
@@ -136,7 +141,7 @@ function preencherTabela(dados) {
     dados.map((agendamento) => resultados.push(`
         <tbody>
             <tr>
-                <td ${nivel_acesso_cod === "3" ? 'style="display: none;"' : ''}>${agendamento.aluno.nomeCompleto}</td>
+                <td ${nivel_acesso_cod != "1" ? 'style="display: none;"' : ''}>${agendamento.aluno.nomeCompleto}</td>
                 <td>${agendamento.assunto}</td>
                 <td>${agendamento.professor.nomeCompleto}</td>
                 <td>${formatarData(agendamento.data)}</td>
@@ -166,5 +171,4 @@ function formatarHorario(horario) {
 
 window.onload = function () {
     carregarHeadersTabela();
-    buscarTodosAgendamentos();
 };

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../../css/Aluno/visualizarAgendamentos.css">
     <link rel="stylesheet" href="../../css/Aluno/tabelaAgendamentos.css">
 
-    <script defer src="../../js/script.js"></script>
+    <script defer src="../js/script.js"></script>
     <script src="../../js/aluno/exibirAgendamentos.js"></script>
 
 
@@ -24,25 +24,49 @@
         <ul class="nav-links">
             <li>
                 <a href="#" id="toggle-btn">
-                    <img src="../../imgs/menu-aberto.png" alt="">
+                    <img src="../imgs/menu-aberto.png" alt="">
                 </a>
             </li>
             <li>
-                <a href="dashboardProfessor.html">
-                    <img src="../../imgs/botao-home.png" alt="">
+                <a id="dashboard_href" href="">
+                    <img src="../imgs/botao-home.png" alt="">
                     <span>Início</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <img src="../../imgs/calendar-days.png" alt="">
-                    <button class="dropdown-btn">Calendário
+                    <img src="../imgs/calendar-days.png" alt="">
+                    <button class="dropdown-btn">Agenda
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container hidden">
-                        <a href="#" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
-                        <a href="agendamentosAluno.html" id="agenda_meus_agendamentos_navbar">Agendamentos</a>
-                        <a href="historicoAgendamentoAluno.html" id="agenda_historico_navbar">Histórico</a>
+                        <a href="calendarioAluno.html" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
+                        <a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar">Agendamentos</a>
+                        <a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar">Histórico</a>
+                    </div>
+                </a>
+            </li>
+            <li id="alunos_navbar">
+                <a href="#">
+                    <img src="../imgs/students.png" alt="">
+                    <button class="dropdown-btn">Alunos
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="visualizar.html?tipo=aluno">Visualizar</a>
+                        <a href="cadastrar.html?tipo=aluno">Cadastrar</a>
+                    </div>
+                </a>
+            </li>
+            <li id="professores_navbar">
+                <a href="#">
+                    <img src="../imgs/professor.png" alt="">
+                    <button class="dropdown-btn">Professores
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="visualizar.html?tipo=professor">Visualizar</a>
+                        <a href="cadastrar.html?tipo=professor">Cadastrar</a>
                     </div>
                 </a>
             </li>
@@ -53,19 +77,20 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="http://localhost:8086/moodle/moodle-latest-404/moodle/login/index.php" target="_blank">
                     <img src="../imgs/moodle.png" alt="">
                     <span>Moodle</span>
                 </a>
             </li>
             <li>
-                <a href="../login2.html">
+                <a href="login2.html">
                     <img src="../imgs/sair.png" alt="">
                     <span>Sair</span>
                 </a>
             </li>
         </ul>
     </nav>
+
     <div class="conteudo" id="listagem">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -88,13 +113,11 @@
                 </div>
                 <div class="mb-3 d-flex justify-content-center align-items-center">
                     <label for="input_cpf" class="form-label me-3" id="cpf">Horário de:</label>
-                    <input type="time" class="form-control" id="input_cpf"
-                        required>
+                    <input type="time" class="form-control" id="input_cpf" required>
                 </div>
                 <div class="mb-3 d-flex justify-content-center align-items-center">
                     <label for="input_cpf" class="form-label me-3" id="cpf">até:</label>
-                    <input type="time" class="form-control" id="input_cpf"
-                        required>
+                    <input type="time" class="form-control" id="input_cpf" required>
                 </div>
                 <div class="mb-3 d-flex justify-content-center align-items-center">
                     <label for="input_cpf" class="form-label me-3" id="cpf">Assunto:</label>
@@ -104,16 +127,30 @@
             </div>
             <table class="tabela" id="tabela_agendamento">
                 <table class="tabela" id="tabela_agendamento">
-            </table>
-            <ul class="pagination" id="paginacao_tabela">
-                <li class="page-item">
-                  <a class="page-link" href="#" aria-label="Anterior">
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">Anterior</span>
-                  </a>
-                </li>
-              </ul>
+                </table>
+                <ul class="pagination" id="paginacao_tabela">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Anterior</span>
+                        </a>
+                    </li>
+                </ul>
         </div>
 </body>
 
 </html>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const tipo = urlParams.get('tipo');
+
+    if(tipo == "passado"){
+        buscarTodosAgendamentos()
+    } else{
+        console.log("aaaaaaaa")
+    }
+</script>
+<!--
+Trash bean Icon
+<a href="https://www.flaticon.com/free-icons/trash-can" title="trash can icons">Trash can icons created by Freepik - Flaticon</a>
+-->

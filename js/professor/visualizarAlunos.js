@@ -1,4 +1,6 @@
 async function buscarAlunos() {
+    const cardsAlunos = document.getElementById("listagem")
+
     const resposta = await fetch("http://localhost:8080/usuarios/aluno", {
         method: 'GET',
         headers: {
@@ -7,9 +9,12 @@ async function buscarAlunos() {
         }
     });
 
-    const listaAlunos = await resposta.json();
+    if (resposta.status == 204) {
+        cardsAlunos.innerHTML += "<span>Não há alunos cadastrados...<span> <br/>Cadastre um novo clicando <a href='cadastrar.html?tipo=aluno'>aqui</a>"
+        return
+    }
 
-    cardsAlunos = document.getElementById("listagem")
+    const listaAlunos = await resposta.json();
 
     cardsAlunos.innerHTML += listaAlunos.map((aluno) => {
         return `
@@ -18,17 +23,16 @@ async function buscarAlunos() {
                     <img src="../imgs/perfil_blue.png" alt="">
                     <p>${aluno.nomeCompleto}</p>
                 </div>
-                <div class="lixeira" onclick="confirmacaoDelete(${aluno.id})" id="lixeira_${aluno.id}">
+                <div class="lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})" id="lixeira_${aluno.id}">
                     <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirALuno()">
                 </div>
             </div>
             <hr class="line">
     `
-
     }).join('');
 }
 
-function confirmacaoDelete(id) {
+function confirmacaoDeleteAluno(id) {
     Swal.fire({
         title: "Deseja excluir esse aluno?",
         showDenyButton: true,
@@ -43,7 +47,7 @@ function confirmacaoDelete(id) {
         color: '#333'
     }).then((result) => {
         if (result.isConfirmed) {
-            try{
+            try {
                 deletarAluno(id)
             } catch (e) {
                 console.log(e)
@@ -64,7 +68,7 @@ async function deletarAluno(id) {
     });
 
 
-    
+
     console.log(respostaDelete);
 
     if (respostaDelete.status == 204) {

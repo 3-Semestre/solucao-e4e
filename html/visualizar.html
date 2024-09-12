@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizar Alunos</title>
+    <title>Visualizar</title>
     <link rel="stylesheet" href="../css/visualizarAlunos.css">
 
     <script defer src="../js/script.js"></script>
@@ -28,7 +28,7 @@
                 </a>
             </li>
             <li>
-                <a href="dashboardProfessor.html">
+                <a id="dashboard_href" href="#">
                     <img src="../imgs/botao-home.png" alt="">
                     <span>Início</span>
                 </a>
@@ -40,9 +40,9 @@
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container hidden">
-                        <a href="#" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
-                        <a href="#" id="agenda_meus_agendamentos_navbar">Meus Agendamentos</a>
-                        <a href="#" id="agenda_historico_navbar">Histórico</a>
+                        <a href="calendarioAluno.html" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
+                        <a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar">Agendamentos</a>
+                        <a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar">Histórico</a>
                     </div>
                 </a>
             </li>
@@ -53,8 +53,8 @@
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container hidden">
-                        <a href="visualizarAlunos.html">Visualizar</a>
-                        <a href="cadastrarPerfilAluno.html">Cadastrar</a>
+                        <a href="visualizar.html?tipo=aluno">Visualizar</a>
+                        <a href="cadastrar.html?tipo=aluno">Cadastrar</a>
                     </div>
                 </a>
             </li>
@@ -65,8 +65,8 @@
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container hidden">
-                        <a href="atualizarPerfilProfessor.html">Visualizar</a>
-                        <a href="#">Cadastrar</a>
+                        <a href="visualizar.html?tipo=professor">Visualizar</a>
+                        <a href="cadastrar.html?tipo=professor">Cadastrar</a>
                     </div>
                 </a>
             </li>
@@ -77,7 +77,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="http://localhost:8086/moodle/moodle-latest-404/moodle/login/index.php" target="_blank">
                     <img src="../imgs/moodle.png" alt="">
                     <span>Moodle</span>
                 </a>
@@ -116,7 +116,7 @@
             <div class="inputs">
                 <div class="mb-3 d-flex justify-content-center align-items-center">
                     <label for="input_nome" class="form-label me-3">Nome:</label>
-                    <input type="text" class="form-control" id="input_nome" placeholder="Nome do Aluno" required>
+                    <input type="text" class="form-control" id="input_nome" placeholder="Nome" required>
                 </div>
                 <div class="mb-3 d-flex justify-content-center align-items-center">
                     <label for="input_cpf" class="form-label me-3" id="cpf">CPF:</label>
@@ -153,6 +153,7 @@
     const tipo = urlParams.get('tipo');
 
     document.getElementById("tipo-visualizacao").innerHTML = Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()
+    document.title += ` ${Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()}`;
 
     document.getElementById('input_cpf').addEventListener('input', function (e) {
         let value = e.target.value;

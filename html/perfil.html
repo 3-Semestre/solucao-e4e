@@ -29,7 +29,7 @@
                 </a>
             </li>
             <li>
-                <a href="dashboardProfessor.html">
+                <a id="dashboard_href" href="#">
                     <img src="../imgs/botao-home.png" alt="">
                     <span>Início</span>
                 </a>
@@ -41,9 +41,9 @@
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container hidden">
-                        <a href="#" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
-                        <a href="agendamentos.html" id="agenda_meus_agendamentos_navbar">Agendamentos</a>
-                        <a href="Aluno/historicoAgendamentoAluno.html" id="agenda_historico_navbar">Histórico</a>
+                        <a href="calendarioAluno.html" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
+                        <a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar">Agendamentos</a>
+                        <a href="agendamentos.html?tipo=futuro" id="agenda_historico_navbar">Histórico</a>
                     </div>
                 </a>
             </li>
@@ -54,8 +54,8 @@
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container hidden">
-                        <a href="visualizarAlunos.html">Visualizar</a>
-                        <a href="cadastrarPerfilAluno.html">Cadastrar</a>
+                        <a href="visualizar.html?tipo=aluno">Visualizar</a>
+                        <a href="cadastrar.html?tipo=aluno">Cadastrar</a>
                     </div>
                 </a>
             </li>
@@ -66,8 +66,8 @@
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container hidden">
-                        <a href="atualizarPerfilProfessor.html">Visualizar</a>
-                        <a href="#">Cadastrar</a>
+                        <a href="visualizar.html?tipo=professor">Visualizar</a>
+                        <a href="cadastrar.html?tipo=professor">Cadastrar</a>
                     </div>
                 </a>
             </li>
@@ -78,7 +78,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="http://localhost:8086/moodle/moodle-latest-404/moodle/login/index.php" target="_blank">
                     <img src="../imgs/moodle.png" alt="">
                     <span>Moodle</span>
                 </a>
@@ -170,7 +170,7 @@
                         <div class="title-course">
                             <p>Curso</p>
                         </div>
-                        <div class="horario">
+                        <div class="horario" id="div_nivel_nicho">
                             <div class="mb-3" id="nivelCheckboxList">
                                 <label class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>
                             </div>
@@ -215,6 +215,23 @@
 </html>
 
 <script>
+
+    if (sessionStorage.getItem("nivel_acesso_cod") == "1") {
+        const horario_atendimento_form = document.getElementById("horario_atendimento_form");
+        const horario_intervalo_form = document.getElementById("horario_intervalo_form");
+        const horario_card_titulo = document.getElementById("horario_card_titulo");
+        const horario_card = document.getElementById("horario_card");
+
+        horario_atendimento_form.style.display = "none";
+        horario_intervalo_form.style.display = "none";
+        horario_card_titulo.style.display = "none";
+        horario_card.style.display = "none";
+        div_nivel_nicho = document.getElementById("div_nivel_nicho")
+        div_nivel_nicho.style.display = "flex"
+        div_nivel_nicho.style.flexDirection = "column"
+        div_nivel_nicho.style.gap = "0px"
+    }
+
 
     function editarPerfil() {
         const botaoCancela = document.getElementById("botaoCancelar");
