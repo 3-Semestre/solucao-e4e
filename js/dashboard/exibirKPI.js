@@ -1,20 +1,30 @@
-async function plotarProximosAgendamentos() {
+async function plotarProximosAgendamentos(nivelAcesso) {
 
-    const resposta = await fetch(`http://localhost:7000/dashboard/ultimos-3-agendamentos-professor/${sessionStorage.getItem('id')}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-        }
-    });
+    if(nivelAcesso == "ALUNO"){
+        var resposta = await fetch(`http://localhost:7000/dashboard/ultimos-3-agendamentos-aluno/${sessionStorage.getItem('id')}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+    } else {
+        var resposta = await fetch(`http://localhost:7000/dashboard/ultimos-3-agendamentos-professor/${sessionStorage.getItem('id')}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+    }
 
+    const cardsAlunos = document.getElementById("agendamentos");
     if(resposta.status == 204){
-        cardsAlunos.innerHTML += "Não há agendamentos a serem realizados."
+        cardsAlunos.innerHTML = "Não há agendamentos a serem realizados."
         return
     }
 
     const listaAgendamentos = await resposta.json();
-    const cardsAlunos = document.getElementById("agendamentos");
     
     const diasSemana = {
         "Sunday": "Domingo",
@@ -65,7 +75,52 @@ async function plotarProximosAgendamentos() {
 }
 
 
-async function plotarKPIs() {
+async function plotarKPIsAluno() {
+
+    const top3MesesAula = await fetch(`http://localhost:7000/dashboard/top-3-meses-aluno/${sessionStorage.getItem('id')}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if(top3MesesAula.status !== 200){
+        cardsAlunos.innerHTML = "Não há top 3 meses realizados."
+        return
+    }
+    
+
+    const respostaTop3MesesAula = await top3MesesAula.json();
+
+    console.log("PLOTANDO KPIS: ")
+    console.log(`TOP 3 meses aula: ${respostaTop3MesesAula}`)
+    
+
+    const cardNovoAgendamento = document.getElementById("top3-meses");
+    const porcentagem = ["20,53", "70,00", "30,53"]
+
+    cardNovoAgendamento.innerHTML = respostaTop3MesesAula.map((top, index) => {
+                return `
+                <div class="box-kpis">
+                <div class="line-box">
+                </div>
+                <div class="content-kpis" id="alunos-novos">
+                    <p>${top.mes}</p>
+                    <h2>${top.quantidade_Aulas_Concluidas}</h2>
+                    <div class="variação">
+                        <div class="seta-cima">
+                        </div>
+                        <div class="porcentagem">
+                            <p class="bom">${porcentagem[index]} %</p>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            }).join('');
+}
+
+async function plotarKPIsProfessor() {
 
     const proximosAgendamentosFetch = await fetch("http://localhost:8080/dashboard/qtd-agendamento-mes-professor", {
         method: 'GET',
@@ -161,5 +216,10 @@ async function plotarKPIs() {
         </div>`;
 }
 
-plotarProximosAgendamentos()
-plotarKPIs()
+var nivelAcesso = sessionStorage.getItem('nivel_acesso') 
+plotarProximosAgendamentos(nivelAcesso)
+if(nivelAcesso !== "ALUNO"){
+    plotarKPIsProfessor()
+} else{
+    plotarKPIsAluno()
+}

@@ -1,5 +1,5 @@
 
-async function buscarDados() {
+async function buscarDadosProfessor() {
     const resposta = await fetch("http://localhost:7000/dashboard/qtd-conclusao", {
         method: 'GET',
         headers: {
@@ -55,7 +55,7 @@ async function buscarDados() {
     var pizzaChartAgendamento = new Chart(document.getElementById('pizzaChartAgendamento'), configuracao);
 }
 
-async function buscarDadosCancelamento() {
+async function buscarDadosCancelamentoProfessor() {
     const resposta = await fetch("http://localhost:7000/dashboard/taxa-cancelamento-mes", {
         method: 'GET',
         headers: {
@@ -64,8 +64,14 @@ async function buscarDadosCancelamento() {
         }
     });
 
+    if(resposta.status !== 200){
+        cardsAlunos.innerHTML = "Erro para plotar o gráfico vindo da API."
+        return
+    }
+
     const respostaDados = await resposta.json();
 
+    
     let dadosCancelamento = {
         labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
         datasets: [{
@@ -91,9 +97,55 @@ async function buscarDadosCancelamento() {
     var chartCancelamento = new Chart(document.getElementById('chartCancelamento'), chartCancelamentoConfig);
 
 }
+
+async function buscarDadosCancelamentoAluno() {
+    const resposta = await fetch(`http://localhost:7000/dashboard/visao-mes-aluno/${sessionStorage.getItem('id')}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const respostaDados = await resposta.json();
+
+    let aulasRealizadas = {
+        labels: [],
+        datasets: [{
+            label: 'Aulas Realizadas',
+            data: [],
+            fill: true,
+            backgroundColor: 'rgba(7, 43, 89, 0.5)',
+            borderColor: 'rgba(7, 43, 89, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    for (var i = 0; i < respostaDados.length; i++) {
+        aulasRealizadas.datasets[0].data.push(respostaDados[i].quantidade_Aulas_Concluidas);
+        aulasRealizadas.labels.push(respostaDados[i].mes)
+    }
+
+    var chartAulasRealizadasConfig = {
+        type: 'line',
+        data: aulasRealizadas,
+        options: {}
+    };
+
+    var chartAulasRealizadas= new Chart(document.getElementById('chartAulasRealizadas'), chartAulasRealizadasConfig);
+    window.chartAulasRealizadas = chartAulasRealizadas;
+}
+
 try {
-    buscarDados()
-    buscarDadosCancelamento()
+    if(nivelAcesso !== "ALUNO"){
+        buscarDadosProfessor()
+        buscarDadosCancelamentoProfessor()
+    } else {
+        buscarDadosCancelamentoAluno()
+    }
+    //buscarDados()
+    //buscarDadosCancelamento()
+    console.log(nivelAcesso)
 } catch (e) {
     console.log(e)
 }

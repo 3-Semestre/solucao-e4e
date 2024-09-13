@@ -11,6 +11,8 @@
     <script src="../js/mock/dashAluno.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
+    <script src="../js/dashboard/exibirKPI.js"></script>
+    <script src="../js/dashboard/plotarGrafico.js"></script>
 
     <!-- Importação do SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -147,7 +149,7 @@
         </div>
             <br><br>
             <div class="box-chart2">
-                <canvas id="chartCancelamento"></canvas>
+                <canvas id="chartAulasRealizadas"></canvas>
             </div>
         </div>
         <br><br>
@@ -162,7 +164,7 @@
         <br><br>
         <br><br>
         <br>
-        <div class="kpis2">
+        <div class="kpis2" id="top3-meses">
             <div class="box-kpis">
                 <div class="line-box">
                 </div>
