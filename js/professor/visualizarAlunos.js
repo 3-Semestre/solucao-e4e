@@ -67,8 +67,6 @@ async function deletarAluno(id) {
         headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
     });
 
-
-
     console.log(respostaDelete);
 
     if (respostaDelete.status == 204) {

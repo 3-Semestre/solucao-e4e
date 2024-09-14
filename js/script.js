@@ -57,5 +57,34 @@ function carregarNavBar() {
     }
 }
 
+async function desautenticarUsuario(){
+    const token = sessionStorage.getItem('token')
+    const nivelAcesso = sessionStorage.getItem('nivel_acesso_cod');
+
+    usuario = "";
+    switch (nivelAcesso) {
+        case "1":
+            usuario ="aluno"; 
+            break;
+        case "2":
+            usuario = "professor";
+            break;
+        case "3":
+            usuario = "representante-legal";
+            break;
+    }
+
+    const respostaDesautenticar = await fetch(`http://localhost:8080/usuarios/${usuario}/desautenticar/${sessionStorage.getItem('id')}`, {
+        method: "POST",
+        headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+    });
+
+    if(respostaDesautenticar.ok){
+        sessionStorage.clear()
+        console.log("ok")
+        window.location.href="login2.html"
+    }
+}
+
 carregarNavBar()
 puxarNome()
