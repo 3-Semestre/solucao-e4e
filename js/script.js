@@ -60,7 +60,7 @@ function carregarNavBar() {
 async function desautenticarUsuario(){
     const token = sessionStorage.getItem('token')
     const nivelAcesso = sessionStorage.getItem('nivel_acesso_cod');
-
+    const id = sessionStorage.getItem('id')
     usuario = "";
     switch (nivelAcesso) {
         case "1":
@@ -74,7 +74,7 @@ async function desautenticarUsuario(){
             break;
     }
 
-    const respostaDesautenticar = await fetch(`http://localhost:8080/usuarios/${usuario}/desautenticar/${sessionStorage.getItem('id')}`, {
+    const respostaDesautenticar = await fetch(`http://localhost:8080/usuarios/${usuario}/desautenticar/${id}}`, {
         method: "POST",
         headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
     });
