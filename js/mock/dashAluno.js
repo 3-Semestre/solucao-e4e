@@ -1,5 +1,5 @@
 function carregarGrafico(){
-const ctx = document.getElementById('chartCancelamento').getContext('2d');
+const ctx = document.getElementById('chartAulasRealizadas').getContext('2d');
     const myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -26,8 +26,14 @@ const ctx = document.getElementById('chartCancelamento').getContext('2d');
                 }
             }
         }
-    });}
+    });
+    window.myChart = myChart;
+}
 
     window.onload = function (){
-        carregarGrafico()
+        if (window.chartAulasRealizadas) {
+            console.log("O gráfico não será mockado pois já está sendo apresentado!") // Limpa a variável para evitar reutilização acidental
+        } else {
+            carregarGrafico()
+        }
     }

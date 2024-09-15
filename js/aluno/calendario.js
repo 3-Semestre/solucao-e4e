@@ -203,7 +203,7 @@ function deleteEvent() {
     confirmButtonText: 'Sim, cancelar',
     cancelButtonText: 'Não, manter',
     confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
+    cancelButtonColor: '#072B59',
     background: '#f2f2f2',
     color: '#333'
   }).then((result) => {
@@ -267,6 +267,15 @@ function buttons() {
     button.addEventListener('click', closeModal);
   });
 }
+
+const toggleBtn = document.getElementById('toggle-btn');
+const sidebar = document.querySelector('.sidebar');
+const calendario = document.querySelector('.calendario');
+
+toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('closed');
+    calendario.classList.toggle('menu-fechado');
+});
 
 buttons();
 load();
