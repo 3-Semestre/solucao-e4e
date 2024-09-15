@@ -29,19 +29,21 @@ async function exibirDadosPerfil() {
 }
 
 function preencherInput(dados) {
-    var nomeTitulo = document.getElementById("nome_titulo");
-    var nome = document.getElementById("nome");
-    var nomeInput = document.getElementById("input_nome");
-    var cpfInput = document.getElementById("input_cpf");
-    var dataNascimentoInput = document.getElementById("input_data");
-    var telefoneInput = document.getElementById("input_telefone");
-    var emailInput = document.getElementById("input_email");
-    var profissaoInput = document.getElementById("input_profissao");
-    var horario = document.getElementById("horario_card");
-    var horarioAtendimentoInicio = document.getElementById("input_atendimento_inicio");
-    var horarioAtendimentoFim = document.getElementById("input_atendimento_fim");
-    var horarioIntervaloInicio = document.getElementById("input_intervalo_inicio");
-    var horarioIntervaloFim = document.getElementById("input_intervalo_fim");
+    const nomeTitulo = document.getElementById("nome_titulo");
+    const nome = document.getElementById("nome");
+    const nomeInput = document.getElementById("input_nome");
+    const cpfInput = document.getElementById("input_cpf");
+    const dataNascimentoInput = document.getElementById("input_data");
+    const telefoneInput = document.getElementById("input_telefone");
+    const emailInput = document.getElementById("input_email");
+    const profissaoInput = document.getElementById("input_profissao");
+    const horario = document.getElementById("horario_card");
+    const horarioAtendimentoInicio = document.getElementById("input_atendimento_inicio");
+    const horarioAtendimentoFim = document.getElementById("input_atendimento_fim");
+    const horarioIntervaloInicio = document.getElementById("input_intervalo_inicio");
+    const horarioIntervaloFim = document.getElementById("input_intervalo_fim");
+    const nicho = document.getElementById("nicho");
+    const nivelIngles = document.getElementById("nivel");
 
     nomeTitulo.innerHTML = dados.nome_completo || '';
     nome.innerHTML = dados.nome_completo || '';
@@ -51,13 +53,15 @@ function preencherInput(dados) {
     telefoneInput.value = dados.telefone ? formatarCelular(dados.telefone) : '';
     emailInput.value = dados.email || '';
     profissaoInput.value = dados.profissao || '';
+    nicho.innerHTML = tratarNome(dados.nichos) || '';
+    nivelIngles.innerHTML = tratarNome(dados.niveis_Ingles) || '';
 
     horario.innerHTML = `${formatarHorario(dados.inicio || '')} às ${formatarHorario(dados.fim || '')}`;
 
-    horarioAtendimentoInicio.value = formatarHorario(dados.inicio || '');
-    horarioAtendimentoFim.value = formatarHorario(dados.fim || '');
-    horarioIntervaloInicio.value = formatarHorario(dados.pausa_inicio || '');
-    horarioIntervaloFim.value = formatarHorario(dados.pausa_fim || '');
+    horarioAtendimentoInicio.value = (dados.inicio || '');
+    horarioAtendimentoFim.value = (dados.fim || '');
+    horarioIntervaloInicio.value = (dados.pausa_inicio || '');
+    horarioIntervaloFim.value = (dados.pausa_fim || '');
 }
 
 async function buscarNivelIngles() {
@@ -151,8 +155,6 @@ function preencherNivelInglesUsuario(niveis) {
     } else {
         const opcaoSelect = Array.from(document.querySelector('select[name="nivel"]')).find(option => tratarNome(option.textContent.trim()) === niveisArray[0]);
 
-        console.log(opcaoSelect);
-
         if (opcaoSelect) {
             Array.from(document.querySelector('select[name="nivel"]')).forEach(option => option.selected = false);
 
@@ -178,8 +180,6 @@ function preencherNichoUsuario(nichos) {
         });
     } else {
         const opcaoSelect = Array.from(document.querySelector('select[name="nicho"]')).find(option => tratarNome(option.textContent.trim()) === nichosArray[0]);
-
-        console.log(opcaoSelect);
 
         if (opcaoSelect) {
             Array.from(document.querySelector('select[name="nicho"]')).forEach(option => option.selected = false);
