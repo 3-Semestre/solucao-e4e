@@ -44,7 +44,7 @@ body {
 
 .nav-links li {
     padding: 15px;
-    margin: 0.8em auto;
+    margin: 0.6em auto;
 }
 
 .nav-links a {
@@ -340,7 +340,6 @@ body {
     display: flex;
     gap: 1rem;
     position: relative;
-    top: 4vh;
     height: 5vh;
     justify-content: center;
 }

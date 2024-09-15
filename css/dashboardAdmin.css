@@ -35,14 +35,13 @@ body {
 }
 
 .nav-links {
-    margin-top: 2em;
     padding: 0;
     list-style: none;
 }
 
 .nav-links li {
     padding: 15px;
-    margin: 0.8em auto;
+    margin: 0.6em auto;
 }
 
 .nav-links a {
@@ -150,7 +149,8 @@ body {
 
 .content-kpis p {
     position: relative;
-    top: 2.5vh;
+    font-size: 20px;
+    top: 1.5vh;
 }
 
 .line-box {
@@ -158,12 +158,11 @@ body {
     height: 16vh;
     border-radius: 10px;
     position: relative;
-    bottom: 2vh;
 }
 
 .box-kpis {
     width: 20vw;
-    height: 25vh;
+    height: 23vh;
     border: 1px solid #072B59;
     border-radius: 10px;
     box-shadow: 5px 5px 5px #888;
@@ -303,6 +302,7 @@ body {
     font-weight: bold;
     color: #072B59;
     position: relative;
+    font-size: 25px;
     left: 1vw;
     bottom: 1vh !important;
 }
