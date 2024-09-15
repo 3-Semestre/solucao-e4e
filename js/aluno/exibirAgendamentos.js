@@ -161,20 +161,6 @@ function atualizarBotoesPaginacao(total, atual) {
     paginacao.appendChild(proximo);
 }
 
-// Funções auxiliares para formatar data e horário
-function formatarData(data) {
-    const [ano, mes, dia] = data.split('-');
-    return `${dia}/${mes}/${ano}`;
-}
-
-function formatarHorario(horario) {
-    const [hora, minuto] = horario.split(':');
-    const horaInt = parseInt(hora, 10);
-    const periodo = horaInt >= 12 ? 'PM' : 'AM';
-    const horaFormatada = horaInt % 12 || 12;
-    return `${horaFormatada}:${minuto} ${periodo}`;
-}
-
 window.onload = function () {
     carregarHeadersTabela();
 };

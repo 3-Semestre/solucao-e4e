@@ -86,5 +86,41 @@ async function desautenticarUsuario(){
     }
 }
 
+// Funções auxiliares para formatar data e horário
+function formatarData(data) {
+    const [ano, mes, dia] = data.split('-');
+    return `${dia}/${mes}/${ano}`;
+}
+
+function formatarHorario(horario) {
+    const [hora, minuto] = horario.split(':');
+    const horaInt = parseInt(hora, 10);
+    const periodo = horaInt >= 12 ? 'PM' : 'AM';
+    const horaFormatada = horaInt % 12 || 12;
+    return `${horaFormatada}:${minuto} ${periodo}`;
+}
+
+function tratarNome(nichoNome) {
+    let nomeTratado = nichoNome.replace(/_/g, ' ');
+
+    let palavras = nomeTratado.split(' ');
+
+    palavras = palavras.map(palavra => {
+        return palavra.charAt(0).toUpperCase() + palavra.slice(1).toLowerCase();
+    });
+
+    nomeTratado = palavras.join(' ');
+
+    return nomeTratado;
+}
+
+function formatarCelular(telefone) {
+    let value = telefone;
+    value = value.replace(/\D/g, '');
+    value = value.replace(/(\d{2})(\d)/, '+$1 $2');
+    value = value.replace(/(\d{5})(\d)/, '$1-$2');
+    return value.substring(0, 15);
+}
+
 carregarNavBar()
 puxarNome()
