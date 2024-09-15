@@ -3,7 +3,7 @@ const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
 const token = sessionStorage.getItem('token')
 
 async function buscarProfessor() {
-    const cardsProfessor = document.getElementById("listagem")
+    const cardsProfessor = document.getElementById("listagem_usuarios")
 
     const resposta = await fetch("http://localhost:8080/usuarios/professor", {
         method: 'GET',
