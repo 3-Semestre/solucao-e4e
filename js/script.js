@@ -61,6 +61,7 @@ async function desautenticarUsuario(){
     const token = sessionStorage.getItem('token')
     const nivelAcesso = sessionStorage.getItem('nivel_acesso_cod');
     const id = sessionStorage.getItem('id')
+    console.log(id)
     usuario = "";
     switch (nivelAcesso) {
         case "1":
@@ -74,7 +75,7 @@ async function desautenticarUsuario(){
             break;
     }
 
-    const respostaDesautenticar = await fetch(`http://localhost:8080/usuarios/${usuario}/desautenticar/${id}}`, {
+    const respostaDesautenticar = await fetch(`http://localhost:8080/usuarios/${usuario}/desautenticar/${id}`, {
         method: "POST",
         headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
     });
@@ -86,7 +87,7 @@ async function desautenticarUsuario(){
     }
 }
 
-// Funções auxiliares para formatar data e horário
+// Funções auxiliares
 function formatarData(data) {
     const [ano, mes, dia] = data.split('-');
     return `${dia}/${mes}/${ano}`;
@@ -100,8 +101,8 @@ function formatarHorario(horario) {
     return `${horaFormatada}:${minuto} ${periodo}`;
 }
 
-function tratarNome(nichoNome) {
-    let nomeTratado = nichoNome.replace(/_/g, ' ');
+function tratarNome(nome) {
+    let nomeTratado = nome.replace(/_/g, ' ');
 
     let palavras = nomeTratado.split(' ');
 

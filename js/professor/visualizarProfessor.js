@@ -27,7 +27,7 @@ async function buscarProfessor() {
                     <p>${Professor.nomeCompleto}</p>
                 </div>
                 <div class="lixeira" onclick="confirmacaoDeleteProfessor(${Professor.id})" id="lixeira_${Professor.id}">
-                    <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirProfessor()">
+                    <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="confirmacaoDeleteProfessor(${Professor.id})">
                 </div>
             </div>
             <hr class="line">

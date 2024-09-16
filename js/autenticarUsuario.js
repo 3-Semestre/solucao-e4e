@@ -2,9 +2,6 @@ async function autenticar() {
     const email = document.getElementById("input_email").value;
     const senha = document.getElementById("input_senha").value;
 
-    console.log(email)
-    console.log(senha)
-
     const dadosAluno = {
         "email": email,
         "senha": senha
@@ -15,8 +12,6 @@ async function autenticar() {
         body: JSON.stringify(dadosAluno),
         headers: { "Content-type": "application/json; charset=UTF-8" }
     });
-
-    console.log(respostaLogin)
 
     if (respostaLogin.status == 201) {
         const usuario = await respostaLogin.json();
@@ -37,7 +32,6 @@ async function autenticar() {
     }
 
     function salvarInformacoes(usuario) {
-        console.log(usuario)
         sessionStorage.id = usuario.id;
         sessionStorage.cpf = usuario.cpf;
         sessionStorage.email = usuario.email; 
