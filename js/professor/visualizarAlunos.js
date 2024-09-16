@@ -22,41 +22,50 @@ async function buscarAlunos() {
 
     cardsAlunos.innerHTML += listaAlunos.content.map((aluno) => {
         return `
-      <div class="dados-student" id="card_dados">
-        <div style="display: flex; flex-direction: column;">
-                <div class="photo-student">
-                    <img src="../imgs/perfil_blue.png" alt="">
-                    <p>${aluno.nome_completo}</p>
-                </div>
-                    <div class="detalhes-student">
-                        <div class="mb-3">
-                                    <label class="form-label">CPF:</label>
-                                    <input type="text" class="form-control" value="${aluno.cpf}" readonly>
-                                </div>
-                        <div>
-                        <p>Data de Nascimento:<p/><span>${aluno.data_nascimento}</span>
-                    </div>
-                    <div>
-                        <p>E-Mail<p/><span>${aluno.email}</span>
-                    </div>
-                    <div>
-                        <p>Telefone<p/><span>${aluno.telefone}</span>
-                    </div>
-                    <div>
-                        <p>Nível de Inglês<p/><span>${aluno.niveis_Ingles}</span>
-                    </div>
-                    <div>
-                        <p>Nicho<p/><span>${aluno.cpf}</span>
-                    </div>
-                </div>
-        </div>
-                <div class="lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})" id="lixeira_${aluno.id}">
-                    <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirALuno()">
-                </div>
+<div class="dados-student" id="card_dados">
+    <div class="header-student">
+        <img src="../imgs/perfil_blue.png" alt="Foto do Aluno">
+        <p>${aluno.nome_completo}</p>
+    </div>
+        
+    <div class="form-student">
+        <div class="personal-information">
+            <div class="form-group">
+                <label for="cpf">CPF:</label>
+                <input type="text" id="cpf" value="${aluno.cpf}" readonly>
             </div>
-            <hr class="line">
-    `
-    }).join('');
+            <div class="form-group">
+                <label for="data-nascimento">Data de Nascimento:</label>
+                <input type="date" id="data-nascimento" value="${aluno.data_nascimento}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" value="${aluno.email}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="telefone">Telefone:</label>
+                <input type="text" id="telefone" value="${formatarCelular(aluno.telefone)}" readonly>
+            </div>
+        </div>
+
+        <div class="course-information">
+            <div class="form-group">
+                <label for="nivel-ingles">Nível de Inglês:</label>
+                <input type="text" id="nivel-ingles" value="${aluno.niveis_Ingles}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="nicho">Nicho:</label>
+                <input type="text" id="nicho" value="${aluno.nichos}" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})">
+        <img src="../imgs/trash-bin.png" alt="Excluir aluno">
+    </div>
+</div>
+<hr class="line">
+`}).join('');
 }
 
 async function filtraUsuarios() {
@@ -79,7 +88,7 @@ async function filtraUsuarios() {
     const nicho = document.getElementById("nicho").value;
     const nivel = document.getElementById("nivel").value;
 
-    
+
     const data = {};
     if (nome) data.nome = nome;
     if (cpf) data.cpf = cpf;
@@ -89,7 +98,7 @@ async function filtraUsuarios() {
     console.log("Filtro a ser buscado")
     console.log(data)
 
-    const cardsUsuarios= document.getElementById("listagem_usuarios")
+    const cardsUsuarios = document.getElementById("listagem_usuarios")
 
     const resposta = await fetch(`http://localhost:8080/usuarios/filtro/${tipoNome}`, {
         method: 'POST',
@@ -115,7 +124,7 @@ async function filtraUsuarios() {
                     <p>${aluno.nomeCompleto}</p>
                 </div>
                 <div class="lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})" id="lixeira_${aluno.id}">
-                    <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirALuno()">
+                    <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})">
                 </div>
             </div>
             <hr class="line">
@@ -152,18 +161,22 @@ function confirmacaoDeleteAluno(id) {
 
 
 async function deletarAluno(id) {
-
     const respostaDelete = await fetch(`http://localhost:8080/usuarios/aluno/${id}`, {
         method: "DELETE",
         headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
     });
 
-    console.log(respostaDelete);
-
     if (respostaDelete.status == 204) {
-        window.location.reload()
         Swal.fire({ title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green' });
+        setTimeout(window.location.reload(), 2000);
     } else {
-        console.log("erro no delete")
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro ao cadastrar',
+            showConfirmButton: false,
+            text: 'Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
+            footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
+            timer: 1500
+        });
     }
 }

@@ -4,12 +4,29 @@ const token = sessionStorage.getItem('token');
 
 let paginaAtual = 0;
 let totalPaginas = 0;
+const urlParams = new URLSearchParams(window.location.search);
+const tempo = urlParams.get('tipo');
 
 function carregarHeadersTabela() {
     const tabela = document.getElementById("tabela_agendamento");
-    switch (nivel_acesso_cod) {
-        case "3":
-            tabela.innerHTML = `  <!-- Limpei o conteúdo da tabela -->
+    if (Number(nivel_acesso_cod) == 3 || Number(nivel_acesso_cod) == 2) {
+        if (tempo == "passado") {
+            tabela.innerHTML = `
+                <thead>
+                        <tr>
+                            <th>Nome do Aluno</th>
+                            <th>Assunto</th>
+                            <th>Professor</th>
+                            <th>Data</th>
+                            <th>Horário de Início</th>
+                            <th>Horário de Fim</th>
+                            <th>Status</th>
+                            <th>Visualizar Detalhes</th>
+                        </tr>
+                </thead>
+                `;
+        } else if (tempo == "futuro") {
+            tabela.innerHTML = `
             <thead>
                     <tr>
                         <th>Nome do Aluno</th>
@@ -23,24 +40,23 @@ function carregarHeadersTabela() {
                     </tr>
             </thead>
             `;
-            break;
-        case "2":
+        }
+    } else {
+        if (tempo == "passado") {
             tabela.innerHTML = `
-            <thead>
-                <tr>
-                    <th>Nome do Aluno</th>
-                    <th>Assunto</th>
-                    <th>Professor</th>
-                    <th>Data</th>
-                    <th>Horário de Início</th>
-                    <th>Horário de Fim</th>
-                    <th>Status</th>
-                    <th>Mudar Status</th>
-                </tr>
-            </thead>
-            `;
-            break;
-        case "1":
+                <thead>
+                        <tr>
+                            <th>Assunto</th>
+                            <th>Professor</th>
+                            <th>Data</th>
+                            <th>Horário de Início</th>
+                            <th>Horário de Fim</th>
+                            <th>Status</th>
+                            <th>Visualizar Detalhes</th>
+                        </tr>
+                </thead>
+                `;
+        } else if (tempo == "futuro") {
             tabela.innerHTML = `
             <thead>
                 <tr>
@@ -54,15 +70,16 @@ function carregarHeadersTabela() {
                 </tr>
             </thead>
             `;
-            break;
+        }
     }
     carregarAgendamentos(paginaAtual);
 }
 
+
 async function carregarAgendamentos(pagina) {
     if (pagina < 0 || (totalPaginas > 0 && pagina >= totalPaginas)) return; // Limita as páginas
 
-    const resposta = await fetch(`http://localhost:8080/agendamento/${nivel_acesso_cod}/${id}?page=${pagina}`, {
+    const resposta = await fetch(`http://localhost:8080/agendamento/historico/${id}?page=${pagina}&tempo=${tempo}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -79,8 +96,6 @@ async function carregarAgendamentos(pagina) {
     }
 
     const dados = await resposta.json();
-
-    console.log(dados);
 
     if (!dados || dados.content.length === 0) {
         throw new Error('Dados não encontrados');
@@ -105,17 +120,21 @@ function limparTabela() {
 function preencherTabela(dados) {
     const resultados = dados.map((agendamento) => `
         <tr>
-            <td ${nivel_acesso_cod != "3" ? 'style="display: none;"' : ''}>${agendamento.aluno ? agendamento.aluno.nomeCompleto : ''}</td>
+            <td ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>${agendamento.nome_Aluno}</td>
             <td>${agendamento.assunto}</td>
-            <td>${agendamento.professor ? agendamento.professor.nomeCompleto : ''}</td>
+            <td>${agendamento.nome_Professor}</td>
             <td>${formatarData(agendamento.data)}</td>
-            <td>${formatarHorario(agendamento.horarioInicio)}</td>
-            <td>${formatarHorario(agendamento.horarioFim)}</td>
-            <td>${Array.from(agendamento.status)[0] + agendamento.status.slice(1).toLocaleLowerCase()}</td>
+            <td>${formatarHorario(agendamento.horario_Inicio)}</td>
+            <td>${formatarHorario(agendamento.horario_Fim)}</td>
+            <td>${buscaUltimoStatus(buscaUltimoStatus(agendamento.status_List))}</td>
             <td>
-            <div class="editar-lapis" id="editar_${agendamento.id}" onclick="teste(${agendamento.id})">
+            ${tempo === "passado"
+            ? `<span onclick="buscarDetalhes(${agendamento.id})">Visualizar Detalhes</span>`
+            : `
+                <div class="editar-lapis" id="editar_${agendamento.id}" onclick="buscarDetalhes(${agendamento.id})">
                     <img src="../imgs/pen.png" alt="icone_editar">
                 </div>
+                `}
             </td>
         </tr>
     `).join('');
@@ -124,16 +143,87 @@ function preencherTabela(dados) {
     tabela.innerHTML += `<tbody>${resultados}</tbody>`;
 }
 
-function teste(id){
+async function buscarDetalhes(id) {
+    const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!respostaAgendamento.ok) {
+        throw new Error('Erro ao buscar dados do servidor');
+    }
+
+    const dadosAgendamentos = await respostaAgendamento.json();
+
+    const respostaHistorico = await fetch(`http://localhost:8080/historico-agendamento/${id}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!respostaHistorico.ok) {
+        throw new Error('Erro ao buscar dados do servidor');
+    }
+
+    const dadosHistorico = await respostaHistorico.json();
+
     Swal.fire({
         title: 'Detalhes do agendamento',
-        html: `<p>${id}This is a custom HTML content with <b>bold</b> text and <a href="#">a link</a>.</p>`,
-        // icon: 'info',
-        showCancelButton: true,
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel'
-      });
-      
+        html: `
+          <div style="text-align: left;">
+            <p><strong>Nome do aluno:</strong> ${dadosAgendamentos.aluno.nomeCompleto} <br />
+            <p><strong>Professor:</strong> ${dadosAgendamentos.professor.nomeCompleto} <br />
+            <p><strong>Assunto:</strong> ${dadosAgendamentos.assunto} <br />
+            <p><strong>Data:</strong> ${formatarData(dadosAgendamentos.data)} <br />
+            <p><strong>Horário de Início:</strong> ${formatarHorario(dadosAgendamentos.horarioInicio)} <br />
+            <p><strong>Horário de fim:</strong> ${formatarHorario(dadosAgendamentos.horarioFim)} <br />
+        
+            <div style="margin: 20px 0;">
+              <div style="display: flex; align-items: center;">
+                <div style="height: 15px; width: 15px; background-color: green; border-radius: 50%;"></div>
+                <div style="flex: 1; height: 4px; background-color: lightgray; margin: 0 10px;">
+                  <div style="width: 50%; height: 100%; background-color: green;"></div>
+                </div>
+                <span>${dadosHistorico[0].status.descricao}</span>
+              </div>
+            </div>
+        `,
+        confirmButtonText: 'Fechar',
+        showCancelButton: tempo !== 'passado',
+        cancelButtonText: 'Editar Status',
+    }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.cancel && tempo !== 'passado') {
+            Swal.fire({
+                title: 'Editar Status',
+                html: `
+              <label for="novoStatus" style="color: black">Selecione o novo status:</label>
+              <select id="novoStatus" class="swal2-input">
+                <option value="pendente">Pendente</option>
+                <option value="confirmado">Confirmado</option>
+                <option value="concluido">Concluído</option>
+                <option value="cancelado">Cancelado</option>
+              </select>
+            `,
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Salvar',
+                preConfirm: () => {
+                    const novoStatus = document.getElementById('novoStatus').value;
+                    return novoStatus;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const statusSelecionado = result.value;
+                    console.log(`Novo status selecionado: ${statusSelecionado}`);
+                }
+            });
+        }
+    });
 }
 
 function atualizarBotoesPaginacao(total, atual) {
@@ -164,3 +254,4 @@ function atualizarBotoesPaginacao(total, atual) {
 window.onload = function () {
     carregarHeadersTabela();
 };
+

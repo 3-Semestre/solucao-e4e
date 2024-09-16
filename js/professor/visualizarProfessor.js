@@ -5,7 +5,7 @@ const token = sessionStorage.getItem('token')
 async function buscarProfessor() {
     const cardsProfessor = document.getElementById("listagem_usuarios")
 
-    const resposta = await fetch("http://localhost:8080/usuarios/professor", {
+    const resposta = await fetch(`http://localhost:8080/usuarios/professor/paginado?page=${paginaAtual}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -14,24 +14,66 @@ async function buscarProfessor() {
     });
 
     if (resposta.status == 204) {
-        cardsProfessor.innerHTML += "<span>Não há alunos cadastrados...<span> <br/>Cadastre um novo clicando <a href='cadastrar.html?tipo=professor'>aqui</a>"
+        cardsProfessor.innerHTML += "<span>Não há professores cadastrados...<span> <br/>Cadastre um novo clicando <a href='cadastrar.html?tipo=professor'>aqui</a>"
         return
     }
     const listaProfessors = await resposta.json();
 
-    cardsProfessor.innerHTML += listaProfessors.map((Professor) => {
+    console.log(listaProfessors.content)
+
+    cardsProfessor.innerHTML += listaProfessors.content.map((professor) => {
         return `
       <div class="dados-student" id="card_dados">
-                <div class="photo-student">
-                    <img src="../imgs/perfil_blue.png" alt="">
-                    <p>${Professor.nomeCompleto}</p>
-                </div>
-                <div class="lixeira" onclick="confirmacaoDeleteProfessor(${Professor.id})" id="lixeira_${Professor.id}">
-                    <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirProfessor()">
-                </div>
+    <div class="header-student">
+        <img src="../imgs/perfil_blue.png" alt="Foto do professor">
+        <p>${professor.nome_completo}</p>
+    </div>
+        
+    <div class="form-student">
+        <div class="personal-information">
+            <div class="form-group">
+                <label for="cpf">CPF:</label>
+                <input type="text" id="cpf" value="${professor.cpf}" readonly>
             </div>
-            <hr class="line">
-    `
+            <div class="form-group">
+                <label for="data-nascimento">Data de Nascimento:</label>
+                <input type="date" id="data-nascimento" value="${professor.data_nascimento}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" value="${professor.email}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="telefone">Telefone:</label>
+                <input type="text" id="telefone" value="${formatarCelular(professor.telefone)}" readonly>
+            </div>
+        </div>
+
+        <div class="course-information">
+            <div class="form-group">
+                <label for="nivel-ingles">Nível de Inglês:</label>
+                <input type="text" id="nivel-ingles" value="${professor.niveis_Ingles}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="nicho">Nicho:</label>
+                <input type="text" id="nicho" value="${tratarNome(professor.nichos) || ''}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="nicho">Horário de trabalho:</label>
+                ${formatarHorario(professor.inicio || '')} às ${formatarHorario(professor.fim || '')}
+            </div>
+            <div class="form-group">
+                <label for="nicho">Horário de intervalo:</label>
+                ${formatarHorario(professor.pausa_inicio || '')} às ${formatarHorario(professor.pausa_fim || '')}
+            </div>
+        </div>
+    </div>
+
+    <div class="lixeira" onclick="confirmacaoDeleteProfessor(${professor.id})">
+        <img src="../imgs/trash-bin.png" alt="Excluir professor">
+    </div>
+</div>
+<hr class="line">`
     }).join('');
 }
 

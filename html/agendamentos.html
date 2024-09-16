@@ -71,7 +71,7 @@
                 </a>
             </li>
             <li>
-                <a href="dashboardAdmin.html">
+                <a href="dashboardAdmin.html" id="dashboard_rep_legal">
                     <img src="../imgs/painel.png" alt="">
                     <span>Dashboard</span>
                 </a>
@@ -91,7 +91,7 @@
             <li>
                 <a onclick="desautenticarUsuario()" style="cursor: pointer;">
                     <img src="../imgs/sair.png" alt="">
-                    <span>Sair</span>
+                    <span style="color: white;">Sair</span>
                 </a>
             </li>
         </ul>
@@ -146,16 +146,6 @@
 </body>
 
 </html>
-<script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const tipo = urlParams.get('tipo');
-
-    if(tipo == "passado"){
-        buscarTodosAgendamentos()
-    } else{
-        console.log("aaaaaaaa")
-    }
-</script>
 <!--
 Trash bean Icon
 <a href="https://www.flaticon.com/free-icons/trash-can" title="trash can icons">Trash can icons created by Freepik - Flaticon</a>
