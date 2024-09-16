@@ -57,5 +57,70 @@ function carregarNavBar() {
     }
 }
 
+async function desautenticarUsuario(){
+    const token = sessionStorage.getItem('token')
+    const nivelAcesso = sessionStorage.getItem('nivel_acesso_cod');
+    const id = sessionStorage.getItem('id')
+    usuario = "";
+    switch (nivelAcesso) {
+        case "1":
+            usuario ="aluno"; 
+            break;
+        case "2":
+            usuario = "professor";
+            break;
+        case "3":
+            usuario = "representante-legal";
+            break;
+    }
+
+    const respostaDesautenticar = await fetch(`http://localhost:8080/usuarios/${usuario}/desautenticar/${id}}`, {
+        method: "POST",
+        headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+    });
+
+    if(respostaDesautenticar.ok){
+        sessionStorage.clear()
+        console.log("ok")
+        window.location.href="login2.html"
+    }
+}
+
+// Funções auxiliares para formatar data e horário
+function formatarData(data) {
+    const [ano, mes, dia] = data.split('-');
+    return `${dia}/${mes}/${ano}`;
+}
+
+function formatarHorario(horario) {
+    const [hora, minuto] = horario.split(':');
+    const horaInt = parseInt(hora, 10);
+    const periodo = horaInt >= 12 ? 'PM' : 'AM';
+    const horaFormatada = horaInt % 12 || 12;
+    return `${horaFormatada}:${minuto} ${periodo}`;
+}
+
+function tratarNome(nichoNome) {
+    let nomeTratado = nichoNome.replace(/_/g, ' ');
+
+    let palavras = nomeTratado.split(' ');
+
+    palavras = palavras.map(palavra => {
+        return palavra.charAt(0).toUpperCase() + palavra.slice(1).toLowerCase();
+    });
+
+    nomeTratado = palavras.join(' ');
+
+    return nomeTratado;
+}
+
+function formatarCelular(telefone) {
+    let value = telefone;
+    value = value.replace(/\D/g, '');
+    value = value.replace(/(\d{2})(\d)/, '+$1 $2');
+    value = value.replace(/(\d{5})(\d)/, '$1-$2');
+    return value.substring(0, 15);
+}
+
 carregarNavBar()
 puxarNome()
