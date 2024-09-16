@@ -2,7 +2,7 @@ let paginaAtual = 0;
 let totalPaginas = 0;
 
 async function buscarAlunos() {
-    const cardsAlunos = document.getElementById("listagem")
+    const cardsAlunos = document.getElementById("listagem_usuarios")
 
     const resposta = await fetch(`http://localhost:8080/usuarios/aluno/paginado?page=${paginaAtual}`, {
         method: 'GET',
@@ -50,6 +50,70 @@ async function buscarAlunos() {
                     </div>
                 </div>
         </div>
+                <div class="lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})" id="lixeira_${aluno.id}">
+                    <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirALuno()">
+                </div>
+            </div>
+            <hr class="line">
+    `
+    }).join('');
+}
+
+async function filtraUsuarios() {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const tipo = urlParams.get('tipo');
+
+    var tipoNome = ""
+
+    if (tipo != "aluno") {
+        tipoNome = "professor"
+    } else {
+        tipoNome = "aluno"
+    }
+
+
+    const nome = document.getElementById("input_nome").value;
+    const cpf = document.getElementById("input_cpf").value;
+
+    const nicho = document.getElementById("nicho").value;
+    const nivel = document.getElementById("nivel").value;
+
+    
+    const data = {};
+    if (nome) data.nome = nome;
+    if (cpf) data.cpf = cpf;
+    if (nicho && nicho !== "") data.nicho = nicho;
+    if (nivel && nivel !== "") data.nivelIngles = nivel;
+
+    console.log("Filtro a ser buscado")
+    console.log(data)
+
+    const cardsUsuarios= document.getElementById("listagem_usuarios")
+
+    const resposta = await fetch(`http://localhost:8080/usuarios/filtro/${tipoNome}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (resposta.status == 204) {
+        cardsAlunos.innerHTML += `<span>Não há ${tipoNome} cadastrados...<span> <br/>Cadastre um novo clicando <a href='cadastrar.html?tipo=aluno'>aqui</a>`
+        return
+    }
+
+    const listaUsuarios = await resposta.json();
+
+    cardsUsuarios.innerHTML = listaUsuarios.map((aluno) => {
+        return `
+      <div class="dados-student" id="card_dados">
+                <div class="photo-student">
+                    <img src="../imgs/perfil_blue.png" alt="">
+                    <p>${aluno.nomeCompleto}</p>
+                </div>
                 <div class="lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})" id="lixeira_${aluno.id}">
                     <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirALuno()">
                 </div>
