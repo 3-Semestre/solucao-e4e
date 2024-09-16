@@ -9,7 +9,7 @@ const tempo = urlParams.get('tipo');
 
 function carregarHeadersTabela() {
     const tabela = document.getElementById("tabela_agendamento");
-    if (Number(nivel_acesso_cod) != 1) {
+    if (Number(nivel_acesso_cod) == 3 || Number(nivel_acesso_cod) == 2) {
         if (tempo == "passado") {
             tabela.innerHTML = `
                 <thead>
@@ -56,7 +56,7 @@ function carregarHeadersTabela() {
                         </tr>
                 </thead>
                 `;
-        } else {
+        } else if (tempo == "futuro") {
             tabela.innerHTML = `
             <thead>
                 <tr>
@@ -120,7 +120,7 @@ function limparTabela() {
 function preencherTabela(dados) {
     const resultados = dados.map((agendamento) => `
         <tr>
-            <td ${nivel_acesso_cod != "3" ? 'style="display: none;"' : ''}>${agendamento.nome_Aluno}</td>
+            <td ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>${agendamento.nome_Aluno}</td>
             <td>${agendamento.assunto}</td>
             <td>${agendamento.nome_Professor}</td>
             <td>${formatarData(agendamento.data)}</td>
