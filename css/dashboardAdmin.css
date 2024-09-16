@@ -10,9 +10,10 @@ body {
 }
 
 .spaces-professor{
-    width: auto;
+    width: 100%;
     display: inline-block;
     font-size: 25px;
+    color: #072B59;
 }
 
 .sidebar {
@@ -303,8 +304,7 @@ body {
     color: #072B59;
     position: relative;
     font-size: 25px;
-    left: 1vw;
-    bottom: 1vh !important;
+    top: 5vh;
 }
 
 .line {
@@ -357,6 +357,8 @@ body {
     display: flex;
     gap: 1rem;
     align-items: baseline;
+    color: #072B59;
+    font-size: 20px;
 }
 
 .select-professor select {
@@ -365,10 +367,6 @@ body {
     color: #072B59;
     border-radius: 5px;
     border: 1px solid #072B59;  
-}
-
-.select-professor{
-    font-size: 20px;
 }
 
 #professores{

@@ -10,7 +10,7 @@
     <script defer src="../js/script.js"></script>
     <!--<script src="../js/dashboard/exibirKPI.js"></script>
     <script src="../js/dashboard/plotarGrafico.js"></script>--> 
-    <script src="../js/mock/dashProfessor.js"></script>
+    <script src="../js/mock/dashAdmin.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
 
     <!-- Importação do SweetAlert2 -->
@@ -99,9 +99,6 @@
     </nav>
     <div class="conteudo">
         <div class="spaces-professor">
-        <div class="buttons-professor">
-            <h2 id="nome_titulo">Joseph Smith</h2>
-        </div>
         <br>
         <div class="title-agendamento">
             <div class="spaces-professor">
@@ -180,9 +177,10 @@
                     </div>
                 </div>
             </div>
+            <br>
+            <span id="title-chart">Taxa de cumprimento de aulas e Alunos por mês</span>
             <div class="kpis" id="kpis">
                 <div class="box-chart" style="height: 70vh;">
-                    <span id="title-chart">Taxa de cumprimento de aulas</span>
                     <canvas id="pizzaChartAgendamento" style="max-width: 70%; align-self: center;"></canvas>
                     <div class="box-buttons">
                         <button type="button" class="btn btn-primary" id="botaoChart">CUMPRIDAS</button>
