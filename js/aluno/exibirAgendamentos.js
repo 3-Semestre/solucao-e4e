@@ -96,8 +96,6 @@ async function carregarAgendamentos(pagina) {
 
     const dados = await resposta.json();
 
-    console.log(dados);
-
     if (!dados || dados.content.length === 0) {
         throw new Error('Dados não encontrados');
     }
@@ -130,9 +128,9 @@ function preencherTabela(dados) {
             <td>${buscaUltimoStatus(buscaUltimoStatus(agendamento.status_List))}</td>
             <td>
             ${tempo === "passado"
-            ? '<span>Visualizar Detalhes</span>'
+            ? `<span onclick="buscarDetalhes(${agendamento.id})">Visualizar Detalhes</span>`
             : `
-                <div class="editar-lapis" id="editar_${agendamento.id}" onclick="teste(${agendamento.id})">
+                <div class="editar-lapis" id="editar_${agendamento.id}" onclick="buscarDetalhes(${agendamento.id})">
                     <img src="../imgs/pen.png" alt="icone_editar">
                 </div>
                 `}
@@ -144,16 +142,87 @@ function preencherTabela(dados) {
     tabela.innerHTML += `<tbody>${resultados}</tbody>`;
 }
 
-function teste(id) {
-    Swal.fire({
-        title: 'Detalhes do agendamento',
-        html: `<p>${id}This is a custom HTML content with <b>bold</b> text and <a href="#">a link</a>.</p>`,
-        // icon: 'info',
-        showCancelButton: true,
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel'
+async function buscarDetalhes(id) {
+    const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
     });
 
+    if (!respostaAgendamento.ok) {
+        throw new Error('Erro ao buscar dados do servidor');
+    }
+
+    const dadosAgendamentos = await respostaAgendamento.json();
+
+    const respostaHistorico = await fetch(`http://localhost:8080/historico-agendamento/${id}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!respostaHistorico.ok) {
+        throw new Error('Erro ao buscar dados do servidor');
+    }
+
+    const dadosHistorico = await respostaHistorico.json();
+
+    Swal.fire({
+        title: 'Detalhes do agendamento',
+        html: `
+          <div style="text-align: left;">
+            <p><strong>Nome do aluno:</strong> ${dadosAgendamentos.aluno.nomeCompleto} <br />
+            <p><strong>Professor:</strong> ${dadosAgendamentos.professor.nomeCompleto} <br />
+            <p><strong>Assunto:</strong> ${dadosAgendamentos.assunto} <br />
+            <p><strong>Data:</strong> ${formatarData(dadosAgendamentos.data)} <br />
+            <p><strong>Horário de Início:</strong> ${formatarHorario(dadosAgendamentos.horarioInicio)} <br />
+            <p><strong>Horário de fim:</strong> ${formatarHorario(dadosAgendamentos.horarioFim)} <br />
+        
+            <div style="margin: 20px 0;">
+              <div style="display: flex; align-items: center;">
+                <div style="height: 15px; width: 15px; background-color: green; border-radius: 50%;"></div>
+                <div style="flex: 1; height: 4px; background-color: lightgray; margin: 0 10px;">
+                  <div style="width: 50%; height: 100%; background-color: green;"></div>
+                </div>
+                <span>${dadosHistorico[0].status.descricao}</span>
+              </div>
+            </div>
+        `,
+        confirmButtonText: 'Fechar',
+        showCancelButton: tempo !== 'passado',
+        cancelButtonText: 'Editar Status',
+    }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.cancel && tempo !== 'passado') {
+            Swal.fire({
+                title: 'Editar Status',
+                html: `
+              <label for="novoStatus" style="color: black">Selecione o novo status:</label>
+              <select id="novoStatus" class="swal2-input">
+                <option value="pendente">Pendente</option>
+                <option value="confirmado">Confirmado</option>
+                <option value="concluido">Concluído</option>
+                <option value="cancelado">Cancelado</option>
+              </select>
+            `,
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Salvar',
+                preConfirm: () => {
+                    const novoStatus = document.getElementById('novoStatus').value;
+                    return novoStatus;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const statusSelecionado = result.value;
+                    console.log(`Novo status selecionado: ${statusSelecionado}`);
+                }
+            });
+        }
+    });
 }
 
 function atualizarBotoesPaginacao(total, atual) {
