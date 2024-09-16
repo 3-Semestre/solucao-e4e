@@ -40,9 +40,10 @@ function carregarHeadersTabela() {
                     </tr>
             </thead>
             `;
-        } else {
-            if (tempo == "passado") {
-                tabela.innerHTML = `
+        }
+    } else {
+        if (tempo == "passado") {
+            tabela.innerHTML = `
                 <thead>
                         <tr>
                             <th>Assunto</th>
@@ -55,8 +56,8 @@ function carregarHeadersTabela() {
                         </tr>
                 </thead>
                 `;
-            } else {
-                tabela.innerHTML = `
+        } else {
+            tabela.innerHTML = `
             <thead>
                 <tr>
                     <th>Assunto</th>
@@ -69,11 +70,11 @@ function carregarHeadersTabela() {
                 </tr>
             </thead>
             `;
-            }
         }
-        carregarAgendamentos(paginaAtual);
     }
+    carregarAgendamentos(paginaAtual);
 }
+
 
 async function carregarAgendamentos(pagina) {
     if (pagina < 0 || (totalPaginas > 0 && pagina >= totalPaginas)) return; // Limita as páginas
