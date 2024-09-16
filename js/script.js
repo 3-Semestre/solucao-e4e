@@ -57,7 +57,7 @@ function carregarNavBar() {
     }
 }
 
-async function desautenticarUsuario(){
+async function desautenticarUsuario() {
     const token = sessionStorage.getItem('token')
     const nivelAcesso = sessionStorage.getItem('nivel_acesso_cod');
     const id = sessionStorage.getItem('id')
@@ -65,7 +65,7 @@ async function desautenticarUsuario(){
     usuario = "";
     switch (nivelAcesso) {
         case "1":
-            usuario ="aluno"; 
+            usuario = "aluno";
             break;
         case "2":
             usuario = "professor";
@@ -80,10 +80,10 @@ async function desautenticarUsuario(){
         headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
     });
 
-    if(respostaDesautenticar.ok){
+    if (respostaDesautenticar.ok) {
         sessionStorage.clear()
         console.log("ok")
-        window.location.href="login2.html"
+        window.location.href = "login2.html"
     }
 }
 
@@ -121,6 +121,30 @@ function formatarCelular(telefone) {
     value = value.replace(/(\d{2})(\d)/, '+$1 $2');
     value = value.replace(/(\d{5})(\d)/, '$1-$2');
     return value.substring(0, 15);
+}
+
+function buscaUltimoStatus(status) {
+    const statusArray = status.split(',');
+
+    const ultimoStatus = statusArray[statusArray.length - 1];
+
+    var status;
+
+    switch (Number(ultimoStatus)) {
+        case 1:
+            status = "Pendente";
+            break;
+        case 2:
+            status = "Confirmado";
+            break;
+        case 3:
+            status = "Concluído";
+            break;
+        case 4:
+            status = "Cancelado";
+            break;
+    }
+    return status;
 }
 
 carregarNavBar()
