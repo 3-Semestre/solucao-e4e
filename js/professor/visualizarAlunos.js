@@ -1,7 +1,10 @@
+let paginaAtual = 0;
+let totalPaginas = 0;
+
 async function buscarAlunos() {
     const cardsAlunos = document.getElementById("listagem")
 
-    const resposta = await fetch("http://localhost:8080/usuarios/aluno", {
+    const resposta = await fetch(`http://localhost:8080/usuarios/aluno/paginado?page=${paginaAtual}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -15,14 +18,38 @@ async function buscarAlunos() {
     }
 
     const listaAlunos = await resposta.json();
+    console.log(listaAlunos.content)
 
-    cardsAlunos.innerHTML += listaAlunos.map((aluno) => {
+    cardsAlunos.innerHTML += listaAlunos.content.map((aluno) => {
         return `
       <div class="dados-student" id="card_dados">
+        <div style="display: flex; flex-direction: column;">
                 <div class="photo-student">
                     <img src="../imgs/perfil_blue.png" alt="">
-                    <p>${aluno.nomeCompleto}</p>
+                    <p>${aluno.nome_completo}</p>
                 </div>
+                    <div class="detalhes-student">
+                        <div class="mb-3">
+                                    <label class="form-label">CPF:</label>
+                                    <input type="text" class="form-control" value="${aluno.cpf}" readonly>
+                                </div>
+                        <div>
+                        <p>Data de Nascimento:<p/><span>${aluno.data_nascimento}</span>
+                    </div>
+                    <div>
+                        <p>E-Mail<p/><span>${aluno.email}</span>
+                    </div>
+                    <div>
+                        <p>Telefone<p/><span>${aluno.telefone}</span>
+                    </div>
+                    <div>
+                        <p>Nível de Inglês<p/><span>${aluno.niveis_Ingles}</span>
+                    </div>
+                    <div>
+                        <p>Nicho<p/><span>${aluno.cpf}</span>
+                    </div>
+                </div>
+        </div>
                 <div class="lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})" id="lixeira_${aluno.id}">
                     <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirALuno()">
                 </div>
