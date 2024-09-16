@@ -44,7 +44,7 @@ async function buscarAlunos() {
             </div>
             <div class="form-group">
                 <label for="telefone">Telefone:</label>
-                <input type="text" id="telefone" value="${aluno.telefone}" readonly>
+                <input type="text" id="telefone" value="${formatarCelular(aluno.telefone)}" readonly>
             </div>
         </div>
 
