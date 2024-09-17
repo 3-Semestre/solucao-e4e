@@ -2,6 +2,7 @@ const id = sessionStorage.getItem('id');
 const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod');
 const token = sessionStorage.getItem('token');
 
+
 let paginaAtual = 0;
 let totalPaginas = 0;
 const urlParams = new URLSearchParams(window.location.search);
@@ -129,7 +130,7 @@ function preencherTabela(dados) {
             <td>${buscaUltimoStatus(buscaUltimoStatus(agendamento.status_List))}</td>
             <td>
             ${tempo === "passado"
-            ? `<span onclick="buscarDetalhes(${agendamento.id})">Visualizar Detalhes</span>`
+            ? `<span onclick="buscarDetalhes(${agendamento.id})" style="background-color: #072B59; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; display: block; width: fit-content; margin: 0 auto;">Detalhes</span>`
             : `
                 <div class="editar-lapis" id="editar_${agendamento.id}" onclick="buscarDetalhes(${agendamento.id})">
                     <img src="../imgs/pen.png" alt="icone_editar">
@@ -173,9 +174,9 @@ async function buscarDetalhes(id) {
     const dadosHistorico = await respostaHistorico.json();
 
     Swal.fire({
-        title: 'Detalhes do agendamento',
+        title: '<h2 style="color: #072B59; font-weight: bolder;">Detalhes do agendamento</h2>',
         html: `
-          <div style="text-align: left;">
+          <div style="text-align: left; color: #072B59;">
             <p><strong>Nome do aluno:</strong> ${dadosAgendamentos.aluno.nomeCompleto} <br />
             <p><strong>Professor:</strong> ${dadosAgendamentos.professor.nomeCompleto} <br />
             <p><strong>Assunto:</strong> ${dadosAgendamentos.assunto} <br />
@@ -186,7 +187,7 @@ async function buscarDetalhes(id) {
             <div style="margin: 20px 0;">
               <div style="display: flex; align-items: center;">
                 <div style="height: 15px; width: 15px; background-color: green; border-radius: 50%;"></div>
-                <div style="flex: 1; height: 4px; background-color: lightgray; margin: 0 10px;">
+                <div style="flex: 1; height: 4px; background-color: lightgray; margin: 0 10px; ">
                   <div style="width: 50%; height: 100%; background-color: green;"></div>
                 </div>
                 <span>${dadosHistorico[0].status.descricao}</span>
@@ -196,13 +197,15 @@ async function buscarDetalhes(id) {
         confirmButtonText: 'Fechar',
         showCancelButton: tempo !== 'passado',
         cancelButtonText: 'Editar Status',
+        confirmButtonColor: '#072B59',
+        cancelButtonColor: '#830f0f',
     }).then((result) => {
         if (result.dismiss === Swal.DismissReason.cancel && tempo !== 'passado') {
             Swal.fire({
-                title: 'Editar Status',
+                title: '<h2 style="color: #072B59; font-weight: bolder;">Editar Status</h2>',
                 html: `
-              <label for="novoStatus" style="color: black">Selecione o novo status:</label>
-              <select id="novoStatus" class="swal2-input">
+              <label for="novoStatus" style="color: #072B59; position: relative; top: 0.1vh;">Selecione o novo status:</label>
+              <select id="novoStatus" class="swal2-input" style="width: 10vw;height: 4vh;color: #072B59;border-radius: 5px;border: 1px solid #072B5">
                 <option value="pendente">Pendente</option>
                 <option value="confirmado">Confirmado</option>
                 <option value="concluido">Concluído</option>
@@ -212,6 +215,8 @@ async function buscarDetalhes(id) {
                 showCancelButton: true,
                 cancelButtonText: 'Cancelar',
                 confirmButtonText: 'Salvar',
+                confirmButtonColor: '#072B59',
+                cancelButtonColor: '#830f0f',
                 preConfirm: () => {
                     const novoStatus = document.getElementById('novoStatus').value;
                     return novoStatus;
@@ -255,3 +260,21 @@ window.onload = function () {
     carregarHeadersTabela();
 };
 
+const style = document.createElement('style');
+style.innerHTML = `
+  .custom-confirm-button {
+    background-color: #072B59;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+  }
+
+  .custom-cancel-button {
+    background-color: #072B59;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+  }
+`;

@@ -33,38 +33,38 @@ async function buscarProfessor() {
         <div class="personal-information">
             <div class="form-group">
                 <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" value="${professor.cpf}" readonly>
+                <label class="label2" type="text" id="cpf"> ${professor.cpf} </label>
             </div>
             <div class="form-group">
                 <label for="data-nascimento">Data de Nascimento:</label>
-                <input type="date" id="data-nascimento" value="${professor.data_nascimento}" readonly>
+                <label class="label2" type="date" id="data-nascimento"> ${professor.data_nascimento} </label>
             </div>
             <div class="form-group">
                 <label for="email">E-mail:</label>
-                <input type="email" id="email" value="${professor.email}" readonly>
+                <label class="label2" type="email" id="email"> ${professor.email} </label>
             </div>
             <div class="form-group">
                 <label for="telefone">Telefone:</label>
-                <input type="text" id="telefone" value="${formatarCelular(professor.telefone)}" readonly>
+                <label class="label2" type="text" id="telefone"> ${formatarCelular(professor.telefone)} </label>
             </div>
         </div>
 
         <div class="course-information">
             <div class="form-group">
                 <label for="nivel-ingles">Nível de Inglês:</label>
-                <input type="text" id="nivel-ingles" value="${professor.niveis_Ingles}" readonly>
+                <label class="label2" type="text" id="nivel-ingles"> ${professor.niveis_Ingles} </label>
             </div>
             <div class="form-group">
                 <label for="nicho">Nicho:</label>
-                <input type="text" id="nicho" value="${tratarNome(professor.nichos) || ''}" readonly>
+                <label class="label2" type="text" id="nicho"> ${tratarNome(professor.nichos) || ''} </label>
             </div>
             <div class="form-group">
                 <label for="nicho">Horário de trabalho:</label>
-                ${formatarHorario(professor.inicio || '')} às ${formatarHorario(professor.fim || '')}
+                <label class="label2" type="text">${formatarHorario(professor.inicio || '')} às ${formatarHorario(professor.fim || '')} </label>
             </div>
             <div class="form-group">
                 <label for="nicho">Horário de intervalo:</label>
-                ${formatarHorario(professor.pausa_inicio || '')} às ${formatarHorario(professor.pausa_fim || '')}
+                <label class="label2" type="text">${formatarHorario(professor.pausa_inicio || '')} às ${formatarHorario(professor.pausa_fim || '')} </label>
             </div>
         </div>
     </div>

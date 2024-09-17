@@ -32,36 +32,36 @@ async function buscarAlunos() {
         <div class="personal-information">
             <div class="form-group">
                 <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" value="${aluno.cpf}" readonly>
+                <label class="label2" type="text" id="cpf">${aluno.cpf}</label>
             </div>
             <div class="form-group">
                 <label for="data-nascimento">Data de Nascimento:</label>
-                <input type="date" id="data-nascimento" value="${aluno.data_nascimento}" readonly>
+                <label class="label2" type="date" id="data-nascimento">${aluno.data_nascimento}</label>
             </div>
             <div class="form-group">
                 <label for="email">E-mail:</label>
-                <input type="email" id="email" value="${aluno.email}" readonly>
+                <label class="label2" type="email" id="email">${aluno.email}</label>
             </div>
             <div class="form-group">
                 <label for="telefone">Telefone:</label>
-                <input type="text" id="telefone" value="${formatarCelular(aluno.telefone)}" readonly>
+                <label class="label2" type="text" id="telefone">${formatarCelular(aluno.telefone)}</label>
             </div>
         </div>
 
         <div class="course-information">
             <div class="form-group">
                 <label for="nivel-ingles">Nível de Inglês:</label>
-                <input type="text" id="nivel-ingles" value="${aluno.niveis_Ingles}" readonly>
+                <label class="label2" type="text" id="nivel-ingles">${aluno.niveis_Ingles}</label>
             </div>
             <div class="form-group">
                 <label for="nicho">Nicho:</label>
-                <input type="text" id="nicho" value="${aluno.nichos}" readonly>
+                <label class="label2" type="text" id="nicho">${aluno.nichos}</label>
             </div>
         </div>
     </div>
 
     <div class="lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})">
-        <img src="../imgs/trash-bin.png" alt="Excluir aluno">
+        <img src="../imgs/trash-bin.png" alt="Excluir aluno"  style="width: 3vw; height: 6vh">
     </div>
 </div>
 <hr class="line">

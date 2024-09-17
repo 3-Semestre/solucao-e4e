@@ -42,16 +42,15 @@ body {
     list-style: none;
 }
 
-.nav-links li {
-    padding: 15px;
-    margin: 0.6em auto;
+.nav-links {
+    margin-top: 0em;
+    padding: 0;
+    list-style: none;
 }
 
-.nav-links a {
-    color: #fff;
-    font-size: 24px;
-    display: flex;
-    text-decoration: none;
+.nav-links li {
+    padding: 11px;
+    margin: 0.6em auto;
 }
 
 .nav-links li span {
