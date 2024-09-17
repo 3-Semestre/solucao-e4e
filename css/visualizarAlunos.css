@@ -150,14 +150,14 @@ label {
 }
 
 .dados-student {
-    display: flex;
+    /* display: flex; */
     background-color: #FFF;
     align-items: center;
     justify-content: space-between;
     padding: 20px;
     margin-bottom: 15px;
     width: 100%;
-    display: flex;
+    /* display: flex; */
     gap: 20px;
     
 }
@@ -169,7 +169,8 @@ label {
 }
 
 .header-student{
-    text-align: center;
+    display: flex;
+    gap: 1vw;
 }
 
 .header-student img {
@@ -182,7 +183,8 @@ label {
     color: #072B59;
     font-weight: bold;
     position: relative;
-    top: 1vh;
+    top: 1.5vh;
+    font-size: 20px;
 }
 
 .form-student {
@@ -202,7 +204,7 @@ label {
 }
 
 .form-group {
-    flex: 1 1 47%;
+    flex: 1 1 30%;
 }
 
 .form-group label {
@@ -212,6 +214,15 @@ label {
 
 .form-group .label2{
     font-weight: 300;
+}   
+
+.form-group .label2,
+.form-group .label2{
+    min-width: 250px;  /* Ajuste esse valor conforme necessário */
+    max-width: 100%;   /* Garante que não ultrapasse o container */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;  /* Adiciona reticências (...) caso o texto seja muito longo */
 }
 
 
@@ -225,6 +236,8 @@ label {
 .lixeira {
     display: flex;
     justify-content: flex-end;
+    position: relative;
+    bottom: 5vh;
 }
 
 .lixeira img {

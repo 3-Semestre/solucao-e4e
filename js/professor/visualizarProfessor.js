@@ -28,7 +28,8 @@ async function buscarProfessor() {
         <img src="../imgs/perfil_blue.png" alt="Foto do professor">
         <p>${professor.nome_completo}</p>
     </div>
-        
+    <br/>
+    <br/>
     <div class="form-student">
         <div class="personal-information">
             <div class="form-group">

@@ -27,7 +27,7 @@ async function buscarAlunos() {
         <img src="../imgs/perfil_blue.png" alt="Foto do Aluno">
         <p>${aluno.nome_completo}</p>
     </div>
-        
+        <br/> <br/>
     <div class="form-student">
         <div class="personal-information">
             <div class="form-group">
@@ -46,9 +46,6 @@ async function buscarAlunos() {
                 <label for="telefone">Telefone:</label>
                 <label class="label2" type="text" id="telefone">${formatarCelular(aluno.telefone)}</label>
             </div>
-        </div>
-
-        <div class="course-information">
             <div class="form-group">
                 <label for="nivel-ingles">Nível de Inglês:</label>
                 <label class="label2" type="text" id="nivel-ingles">${aluno.niveis_Ingles}</label>
@@ -57,6 +54,10 @@ async function buscarAlunos() {
                 <label for="nicho">Nicho:</label>
                 <label class="label2" type="text" id="nicho">${aluno.nichos}</label>
             </div>
+        </div>
+
+        <div class="course-information">
+            
         </div>
     </div>
 
