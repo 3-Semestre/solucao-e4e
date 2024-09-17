@@ -37,15 +37,16 @@ body {
 }
 
 .nav-links {
-    margin-top: 2em;
+    margin-top: 0em;
     padding: 0;
     list-style: none;
 }
 
-.nav-links {
-    margin-top: 0em;
-    padding: 0;
-    list-style: none;
+.nav-links a {
+    color: #fff;
+    font-size: 24px;
+    display: flex;
+    text-decoration: none;
 }
 
 .nav-links li {
