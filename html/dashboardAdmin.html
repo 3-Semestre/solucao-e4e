@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="../css/dashboardProfessor.css">
-    <link rel="icon" type="image/png" href="../imgs/english4ever.png">
-    <script defer src="../js/script.js"></script>
-    <script src="../js/dashboard/exibirKPI.js"></script>
-    <script src="../js/dashboard/plotarGrafico.js"></script>
-    <script src="../js/mock/dashProfessor.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
+    <title>Dashboard Admin</title>
+    <link rel="stylesheet" href="../css/dashboardAdmin.css">
 
+    <script defer src="../js/script.js"></script>
+    <!--<script src="../js/dashboard/exibirKPI.js"></script>
+    <script src="../js/dashboard/plotarGrafico.js"></script>--> 
+    <script src="../js/mock/dashAdmin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
+    <link rel="icon" type="image/png" href="../imgs/english4ever.png">
     <!-- Importação do SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -90,7 +90,7 @@
                 </a>
             </li>
             <li>
-                <a onclick="desautenticarUsuario()" style="cursor: pointer;">
+                <a href="login2.html">
                     <img src="../imgs/sair.png" alt="">
                     <span style="color: white;">Sair</span>
                 </a>
@@ -98,162 +98,99 @@
         </ul>
     </nav>
     <div class="conteudo">
-        <br>
-        <div class="space-professor">
-        <div class="buttons-professor">
-            <h2 id="nome_titulo">Joseph Smith</h2>
-        </div>
+        <div class="spaces-professor">
         <br>
         <div class="title-agendamento">
-            <p>Próximos Agendamentos</p>
-            <p class="none">Próximos Agendamentos</p>
-            <p class="none">Próximos Agendamentos</p>
-            <p class="none">Próximos Agendamentos</p>
+            <div class="spaces-professor">
+            <p>Visão Global de Performance e Gestão de Professores</p>
+        </div>
+        </div>
+        <div class="select-professor">
+            <p>Selecione um professor:</p>
+            <select name="professores" id="professores">
+                <option value="">Selecione um professor</option>
+                <option value="professor1">Professor 1</option>
+                <option value="professor2">Professor 2</option>
+                <option value="professor3">Professor 3</option>
+        </select>
         </div>
     </div>
-    <div class="agendamentos" id="agendamentos">
-        <div class="box">
-            <div class="data">
-                <h2 class="dia_proxima_data">28</h2>
-                <p class="mes_proxima_data">março</p>
-            </div>
-            <div class="content">
-                <p class="dia_semana_proxima_data">Quinta-Feira</p>
-                <p class="horario_proxima_data" >08:00 PM</p>
-                <p class="nome_aluno_proxima_data">Lucas Silva</p>
-            </div>
-        </div>
-        <div class="box">
-            <div class="data">
-                <h2>29</h2>
-                <p>março</p>
-            </div>
-            <div class="content">
-                <p>Sexta-Feira</p>
-                <p>08:00 PM</p>
-                <p>Lucas Silva</p>
-            </div>
-        </div>
-        <div class="box">
-            <div class="data">
-                <h2>30</h2>
-                <p>março</p>
-            </div>
-            <div class="content">
-                <p>Sábado</p>
-                <p>08:00 PM</p>
-                <p>Lucas Silva</p>
-            </div>
-        </div>
-    </div>
-    <br><br>
-    <hr class="line">
-    <br><br>
-        <div class="content-kpis">
-            <div class="space-professor">
-            <div class="title-agendamento">
-                <p id="kpi">KPI's</p>
-            </div>
-        </div>
             <div class="kpis">
                 <div class="box-kpis">
                     <div class="line-box">
                     </div>
                     <div class="content-kpis" id="novos-agendamentos">
-                        <p>Novos Agendamentos</p>
+                        <p>Aulas mês</p>
                         <h2>55</h2>
-                        <div class="variação">
+                        <!-- <div class="variação">
                             <div class="seta-baixo">
                             </div>
                             <div class="porcentagem">
                                 <p class="ruim">70,00 %</p>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="box-kpis">
                     <div class="line-box">
                     </div>
                     <div class="content-kpis" id="confirmacao-agendamento">
-                        <p>Confirmação de Agendamento</p>
-                        <h2>30<span>min</span></h2>
-                        <div class="variação">
+                        <p>Aulas canceladas</p>
+                        <h2>2</h2>
+                        <!-- <div class="variação">
                             <div class="seta-cima">
                             </div>
                             <div class="porcentagem">
                                 <p class="bom">10,00 %</p>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
-                    <div class="box-chart">
-                        <span id="title-chart">Agendamentos</span>
-                        <canvas id="pizzaChartAgendamento" style="max-width: 70%; align-self: center;"></canvas>
-                        <div class="box-buttons">
-                            <button type="button" class="btn btn-primary" id="botaoChart">CONCLUÍDOS</button>
-                            <button type="button" class="btn btn-primary" id="botaoChartN">NÃO CONCLUÍDOS</button>
-                        </div>
-                    </div>
-            </div>
-            <div class="kpis2">
                 <div class="box-kpis">
                     <div class="line-box">
                     </div>
-                    <div class="content-kpis" id="alunos-novos">
-                        <p>Alunos Novos</p>
-                        <h2>15</h2>
-                        <div class="variação">
+                    <div class="content-kpis" id="confirmacao-agendamento">
+                        <p>Aulas substituídas</p>
+                        <h2>10</h2>
+                        <!-- <div class="variação">
                             <div class="seta-cima">
                             </div>
                             <div class="porcentagem">
-                                <p class="bom">20,53 %</p>
+                                <p class="bom">10,00 %</p>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="box-kpis">
                     <div class="line-box">
                     </div>
-                    <div class="content-kpis" id="cancelamento">
-                        <p>Cancelamento</p>
-                        <h2>2</h2>
-                        <div class="variação">
-                            <div id="seta-baixo">
+                    <div class="content-kpis" id="confirmacao-agendamento">
+                        <p>Aulas reagendadas</p>
+                        <h2>7</h2>
+                        <!-- <div class="variação">
+                            <div class="seta-cima">
                             </div>
                             <div class="porcentagem">
-                                <p class="bom">70,00 %</p>
+                                <p class="bom">10,00 %</p>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="box-kpis-none">
-                    <div class="line-box-none">
-                    </div>
-                    <div class="content-kpis">
-                        <p>Cancelamento</p>
-                        <h2>2</h2>
-                        <div class="variação">
-                            <div class="seta-none">
-                            </div>
-                            <div class="porcentagem">
-                                <p class="bom-none">70,00 %</p>
-                            </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
-            <hr class="line">
             <br>
-            <div class="space-professor">
-            <div class="title-agendamento">
-                <p>Taxa de Cancelamento</p>
+            <span id="title-chart">Taxa de cumprimento de aulas e Alunos por mês</span>
+            <div class="kpis" id="kpis">
+                <div class="box-chart" style="height: 70vh;">
+                    <canvas id="pizzaChartAgendamento" style="max-width: 70%; align-self: center;"></canvas>
+                    <div class="box-buttons">
+                        <button type="button" class="btn btn-primary" id="botaoChart">CUMPRIDAS</button>
+                        <button type="button" class="btn btn-primary" id="botaoChartN">NÃO CUMPRIDAS</button>
+                    </div>
+                </div>
+                <div class="box-chart2">
+                    <canvas id="chartCancelamento"></canvas>
+                </div>
             </div>
-        </div>
-            <br><br>
-            <div class="box-chart2">
-                <canvas id="chartCancelamento"></canvas>
-            </div>
-        </div>
 
     </div>
 </body>

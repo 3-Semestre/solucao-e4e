@@ -29,14 +29,14 @@ body {
 }
 
 .nav-links {
-    margin-top: 2em;
+    margin-top: 0em;
     padding: 0;
     list-style: none;
 }
 
 .nav-links li {
-    padding: 15px;
-    margin: 0.8em auto;
+    padding: 11px;
+    margin: 0.6em auto;
 }
 
 .nav-links a {
@@ -150,23 +150,81 @@ label {
 }
 
 .dados-student {
-    display: flex;
+    /* display: flex; */
     background-color: #FFF;
     align-items: center;
     justify-content: space-between;
+    padding: 20px;
+    margin-bottom: 15px;
+    width: 100%;
+    /* display: flex; */
+    gap: 20px;
+    
 }
 
-.photo-student img {
-    width: 3vw;
+.detalhes-student {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-student{
+    display: flex;
+    gap: 1vw;
+}
+
+.header-student img {
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
 }
 
-.photo-student p {
+.header-student p {
     color: #072B59;
     font-weight: bold;
     position: relative;
-    top: 1vh;
+    top: 1.5vh;
+    font-size: 20px;
 }
+
+.form-student {
+    display: flex;
+}
+
+.personal-information {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1vw;
+}
+
+.course-information{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1vw;
+}
+
+.form-group {
+    flex: 1 1 30%;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group .label2{
+    font-weight: 300;
+}   
+
+.form-group .label2,
+.form-group .label2{
+    min-width: 250px;  /* Ajuste esse valor conforme necessário */
+    max-width: 100%;   /* Garante que não ultrapasse o container */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;  /* Adiciona reticências (...) caso o texto seja muito longo */
+}
+
 
 .photo-student {
     display: flex;
@@ -175,9 +233,24 @@ label {
     padding: 3vw;
 }
 
+.lixeira {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    bottom: 5vh;
+}
+
 .lixeira img {
     width: 3vw;
+    height: 6vh;
     cursor: pointer;
+}
+
+/* Linha horizontal */
+hr.line {
+    border: none;
+    border-top: 1px solid #072B59;
+    margin-top: 10px;
 }
 
 .dropdown-btn {

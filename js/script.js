@@ -32,36 +32,123 @@ function puxarNome() {
 }
 
 function carregarNavBar() {
-    const nivelAcesso = sessionStorage.getItem('nivel_acesso');
+    const nivelAcesso = sessionStorage.getItem('nivel_acesso_cod');
 
-    const aluno_navbar = document.getElementById("alunos_navbar");
-    const professores_navbar = document.getElementById("professores_navbar");
-
-    const horario_atendimento_form = document.getElementById("horario_atendimento_form");
-    const horario_intervalo_form = document.getElementById("horario_intervalo_form");
-    const horario_card_titulo = document.getElementById("horario_card_titulo");
-    const horario_card = document.getElementById("horario_card");
-
+    const gerenciar_aluno_navbar = document.getElementById("alunos_navbar");
+    const gerenciar_professores_navbar = document.getElementById("professores_navbar");
     const agenda_novo_agendamento_navbar = document.getElementById("agenda_novo_agendamento_navbar");
-    
-    switch (nivelAcesso) {
-        case "REPRESENTANTE_LEGAL":
-            agenda_novo_agendamento_navbar.style.display = "none";
-            break;
-        case "PROFESSOR_AUXILIAR":
-            agenda_novo_agendamento_navbar.style.display = "none";
-            break;
-        case "ALUNO":
-            aluno_navbar.style.display = "none";
-            professores_navbar.style.display = "none";
+    const dashboard_representante_legal = document.getElementById("dashboard_rep_legal");
 
-            horario_atendimento_form.style.display = "none";
-            horario_intervalo_form.style.display = "none";
-            horario_card_titulo.style.display = "none";
-            horario_card.style.display = "none";
+    const link_dashboard = document.getElementById("dashboard_href")
+
+    switch (nivelAcesso) {
+        case "3":
+            link_dashboard.href = "dashboardProfessor.html"
+            agenda_novo_agendamento_navbar.style.display = "none";
+            break;
+        case "2":
+            link_dashboard.href = "dashboardProfessor.html"
+            agenda_novo_agendamento_navbar.style.display = "none";
+            dashboard_representante_legal.style.display = "none";
+            break;
+        case "1":
+            link_dashboard.href = "dashboardAluno.html"
+            gerenciar_aluno_navbar.style.display = "none";
+            gerenciar_professores_navbar.style.display = "none";
+            dashboard_representante_legal.style.display = "none";
             break;
     }
 }
 
-carregarNavBar() 
+async function desautenticarUsuario() {
+    const token = sessionStorage.getItem('token')
+    const nivelAcesso = sessionStorage.getItem('nivel_acesso_cod');
+    const id = sessionStorage.getItem('id')
+    console.log(id)
+    usuario = "";
+    switch (nivelAcesso) {
+        case "1":
+            usuario = "aluno";
+            break;
+        case "2":
+            usuario = "professor";
+            break;
+        case "3":
+            usuario = "representante-legal";
+            break;
+    }
+
+    const respostaDesautenticar = await fetch(`http://localhost:8080/usuarios/${usuario}/desautenticar/${id}`, {
+        method: "POST",
+        headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+    });
+
+    if (respostaDesautenticar.ok) {
+        sessionStorage.clear()
+        console.log("ok")
+        window.location.href = "login2.html"
+    }
+}
+
+// Funções auxiliares
+function formatarData(data) {
+    const [ano, mes, dia] = data.split('-');
+    return `${dia}/${mes}/${ano}`;
+}
+
+function formatarHorario(horario) {
+    const [hora, minuto] = horario.split(':');
+    const horaInt = parseInt(hora, 10);
+    const periodo = horaInt >= 12 ? 'PM' : 'AM';
+    const horaFormatada = horaInt % 12 || 12;
+    return `${horaFormatada}:${minuto} ${periodo}`;
+}
+
+function tratarNome(nome) {
+    let nomeTratado = nome.replace(/_/g, ' ');
+
+    let palavras = nomeTratado.split(' ');
+
+    palavras = palavras.map(palavra => {
+        return palavra.charAt(0).toUpperCase() + palavra.slice(1).toLowerCase();
+    });
+
+    nomeTratado = palavras.join(' ');
+
+    return nomeTratado;
+}
+
+function formatarCelular(telefone) {
+    let value = telefone;
+    value = value.replace(/\D/g, '');
+    value = value.replace(/(\d{2})(\d)/, '+$1 $2');
+    value = value.replace(/(\d{5})(\d)/, '$1-$2');
+    return value.substring(0, 15);
+}
+
+function buscaUltimoStatus(status) {
+    const statusArray = status.split(',');
+
+    const ultimoStatus = statusArray[statusArray.length - 1];
+
+    var status;
+
+    switch (Number(ultimoStatus)) {
+        case 1:
+            status = "Pendente";
+            break;
+        case 2:
+            status = "Confirmado";
+            break;
+        case 3:
+            status = "Concluído";
+            break;
+        case 4:
+            status = "Cancelado";
+            break;
+    }
+    return status;
+}
+
+carregarNavBar()
 puxarNome()

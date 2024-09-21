@@ -1,5 +1,10 @@
+let paginaAtual = 0;
+let totalPaginas = 0;
+
 async function buscarAlunos() {
-    const resposta = await fetch("http://localhost:8080/usuarios/aluno", {
+    const cardsAlunos = document.getElementById("listagem_usuarios")
+
+    const resposta = await fetch(`http://localhost:8080/usuarios/aluno/paginado?page=${paginaAtual}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -7,28 +12,128 @@ async function buscarAlunos() {
         }
     });
 
+    if (resposta.status == 204) {
+        cardsAlunos.innerHTML += "<span>Não há alunos cadastrados...<span> <br/>Cadastre um novo clicando <a href='cadastrar.html?tipo=aluno'>aqui</a>"
+        return
+    }
+
     const listaAlunos = await resposta.json();
+    console.log(listaAlunos.content)
 
-    cardsAlunos = document.getElementById("listagem")
+    cardsAlunos.innerHTML += listaAlunos.content.map((aluno) => {
+        return `
+<div class="dados-student" id="card_dados">
+    <div class="header-student">
+        <img src="../imgs/perfil_blue.png" alt="Foto do Aluno">
+        <p>${aluno.nome_completo}</p>
+    </div>
+        <br/> <br/>
+    <div class="form-student">
+        <div class="personal-information">
+            <div class="form-group">
+                <label for="cpf">CPF:</label>
+                <label class="label2" type="text" id="cpf">${aluno.cpf}</label>
+            </div>
+            <div class="form-group">
+                <label for="data-nascimento">Data de Nascimento:</label>
+                <label class="label2" type="date" id="data-nascimento">${aluno.data_nascimento}</label>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <label class="label2" type="email" id="email">${aluno.email}</label>
+            </div>
+            <div class="form-group">
+                <label for="telefone">Telefone:</label>
+                <label class="label2" type="text" id="telefone">${formatarCelular(aluno.telefone)}</label>
+            </div>
+            <div class="form-group">
+                <label for="nivel-ingles">Nível de Inglês:</label>
+                <label class="label2" type="text" id="nivel-ingles">${aluno.niveis_Ingles}</label>
+            </div>
+            <div class="form-group">
+                <label for="nicho">Nicho:</label>
+                <label class="label2" type="text" id="nicho">${aluno.nichos}</label>
+            </div>
+        </div>
 
-    cardsAlunos.innerHTML += listaAlunos.map((aluno) => {
+        <div class="course-information">
+            
+        </div>
+    </div>
+
+    <div class="lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})">
+        <img src="../imgs/trash-bin.png" alt="Excluir aluno"  style="width: 3vw; height: 6vh">
+    </div>
+</div>
+<hr class="line">
+`}).join('');
+}
+
+async function filtraUsuarios() {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const tipo = urlParams.get('tipo');
+
+    var tipoNome = ""
+
+    if (tipo != "aluno") {
+        tipoNome = "professor"
+    } else {
+        tipoNome = "aluno"
+    }
+
+
+    const nome = document.getElementById("input_nome").value;
+    const cpf = document.getElementById("input_cpf").value;
+
+    const nicho = document.getElementById("nicho").value;
+    const nivel = document.getElementById("nivel").value;
+
+
+    const data = {};
+    if (nome) data.nome = nome;
+    if (cpf) data.cpf = cpf;
+    if (nicho && nicho !== "") data.nicho = nicho;
+    if (nivel && nivel !== "") data.nivelIngles = nivel;
+
+    console.log("Filtro a ser buscado")
+    console.log(data)
+
+    const cardsUsuarios = document.getElementById("listagem_usuarios")
+
+    const resposta = await fetch(`http://localhost:8080/usuarios/filtro/${tipoNome}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (resposta.status == 204) {
+        cardsAlunos.innerHTML += `<span>Não há ${tipoNome} cadastrados...<span> <br/>Cadastre um novo clicando <a href='cadastrar.html?tipo=aluno'>aqui</a>`
+        return
+    }
+
+    const listaUsuarios = await resposta.json();
+
+    cardsUsuarios.innerHTML = listaUsuarios.map((aluno) => {
         return `
       <div class="dados-student" id="card_dados">
                 <div class="photo-student">
                     <img src="../imgs/perfil_blue.png" alt="">
                     <p>${aluno.nomeCompleto}</p>
                 </div>
-                <div class="lixeira" onclick="confirmacaoDelete(${aluno.id})" id="lixeira_${aluno.id}">
-                    <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="excluirALuno()">
+                <div class="lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})" id="lixeira_${aluno.id}">
+                    <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})">
                 </div>
             </div>
             <hr class="line">
     `
-
     }).join('');
 }
 
-function confirmacaoDelete(id) {
+function confirmacaoDeleteAluno(id) {
     Swal.fire({
         title: "Deseja excluir esse aluno?",
         showDenyButton: true,
@@ -43,7 +148,7 @@ function confirmacaoDelete(id) {
         color: '#333'
     }).then((result) => {
         if (result.isConfirmed) {
-            try{
+            try {
                 deletarAluno(id)
             } catch (e) {
                 console.log(e)
@@ -57,20 +162,22 @@ function confirmacaoDelete(id) {
 
 
 async function deletarAluno(id) {
-
     const respostaDelete = await fetch(`http://localhost:8080/usuarios/aluno/${id}`, {
         method: "DELETE",
         headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
     });
 
-
-    
-    console.log(respostaDelete);
-
     if (respostaDelete.status == 204) {
-        window.location.reload()
         Swal.fire({ title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green' });
+        setTimeout(window.location.reload(), 2000);
     } else {
-        console.log("erro no delete")
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro ao cadastrar',
+            showConfirmButton: false,
+            text: 'Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
+            footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
+            timer: 1500
+        });
     }
 }

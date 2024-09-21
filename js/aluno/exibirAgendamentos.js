@@ -1,16 +1,33 @@
-const id = sessionStorage.getItem('id')
-const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
-const token = sessionStorage.getItem('token')
-let paginaAtual = 1;
-const resultadosPorPagina = 7;
+const id = sessionStorage.getItem('id');
+const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod');
+const token = sessionStorage.getItem('token');
 
-resultados = [];
+
+let paginaAtual = 0;
+let totalPaginas = 0;
+const urlParams = new URLSearchParams(window.location.search);
+const tempo = urlParams.get('tipo');
 
 function carregarHeadersTabela() {
-    const tabela = document.getElementById("tabela_agendamento")
-    switch (nivel_acesso_cod) {
-        case "1":
-            tabela.innerHTML += `
+    const tabela = document.getElementById("tabela_agendamento");
+    if (Number(nivel_acesso_cod) == 3 || Number(nivel_acesso_cod) == 2) {
+        if (tempo == "passado") {
+            tabela.innerHTML = `
+                <thead>
+                        <tr>
+                            <th>Nome do Aluno</th>
+                            <th>Assunto</th>
+                            <th>Professor</th>
+                            <th>Data</th>
+                            <th>Horário de Início</th>
+                            <th>Horário de Fim</th>
+                            <th>Status</th>
+                            <th>Visualizar Detalhes</th>
+                        </tr>
+                </thead>
+                `;
+        } else if (tempo == "futuro") {
+            tabela.innerHTML = `
             <thead>
                     <tr>
                         <th>Nome do Aluno</th>
@@ -21,46 +38,49 @@ function carregarHeadersTabela() {
                         <th>Horário de Fim</th>
                         <th>Status</th>
                         <th>Mudar Status</th>
+                    </tr>
+            </thead>
+            `;
+        }
+    } else {
+        if (tempo == "passado") {
+            tabela.innerHTML = `
+                <thead>
+                        <tr>
+                            <th>Assunto</th>
+                            <th>Professor</th>
+                            <th>Data</th>
+                            <th>Horário de Início</th>
+                            <th>Horário de Fim</th>
+                            <th>Status</th>
+                            <th>Visualizar Detalhes</th>
                         </tr>
-                        </thead>
-            `
-            break;
-        case "2":
-            tabela.innerHTML += `
+                </thead>
+                `;
+        } else if (tempo == "futuro") {
+            tabela.innerHTML = `
             <thead>
-            <tr>
-                <th>Nome do Aluno</th>
+                <tr>
                     <th>Assunto</th>
                     <th>Professor</th>
                     <th>Data</th>
                     <th>Horário de Início</th>
                     <th>Horário de Fim</th>
                     <th>Status</th>
-                    <th>Mudar Status</th>
-            </tr>
+                    <th>Cancelar</th>
+                </tr>
             </thead>
-            `
-            break;
-        case "3":
-            tabela.innerHTML += `
-            <thead>
-                    <tr>
-                        <th>Assunto</th>
-                        <th>Professor</th>
-                        <th>Data</th>
-                        <th>Horário de Início</th>
-                        <th>Horário de Fim</th>
-                        <th>Status</th>
-                        <th>Cancelar</th>
-                    </tr>
-            </thead>
-            `
-            break;
+            `;
+        }
     }
+    carregarAgendamentos(paginaAtual);
 }
 
-async function buscarTodosAgendamentos() {
-    const resposta = await fetch(`http://localhost:8080/agendamento/${nivel_acesso_cod}/${id}`, {
+
+async function carregarAgendamentos(pagina) {
+    if (pagina < 0 || (totalPaginas > 0 && pagina >= totalPaginas)) return; // Limita as páginas
+
+    const resposta = await fetch(`http://localhost:8080/agendamento/historico/${id}?page=${pagina}&tempo=${tempo}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -70,101 +90,191 @@ async function buscarTodosAgendamentos() {
 
     if (!resposta.ok) {
         throw new Error('Erro ao buscar dados do servidor');
+    } else if (resposta.status == 204) {
+        const tabela = document.getElementById("tabela_agendamento");
+        tabela.innerHTML = 'Não há agendamentos registrados';
+        return;
     }
 
     const dados = await resposta.json();
 
-    if (!dados || dados.length === 0) {
+    if (!dados || dados.content.length === 0) {
         throw new Error('Dados não encontrados');
     }
-    preencherTabela(dados)
+
+    totalPaginas = dados.totalPages;
+
+    limparTabela();
+    preencherTabela(dados.content);
+    atualizarBotoesPaginacao(dados.totalPages, dados.pageable.pageNumber);
 }
 
-function mudarPagina(pagina) {
-    if (pagina < 1 || pagina > Math.ceil(totalDados / resultadosPorPagina)) return;
-    
-    paginaAtual = pagina;
-
+function limparTabela() {
     const tabela = document.getElementById("tabela_agendamento");
-    tabela.innerHTML = ''; // Limpa a tabela para exibir a nova página
-    carregarHeadersTabela();
+    const tbody = tabela.getElementsByTagName('tbody')[0];
 
-    const inicio = (pagina - 1) * resultadosPorPagina;
-    const fim = Math.min(inicio + resultadosPorPagina, totalDados);
-    
-    for (let i = inicio; i < fim; i++) {
-        tabela.innerHTML += resultados[i];
+    if (tbody) {
+        tabela.removeChild(tbody);
     }
-
-    atualizarPaginacao();
-}
-
-function atualizarPaginacao() {
-    const paginacao = document.getElementById("paginacao_tabela");
-    paginacao.innerHTML = `
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Anterior" onclick="mudarPagina(paginaAtual - 1)">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Anterior</span>
-            </a>
-        </li>
-    `;
-    
-    const totalPaginas = Math.ceil(totalDados / resultadosPorPagina);
-    for (let i = 1; i <= totalPaginas; i++) {
-        paginacao.innerHTML += `
-            <li class="page-item ${i === paginaAtual ? 'active' : ''}">
-                <a class="page-link" href="#" onclick="mudarPagina(${i})">${i}</a>
-            </li>
-        `;
-    }
-
-    paginacao.innerHTML += `
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Próximo" onclick="mudarPagina(paginaAtual + 1)">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Próximo</span>
-            </a>
-        </li>
-    `;
 }
 
 function preencherTabela(dados) {
-    totalDados = dados.length;
-    resultados.length = 0;
+    const resultados = dados.map((agendamento) => `
+        <tr>
+            <td ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>${agendamento.nome_Aluno}</td>
+            <td>${agendamento.assunto}</td>
+            <td>${agendamento.nome_Professor}</td>
+            <td>${formatarData(agendamento.data)}</td>
+            <td>${formatarHorario(agendamento.horario_Inicio)}</td>
+            <td>${formatarHorario(agendamento.horario_Fim)}</td>
+            <td>${buscaUltimoStatus(buscaUltimoStatus(agendamento.status_List))}</td>
+            <td>
+            ${tempo === "passado"
+            ? `<span onclick="buscarDetalhes(${agendamento.id})" style="background-color: #072B59; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; display: block; width: fit-content; margin: 0 auto;">Detalhes</span>`
+            : `
+                <div class="editar-lapis" id="editar_${agendamento.id}" onclick="buscarDetalhes(${agendamento.id})">
+                    <img src="../imgs/pen.png" alt="icone_editar">
+                </div>
+                `}
+            </td>
+        </tr>
+    `).join('');
 
-    dados.map((agendamento) => resultados.push(`
-        <tbody>
-            <tr>
-                <td ${nivel_acesso_cod === "3" ? 'style="display: none;"' : ''}>${agendamento.aluno.nomeCompleto}</td>
-                <td>${agendamento.assunto}</td>
-                <td>${agendamento.professor.nomeCompleto}</td>
-                <td>${formatarData(agendamento.data)}</td>
-                <td>${formatarHorario(agendamento.horarioInicio)}</td>
-                <td>${formatarHorario(agendamento.horarioFim)}</td>
-                <td>${Array.from(agendamento.status)[0] + agendamento.status.slice(1).toLocaleLowerCase()}</td>
-                <td>lixin</td>
-            </tr>
-        </tbody>
-    `));
-
-    mudarPagina(1);
+    const tabela = document.getElementById("tabela_agendamento");
+    tabela.innerHTML += `<tbody>${resultados}</tbody>`;
 }
 
-function formatarData(data) {
-    const [ano, mes, dia] = data.split('-');
-    return `${dia}/${mes}/${ano}`;
+async function buscarDetalhes(id) {
+    const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!respostaAgendamento.ok) {
+        throw new Error('Erro ao buscar dados do servidor');
+    }
+
+    const dadosAgendamentos = await respostaAgendamento.json();
+
+    const respostaHistorico = await fetch(`http://localhost:8080/historico-agendamento/${id}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!respostaHistorico.ok) {
+        throw new Error('Erro ao buscar dados do servidor');
+    }
+
+    const dadosHistorico = await respostaHistorico.json();
+
+    Swal.fire({
+        title: '<h2 style="color: #072B59; font-weight: bolder;">Detalhes do agendamento</h2>',
+        html: `
+          <div style="text-align: left; color: #072B59;">
+            <p><strong>Nome do aluno:</strong> ${dadosAgendamentos.aluno.nomeCompleto} <br />
+            <p><strong>Professor:</strong> ${dadosAgendamentos.professor.nomeCompleto} <br />
+            <p><strong>Assunto:</strong> ${dadosAgendamentos.assunto} <br />
+            <p><strong>Data:</strong> ${formatarData(dadosAgendamentos.data)} <br />
+            <p><strong>Horário de Início:</strong> ${formatarHorario(dadosAgendamentos.horarioInicio)} <br />
+            <p><strong>Horário de fim:</strong> ${formatarHorario(dadosAgendamentos.horarioFim)} <br />
+        
+            <div style="margin: 20px 0;">
+              <div style="display: flex; align-items: center;">
+                <div style="height: 15px; width: 15px; background-color: green; border-radius: 50%;"></div>
+                <div style="flex: 1; height: 4px; background-color: lightgray; margin: 0 10px; ">
+                  <div style="width: 50%; height: 100%; background-color: green;"></div>
+                </div>
+                <span>${dadosHistorico[0].status.descricao}</span>
+              </div>
+            </div>
+        `,
+        confirmButtonText: 'Fechar',
+        showCancelButton: tempo !== 'passado',
+        cancelButtonText: 'Editar Status',
+        confirmButtonColor: '#072B59',
+        cancelButtonColor: '#830f0f',
+    }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.cancel && tempo !== 'passado') {
+            Swal.fire({
+                title: '<h2 style="color: #072B59; font-weight: bolder;">Editar Status</h2>',
+                html: `
+              <label for="novoStatus" style="color: #072B59; position: relative; top: 0.1vh;">Selecione o novo status:</label>
+              <select id="novoStatus" class="swal2-input" style="width: 10vw;height: 4vh;color: #072B59;border-radius: 5px;border: 1px solid #072B5">
+                <option value="pendente">Pendente</option>
+                <option value="confirmado">Confirmado</option>
+                <option value="concluido">Concluído</option>
+                <option value="cancelado">Cancelado</option>
+              </select>
+            `,
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Salvar',
+                confirmButtonColor: '#072B59',
+                cancelButtonColor: '#830f0f',
+                preConfirm: () => {
+                    const novoStatus = document.getElementById('novoStatus').value;
+                    return novoStatus;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const statusSelecionado = result.value;
+                    console.log(`Novo status selecionado: ${statusSelecionado}`);
+                }
+            });
+        }
+    });
 }
 
-function formatarHorario(horario) {
-    const [hora, minuto] = horario.split(':');
-    const horaInt = parseInt(hora, 10);
-    const periodo = horaInt >= 12 ? 'PM' : 'AM';
-    const horaFormatada = horaInt % 12 || 12;
-    return `${horaFormatada}:${minuto} ${periodo}`;
+function atualizarBotoesPaginacao(total, atual) {
+    const paginacao = document.getElementById('paginacao_tabela');
+    paginacao.innerHTML = '';
+
+    const anterior = document.createElement('li');
+    anterior.classList.add('page-item');
+    anterior.innerHTML = `<a class="page-link" href="#" onclick="carregarAgendamentos(${atual - 1})">&laquo;</a>`;
+    paginacao.appendChild(anterior);
+
+    for (let i = 0; i < total; i++) {
+        const item = document.createElement('li');
+        item.classList.add('page-item');
+        if (i === atual) {
+            item.classList.add('active'); // Marca a página atual
+        }
+        item.innerHTML = `<a class="page-link" href="#" onclick="carregarAgendamentos(${i})">${i + 1}</a>`;
+        paginacao.appendChild(item);
+    }
+
+    const proximo = document.createElement('li');
+    proximo.classList.add('page-item');
+    proximo.innerHTML = `<a class="page-link" href="#" onclick="carregarAgendamentos(${atual + 1})">&raquo;</a>`;
+    paginacao.appendChild(proximo);
 }
 
 window.onload = function () {
     carregarHeadersTabela();
-    buscarTodosAgendamentos();
 };
+
+const style = document.createElement('style');
+style.innerHTML = `
+  .custom-confirm-button {
+    background-color: #072B59;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+  }
+
+  .custom-cancel-button {
+    background-color: #072B59;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+  }
+`;

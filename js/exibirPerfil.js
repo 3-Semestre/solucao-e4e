@@ -12,7 +12,7 @@ async function exibirDadosPerfil() {
             'Content-Type': 'application/json'
         }
     });
-;
+    ;
     if (!resposta.ok) {
         throw new Error('Erro ao buscar dados do servidor');
     }
@@ -24,22 +24,26 @@ async function exibirDadosPerfil() {
     }
 
     preencherInput(dados);
+    preencherNivelInglesUsuario(dados.niveis_Ingles)
+    preencherNichoUsuario(dados.nichos)
 }
 
 function preencherInput(dados) {
-    var nomeTitulo = document.getElementById("nome_titulo");
-    var nome = document.getElementById("nome");
-    var nomeInput = document.getElementById("input_nome");
-    var cpfInput = document.getElementById("input_cpf");
-    var dataNascimentoInput = document.getElementById("input_data");
-    var telefoneInput = document.getElementById("input_telefone");
-    var emailInput = document.getElementById("input_email");
-    var profissaoInput = document.getElementById("input_profissao");
-    var horario = document.getElementById("horario_card");
-    var horarioAtendimentoInicio = document.getElementById("input_atendimento_inicio");
-    var horarioAtendimentoFim = document.getElementById("input_atendimento_fim");
-    var horarioIntervaloInicio = document.getElementById("input_intervalo_inicio");
-    var horarioIntervaloFim = document.getElementById("input_intervalo_fim");
+    const nomeTitulo = document.getElementById("nome_titulo");
+    const nome = document.getElementById("nome");
+    const nomeInput = document.getElementById("input_nome");
+    const cpfInput = document.getElementById("input_cpf");
+    const dataNascimentoInput = document.getElementById("input_data");
+    const telefoneInput = document.getElementById("input_telefone");
+    const emailInput = document.getElementById("input_email");
+    const profissaoInput = document.getElementById("input_profissao");
+    const horario = document.getElementById("horario_card");
+    const horarioAtendimentoInicio = document.getElementById("input_atendimento_inicio");
+    const horarioAtendimentoFim = document.getElementById("input_atendimento_fim");
+    const horarioIntervaloInicio = document.getElementById("input_intervalo_inicio");
+    const horarioIntervaloFim = document.getElementById("input_intervalo_fim");
+    const nicho = document.getElementById("nicho");
+    const nivelIngles = document.getElementById("nivel");
 
     nomeTitulo.innerHTML = dados.nome_completo || '';
     nome.innerHTML = dados.nome_completo || '';
@@ -49,39 +53,15 @@ function preencherInput(dados) {
     telefoneInput.value = dados.telefone ? formatarCelular(dados.telefone) : '';
     emailInput.value = dados.email || '';
     profissaoInput.value = dados.profissao || '';
+    nicho.innerHTML = tratarNome(dados.nichos) || '';
+    nivelIngles.innerHTML = tratarNome(dados.niveis_Ingles) || '';
 
     horario.innerHTML = `${formatarHorario(dados.inicio || '')} às ${formatarHorario(dados.fim || '')}`;
 
-    horarioAtendimentoInicio.value = formatarHorario(dados.inicio || '');
-    horarioAtendimentoFim.value = formatarHorario(dados.fim || '');
-    horarioIntervaloInicio.value = formatarHorario(dados.pausa_inicio || '');
-    horarioIntervaloFim.value = formatarHorario(dados.pausa_fim || '');
-
-    function formatarCelular(telefone) {
-        let value = telefone;
-        value = value.replace(/\D/g, '');
-        value = value.replace(/(\d{2})(\d)/, '+$1 $2');
-        value = value.replace(/(\d{5})(\d)/, '$1-$2');
-        return value.substring(0, 15);
-    }
-
-    function formatarHorario(horario) {
-        return horario ? horario.slice(0, -3) : '';
-    }
-}
-
-function tratarNome(nichoNome) {
-    let nomeTratado = nichoNome.replace(/_/g, ' ');
-
-    let palavras = nomeTratado.split(' ');
-
-    palavras = palavras.map(palavra => {
-        return palavra.charAt(0).toUpperCase() + palavra.slice(1).toLowerCase();
-    });
-
-    nomeTratado = palavras.join(' ');
-
-    return nomeTratado;
+    horarioAtendimentoInicio.value = (dados.inicio || '');
+    horarioAtendimentoFim.value = (dados.fim || '');
+    horarioIntervaloInicio.value = (dados.pausa_inicio || '');
+    horarioIntervaloFim.value = (dados.pausa_fim || '');
 }
 
 async function buscarNivelIngles() {
@@ -99,33 +79,29 @@ async function buscarNivelIngles() {
     checkboxList.innerHTML = "";
 
 
-    if (nivel_acesso_cod != 3) {
+    if (nivel_acesso_cod != 1) {
         const checkboxes = listaNiveis.map(nivel => `
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="nivel" value="${nivel.id}" id="nivel_${nivel.id}">
+                    <input class="form-check-input" type="checkbox" name="${nivel.nome}" value="${nivel.id}" id="nivel_${nivel.id}">
                     <label class="form-check-label" for="nivel_${nivel.id}">${tratarNome(nivel.nome)}</label>
                 </div>
             `).join('');
-        checkboxList.innerHTML += checkboxes;
-        buscarNivelInglesUsuario()
+        checkboxList.innerHTML += `<label class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>` + checkboxes;
     } else {
-        const nivelInglesUsuario = await buscarNivelInglesUsuario();
         const options = listaNiveis.map(nivel => `
-            <option value="${nivel.id}" id="nivel_${nivel.id}" ${nivelInglesUsuario[0].nivelIngles.id === nivel.id ? 'selected' : ''}>
+            <option value="${nivel.id}" id="nivel_${nivel.id}">
                 ${tratarNome(nivel.nome)}
             </option>
         `).join('');
         checkboxList.innerHTML += `
-            <label class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>
-            <select class="form-select" id="nivel" aria-label="Default select example" required>
+         <label class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>
+            <select class="form-select" name="nivel" id="nivel" aria-label="Default select example" required>
                 <option value="">Selecione uma opção</option>
                 ${options}
             </select>
         `;
     }
 }
-
-
 
 async function buscarNichos() {
     const resposta = await fetch("http://localhost:8080/nichos", {
@@ -139,25 +115,22 @@ async function buscarNichos() {
     const listaNichos = await resposta.json();
     const checkboxList = document.getElementById("nichoCheckboxList");
 
-    if (nivel_acesso_cod != 3) {
+    if (nivel_acesso_cod != 1) {
         const checkboxes = listaNichos.map(nicho => `
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="nicho" value="${nicho.id}" id="nicho_${nicho.id}">
-                <label class="form-check-label" for="nicho_${nicho.id}">${tratarNome(nicho.nome)}</label>
+                    <input class="form-check-input" type="checkbox" name="${tratarNome(nicho.nome)}" value="${nicho.id}" id="nicho_${nicho.id}">
+                    <label class="form-check-label" for="nicho_${nicho.id}">${tratarNome(nicho.nome)}</label>
                 </div>
             `).join('');
         checkboxList.innerHTML += checkboxes;
-        buscarNichoUsuario();
     } else {
-        const nichoUsuario = await buscarNichoUsuario();
         const options = listaNichos.map(nicho => `
-            <option value="${nicho.id}" id="nicho_${nicho.id}" ${nichoUsuario[0].nicho.id === nicho.id ? 'selected' : ''}>
+            <option value="${nicho.id}" id="${nicho.nome}">
                 ${tratarNome(nicho.nome)}
             </option>
         `).join('');
         checkboxList.innerHTML += `
-            <label class="form-label" id="nichoTitle"><span>*</span>Nicho:</label>
-            <select class="form-select" id="nicho" aria-label="Default select example" required>
+            <select class="form-select" name="nicho" id="nicho" aria-label="Default select example" required>
                 <option value="">Selecione uma opção</option>
                 ${options}
             </select>
@@ -166,83 +139,59 @@ async function buscarNichos() {
 }
 
 
-async function buscarNivelInglesUsuario() {
-    const resposta = await fetch(`http://localhost:8080/usuario-nivel-ingles/usuario/${id}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        }
-    });
+function preencherNivelInglesUsuario(niveis) {
+    const nivelInglesElement = document.getElementById("nivel");
+    const niveisArray = niveis.split(',').map(n => tratarNome(n.trim()));
 
-    const respostaNivel = await resposta.json();
+    if (nivel_acesso_cod != 1) {
+        nivelInglesElement.innerHTML = niveisArray.join(', ');
 
-    var nivelIngles = document.getElementById("nivel");
-
-    if (nivel_acesso_cod != 3) {
-        for (let i = 0; i < respostaNivel.length; i++) {
-            if (i === respostaNivel.length - 1) {
-                nivelIngles.innerHTML += respostaNivel[i].nivelIngles.nome;
-            } else {
-                nivelIngles.innerHTML += respostaNivel[i].nivelIngles.nome + ", ";
-            }
-        }
-
-        respostaNivel.forEach((nivelUsuario) => {
-            const checkbox = document.getElementById(`nivel_${nivelUsuario.nivelIngles.id}`);
+        niveisArray.forEach((nivelNome) => {
+            const checkbox = document.querySelector(`input[type="checkbox"][name="${nivelNome}"]`);
             if (checkbox) {
                 checkbox.checked = true;
             }
         });
     } else {
-        nivelIngles.innerHTML += respostaNivel[0].nivelIngles.nome;
-        return respostaNivel;
+        const opcaoSelect = Array.from(document.querySelector('select[name="nivel"]')).find(option => tratarNome(option.textContent.trim()) === niveisArray[0]);
+
+        if (opcaoSelect) {
+            Array.from(document.querySelector('select[name="nivel"]')).forEach(option => option.selected = false);
+
+            opcaoSelect.selected = true;
+        }
     }
 }
 
-async function buscarNichoUsuario() {
-    const resposta = await fetch(`http://localhost:8080/usuario-nicho/usuario/${id}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        }
-    });
-    
-    const respostaNicho = await resposta.json();
 
-    const nicho = document.getElementById("nicho");
+function preencherNichoUsuario(nichos) {
+    const nichoElement = document.getElementById("nicho");
+    const nichosArray = nichos.split(',').map(n => tratarNome(n.trim()));
 
-    if (nivel_acesso_cod != 3) {
-        const nichos = respostaNicho.map(nivel => nivel.nicho.id);
-        sessionStorage.setItem('nichos', JSON.stringify(nichos));
+    if (nivel_acesso_cod != 1) {
 
-        for (let i = 0; i < respostaNicho.length; i++) {
-            var nichoNomeTratado = tratarNome(respostaNicho[i].nicho.nome);
-            if (i == respostaNicho.length - 1) {
-                nicho.innerHTML += nichoNomeTratado;
-            } else {
-                nicho.innerHTML += nichoNomeTratado + ", ";
-            }
-        }
+        nichoElement.innerHTML = nichosArray.join(', ');
 
-        respostaNicho.forEach((nichoUsuario) => {
-            const checkbox = document.getElementById(`nicho_${nichoUsuario.nicho.id}`);
+        nichosArray.forEach((nichoNome) => {
+            const checkbox = document.querySelector(`input[type="checkbox"][name="${tratarNome(nichoNome)}"]`);
             if (checkbox) {
                 checkbox.checked = true;
             }
-            checkbox.id = `nicho_${nichoUsuario.nicho.id}`;
         });
     } else {
-        nicho.innerHTML += tratarNome(respostaNicho[0].nicho.nome);
-        return respostaNicho;
-    }
+        const opcaoSelect = Array.from(document.querySelector('select[name="nicho"]')).find(option => tratarNome(option.textContent.trim()) === nichosArray[0]);
 
+        if (opcaoSelect) {
+            Array.from(document.querySelector('select[name="nicho"]')).forEach(option => option.selected = false);
+
+            opcaoSelect.selected = true;
+        }
+    }
 }
 
-
-window.onload = function () {
+document.addEventListener('DOMContentLoaded', async function () {
+    await buscarNichos(); 
+    await buscarNivelIngles();
     exibirDadosPerfil();
-    buscarNivelIngles();
-    buscarNichos();
-};
+});
+

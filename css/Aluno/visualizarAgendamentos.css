@@ -29,14 +29,14 @@ body {
 }
 
 .nav-links {
-    margin-top: 2em;
+    margin-top: 0em;
     padding: 0;
     list-style: none;
 }
 
 .nav-links li {
-    padding: 15px;
-    margin: 0.8em auto;
+    padding: 11px;
+    margin: 0.6em auto;
 }
 
 .nav-links a {
@@ -135,6 +135,24 @@ label {
     display: none;
 }
 
+thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.editar-lapis {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-evenly
+}
+
+.editar-lapis img {
+    width: 3vw;
+    cursor: pointer;
+    display: flex;
+}
+
 @media only screen and (max-device-width: 430px) {
 
     .dropdown-btn{
@@ -208,5 +226,5 @@ label {
     .dados {
         height: 33vh;
     }
-
+    
 }

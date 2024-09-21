@@ -2,9 +2,6 @@ async function autenticar() {
     const email = document.getElementById("input_email").value;
     const senha = document.getElementById("input_senha").value;
 
-    console.log(email)
-    console.log(senha)
-
     const dadosAluno = {
         "email": email,
         "senha": senha
@@ -16,14 +13,12 @@ async function autenticar() {
         headers: { "Content-type": "application/json; charset=UTF-8" }
     });
 
-    console.log(respostaLogin)
-
     if (respostaLogin.status == 201) {
         const usuario = await respostaLogin.json();
         salvarInformacoes(usuario)
 
         if(usuario.nivelAcesso.nome == "ALUNO"){
-            window.location.href = "aluno/dashboardAluno.html"
+            window.location.href = "dashboardAluno.html"
         } else {
             window.location.href = "dashboardProfessor.html"
         }
@@ -37,10 +32,9 @@ async function autenticar() {
     }
 
     function salvarInformacoes(usuario) {
-        console.log(usuario)
         sessionStorage.id = usuario.id;
         sessionStorage.cpf = usuario.cpf;
-        sessionStorage.email = usuario.email; sessionStorage
+        sessionStorage.email = usuario.email; 
         sessionStorage.nivel_acesso = usuario.nivelAcesso.nome;
         sessionStorage.nivel_acesso_cod = usuario.nivelAcesso.id;
         sessionStorage.nome_completo = usuario.nomeCompleto;
@@ -64,7 +58,7 @@ function exibirMensagemErro() {
     document.getElementById("input_email").addEventListener("input", function () {
         document.getElementById('mensagemErro').style.display = 'none';
     });
-    
+
     document.getElementById("input_senha").addEventListener("input", function () {
         document.getElementById('mensagemErro').style.display = 'none';
     });

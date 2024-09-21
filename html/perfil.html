@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atualizar Perfil</title>
+    <title>Perfil</title>
     <link rel="stylesheet" href="../css/atualizarPerfil.css">
-
+    <link rel="icon" type="image/png" href="../imgs/english4ever.png">
     <script defer src="../js/script.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -29,7 +29,7 @@
                 </a>
             </li>
             <li>
-                <a href="dashboardProfessor.html">
+                <a id="dashboard_href" href="#">
                     <img src="../imgs/botao-home.png" alt="">
                     <span>Início</span>
                 </a>
@@ -41,9 +41,9 @@
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container hidden">
-                        <a href="#" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
-                        <a href="agendamentos.html" id="agenda_meus_agendamentos_navbar">Agendamentos</a>
-                        <a href="Aluno/historicoAgendamentoAluno.html" id="agenda_historico_navbar">Histórico</a>
+                        <a href="calendarioAluno.html?tipo=aluno" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
+                        <a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar">Meus Agendamentos</a>
+                        <a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar">Histórico</a>
                     </div>
                 </a>
             </li>
@@ -54,8 +54,8 @@
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container hidden">
-                        <a href="visualizarAlunos.html">Visualizar</a>
-                        <a href="cadastrarPerfilAluno.html">Cadastrar</a>
+                        <a href="visualizar.html?tipo=aluno">Visualizar</a>
+                        <a href="cadastrar.html?tipo=aluno">Cadastrar</a>
                     </div>
                 </a>
             </li>
@@ -66,9 +66,15 @@
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-container hidden">
-                        <a href="atualizarPerfilProfessor.html">Visualizar</a>
-                        <a href="#">Cadastrar</a>
+                        <a href="visualizar.html?tipo=professor">Visualizar</a>
+                        <a href="cadastrar.html?tipo=professor">Cadastrar</a>
                     </div>
+                </a>
+            </li>
+            <li>
+                <a href="dashboardAdmin.html" id="dashboard_rep_legal">
+                    <img src="../imgs/painel.png" alt="">
+                    <span>Dashboard</span>
                 </a>
             </li>
             <li id="perfil_navbar">
@@ -78,15 +84,15 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="http://localhost:8086/moodle/moodle-latest-404/moodle/login/index.php" target="_blank">
                     <img src="../imgs/moodle.png" alt="">
                     <span>Moodle</span>
                 </a>
             </li>
             <li>
-                <a href="login2.html">
+                <a onclick="desautenticarUsuario()" style="cursor: pointer;">
                     <img src="../imgs/sair.png" alt="">
-                    <span>Sair</span>
+                    <span style="color: white;">Sair</span>
                 </a>
             </li>
         </ul>
@@ -156,6 +162,19 @@
                                 <input type="text" class="form-control" id="input_profissao" readonly
                                     placeholder="Professor" required>
                             </div>
+                            <br><br>
+                        <div class="buttons">
+                            <div class="button" id="botaoAtualizar">
+                                <button type="submit" class="btn btn-primary">Atualizar</button>
+                            </div>
+                            <div class="button" style="display: none;" id="botaoConfirmar">
+                                <button class="btn btn-primary">Salvar
+                                    Alterações</button>
+                            </div>
+                            <div class="button" style="display: none;" id="botaoCancelar">
+                                <button class="btn btn-primary">Cancelar</button>
+                            </div>
+                        </div>
 
                             <div class="mb-3">
                                 <label for="input_senha" style="display: none;" class="form-label"
@@ -170,7 +189,7 @@
                         <div class="title-course">
                             <p>Curso</p>
                         </div>
-                        <div class="horario">
+                        <div class="horario" id="div_nivel_nicho">
                             <div class="mb-3" id="nivelCheckboxList">
                                 <label class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>
                             </div>
@@ -192,19 +211,6 @@
                             <input type="time" class="form-control" id="input_intervalo_inicio" readonly required>
                             <input type="time" class="form-control" id="input_intervalo_fim" readonly required>
                         </div>
-                        <br><br>
-                        <div class="buttons">
-                            <div class="button" id="botaoAtualizar">
-                                <button type="submit" class="btn btn-primary">Atualizar</button>
-                            </div>
-                            <div class="button" style="display: none;" id="botaoConfirmar">
-                                <button class="btn btn-primary">Salvar
-                                    Alterações</button>
-                            </div>
-                            <div class="button" style="display: none;" id="botaoCancelar">
-                                <button class="btn btn-primary">Cancelar</button>
-                            </div>
-                        </div>
                         </form>
                     </div>
                 </div>
@@ -215,6 +221,23 @@
 </html>
 
 <script>
+
+    if (sessionStorage.getItem("nivel_acesso_cod") == "1") {
+        const horario_atendimento_form = document.getElementById("horario_atendimento_form");
+        const horario_intervalo_form = document.getElementById("horario_intervalo_form");
+        const horario_card_titulo = document.getElementById("horario_card_titulo");
+        const horario_card = document.getElementById("horario_card");
+
+        horario_atendimento_form.style.display = "none";
+        horario_intervalo_form.style.display = "none";
+        horario_card_titulo.style.display = "none";
+        horario_card.style.display = "none";
+        div_nivel_nicho = document.getElementById("div_nivel_nicho")
+        div_nivel_nicho.style.display = "flex"
+        div_nivel_nicho.style.flexDirection = "column"
+        div_nivel_nicho.style.gap = "0px"
+    }
+
 
     function editarPerfil() {
         const botaoCancela = document.getElementById("botaoCancelar");

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Agendamento</title>
+
+    <!-- Estilos principais -->
+    <link rel="stylesheet" href="../../css/Aluno/dashboardAluno.css">
+    <link rel="stylesheet" href="../../css/Aluno/calendario.css">
+    <link rel="icon" type="image/png" href="../imgs/english4ever.png">
+    <!-- Scripts -->
+    <script defer src="../js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Fontes e Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="sidebar">
+        <ul class="nav-links">
+            <li>
+                <a href="#" id="toggle-btn">
+                    <img src="../imgs/menu-aberto.png" alt="">
+                </a>
+            </li>
+            <li>
+                <a id="dashboard_href" href="#">
+                    <img src="../imgs/botao-home.png" alt="">
+                    <span>Início</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="../imgs/calendar-days.png" alt="">
+                    <button class="dropdown-btn">Agenda
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="#" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
+                        <a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar">Meus Agendamentos</a>
+                        <a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar">Histórico</a>
+                    </div>
+                </a>
+            </li>
+            <li id="alunos_navbar">
+                <a href="#">
+                    <img src="../imgs/students.png" alt="">
+                    <button class="dropdown-btn">Alunos
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="visualizar.html?tipo=aluno">Visualizar</a>
+                        <a href="cadastrar.html?tipo=aluno">Cadastrar</a>
+                    </div>
+                </a>
+            </li>
+            <li id="professores_navbar">
+                <a href="#">
+                    <img src="../imgs/professor.png" alt="">
+                    <button class="dropdown-btn">Professores
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container hidden">
+                        <a href="visualizar.html?tipo=professor">Visualizar</a>
+                        <a href="cadastrar.html?tipo=professor">Cadastrar</a>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="dashboardAdmin.html" id="dashboard_rep_legal">
+                    <img src="../imgs/painel.png" alt="">
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li id="perfil_navbar">
+                <a href="perfil.html">
+                    <img src="../imgs/perfil.png" alt="">
+                    <span>Perfil</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:8086/moodle/moodle-latest-404/moodle/login/index.php" target="_blank">
+                    <img src="../imgs/moodle.png" alt="">
+                    <span>Moodle</span>
+                </a>
+            </li>
+            <li>
+                <a onclick="desautenticarUsuario()">
+                    <img src="../imgs/sair.png" alt="">
+                    <span style="color: white;">Sair</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Calendário -->
+    <div class="calendario">
+        <div id="calendar-container" style="margin-left: 180px;">
+            <div id="header">
+                    <div class="meses">
+                        <img src="../../imgs/esquerda.png" alt="Anterior" id="backButton">
+                        <div id="monthDisplay"></div>
+                        <img src="../../imgs/direita.png" alt="Próximo" id="nextButton">
+                    </div>
+            </div>
+
+            <div id="weekdays">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+            </div>
+
+            <div id="calendar"></div>
+        </div>
+
+        <!-- Modal para agendar aula -->
+        <div id="newEventModal">
+            <span class="modal-close">&times;</span>
+            <h2 class="titulo-format-modal">Agendar Aula</h2>
+            <div class="campo-format">Data</div>
+            <input type="text" id="dateInput" name="dateInput" readonly />
+            <div class="campo-format">Professor</div>
+            <div class="select-container">
+                <select id="professor-select">
+                    <option value="" disabled selected>Selecione um professor</option>
+                    <option value="Christian">Christian</option>
+                    <option value="Felipe">Felipe</option>
+                    <option value="Jonanthan">Jonanthan</option>
+                </select>
+            </div>
+            <div class="campo-format">Horários</div>
+            <div class="horarios-container">
+                <button class="time-button" data-time="09:00AM - 10:00AM">09:00AM - 10:00AM</button>
+                <button class="time-button" data-time="10:00AM - 11:00AM">10:00AM - 11:00AM</button>
+                <button class="time-button" data-time="11:00AM - 12:00AM">11:00AM - 12:00AM</button>
+                <button class="time-button" data-time="13:00PM - 14:00PM">13:00PM - 14:00PM</button>
+                <button class="time-button" data-time="14:00PM - 15:00PM">14:00PM - 15:00PM</button>
+                <button class="time-button" data-time="15:00PM - 16:00PM">15:00PM - 16:00PM</button>
+                <button class="time-button" data-time="16:00PM - 17:00PM">16:00PM - 17:00PM</button>
+                <button class="time-button" data-time="17:00PM - 18:00PM">17:00PM - 18:00PM</button>
+            </div>
+            <button id="agendar-button">Agendar</button>
+            <button id="cancelar-button">Cancelar</button>
+        </div>
+
+        <!-- Modal para deletar aula -->
+        <div id="deleteEventModal">
+            <span class="modal-close">&times;</span>
+            <h2 class="titulo-format-modal">Aula Agendada</h2>
+            <div class="campo-format">Data</div>
+            <input type="text" id="deleteDateInput" readonly />
+            <div class="campo-format">Professor</div>
+            <input type="text" id="deleteProfessorInput" readonly />
+            <div class="campo-format">Horário</div>
+            <input type="text" id="deleteTimeInput" readonly />
+            <div class="campo-format">Status</div>
+            <div id="deleteStatus" class="status"></div>
+            <div class="campo-format" id="eventText"></div><br>
+            <button id="deletar-button">Deletar</button>
+            <button id="fechar-button">Fechar</button>
+        </div>
+
+        <div id="modalBackDrop"></div>
+    </div>
+
+    <script src="../../js/aluno/calendario.js"></script>
+</body>
+
+</html>

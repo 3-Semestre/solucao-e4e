@@ -29,14 +29,14 @@ body {
 }
 
 .nav-links {
-    margin-top: 2em;
+    margin-top: 0em;
     padding: 0;
     list-style: none;
 }
 
 .nav-links li {
-    padding: 15px;
-    margin: 0.8em auto;
+    padding: 11px;
+    margin: 0.6em auto;
 }
 
 .nav-links a {
