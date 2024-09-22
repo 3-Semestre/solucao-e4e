@@ -14,12 +14,12 @@ async function buscarDadosProfessor() {
 
     console.log("Pegando quantidade de aulas concluidas e não concluidas:")
     console.log(respostaDados)
-    if(qtdAulasConcluidas == null){
+    if (qtdAulasConcluidas == null) {
         console.log("A quantidade de aulas concluidas é nula. Convertendo para 1.")
         qtdAulasConcluidas = 1;
-    } 
-    
-    if(qtdAulasNaoConcluidas == null){
+    }
+
+    if (qtdAulasNaoConcluidas == null) {
         console.log("A quantidade de aulas não concluidas é nula. Convertendo para 1.")
         qtdAulasNaoConcluidas = 1
     }
@@ -55,49 +55,52 @@ async function buscarDadosProfessor() {
     var pizzaChartAgendamento = new Chart(document.getElementById('pizzaChartAgendamento'), configuracao);
 }
 
-async function buscarDadosCancelamentoProfessor() {
-    const resposta = await fetch("http://localhost:7000/dashboard/taxa-cancelamento-mes", {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
+try {
+    async function buscarDadosCancelamentoProfessor() {
+        const resposta = await fetch("http://localhost:7000/dashboard/taxa-cancelamento-mes", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (resposta.status !== 200) {
+            cardsAlunos.innerHTML = "Erro para plotar o gráfico vindo da API."
+            return
         }
-    });
 
-    if(resposta.status !== 200){
-        cardsAlunos.innerHTML = "Erro para plotar o gráfico vindo da API."
-        return
+        const respostaDados = await resposta.json();
+
+
+        let dadosCancelamento = {
+            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            datasets: [{
+                label: 'Taxa de Cancelamento',
+                data: [],
+                fill: true,
+                backgroundColor: 'rgba(7, 43, 89, 0.5)',
+                borderColor: 'rgba(7, 43, 89, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        for (var i = 0; i < respostaDados.length; i++) {
+            dadosCancelamento.datasets[0].data.push(respostaDados[i].taxa_Cancelamento);
+        }
+
+        var chartCancelamentoConfig = {
+            type: 'line',
+            data: dadosCancelamento,
+            options: {}
+        };
+
+        var chartCancelamento = new Chart(document.getElementById('chartCancelamento'), chartCancelamentoConfig);
+
     }
-
-    const respostaDados = await resposta.json();
-
-    
-    let dadosCancelamento = {
-        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-        datasets: [{
-            label: 'Taxa de Cancelamento',
-            data: [],
-            fill: true,
-            backgroundColor: 'rgba(7, 43, 89, 0.5)',
-            borderColor: 'rgba(7, 43, 89, 1)',
-            borderWidth: 1
-        }]
-    };
-
-    for (var i = 0; i < respostaDados.length; i++) {
-        dadosCancelamento.datasets[0].data.push(respostaDados[i].taxa_Cancelamento);
-    }
-
-    var chartCancelamentoConfig = {
-        type: 'line',
-        data: dadosCancelamento,
-        options: {}
-    };
-
-    var chartCancelamento = new Chart(document.getElementById('chartCancelamento'), chartCancelamentoConfig);
-
+} catch (error) {
+    console.log("erro cancelamento " + error)
 }
-
 async function buscarDadosCancelamentoAluno() {
     const resposta = await fetch(`http://localhost:7000/dashboard/visao-mes-aluno/${sessionStorage.getItem('id')}`, {
         method: 'GET',
@@ -132,12 +135,12 @@ async function buscarDadosCancelamentoAluno() {
         options: {}
     };
 
-    var chartAulasRealizadas= new Chart(document.getElementById('chartAulasRealizadas'), chartAulasRealizadasConfig);
+    var chartAulasRealizadas = new Chart(document.getElementById('chartAulasRealizadas'), chartAulasRealizadasConfig);
     window.chartAulasRealizadas = chartAulasRealizadas;
 }
 
 try {
-    if(nivelAcesso !== "ALUNO"){
+    if (nivelAcesso !== "ALUNO") {
         buscarDadosProfessor()
         buscarDadosCancelamentoProfessor()
     } else {
