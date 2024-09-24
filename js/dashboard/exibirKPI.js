@@ -23,8 +23,9 @@ async function plotarProximosAgendamentos(nivelAcesso) {
         cardsAlunos.innerHTML = "Não há agendamentos a serem realizados."
         return
     }
-
+    
     const listaAgendamentos = await resposta.json();
+    console.log(listaAgendamentos)
     
     const diasSemana = {
         "Sunday": "Domingo",
@@ -40,7 +41,7 @@ async function plotarProximosAgendamentos(nivelAcesso) {
         let dataString = aluno.data;
         let data = new Date(dataString);
 
-        let dia = data.getDate();
+        let dia = data.getUTCDate();
         let mes = data.getMonth(); 
 
         let nomesMeses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
@@ -121,14 +122,36 @@ async function plotarKPIsAluno() {
 }
 
 async function plotarKPIsProfessor() {
+    try {
+        const proximosAgendamentosFetch = await fetch("http://localhost:7000/dashboard/qtd-agendamento-mes-professor", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
 
-    const proximosAgendamentosFetch = await fetch("http://localhost:8080/dashboard/qtd-agendamento-mes-professor", {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-        }
-    });
+        const respostaProximosAgendamentos = await proximosAgendamentosFetch.json();
+
+        
+        const cardNovoAgendamento = document.getElementById("novos-agendamentos");
+
+        console.log("PLOTANDO KPIS: ")
+        console.log(`Novos agendamentos: ${respostaProximosAgendamentos}`)
+
+        cardNovoAgendamento.innerHTML = `<p>Novos Agendamentos</p>
+            <h2>${respostaProximosAgendamentos}</h2>
+            <div class="variação">
+                <div class="seta-baixo">
+                </div>
+                <div class="porcentagem">
+                    <p class="ruim">70,00 %</p>
+                </div>
+            </div>`;
+
+    } catch{
+        console.log("Erro ao buscar próximos agendamentos")
+    }
     
     const alunosNovosFetch = await fetch("http://localhost:8080/dashboard/qtd-novos-alunos-mes", {
         method: 'GET',
@@ -154,31 +177,15 @@ async function plotarKPIsProfessor() {
         }
     });
 
-    const respostaProximosAgendamentos = await proximosAgendamentosFetch.json();
+    
     const respostaAlunosNovos = await alunosNovosFetch.json();
     const respostaConfirmacaoAgendamento = await confirmacaoAgendamento.json();
     const respostaCancelamento = await cancelamento.json();
 
-    console.log("PLOTANDO KPIS: ")
-    console.log(`Novos agendamentos: ${respostaProximosAgendamentos}`)
     console.log(`Alunos Novos: ${respostaAlunosNovos}`)
     console.log(`Confirmacao Agendamento: ${respostaConfirmacaoAgendamento}`)
     console.log(`Resposta Cancelamento : ${respostaCancelamento}`)
     
-
-    const cardNovoAgendamento = document.getElementById("novos-agendamentos");
-
-
-    cardNovoAgendamento.innerHTML = `<p>Novos Agendamentos</p>
-        <h2>${respostaProximosAgendamentos}</h2>
-        <div class="variação">
-            <div class="seta-baixo">
-            </div>
-            <div class="porcentagem">
-                <p class="ruim">70,00 %</p>
-            </div>
-        </div>`;
-
     const cardConfirmacaoAgendamento = document.getElementById("confirmacao-agendamento");
 
 

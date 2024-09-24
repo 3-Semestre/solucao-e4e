@@ -64,10 +64,7 @@ async function buscarDadosCancelamentoProfessor() {
         }
     });
 
-    if(resposta.status !== 200){
-        cardsAlunos.innerHTML = "Erro para plotar o gráfico vindo da API."
-        return
-    }
+
 
     const respostaDados = await resposta.json();
 
