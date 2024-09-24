@@ -33,6 +33,11 @@ body {
     margin: 0.6em auto;
 }
 
+.content-course {
+    flex: 1; /* Permite que o conteúdo do curso utilize o espaço disponível */
+    min-width: 0; /* Impede que o conteúdo exceda o espaço disponível */
+}
+
 .nav-links a {
     color: #fff;
     font-size: 24px;
@@ -74,9 +79,18 @@ body {
     height: 110vh;
     background-color: #a8b6bf40;
     border-radius: 2%;
-    gap: 20vw;
     display: flex;
     padding: 5px 10px 15px 20px;
+    flex-direction: row;
+    justify-content: center; /* Centraliza horizontalmente */
+    gap: 14vw;
+}
+
+.content-personal-information, 
+.content-course {
+    max-width: 500px; /* Ajuste a largura conforme necessário */
+    width: 100%; /* Isso garante que eles se expandam até o máximo, mas não mais */
+    margin: 0 10px; /* Espaçamento entre os contêineres */
 }
 
 .title-personal-information p {

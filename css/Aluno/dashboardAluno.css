@@ -105,9 +105,9 @@ body {
 }
 
 .box {
-    width: 22vw;
+    width: 25vw;
     height: 25vh;
-    border: 1px solid rgba(7, 43, 89, 0.685);
+    border: 7px solid #072B59;
     border-radius: 10px;
     box-shadow: 5px 5px 5px #888;
     display: flex;
@@ -161,21 +161,20 @@ body {
 
 .content-kpis p {
     position: relative;
-    top: 2.5vh;
 }
 
 .line-box {
     border: 4px solid white;
-    height: 15vh;
-    border-radius: 10px 10px 10px 10px;
+    height: 17vh;
+    border-radius: 10px;
     position: relative;
-    bottom: 2vh;
+    bottom: 1vh;
 }
 
 .box-kpis {
     width: 22vw;
     height: 25vh;
-    background-color: #072B59;
+    border: 1px solid #072B59;
     border-radius: 10px;
     box-shadow: 5px 5px 5px #888;
     display: flex;
@@ -183,6 +182,7 @@ body {
     align-items: center;
     justify-content: flex-start;
     padding: 1rem;
+    background-color: #072B59;
     color: white;
 }
 

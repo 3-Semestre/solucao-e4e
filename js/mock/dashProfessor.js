@@ -4,7 +4,7 @@ const ctxDonut = document.getElementById('pizzaChartAgendamento').getContext('2d
 const donutChart = new Chart(ctxDonut, {
     type: 'doughnut',
     data: {
-        labels: ['Não Concluídos', 'Concluídos'],
+        labels: ['Agendamentos Não Concluídos', 'Agendamentos Concluídos'],
         datasets: [{
             data: [30, 70], // Mock de dados para proporção
             backgroundColor: ['#2C3E50', '#00D2A0'],
