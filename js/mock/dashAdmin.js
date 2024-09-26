@@ -1,12 +1,12 @@
 // Gráfico de Donut
-function plotarGrafios(){
+function plotarGrafios() {
     const ctxDonut = document.getElementById('pizzaChartAgendamento').getContext('2d');
     const donutChart = new Chart(ctxDonut, {
         type: 'doughnut',
         data: {
             labels: ['Não Cumpridas', 'Cumpridas'],
             datasets: [{
-                data: [30, 70], // Mock de dados para proporção
+                data: [30, 70], // Proporção de dados
                 backgroundColor: ['#2C3E50', '#00D2A0'],
                 hoverOffset: 4
             }]
@@ -16,6 +16,17 @@ function plotarGrafios(){
                 legend: {
                     display: false,
                     position: 'right'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            let dataset = tooltipItem.dataset.data;
+                            let currentValue = dataset[tooltipItem.dataIndex];
+                            let total = dataset.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
+                            let percentage = Math.floor(((currentValue / total) * 100) + 0.5); // Calcula porcentagem
+                            return tooltipItem.label + ': ' + percentage + '%';
+                        }
+                    }
                 }
             }
         }

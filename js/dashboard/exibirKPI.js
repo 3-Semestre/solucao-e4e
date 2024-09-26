@@ -1,6 +1,6 @@
 async function plotarProximosAgendamentos(nivelAcesso) {
 
-    if(nivelAcesso == "ALUNO"){
+    if (nivelAcesso == "ALUNO") {
         var resposta = await fetch(`http://localhost:7000/dashboard/ultimos-3-agendamentos-aluno/${sessionStorage.getItem('id')}`, {
             method: 'GET',
             headers: {
@@ -19,7 +19,7 @@ async function plotarProximosAgendamentos(nivelAcesso) {
     }
 
     const cardsAlunos = document.getElementById("agendamentos");
-    if(resposta.status == 204){
+    if (resposta.status == 204) {
         cardsAlunos.innerHTML = "Não há agendamentos a serem realizados."
         return
     }
@@ -47,8 +47,6 @@ async function plotarProximosAgendamentos(nivelAcesso) {
         let nomesMeses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
         let diaFormatado = dia.toString().padStart(2, '0');
         let nomeMes = nomesMeses[mes];
-
-        console.log(`Dia ${diaFormatado} e mês ${nomeMes}`);
 
         // Formatar o horário
         let horario = new Date(`1970-01-01T${aluno.horario_Inicio}Z`).toLocaleTimeString([], {
@@ -86,23 +84,19 @@ async function plotarKPIsAluno() {
         }
     });
 
-    if(top3MesesAula.status !== 200){
+    if (top3MesesAula.status !== 200) {
         cardsAlunos.innerHTML = "Não há top 3 meses realizados."
         return
     }
-    
+
 
     const respostaTop3MesesAula = await top3MesesAula.json();
-
-    console.log("PLOTANDO KPIS: ")
-    console.log(`TOP 3 meses aula: ${respostaTop3MesesAula}`)
-    
 
     const cardNovoAgendamento = document.getElementById("top3-meses");
     const porcentagem = ["20,53", "70,00", "30,53"]
 
     cardNovoAgendamento.innerHTML = respostaTop3MesesAula.map((top, index) => {
-                return `
+        return `
                 <div class="box-kpis">
                 <div class="line-box">
                 </div>
@@ -118,7 +112,7 @@ async function plotarKPIsAluno() {
                     </div>
                 </div>
             </div>`;
-            }).join('');
+    }).join('');
 }
 
 async function plotarKPIsProfessor() {
@@ -150,46 +144,82 @@ async function plotarKPIsProfessor() {
             </div>`;
 
     } catch{
-        console.log("Erro ao buscar próximos agendamentos")
+        console.log("Erro ao buscar KPI próximos agendamentos")
     }
-    
-    const alunosNovosFetch = await fetch("http://localhost:8080/dashboard/qtd-novos-alunos-mes", {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-        }
-    });
+
+    try {
+        const alunosNovosFetch = await fetch("http://localhost:8080/dashboard/qtd-novos-alunos-mes", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const respostaAlunosNovos = await alunosNovosFetch.json();
+        
+        console.log(`Alunos Novos: ${respostaAlunosNovos}`)
+
+        const cardAlunosNovos = document.getElementById("alunos-novos");
+        cardAlunosNovos.innerHTML = `<p>Alunos Novos</p>
+                <h2>${respostaAlunosNovos}</h2>
+                <div class="variação">
+                    <div class="seta-cima">
+                    </div>
+                    <div class="porcentagem">
+                        <p class="bom">20,53 %</p>
+                    </div>
+                </div>`;
+    } catch {
+        console.log("Erro ao buscar KPI alunos novos")
+    }
+
+    try {
+        const cancelamento = await fetch("http://localhost:8080/dashboard/qtd-cancelamento-alunos", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const respostaCancelamento = await cancelamento.json();
+
+        console.log(`Resposta Cancelamento : ${respostaCancelamento}`)
+
+        const cardCancelamento = document.getElementById("cancelamento");
+        cardCancelamento.innerHTML = `<p>Cancelamento</p>
+            <h2>${respostaCancelamento}</h2>
+            <div class="variação">
+                <div id="seta-baixo">
+                </div>
+                <div class="porcentagem">
+                    <p class="bom">70,00 %</p>
+                </div>
+            </div>`;
+    } catch {
+        console.log("Erro ao buscar KPI cancelamento")
+    }
+
 
     const confirmacaoAgendamento = await fetch("http://localhost:8080/dashboard/tempo-confirmacao", {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-        }
-    });
-
-    const cancelamento = await fetch("http://localhost:8080/dashboard/qtd-cancelamento-alunos", {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-        }
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
     });
 
     
-    const respostaAlunosNovos = await alunosNovosFetch.json();
     const respostaConfirmacaoAgendamento = await confirmacaoAgendamento.json();
-    const respostaCancelamento = await cancelamento.json();
 
-    console.log(`Alunos Novos: ${respostaAlunosNovos}`)
     console.log(`Confirmacao Agendamento: ${respostaConfirmacaoAgendamento}`)
-    console.log(`Resposta Cancelamento : ${respostaCancelamento}`)
+
     
     const cardConfirmacaoAgendamento = document.getElementById("confirmacao-agendamento");
 
 
-    cardConfirmacaoAgendamento.innerHTML = `<p>Confirmação de Agendamento</p>
+        cardConfirmacaoAgendamento.innerHTML = `<p>Confirmação de Agendamento</p>
     <h2>${respostaConfirmacaoAgendamento}<span>min</span></h2>
     <div class="variação">
         <div class="seta-cima">
@@ -198,35 +228,12 @@ async function plotarKPIsProfessor() {
             <p class="bom">10,00 %</p>
         </div>
     </div>`;
-
-
-    const cardAlunosNovos = document.getElementById("alunos-novos");
-    cardAlunosNovos.innerHTML = `<p>Alunos Novos</p>
-    <h2>${respostaAlunosNovos}</h2>
-    <div class="variação">
-        <div class="seta-cima">
-        </div>
-        <div class="porcentagem">
-            <p class="bom">20,53 %</p>
-        </div>
-    </div>`;
-
-    const cardCancelamento = document.getElementById("cancelamento");
-    cardCancelamento.innerHTML = `<p>Cancelamento</p>
-        <h2>${respostaCancelamento}</h2>
-        <div class="variação">
-            <div id="seta-baixo">
-            </div>
-            <div class="porcentagem">
-                <p class="bom">70,00 %</p>
-            </div>
-        </div>`;
 }
 
-var nivelAcesso = sessionStorage.getItem('nivel_acesso') 
+var nivelAcesso = sessionStorage.getItem('nivel_acesso')
 plotarProximosAgendamentos(nivelAcesso)
-if(nivelAcesso !== "ALUNO"){
+if (nivelAcesso !== "ALUNO") {
     plotarKPIsProfessor()
-} else{
+} else {
     plotarKPIsAluno()
 }

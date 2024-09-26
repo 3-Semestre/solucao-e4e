@@ -29,13 +29,13 @@ body {
 }
 
 .nav-links {
-    margin-top: 2em;
+    margin-top: 0em;
     padding: 0;
     list-style: none;
 }
 
 .nav-links li {
-    padding: 15px;
+    padding: 11px;
     margin: 0.6em auto;
 }
 
@@ -150,14 +150,14 @@ label {
 }
 
 .dados-student {
-    display: flex;
+    /* display: flex; */
     background-color: #FFF;
     align-items: center;
     justify-content: space-between;
     padding: 20px;
     margin-bottom: 15px;
     width: 100%;
-    display: flex;
+    /* display: flex; */
     gap: 20px;
     
 }
@@ -166,6 +166,11 @@ label {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.header-student{
+    display: flex;
+    gap: 1vw;
 }
 
 .header-student img {
@@ -178,34 +183,46 @@ label {
     color: #072B59;
     font-weight: bold;
     position: relative;
-    top: 1vh;
+    top: 1.5vh;
+    font-size: 20px;
 }
 
 .form-student {
     display: flex;
-    flex-direction: row;
-    gap: 15px;
+}
+
+.personal-information {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1vw;
+}
+
+.course-information{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1vw;
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
+    flex: 1 1 30%;
 }
 
 .form-group label {
-    font-size: 14px;
-    color: #072B59;
-    font-weight: bold;
+    display: block;
     margin-bottom: 5px;
 }
 
-.form-group input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    color: #333;
-    background-color: #F0F0F0;
+.form-group .label2{
+    font-weight: 300;
+}   
+
+.form-group .label2,
+.form-group .label2{
+    min-width: 250px;  /* Ajuste esse valor conforme necessário */
+    max-width: 100%;   /* Garante que não ultrapasse o container */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;  /* Adiciona reticências (...) caso o texto seja muito longo */
 }
 
 
@@ -219,18 +236,20 @@ label {
 .lixeira {
     display: flex;
     justify-content: flex-end;
+    position: relative;
+    bottom: 5vh;
 }
 
 .lixeira img {
-    width: 30px;
-    height: 30px;
+    width: 3vw;
+    height: 6vh;
     cursor: pointer;
 }
 
 /* Linha horizontal */
 hr.line {
     border: none;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #072B59;
     margin-top: 10px;
 }
 

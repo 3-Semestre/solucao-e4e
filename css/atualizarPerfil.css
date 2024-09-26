@@ -23,13 +23,13 @@ body {
 }
 
 .nav-links {
-    margin-top: 2em;
+    margin-top: 0em;
     padding: 0;
     list-style: none;
 }
 
 .nav-links li {
-    padding: 15px;
+    padding: 11px;
     margin: 0.6em auto;
 }
 
@@ -71,11 +71,11 @@ body {
 
 .content-professor {
     width: 100%;
-    height: 96vh;
+    height: 110vh;
     background-color: #a8b6bf40;
     border-radius: 2%;
+    gap: 20vw;
     display: flex;
-    justify-content: space-between;
     padding: 5px 10px 15px 20px;
 }
 
@@ -96,11 +96,11 @@ body {
 }
 
 .form-control {
-    width: 35vw !important;
+    width: 25vw !important;
 }
 
 .form-select {
-    width: 35vw !important;
+    width: 20vw !important;
 }
 
 .button button {
