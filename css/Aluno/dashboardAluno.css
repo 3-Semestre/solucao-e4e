@@ -23,64 +23,16 @@ body {
     justify-content: space-around;
 }
 
-.sidebar {
-    background-color: #072B59;
-    position: fixed;
-    width: 5vw;
-    height: 100%;
-    transition: all .3s ease;
-    padding: 0.6rem 0.3rem;
-}
-
-.sidebar .nav-links a {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.sidebar.active {
-    width: 15vw;
-}
-
-.nav-links {
-    margin-top: 0em;
-    padding: 0;
-    list-style: none;
-}
-
-.nav-links li {
-    padding: 11px;
-    margin: 0.6em auto;
-}
-
-.nav-links a {
-    color: #fff;
-    font-size: 24px;
-    display: flex;
-    text-decoration: none;
-}
-
-.nav-links li span {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    font-size: 20px;
-}
-
-.sidebar.active .nav-links li span {
-    opacity: 1;
-    padding-left: 10px;
-}
-
 .conteudo {
-    margin-left: 100px;
+    margin-left: 100px; /* Valor inicial quando o menu está fechado */
     transition: margin-left 0.3s ease, width 0.3s ease;
     padding: 20px;
-    width: calc(100% - 100px);
+    width: calc(100% - 200px);
 }
 
-.sidebar.active~.conteudo {
-    margin-left: 250px;
-    width: calc(100% - 250px);
+.conteudo.open {
+    margin-left: 250px; /* Valor quando o menu está aberto */
+    width: calc(100% - 250px); /* Ajusta a largura para que o conteúdo não seja coberto */
 }
 
 .buttons-professor {
@@ -93,11 +45,6 @@ body {
     border: none;
     font-weight: bold;
     color: #072B59;
-}
-
-.nav-links li img {
-    width: 30px;
-    height: 30px;
 }
 
 .conteudo p {
@@ -186,69 +133,6 @@ body {
     color: white;
 }
 
-.seta {
-    width: 0;
-    height: 0;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-bottom: 7px solid black;
-    position: relative;
-    right: 1.5vw;
-}
-
-.variação {
-    display: flex;
-    align-items: center;
-    gap: 1px;
-}
-
-.porcentagem p {
-    position: relative;
-    top: 0vh;
-    right: 0.5vw;
-}
-
-#seta-baixo {
-    width: 0;
-    height: 0;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-top: 7px solid green;
-    position: relative;
-    right: 1.5vw;
-    bottom: 1vh;
-}
-
-.seta-baixo {
-    width: 0;
-    height: 0;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-top: 7px solid red;
-    position: relative;
-    right: 1.5vw;
-    bottom: 1vh;
-}
-
-.seta-cima {
-    width: 0;
-    height: 0;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-bottom: 7px solid green;
-    position: relative;
-    right: 1.5vw;
-    bottom: 1vh;
-}
-
-.bom {
-    color: green;
-}
-
-.ruim {
-    color: red;
-}
-
 .box-chart {
     width: 20vw;
     height: 52vh;
@@ -268,13 +152,6 @@ body {
 .data p {
     font-size: 20px;
 }
-
-/* .conteudo .title-agendamento {
-    width: 50%;
-    position: relative;
-    left: 5vw;
-    font-size: 20px;
-} */
 
 .none {
     color: rgba(255, 255, 255, 0);
