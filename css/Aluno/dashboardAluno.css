@@ -275,44 +275,6 @@ body {
     bottom: 5vh;
 }
 
-.dropdown-btn {
-    padding-left: 10px;
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
-    display: block;
-    border: none;
-    background: none;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-    outline: none;
-}
-
-.dropdown-container {
-    display: flex;
-    align-items: center;
-    color: white;
-}
-
-.sidebar .dropdown-btn{
-    color: rgba(255, 255, 255, 0);
-}
-
-.sidebar.active .dropdown-btn{
-    color: white;
-}
-
-.dropdown-container a {
-    font-size: 15px;
-    color: white; 
-}
-
-.hidden {
-    display: none;
-}
-
-
 @media only screen and (max-device-width: 430px) {
 
     .dropdown-btn{

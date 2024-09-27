@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100&display=swap');
+
+* {
+    font-family: "DM Sans", sans-serif;
+}
+
 body {
     margin: 0;
     display: flex;
@@ -95,7 +101,40 @@ body {
     align-items: center;
     flex-direction: column;
     width: 18vw;
+    height: 50vh;
+    object-fit: cover; /* Corta a imagem para preencher o espaço sem distorção */
     border-radius: 5%;
+}
+
+#uploadButton{
+    width: 5vw;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bolder;
+    border-color: #4CAF50;
+    height: 6vh;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #072B59;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    width: 15vw;
+}
+
+#uploadButton:hover {
+    background-color: #025706;
+}
+
+.file-upload-container {
+    display: flex; /* Usar Flexbox */
+    gap: 10px; /* Espaço entre os botões */
+    align-items: center; /* Alinhar verticalmente ao centro */
 }
 
 .photo-professor h5 {

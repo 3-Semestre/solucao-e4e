@@ -7,7 +7,9 @@
     <title>Perfil</title>
     <link rel="stylesheet" href="../css/atualizarPerfil.css">
     <link rel="stylesheet" href="../css/menu.css">
-    
+
+    <script src="../js/uparFoto.js"></script>
+
     <link rel="icon" type="image/png" href="../imgs/english4ever.png">
     <script defer src="../js/script.js"></script>
 
@@ -37,19 +39,24 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#agendaDropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#agendaDropdown"
+                    aria-expanded="false">
                     <img src="../imgs/calendar-days.png" alt=""> <span class="ms-2">Agenda</span>
                 </a>
                 <div class="collapse" id="agendaDropdown">
                     <ul class="nav flex-column dropdown-container">
-                        <li><a href="calendarioAluno.html" id="agenda_novo_agendamento_navbar" class="nav-link">Novo Agendamento</a></li>
-                        <li><a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar" class="nav-link">Meus Agendamentos</a></li>
-                        <li><a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar" class="nav-link">Histórico</a></li>
+                        <li><a href="calendarioAluno.html" id="agenda_novo_agendamento_navbar" class="nav-link">Novo
+                                Agendamento</a></li>
+                        <li><a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar"
+                                class="nav-link">Meus Agendamentos</a></li>
+                        <li><a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar"
+                                class="nav-link">Histórico</a></li>
                     </ul>
                 </div>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#alunosDropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#alunosDropdown"
+                    aria-expanded="false">
                     <img src="../imgs/students.png" alt=""> <span class="ms-2">Alunos</span>
                 </a>
                 <div class="collapse" id="alunosDropdown">
@@ -60,7 +67,8 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#professoresDropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"
+                    data-bs-target="#professoresDropdown" aria-expanded="false">
                     <img src="../imgs/professor.png" alt=""> <span class="ms-2">Professores</span>
                 </a>
                 <div class="collapse" id="professoresDropdown">
@@ -106,7 +114,7 @@
                 <button type="button" class="btn btn-primary" id="botaoCadastro">Atuando</button>
             </div>
             <div class="photo-professor">
-                <img src="../imgs/teacher.jpg" alt="Foto do Professor">
+                <img id="teacherImage" src="../imgs/teacher.jpg" alt="Foto do Professor">
                 <div class="professor-information">
                     <h5>Nome:</h5>
                     <p id="nome">Joseph Smith</p>
@@ -117,7 +125,14 @@
                     <h5 id="horario_card_titulo">Horário de Atendimento:</h5>
                     <p id="horario_card"></p>
                 </div>
+
             </div>
+            <div class="file-upload-container">
+                <input type="file" id="fileInput" accept="image/*" style="display: none;" />
+                <label for="fileInput" class="custom-file-upload">Selecionar Imagem</label>
+                <button id="uploadButton" class="btn btn-primary">Enviar</button>
+            </div>
+
             <hr class="line">
             <div class="content-professor">
                 <div class="content-personal-information">
@@ -158,18 +173,18 @@
                                     placeholder="Professor" required>
                             </div>
                             <br><br>
-                        <div class="buttons">
-                            <div class="button" id="botaoAtualizar">
-                                <button type="submit" class="btn btn-primary">Atualizar</button>
+                            <div class="buttons">
+                                <div class="button" id="botaoAtualizar">
+                                    <button type="submit" class="btn btn-primary">Atualizar</button>
+                                </div>
+                                <div class="button" style="display: none;" id="botaoConfirmar">
+                                    <button class="btn btn-primary">Salvar
+                                        Alterações</button>
+                                </div>
+                                <div class="button" style="display: none;" id="botaoCancelar">
+                                    <button class="btn btn-primary">Cancelar</button>
+                                </div>
                             </div>
-                            <div class="button" style="display: none;" id="botaoConfirmar">
-                                <button class="btn btn-primary">Salvar
-                                    Alterações</button>
-                            </div>
-                            <div class="button" style="display: none;" id="botaoCancelar">
-                                <button class="btn btn-primary">Cancelar</button>
-                            </div>
-                        </div>
 
                             <div class="mb-3">
                                 <label for="input_senha" style="display: none;" class="form-label"
