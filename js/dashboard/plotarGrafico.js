@@ -96,7 +96,6 @@ async function buscarDadosCancelamentoProfessor() {
         var chartCancelamento = new Chart(document.getElementById('chartCancelamento'), chartCancelamentoConfig);
 
     }
-
 async function buscarDadosCancelamentoAluno() {
     const resposta = await fetch(`http://localhost:7000/dashboard/visao-mes-aluno/${sessionStorage.getItem('id')}`, {
         method: 'GET',
@@ -125,6 +124,10 @@ async function buscarDadosCancelamentoAluno() {
         aulasRealizadas.labels.push(respostaDados[i].mes)
     }
 
+    if (window.chartAulasRealizadas instanceof Chart) {
+        window.chartAulasRealizadas.destroy();
+    }
+    
     var chartAulasRealizadasConfig = {
         type: 'line',
         data: aulasRealizadas,

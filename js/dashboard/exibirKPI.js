@@ -23,10 +23,9 @@ async function plotarProximosAgendamentos(nivelAcesso) {
         cardsAlunos.innerHTML = "Não há agendamentos a serem realizados."
         return
     }
-    
+
     const listaAgendamentos = await resposta.json();
-    console.log(listaAgendamentos)
-    
+
     const diasSemana = {
         "Sunday": "Domingo",
         "Monday": "Segunda-feira",
@@ -42,7 +41,7 @@ async function plotarProximosAgendamentos(nivelAcesso) {
         let data = new Date(dataString);
 
         let dia = data.getUTCDate();
-        let mes = data.getMonth(); 
+        let mes = data.getMonth();
 
         let nomesMeses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
         let diaFormatado = dia.toString().padStart(2, '0');
@@ -127,7 +126,7 @@ async function plotarKPIsProfessor() {
 
         const respostaProximosAgendamentos = await proximosAgendamentosFetch.json();
 
-        
+
         const cardNovoAgendamento = document.getElementById("novos-agendamentos");
 
         console.log("PLOTANDO KPIS: ")
@@ -143,8 +142,8 @@ async function plotarKPIsProfessor() {
                 </div>
             </div>`;
 
-    } catch{
-        console.log("Erro ao buscar KPI próximos agendamentos")
+    } catch {
+        console.log("Erro ao buscar próximos agendamentos")
     }
 
     try {
@@ -157,21 +156,54 @@ async function plotarKPIsProfessor() {
         });
 
         const respostaAlunosNovos = await alunosNovosFetch.json();
-        
+
         console.log(`Alunos Novos: ${respostaAlunosNovos}`)
 
         const cardAlunosNovos = document.getElementById("alunos-novos");
+
         cardAlunosNovos.innerHTML = `<p>Alunos Novos</p>
-                <h2>${respostaAlunosNovos}</h2>
-                <div class="variação">
-                    <div class="seta-cima">
-                    </div>
-                    <div class="porcentagem">
-                        <p class="bom">20,53 %</p>
-                    </div>
-                </div>`;
+    <h2>${respostaAlunosNovos}</h2>
+    <div class="variação">
+        <div class="seta-cima">
+        </div>
+        <div class="porcentagem">
+            <p class="bom">20,53 %</p>
+        </div>
+    </div>`;
+
     } catch {
-        console.log("Erro ao buscar KPI alunos novos")
+        console.log("Erro ao buscar próximos agendamentos")
+    }
+
+    try {
+        const confirmacaoAgendamento = await fetch("http://localhost:8080/dashboard/tempo-confirmacao", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const respostaConfirmacaoAgendamento = await confirmacaoAgendamento.json();
+
+        console.log(`Confirmacao Agendamento: ${respostaConfirmacaoAgendamento}`)
+
+
+        const cardConfirmacaoAgendamento = document.getElementById("confirmacao-agendamento");
+
+
+        cardConfirmacaoAgendamento.innerHTML = `<p>Confirmação de Agendamento</p>
+<h2>${respostaConfirmacaoAgendamento}<span>min</span></h2>
+<div class="variação">
+    <div class="seta-cima">
+    </div>
+    <div class="porcentagem">
+        <p class="bom">10,00 %</p>
+    </div>
+</div>`;
+
+    } catch {
+        console.log("Erro ao buscar próximos agendamentos")
     }
 
     try {
@@ -186,7 +218,9 @@ async function plotarKPIsProfessor() {
         const respostaCancelamento = await cancelamento.json();
 
         console.log(`Resposta Cancelamento : ${respostaCancelamento}`)
-
+    
+    
+    
         const cardCancelamento = document.getElementById("cancelamento");
         cardCancelamento.innerHTML = `<p>Cancelamento</p>
             <h2>${respostaCancelamento}</h2>
@@ -197,38 +231,14 @@ async function plotarKPIsProfessor() {
                     <p class="bom">70,00 %</p>
                 </div>
             </div>`;
+
     } catch {
-        console.log("Erro ao buscar KPI cancelamento")
+        console.log("Erro ao buscar próximos agendamentos")
     }
 
 
-    const confirmacaoAgendamento = await fetch("http://localhost:8080/dashboard/tempo-confirmacao", {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            }
-    });
-
-    
-    const respostaConfirmacaoAgendamento = await confirmacaoAgendamento.json();
-
-    console.log(`Confirmacao Agendamento: ${respostaConfirmacaoAgendamento}`)
-
-    
-    const cardConfirmacaoAgendamento = document.getElementById("confirmacao-agendamento");
-
-
-        cardConfirmacaoAgendamento.innerHTML = `<p>Confirmação de Agendamento</p>
-    <h2>${respostaConfirmacaoAgendamento}<span>min</span></h2>
-    <div class="variação">
-        <div class="seta-cima">
-        </div>
-        <div class="porcentagem">
-            <p class="bom">10,00 %</p>
-        </div>
-    </div>`;
 }
+
 
 var nivelAcesso = sessionStorage.getItem('nivel_acesso')
 plotarProximosAgendamentos(nivelAcesso)
