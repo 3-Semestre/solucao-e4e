@@ -117,19 +117,54 @@ async function filtraUsuarios() {
 
     const listaUsuarios = await resposta.json();
 
+    console.log(listaUsuarios)
     cardsUsuarios.innerHTML = listaUsuarios.map((aluno) => {
         return `
-      <div class="dados-student" id="card_dados">
-                <div class="photo-student">
-                    <img src="../imgs/perfil_blue.png" alt="">
-                    <p>${aluno.nomeCompleto}</p>
-                </div>
-                <div class="lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})" id="lixeira_${aluno.id}">
-                    <img src="../imgs/trash-bin.png" alt="icone_lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})">
-                </div>
+<div class="dados-student" id="card_dados">
+    <div class="header-student">
+        <img src="../imgs/perfil_blue.png" alt="Foto do Aluno">
+        <p>${aluno.nomeCompleto}</p>
+    </div>
+        <br/> <br/>
+    <div class="form-student">
+        <div class="personal-information">
+            <div class="form-group">
+                <label for="cpf">CPF:</label>
+                <label class="label2" type="text" id="cpf">${aluno.cpf}</label>
             </div>
-            <hr class="line">
-    `
+            <div class="form-group">
+                <label for="data-nascimento">Data de Nascimento:</label>
+                <label class="label2" type="date" id="data-nascimento">${aluno.dataNascimento}</label>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <label class="label2" type="email" id="email">${aluno.email}</label>
+            </div>
+            <div class="form-group">
+                <label for="telefone">Telefone:</label>
+                <label class="label2" type="text" id="telefone">${formatarCelular(aluno.telefone)}</label>
+            </div>
+            <div class="form-group">
+                <label for="nivel-ingles">Nível de Inglês:</label>
+                <label class="label2" type="text" id="nivel-ingles">${aluno.nicho.map((nicho) => {return nicho.nicho.nome})}</label>
+            </div>
+            <div class="form-group">
+                <label for="nicho">Nicho:</label>
+                <label class="label2" type="text" id="nicho">${aluno.nivelIngles.map((nivel) => {return nivel.nivelIngles.nome})}</label>
+            </div>
+        </div>
+
+        <div class="course-information">
+            
+        </div>
+    </div>
+
+    <div class="lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})">
+        <img src="../imgs/trash-bin.png" alt="Excluir aluno"  style="width: 3vw; height: 6vh">
+    </div>
+</div>
+<hr class="line">
+`
     }).join('');
 }
 
