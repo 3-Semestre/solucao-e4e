@@ -1,4 +1,3 @@
-
 async function buscarDadosProfessor() {
     const resposta = await fetch("http://localhost:7000/dashboard/qtd-conclusao", {
         method: 'GET',
@@ -55,8 +54,7 @@ async function buscarDadosProfessor() {
     var pizzaChartAgendamento = new Chart(document.getElementById('pizzaChartAgendamento'), configuracao);
 }
 
-try {
-    async function buscarDadosCancelamentoProfessor() {
+async function buscarDadosCancelamentoProfessor() {
         const resposta = await fetch("http://localhost:7000/dashboard/taxa-cancelamento-mes", {
             method: 'GET',
             headers: {
@@ -98,9 +96,6 @@ try {
         var chartCancelamento = new Chart(document.getElementById('chartCancelamento'), chartCancelamentoConfig);
 
     }
-} catch (error) {
-    console.log("erro cancelamento " + error)
-}
 async function buscarDadosCancelamentoAluno() {
     const resposta = await fetch(`http://localhost:7000/dashboard/visao-mes-aluno/${sessionStorage.getItem('id')}`, {
         method: 'GET',
@@ -129,6 +124,10 @@ async function buscarDadosCancelamentoAluno() {
         aulasRealizadas.labels.push(respostaDados[i].mes)
     }
 
+    if (window.chartAulasRealizadas instanceof Chart) {
+        window.chartAulasRealizadas.destroy();
+    }
+    
     var chartAulasRealizadasConfig = {
         type: 'line',
         data: aulasRealizadas,
@@ -140,6 +139,7 @@ async function buscarDadosCancelamentoAluno() {
 }
 
 try {
+    var nivelAcesso = sessionStorage.getItem('nivel_acesso')
     if (nivelAcesso !== "ALUNO") {
         buscarDadosProfessor()
         buscarDadosCancelamentoProfessor()

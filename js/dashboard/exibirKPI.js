@@ -40,7 +40,7 @@ async function plotarProximosAgendamentos(nivelAcesso) {
         let dataString = aluno.data;
         let data = new Date(dataString);
 
-        let dia = data.getDate();
+        let dia = data.getUTCDate();
         let mes = data.getMonth();
 
         let nomesMeses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
@@ -115,33 +115,8 @@ async function plotarKPIsAluno() {
 }
 
 async function plotarKPIsProfessor() {
-
     try {
-        const proximosAgendamentosFetch = await fetch("http://localhost:8080/dashboard/qtd-agendamento-mes-professor", {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        const alunosNovosFetch = await fetch("http://localhost:8080/dashboard/qtd-novos-alunos-mes", {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        const confirmacaoAgendamento = await fetch("http://localhost:8080/dashboard/tempo-confirmacao", {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        const cancelamento = await fetch("http://localhost:8080/dashboard/qtd-cancelamento-alunos", {
+        const proximosAgendamentosFetch = await fetch("http://localhost:7000/dashboard/qtd-agendamento-mes-professor", {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -150,45 +125,42 @@ async function plotarKPIsProfessor() {
         });
 
         const respostaProximosAgendamentos = await proximosAgendamentosFetch.json();
-        const respostaAlunosNovos = await alunosNovosFetch.json();
-        const respostaConfirmacaoAgendamento = await confirmacaoAgendamento.json();
-        const respostaCancelamento = await cancelamento.json();
-
-        console.log("PLOTANDO KPIS: ")
-        console.log(`Novos agendamentos: ${respostaProximosAgendamentos}`)
-        console.log(`Alunos Novos: ${respostaAlunosNovos}`)
-        console.log(`Confirmacao Agendamento: ${respostaConfirmacaoAgendamento}`)
-        console.log(`Resposta Cancelamento : ${respostaCancelamento}`)
 
 
         const cardNovoAgendamento = document.getElementById("novos-agendamentos");
 
+        console.log("PLOTANDO KPIS: ")
+        console.log(`Novos agendamentos: ${respostaProximosAgendamentos}`)
 
         cardNovoAgendamento.innerHTML = `<p>Novos Agendamentos</p>
-        <h2>${respostaProximosAgendamentos}</h2>
-        <div class="variação">
-            <div class="seta-baixo">
-            </div>
-            <div class="porcentagem">
-                <p class="ruim">70,00 %</p>
-            </div>
-        </div>`;
+            <h2>${respostaProximosAgendamentos}</h2>
+            <div class="variação">
+                <div class="seta-baixo">
+                </div>
+                <div class="porcentagem">
+                    <p class="ruim">70,00 %</p>
+                </div>
+            </div>`;
 
-        const cardConfirmacaoAgendamento = document.getElementById("confirmacao-agendamento");
+    } catch {
+        console.log("Erro ao buscar próximos agendamentos")
+    }
 
+    try {
+        const alunosNovosFetch = await fetch("http://localhost:8080/dashboard/qtd-novos-alunos-mes", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
 
-        cardConfirmacaoAgendamento.innerHTML = `<p>Confirmação de Agendamento</p>
-    <h2>${respostaConfirmacaoAgendamento}<span>min</span></h2>
-    <div class="variação">
-        <div class="seta-cima">
-        </div>
-        <div class="porcentagem">
-            <p class="bom">10,00 %</p>
-        </div>
-    </div>`;
+        const respostaAlunosNovos = await alunosNovosFetch.json();
 
+        console.log(`Alunos Novos: ${respostaAlunosNovos}`)
 
         const cardAlunosNovos = document.getElementById("alunos-novos");
+
         cardAlunosNovos.innerHTML = `<p>Alunos Novos</p>
     <h2>${respostaAlunosNovos}</h2>
     <div class="variação">
@@ -199,20 +171,74 @@ async function plotarKPIsProfessor() {
         </div>
     </div>`;
 
+    } catch {
+        console.log("Erro ao buscar próximos agendamentos")
+    }
+
+    try {
+        const confirmacaoAgendamento = await fetch("http://localhost:8080/dashboard/tempo-confirmacao", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const respostaConfirmacaoAgendamento = await confirmacaoAgendamento.json();
+
+        console.log(`Confirmacao Agendamento: ${respostaConfirmacaoAgendamento}`)
+
+
+        const cardConfirmacaoAgendamento = document.getElementById("confirmacao-agendamento");
+
+
+        cardConfirmacaoAgendamento.innerHTML = `<p>Confirmação de Agendamento</p>
+<h2>${respostaConfirmacaoAgendamento}<span>min</span></h2>
+<div class="variação">
+    <div class="seta-cima">
+    </div>
+    <div class="porcentagem">
+        <p class="bom">10,00 %</p>
+    </div>
+</div>`;
+
+    } catch {
+        console.log("Erro ao buscar próximos agendamentos")
+    }
+
+    try {
+        const cancelamento = await fetch("http://localhost:8080/dashboard/qtd-cancelamento-alunos", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const respostaCancelamento = await cancelamento.json();
+
+        console.log(`Resposta Cancelamento : ${respostaCancelamento}`)
+    
+    
+    
         const cardCancelamento = document.getElementById("cancelamento");
         cardCancelamento.innerHTML = `<p>Cancelamento</p>
-        <h2>${respostaCancelamento}</h2>
-        <div class="variação">
-            <div id="seta-baixo">
-            </div>
-            <div class="porcentagem">
-                <p class="bom">70,00 %</p>
-            </div>
-        </div>`;
-    } catch (error) {
-        console.log("erro")
+            <h2>${respostaCancelamento}</h2>
+            <div class="variação">
+                <div id="seta-baixo">
+                </div>
+                <div class="porcentagem">
+                    <p class="bom">70,00 %</p>
+                </div>
+            </div>`;
+
+    } catch {
+        console.log("Erro ao buscar próximos agendamentos")
     }
+
+
 }
+
 
 var nivelAcesso = sessionStorage.getItem('nivel_acesso')
 plotarProximosAgendamentos(nivelAcesso)
