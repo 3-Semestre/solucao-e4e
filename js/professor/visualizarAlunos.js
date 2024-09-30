@@ -146,11 +146,11 @@ async function filtraUsuarios() {
             </div>
             <div class="form-group">
                 <label for="nivel-ingles">Nível de Inglês:</label>
-                <label class="label2" type="text" id="nivel-ingles">C2</label>
+                <label class="label2" type="text" id="nivel-ingles">${aluno.nicho.map((nicho) => {return nicho.nicho.nome})}</label>
             </div>
             <div class="form-group">
                 <label for="nicho">Nicho:</label>
-                <label class="label2" type="text" id="nicho">Testes Internacionais</label>
+                <label class="label2" type="text" id="nicho">${aluno.nivelIngles.map((nivel) => {return nivel.nivelIngles.nome})}</label>
             </div>
         </div>
 
