@@ -5,94 +5,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizar</title>
+
     <link rel="stylesheet" href="../css/visualizarAlunos.css">
-    <link rel="icon" type="image/png" href="../imgs/english4ever.png">
+    <link rel="stylesheet" href="../css/menu.css">
+
     <script defer src="../js/script.js"></script>
     <script src="../js/professor/visualizarProfessor.js"></script>
     <script src="../js/professor/visualizarAlunos.js"></script>
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <script src="../js/professor/visualizarAlunos.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="icon" type="image/png" href="../imgs/english4ever.png">
 </head>
 
 <body>
-    <nav class="sidebar">
-        <ul class="nav-links">
-            <li>
-                <a href="#" id="toggle-btn">
-                    <img src="../imgs/menu-aberto.png" alt="">
+    <nav class="sidebar" id="sidebar">
+        <div class="hamburger">
+            <a class="main-nav-toggle" href="#main-nav" id="toggle-btn"><i>Menu</i></a>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a id="dashboard_href" href="#" class="nav-link">
+                    <img src="../imgs/botao-home.png" alt=""> <span class="ms-2">Início</span>
                 </a>
             </li>
-            <li>
-                <a id="dashboard_href" href="#">
-                    <img src="../imgs/botao-home.png" alt="">
-                    <span>Início</span>
+            <li class="nav-item">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#agendaDropdown"
+                    aria-expanded="false">
+                    <img src="../imgs/calendar-days.png" alt=""> <span class="ms-2">Agenda</span>
+                </a>
+                <div class="collapse" id="agendaDropdown">
+                    <ul class="nav flex-column dropdown-container">
+                        <li><a href="calendarioAluno.html" id="agenda_novo_agendamento_navbar" class="nav-link">Novo
+                                Agendamento</a></li>
+                        <li><a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar"
+                                class="nav-link">Meus Agendamentos</a></li>
+                        <li><a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar"
+                                class="nav-link">Histórico</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#alunosDropdown"
+                    aria-expanded="false">
+                    <img src="../imgs/students.png" alt=""> <span class="ms-2">Alunos</span>
+                </a>
+                <div class="collapse" id="alunosDropdown">
+                    <ul class="nav flex-column dropdown-container">
+                        <li><a href="visualizar.html?tipo=aluno" class="nav-link">Visualizar</a></li>
+                        <li><a href="cadastrar.html?tipo=aluno" class="nav-link">Cadastrar</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"
+                    data-bs-target="#professoresDropdown" aria-expanded="false">
+                    <img src="../imgs/professor.png" alt=""> <span class="ms-2">Professores</span>
+                </a>
+                <div class="collapse" id="professoresDropdown">
+                    <ul class="nav flex-column dropdown-container">
+                        <li><a href="visualizar.html?tipo=professor" class="nav-link">Visualizar</a></li>
+                        <li><a href="cadastrar.html?tipo=professor" class="nav-link">Cadastrar</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="dashboardAdmin.html" id="dashboard_rep_legal" class="nav-link">
+                    <img src="../imgs/painel.png" alt=""> <span class="ms-2">Dashboard</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <img src="../imgs/calendar-days.png" alt="">
-                    <button class="dropdown-btn">Agenda
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-container hidden">
-                        <a href="calendarioAluno.html" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
-                        <a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar">Meus Agendamentos</a>
-                        <a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar">Histórico</a>
-                    </div>
+            <li class="nav-item">
+                <a href="perfil.html" id="perfil_navbar" class="nav-link">
+                    <img src="../imgs/perfil.png" alt=""> <span class="ms-2">Perfil</span>
                 </a>
             </li>
-            <li id="alunos_navbar">
-                <a href="#">
-                    <img src="../imgs/students.png" alt="">
-                    <button class="dropdown-btn">Alunos
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-container hidden">
-                        <a href="visualizar.html?tipo=aluno">Visualizar</a>
-                        <a href="cadastrar.html?tipo=aluno">Cadastrar</a>
-                    </div>
+            <li class="nav-item">
+                <a href="http://20.161.82.110/" target="_blank" class="nav-link">
+                    <img src="../imgs/moodle.png" alt=""> <span class="ms-2">Moodle</span>
                 </a>
             </li>
-            <li id="professores_navbar">
-                <a href="#">
-                    <img src="../imgs/professor.png" alt="">
-                    <button class="dropdown-btn">Professores
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-container hidden">
-                        <a href="visualizar.html?tipo=professor">Visualizar</a>
-                        <a href="cadastrar.html?tipo=professor">Cadastrar</a>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="dashboardAdmin.html" id="dashboard_rep_legal">
-                    <img src="../imgs/painel.png" alt="">
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li id="perfil_navbar">
-                <a href="perfil.html">
-                    <img src="../imgs/perfil.png" alt="">
-                    <span>Perfil</span>
-                </a>
-            </li>
-            <li>
-                <a href="http://localhost:8086/moodle/moodle-latest-404/moodle/login/index.php" target="_blank">
-                    <img src="../imgs/moodle.png" alt="">
-                    <span>Moodle</span>
-                </a>
-            </li>
-            <li>
-                <a onclick="desautenticarUsuario()" style="cursor: pointer;">
-                    <img src="../imgs/sair.png" alt="">
-                    <span style="color: white;">Sair</span>
+            <li class="nav-item">
+                <a href="login2.html" class="nav-link">
+                    <img src="../imgs/sair.png" alt=""> <span class="ms-2" style="color: white;">Sair</span>
                 </a>
             </li>
         </ul>
@@ -116,7 +115,8 @@
                 <img src="../imgs/filter.png" alt="">
                 <p>Filtros</p>
                 <div class="button-filter">
-                    <button type="button" class="btn btn-primary" id="botaoFilter" onclick="filtraUsuarios()">Aplicar</button>
+                    <button type="button" class="btn btn-primary" id="botaoFilter"
+                        onclick="filtraUsuarios()">Aplicar</button>
                 </div>
             </div>
             <br>
@@ -154,16 +154,16 @@
                     </select>
                 </div>
             </div>
-        </div>  
+        </div>
         <div id="listagem_usuarios"></div>
         <script>
             const urlParams = new URLSearchParams(window.location.search);
-        
+
             const tipo = urlParams.get('tipo');
-        
+
             document.getElementById("tipo-visualizacao").innerHTML = Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()
             document.title += ` ${Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()}`;
-        
+
             document.getElementById('input_cpf').addEventListener('input', function (e) {
                 let value = e.target.value;
                 value = value.replace(/\D/g, '');
@@ -172,7 +172,7 @@
                 value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
                 e.target.value = value;
             });
-        
+
             if (tipo != "aluno") {
                 buscarProfessor()
             } else if (tipo == "aluno") {

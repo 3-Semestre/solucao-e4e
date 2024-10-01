@@ -23,64 +23,16 @@ body {
     justify-content: space-around;
 }
 
-.sidebar {
-    background-color: #072B59;
-    position: fixed;
-    width: 5vw;
-    height: 100%;
-    transition: all .3s ease;
-    padding: 0.6rem 0.3rem;
-}
-
-.sidebar .nav-links a {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.sidebar.active {
-    width: 15vw;
-}
-
-.nav-links {
-    margin-top: 0em;
-    padding: 0;
-    list-style: none;
-}
-
-.nav-links li {
-    padding: 11px;
-    margin: 0.6em auto;
-}
-
-.nav-links a {
-    color: #fff;
-    font-size: 24px;
-    display: flex;
-    text-decoration: none;
-}
-
-.nav-links li span {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    font-size: 20px;
-}
-
-.sidebar.active .nav-links li span {
-    opacity: 1;
-    padding-left: 10px;
-}
-
 .conteudo {
-    margin-left: 100px;
+    margin-left: 100px; /* Valor inicial quando o menu está fechado */
     transition: margin-left 0.3s ease, width 0.3s ease;
     padding: 20px;
-    width: calc(100% - 100px);
+    width: calc(100% - 200px);
 }
 
-.sidebar.active~.conteudo {
-    margin-left: 250px;
-    width: calc(100% - 250px);
+.conteudo.open {
+    margin-left: 250px; /* Valor quando o menu está aberto */
+    width: calc(100% - 250px); /* Ajusta a largura para que o conteúdo não seja coberto */
 }
 
 .buttons-professor {
@@ -95,19 +47,14 @@ body {
     color: #072B59;
 }
 
-.nav-links li img {
-    width: 30px;
-    height: 30px;
-}
-
 .conteudo p {
     font-weight: bold;
 }
 
 .box {
-    width: 22vw;
+    width: 25vw;
     height: 25vh;
-    border: 1px solid rgba(7, 43, 89, 0.685);
+    border: 7px solid #072B59;
     border-radius: 10px;
     box-shadow: 5px 5px 5px #888;
     display: flex;
@@ -161,21 +108,20 @@ body {
 
 .content-kpis p {
     position: relative;
-    top: 2.5vh;
 }
 
 .line-box {
     border: 4px solid white;
-    height: 15vh;
-    border-radius: 10px 10px 10px 10px;
+    height: 17vh;
+    border-radius: 10px;
     position: relative;
-    bottom: 2vh;
+    bottom: 1vh;
 }
 
 .box-kpis {
     width: 22vw;
     height: 25vh;
-    background-color: #072B59;
+    border: 1px solid #072B59;
     border-radius: 10px;
     box-shadow: 5px 5px 5px #888;
     display: flex;
@@ -183,70 +129,8 @@ body {
     align-items: center;
     justify-content: flex-start;
     padding: 1rem;
+    background-color: #072B59;
     color: white;
-}
-
-.seta {
-    width: 0;
-    height: 0;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-bottom: 7px solid black;
-    position: relative;
-    right: 1.5vw;
-}
-
-.variação {
-    display: flex;
-    align-items: center;
-    gap: 1px;
-}
-
-.porcentagem p {
-    position: relative;
-    top: 0vh;
-    right: 0.5vw;
-}
-
-#seta-baixo {
-    width: 0;
-    height: 0;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-top: 7px solid green;
-    position: relative;
-    right: 1.5vw;
-    bottom: 1vh;
-}
-
-.seta-baixo {
-    width: 0;
-    height: 0;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-top: 7px solid red;
-    position: relative;
-    right: 1.5vw;
-    bottom: 1vh;
-}
-
-.seta-cima {
-    width: 0;
-    height: 0;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-bottom: 7px solid green;
-    position: relative;
-    right: 1.5vw;
-    bottom: 1vh;
-}
-
-.bom {
-    color: green;
-}
-
-.ruim {
-    color: red;
 }
 
 .box-chart {
@@ -268,13 +152,6 @@ body {
 .data p {
     font-size: 20px;
 }
-
-/* .conteudo .title-agendamento {
-    width: 50%;
-    position: relative;
-    left: 5vw;
-    font-size: 20px;
-} */
 
 .none {
     color: rgba(255, 255, 255, 0);
@@ -397,44 +274,6 @@ body {
     position: relative;
     bottom: 5vh;
 }
-
-.dropdown-btn {
-    padding-left: 10px;
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
-    display: block;
-    border: none;
-    background: none;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-    outline: none;
-}
-
-.dropdown-container {
-    display: flex;
-    align-items: center;
-    color: white;
-}
-
-.sidebar .dropdown-btn{
-    color: rgba(255, 255, 255, 0);
-}
-
-.sidebar.active .dropdown-btn{
-    color: white;
-}
-
-.dropdown-container a {
-    font-size: 15px;
-    color: white; 
-}
-
-.hidden {
-    display: none;
-}
-
 
 @media only screen and (max-device-width: 430px) {
 

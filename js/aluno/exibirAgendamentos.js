@@ -184,16 +184,34 @@ async function buscarDetalhes(id) {
         <p><strong>Data:</strong> ${formatarData(dadosAgendamentos.data)} <br />
         <p><strong>Horário de Início:</strong> ${formatarHorario(dadosAgendamentos.horarioInicio)} <br />
         <p><strong>Horário de fim:</strong> ${formatarHorario(dadosAgendamentos.horarioFim)} <br />
-      
+        
         <div style="margin: 20px 0;">
-          <div style="display: flex; align-items: center;">
-            <div style="height: 15px; width: 15px; background-color: green; border-radius: 50%;"></div>
-            <div style="flex: 1; height: 4px; background-color: lightgray; margin: 0 10px; ">
-              <div style="width: 50%; height: 100%; background-color: green;"></div>
-            </div>
-            <span>${tratarNome(dadosAgendamentos.status)}</span>
-          </div>
+      <div style="display: flex; align-items: center;">
+        
+        <!-- Bolinha que muda de cor conforme o status -->
+        <div style="height: 15px; width: 15px; border-radius: 50%; background-color: ${dadosAgendamentos.status === 'CONFIRMADO' ? 'green' :
+                dadosAgendamentos.status === 'PENDENTE' ? 'yellow' :
+                    dadosAgendamentos.status === 'CONCLUIDO' ? 'green' :
+                        'red'
+            };"></div>
+
+        <!-- Barra de progresso que muda cor e largura conforme o status -->
+        <div style="flex: 1; height: 4px; background-color: lightgray; margin: 0 10px;">
+          <div style="width: ${dadosAgendamentos.status === 'CONFIRMADO' ? '70%' :
+                dadosAgendamentos.status === 'PENDENTE' ? '50%' :
+                    '100%'
+            }; height: 100%; background-color: ${dadosAgendamentos.status === 'CONFIRMADO' ? 'green' :
+                dadosAgendamentos.status === 'PENDENTE' ? 'yellow' :
+                    dadosAgendamentos.status === 'CONCLUIDO' ? 'green' :
+                        'red'
+            };"></div>
         </div>
+        
+        <!-- Exibição do nome do status -->
+        <span>${tratarNome(dadosAgendamentos.status)}</span>
+
+      </div>
+    </div>
     `,
         confirmButtonText: 'Fechar',
         confirmButtonColor: '#072B59',

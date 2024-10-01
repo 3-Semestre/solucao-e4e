@@ -16,64 +16,16 @@ body {
     color: #072B59;
 }
 
-.sidebar {
-    background-color: #072B59;
-    position: fixed;
-    width: 5vw;
-    height: 100%;
-    transition: all .3s ease;
-    padding: 0.6rem 0.3rem;
-}
-
-.sidebar .nav-links a {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.sidebar.active {
-    width: 15vw;
-}
-
-.nav-links {
-    margin-top: 0em;
-    padding: 0;
-    list-style: none;
-}
-
-.nav-links li {
-    padding: 11px;
-    margin: 0.6em auto;
-}
-
-.nav-links a {
-    color: #fff;
-    font-size: 24px;
-    display: flex;
-    text-decoration: none;
-}
-
-.nav-links li span {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    font-size: 20px;
-}
-
-.sidebar.active .nav-links li span {
-    opacity: 1;
-    padding-left: 10px;
-}
-
 .conteudo {
-    margin-left: 100px;
+    margin-left: 100px; /* Valor inicial quando o menu está fechado */
     transition: margin-left 0.3s ease, width 0.3s ease;
     padding: 20px;
-    width: calc(100% - 100px);
+    width: calc(100% - 200px);
 }
 
-.sidebar.active~.conteudo {
-    margin-left: 250px;
-    width: calc(100% - 250px);
+.conteudo.open {
+    margin-left: 250px; /* Valor quando o menu está aberto */
+    width: calc(100% - 250px); /* Ajusta a largura para que o conteúdo não seja coberto */
 }
 
 .buttons-professor {
@@ -86,11 +38,6 @@ body {
     border: none;
     font-weight: bold;
     color: #072B59;
-}
-
-.nav-links li img {
-    width: 30px;
-    height: 30px;
 }
 
 .conteudo p {
@@ -276,6 +223,22 @@ body {
     margin: auto;
 }
 
+.box-chart2, .box-kpis {
+    transition: all 0.3s ease;
+}
+
+.box-chart2.reduzido {
+    width: 60%;
+    height: 60vh;
+}
+
+.box-kpis.reduzido {
+    width: 80%;
+    height: 22vh;
+    margin-right: 1vw;
+
+}
+
 .box-buttons {
     display: flex;
     gap: 1rem;
@@ -317,38 +280,6 @@ body {
     margin: auto;
 }
 
-.dropdown-btn {
-    padding-left: 10px;
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
-    display: block;
-    border: none;
-    background: none;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-    outline: none;
-}
-
-.dropdown-container {
-    display: flex;
-    align-items: center;
-    color: white;
-}
-
-.sidebar .dropdown-btn{
-    color: rgba(255, 255, 255, 0);
-}
-
-.sidebar.active .dropdown-btn{
-    color: white;
-}
-
-.dropdown-container a {
-    font-size: 15px;
-    color: white; 
-}
 
 .hidden {
     display: none;
