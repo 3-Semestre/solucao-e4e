@@ -41,7 +41,6 @@ async function cadastrarProfessor() {
             showConfirmButton: false,
             timer: 1500
         });
-        console.log("cadastro realizado com sucesso")
         setTimeout("location.href = 'visualizar.html?tipo=professor'", 2000);
 
 

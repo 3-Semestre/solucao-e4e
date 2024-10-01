@@ -42,7 +42,8 @@
                     </button>
                     <div class="dropdown-container hidden">
                         <a href="#" id="agenda_novo_agendamento_navbar">Novo Agendamento</a>
-                        <a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar">Meus Agendamentos</a>
+                        <a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar">Meus
+                            Agendamentos</a>
                         <a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar">Histórico</a>
                     </div>
                 </a>
@@ -103,7 +104,8 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Página Inicial</a></li>
                 <li class="breadcrumb-item" id="tipo-breadcrump"><a href="#">Professores</a></li>
-                <li class="breadcrumb-item active" aria-current="page" id="titulo_breadcrump">Cadastrar <span id="tipo-cadastro">x</span></li>
+                <li class="breadcrumb-item active" aria-current="page" id="titulo_breadcrump">Cadastrar <span
+                        id="tipo-cadastro">x</span></li>
             </ol>
         </nav>
 
@@ -118,8 +120,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="input_nome" class="form-label"><span>*</span>Nome completo:</label>
-                                <input type="text" class="form-control" id="input_nome" placeholder="Nome"
-                                    required>
+                                <input type="text" class="form-control" id="input_nome" placeholder="Nome" required>
                             </div>
                             <div class="mb-3">
                                 <label for="input_cpf" class="form-label"><span>*</span>CPF:</label>
@@ -170,7 +171,7 @@
                                 <label class="form-label" id="nichoTitle"><span>*</span>Nicho:</label>
                             </div>
                         </div>
-                        
+
                         </form>
                     </div>
                 </div>
@@ -274,18 +275,16 @@
                     cadastrarProfessor()
                 } else if (tipo == "aluno") {
                     cadastrarAluno()
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Erro ao cadastrar',
-                        showConfirmButton: false,
-                        text: 'Não foi possivel verificar o tipo de acesso do usuario, por favor saia e entre novamente da aba. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
-                        footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
-                        timer: 1500
-                    });
                 }
             } catch (e) {
-                console.log(e);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro ao cadastrar',
+                    showConfirmButton: false,
+                    text: 'Por favor saia e entre novamente da aba. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
+                    footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
+                    timer: 1500
+                });
             }
         }
     });

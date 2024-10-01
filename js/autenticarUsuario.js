@@ -7,34 +7,35 @@ async function autenticar() {
         "senha": senha
     }
 
-    const respostaLogin = await fetch("http://localhost:8080/usuarios/autenticar", {
-        method: "POST",
-        body: JSON.stringify(dadosAluno),
-        headers: { "Content-type": "application/json; charset=UTF-8" }
-    });
+    try {
+        const respostaLogin = await fetch("http://localhost:8080/usuarios/autenticar", {
+            method: "POST",
+            body: JSON.stringify(dadosAluno),
+            headers: { "Content-type": "application/json; charset=UTF-8" }
+        });
 
-    if (respostaLogin.status == 201) {
-        const usuario = await respostaLogin.json();
-        salvarInformacoes(usuario)
+        if (respostaLogin.status == 201) {
+            const usuario = await respostaLogin.json();
+            salvarInformacoes(usuario)
 
-        if(usuario.nivelAcesso.nome == "ALUNO"){
-            window.location.href = "dashboardAluno.html"
-        } else {
-            window.location.href = "dashboardProfessor.html"
+            if (usuario.nivelAcesso.nome == "ALUNO") {
+                window.location.href = "dashboardAluno.html"
+            } else {
+                window.location.href = "dashboardProfessor.html"
+            }
+
+
+        } else if (respostaLogin.status == 403) {
+            exibirMensagemErro();
         }
-        
-
-    } else if (respostaLogin.status == 403) {
-        exibirMensagemErro();
-    }
-    else {
-        console.log("erro ao realizar login")
+    } catch (error) {
+        // TODO TRATIVA ERRO LOGIN
     }
 
     function salvarInformacoes(usuario) {
         sessionStorage.id = usuario.id;
         sessionStorage.cpf = usuario.cpf;
-        sessionStorage.email = usuario.email; 
+        sessionStorage.email = usuario.email;
         sessionStorage.nivel_acesso = usuario.nivelAcesso.nome;
         sessionStorage.nivel_acesso_cod = usuario.nivelAcesso.id;
         sessionStorage.nome_completo = usuario.nomeCompleto;
