@@ -156,6 +156,14 @@
             </div>
         </div>
         <div id="listagem_usuarios"></div>
+        <ul class="pagination" id="paginacao_visualizacao">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Anterior">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Anterior</span>
+                </a>
+            </li>
+        </ul>
         <script>
             const urlParams = new URLSearchParams(window.location.search);
 
@@ -176,7 +184,7 @@
             if (tipo != "aluno") {
                 buscarProfessor()
             } else if (tipo == "aluno") {
-                buscarAlunos()
+                buscarAlunos(0)
             } else {
                 Swal.fire({
                     icon: 'error',
