@@ -1,66 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100&display=swap');
+
+* {
+    font-family: "DM Sans", sans-serif;
+}
+
 body {
     margin: 0;
     display: flex;
-}
-
-.sidebar {
-    background-color: #072B59;
-    position: fixed;
-    width: 5vw;
-    height: 100%;
-    transition: all .3s ease;
-    padding: 0.6rem 0.3rem;
-}
-
-.sidebar .nav-links a {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.sidebar.active {
-    width: 15vw;
-}
-
-.nav-links {
-    margin-top: 0em;
-    padding: 0;
-    list-style: none;
-}
-
-.nav-links li {
-    padding: 11px;
-    margin: 0.6em auto;
-}
-
-.nav-links a {
-    color: #fff;
-    font-size: 24px;
-    display: flex;
-    text-decoration: none;
-}
-
-.nav-links li span {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    font-size: 20px;
-}
-
-.sidebar.active .nav-links li span {
-    opacity: 1;
-    padding-left: 10px;
 }
 
 .conteudo {
     margin-left: 100px;
     transition: margin-left 0.3s ease, width 0.3s ease;
     padding: 20px;
-    width: calc(100% - 100px);
+    width: calc(100% - 200px);
 }
 
-.sidebar.active~.conteudo {
+.conteudo.open {
     margin-left: 250px;
     width: calc(100% - 250px);
+}
+
+.content-course {
+    flex: 1;
+    min-width: 0;
 }
 
 .register {
@@ -74,9 +37,18 @@ body {
     height: 110vh;
     background-color: #a8b6bf40;
     border-radius: 2%;
-    gap: 20vw;
     display: flex;
     padding: 5px 10px 15px 20px;
+    flex-direction: row;
+    justify-content: center;
+    gap: 14vw;
+}
+
+.content-personal-information, 
+.content-course {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 10px;
 }
 
 .title-personal-information p {
@@ -129,7 +101,40 @@ body {
     align-items: center;
     flex-direction: column;
     width: 18vw;
+    height: 50vh;
+    object-fit: cover; /* Corta a imagem para preencher o espaço sem distorção */
     border-radius: 5%;
+}
+
+#uploadButton{
+    width: 5vw;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bolder;
+    border-color: #4CAF50;
+    height: 6vh;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #072B59;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    width: 15vw;
+}
+
+#uploadButton:hover {
+    background-color: #025706;
+}
+
+.file-upload-container {
+    display: flex; /* Usar Flexbox */
+    gap: 10px; /* Espaço entre os botões */
+    align-items: center; /* Alinhar verticalmente ao centro */
 }
 
 .photo-professor h5 {
@@ -169,48 +174,6 @@ body {
 .line {
     border: 1px solid #072B59;
     width: 100%;
-}
-
-.nav-links li img {
-    width: 30px;
-    height: 30px;
-}
-
-.dropdown-btn {
-    padding-left: 10px;
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
-    display: block;
-    border: none;
-    background: none;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-    outline: none;
-}
-
-.dropdown-container {
-    display: flex;
-    align-items: center;
-    color: white;
-}
-
-.sidebar .dropdown-btn {
-    color: rgba(255, 255, 255, 0);
-}
-
-.sidebar.active .dropdown-btn {
-    color: white;
-}
-
-.dropdown-container a {
-    font-size: 15px;
-    color: white;
-}
-
-.hidden {
-    display: none;
 }
 
 .horario {

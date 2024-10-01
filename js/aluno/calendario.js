@@ -263,15 +263,5 @@ function buttons() {
     button.addEventListener('click', closeModal);
   });
 }
-
-const toggleBtn = document.getElementById('toggle-btn');
-const sidebar = document.querySelector('.sidebar');
-const calendario = document.querySelector('.calendario');
-
-toggleBtn.addEventListener('click', () => {
-    sidebar.classList.toggle('closed');
-    calendario.classList.toggle('menu-fechado');
-});
-
 buttons();
 load();

@@ -9,62 +9,14 @@ body {
     display: flex;
 }
 
-.sidebar {
-    background-color: #072B59;
-    position: fixed;
-    width: 5vw;
-    height: 100%;
-    transition: all .3s ease;
-    padding: 0.6rem 0.3rem;
-}
-
-.sidebar .nav-links a {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.sidebar.active {
-    width: 15vw;
-}
-
-.nav-links {
-    margin-top: 0em;
-    padding: 0;
-    list-style: none;
-}
-
-.nav-links li {
-    padding: 11px;
-    margin: 0.6em auto;
-}
-
-.nav-links a {
-    color: #fff;
-    font-size: 24px;
-    display: flex;
-    text-decoration: none;
-}
-
-.nav-links li span {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    font-size: 20px;
-}
-
-.sidebar.active .nav-links li span{
-    opacity: 1;
-    padding-left: 10px;
-}
-
 .conteudo {
-    margin-left: 100px;
+    margin-left: 100px; /* Valor inicial quando o menu está fechado */
     transition: margin-left 0.3s ease, width 0.3s ease;
     padding: 20px;
-    width: calc(100% - 100px);
+    width: calc(100% - 200px);
 }
 
-.sidebar.active~.conteudo {
+.conteudo.open {
     margin-left: 250px;
     width: calc(100% - 250px);
 }
@@ -79,11 +31,6 @@ body {
     border: none;
     font-weight: bold;
     color: #072B59;
-}
-
-.nav-links li img {
-    width: 30px;
-    height: 30px;
 }
 
 .dados {
@@ -150,16 +97,13 @@ label {
 }
 
 .dados-student {
-    /* display: flex; */
     background-color: #FFF;
     align-items: center;
     justify-content: space-between;
     padding: 20px;
     margin-bottom: 15px;
     width: 100%;
-    /* display: flex; */
     gap: 20px;
-    
 }
 
 .detalhes-student {
@@ -218,13 +162,12 @@ label {
 
 .form-group .label2,
 .form-group .label2{
-    min-width: 250px;  /* Ajuste esse valor conforme necessário */
-    max-width: 100%;   /* Garante que não ultrapasse o container */
+    min-width: 250px;
+    max-width: 100%;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;  /* Adiciona reticências (...) caso o texto seja muito longo */
+    text-overflow: ellipsis;
 }
-
 
 .photo-student {
     display: flex;
@@ -246,64 +189,10 @@ label {
     cursor: pointer;
 }
 
-/* Linha horizontal */
 hr.line {
     border: none;
     border-top: 1px solid #072B59;
     margin-top: 10px;
-}
-
-.dropdown-btn {
-    padding-left: 10px;
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
-    display: block;
-    border: none;
-    background: none;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-    outline: none;
-}
-
-.dropdown-container {
-    display: flex;
-    align-items: center;
-    color: white;
-}
-
-.sidebar .dropdown-btn{
-    color: rgba(255, 255, 255, 0);
-}
-
-.sidebar.active .dropdown-btn{
-    color: white;
-}
-
-.dropdown-container a {
-    font-size: 15px;
-    color: white; 
-}
-
-.hidden {
-    display: none;
-}
-
-.info-student {
-    display: flex;
-    width: 60%;
-    justify-content: space-between;
-}
-
-.dados-cadastrais,
-.dados-curso{
-    width: 40%;
-    padding: 10px;
-}
-
-.dados-cadastrais p, .dados-curso p {
-    margin: 5px 0;
 }
 
 @media only screen and (max-device-width: 430px) {

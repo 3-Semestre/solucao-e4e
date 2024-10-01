@@ -5,15 +5,25 @@
     border: 1px solid rgb(160 160 160);
 }
 
-th {
+/* thead tr th {
     background-color: #a8b6bf40;
     padding: 20px;
     text-align: left;
     border: 1px solid rgb(160 160 160)  !important; 
+} */
+
+thead th {
+    padding: 20px;
+    position: sticky; /* Fixa o cabeçalho */
+    top: 0; /* Posiciona no topo ao rolar */
+    z-index: 2; /* Garante que o cabeçalho fique acima */
+    background-color: #a8b6bf40; /* Cor de fundo do cabeçalho */
+    padding: 20px; /* Espaçamento interno */
+    text-align: left; /* Alinhamento do texto */
+    border: 1px solid rgb(160, 160, 160); /* Bordas */
 }
 
 td {
-
     padding: 20px;
     text-align: left;
     border: 1px solid rgb(160 160 160) !important;
