@@ -3,12 +3,13 @@ async function cadastrarProfessor() {
     const cpf = document.getElementById("input_cpf").value;
     const dataNascimento = document.getElementById("input_data").value;
     const telefone = document.getElementById("input_telefone").value;
-    var telefoneFormatado = formatarCelular(telefone)
+    var telefoneFormatado = formatarCelular(telefone);
     const email = document.getElementById("input_email").value;
     const profissao = document.getElementById("input_profissao").value;
     const senha = document.getElementById("input_senha").value;
-
-
+    const listaDeNiveis = coletarIdsCheckboxes("nivel");
+    const listaDeNichos = coletarIdsCheckboxes("nicho");
+    
     const dadosProfessor = {
         "nomeCompleto": nome,
         "cpf": cpf,
@@ -19,10 +20,12 @@ async function cadastrarProfessor() {
         "senha": senha,
         "nivelAcesso": {
             "id": 2
-        }
-    }
+        },
+        "listaDeNiveis": listaDeNiveis,
+        "listaDeNichos": listaDeNichos
+    };
 
-    const respostaCadastro = await fetch("http://localhost:8080/usuarios/professor", {
+    const respostaCadastro = await fetch("http://localhost:8080/usuarios/salvar/professor", {
         method: "POST",
         body: JSON.stringify(dadosProfessor),
         headers: {
@@ -39,9 +42,9 @@ async function cadastrarProfessor() {
             timer: 1500
         });
         console.log("cadastro realizado com sucesso")
-        setTimeout("location.href = 'visualizar.html?tipo=professor'", 1500);
-        
- 
+        setTimeout("location.href = 'visualizar.html?tipo=professor'", 2000);
+
+
     } else if (respostaCadastro.status == 409) {
         erroCpf()
     } else {
@@ -79,28 +82,10 @@ async function cadastrarProfessor() {
     });
 }
 
-async function cadastrarNicho(){
 
-}
-
-function formatarCelular(telefone) {
-    let value = telefone;
-    value = value.replace(/\D/g, '');
-    value = value.replace(/(\d{2})(\d)/, '+$1 $2');
-    value = value.replace(/(\d{5})(\d)/, '$1-$2');
-    return value.substring(0, 15);
-}
-
-function tratarNome(nichoNome) {
-    let nomeTratado = nichoNome.replace(/_/g, ' ');
-
-    let palavras = nomeTratado.split(' ');
-
-    palavras = palavras.map(palavra => {
-        return palavra.charAt(0).toUpperCase() + palavra.slice(1).toLowerCase();
-    });
-
-    nomeTratado = palavras.join(' ');
-
-    return nomeTratado;
+function coletarIdsCheckboxes(nomeCheckbox) {
+    const checkboxes = document.querySelectorAll(`input[name="${nomeCheckbox}"]:checked`);
+    return Array.from(checkboxes).map(checkbox => ({
+        id: parseInt(checkbox.value)
+    }));
 }
