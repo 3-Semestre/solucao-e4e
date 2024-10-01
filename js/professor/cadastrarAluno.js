@@ -7,26 +7,37 @@ async function cadastrarAluno() {
     const cpf = document.getElementById("input_cpf").value;
     const dataNascimento = document.getElementById("input_data").value;
     const telefone = document.getElementById("input_telefone").value;
-    var telefoneFormatado = formatarCelular(telefone)
     const email = document.getElementById("input_email").value;
     const profissao = document.getElementById("input_profissao").value;
     const senha = document.getElementById("input_senha").value;
+    const nivel = document.getElementById('nivel').value;
+    const nicho = document.getElementById('nicho').value;
 
 
     const dadosAluno = {
         "nomeCompleto": nome,
         "cpf": cpf,
         "dataNascimento": dataNascimento,
-        "telefone": telefoneFormatado,
+        "telefone": telefone,
         "email": email,
         "profissao": profissao,
         "senha": senha,
         "nivelAcesso": {
             "id": 1
-        }
+        },
+        "listaDeNichos": [
+            {
+                "id": nicho
+            }
+        ],
+        "listaDeNiveis": [
+            {
+                "id": nivel
+            }
+        ]
     }
 
-    const respostaCadastro = await fetch("http://localhost:8080/usuarios/aluno", {
+    const respostaCadastro = await fetch("http://localhost:8080/usuarios/salvar/aluno", {
         method: "POST",
         body: JSON.stringify(dadosAluno),
         headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
@@ -39,8 +50,8 @@ async function cadastrarAluno() {
             showConfirmButton: false,
             timer: 1500
         });
-        setTimeout("location.href = 'visualizar.html?tipo=aluno'", 1500);
- 
+        setTimeout("location.href = 'visualizar.html?tipo=aluno'", 2000);
+
     } else if (respostaCadastro.status == 409) {
         erroCpf()
     } else {

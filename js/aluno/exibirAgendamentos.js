@@ -205,7 +205,6 @@ async function buscarDetalhes(id) {
 
     const dadosHistorico = await respostaHistorico.json();
 
-    console.log(dadosAgendamentos);
     Swal.fire({
         title: '<h2 style="color: #072B59; font-weight: bolder;">Detalhes do agendamento</h2>',
         html: `
@@ -276,7 +275,6 @@ async function buscarDetalhes(id) {
             }).then((result) => {
                 if (result.isConfirmed) {
                     const statusSelecionado = result.value;
-                    console.log(`Novo status selecionado: ${statusSelecionado}`);
                 }
             });
         }

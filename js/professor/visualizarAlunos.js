@@ -1,5 +1,5 @@
-let paginaAtual = 0;
-let totalPaginas = 0;
+var paginaAtual = 0;
+var totalPaginas = 0;
 
 async function buscarAlunos(pagina) {
     if (pagina < 0 || (totalPaginas > 0 && pagina >= totalPaginas)) return; // Limita as páginas
@@ -37,7 +37,7 @@ async function buscarAlunos(pagina) {
             </div>
             <div class="form-group">
                 <label for="data-nascimento">Data de Nascimento:</label>
-                <label class="label2" type="date" id="data-nascimento">${aluno.data_nascimento}</label>
+                <label class="label2" type="date" id="data-nascimento">${formatarData(aluno.data_nascimento)}</label>
             </div>
             <div class="form-group">
                 <label for="email">E-mail:</label>
@@ -209,11 +209,11 @@ async function deletarAluno(id) {
     } else {
         Swal.fire({
             icon: 'error',
-            title: 'Erro ao cadastrar',
+            title: 'Erro ao deletar',
             showConfirmButton: false,
-            text: 'Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
+            text: 'Por favor, tente novamente mais tarde. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
             footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
-            timer: 1500
+            timer: 2000
         });
     }
 }

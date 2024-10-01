@@ -19,8 +19,6 @@ async function buscarProfessor() {
     }
     const listaProfessors = await resposta.json();
 
-    console.log(listaProfessors.content)
-
     cardsProfessor.innerHTML += listaProfessors.content.map((professor) => {
         return `
       <div class="dados-student" id="card_dados">
@@ -38,7 +36,7 @@ async function buscarProfessor() {
             </div>
             <div class="form-group">
                 <label for="data-nascimento">Data de Nascimento:</label>
-                <label class="label2" type="date" id="data-nascimento"> ${professor.data_nascimento} </label>
+                <label class="label2" type="date" id="data-nascimento"> ${formatarData(professor.data_nascimento)} </label>
             </div>
             <div class="form-group">
                 <label for="email">E-mail:</label>
@@ -113,14 +111,17 @@ async function deletarProfessor(id) {
         headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
     });
 
-
-
-    console.log(respostaDelete);
-
     if (respostaDelete.status == 204) {
-        window.location.reload()
         Swal.fire({ title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green' });
+        setTimeout(window.location.reload(), 2000);
     } else {
-        console.log("erro no delete")
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro ao deletar',
+            showConfirmButton: false,
+            text: 'Por favor, tente novamente mais tarde. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
+            footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
+            timer: 2000
+        });
     }
 }
