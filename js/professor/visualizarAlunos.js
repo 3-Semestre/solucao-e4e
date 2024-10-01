@@ -1,5 +1,5 @@
-let paginaAtual = 0;
-let totalPaginas = 0;
+var paginaAtual = 0;
+var totalPaginas = 0;
 
 async function buscarAlunos() {
     const cardsAlunos = document.getElementById("listagem_usuarios")
