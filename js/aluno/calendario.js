@@ -150,9 +150,6 @@ function saveEvent() {
   const professorSelect = document.getElementById('professor-select');
   const horarioSelect = document.querySelector('.time-button.selected');
 
-  console.log('Professor Selected:', professorSelect.value);
-  console.log('Horario Selected:', horarioSelect);
-
   if (professorSelect.value && horarioSelect) {
     selectedTime = horarioSelect.getAttribute('data-time');
 
@@ -259,7 +256,6 @@ function buttons() {
       document.querySelectorAll('.time-button').forEach(btn => btn.classList.remove('selected'));
       this.classList.add('selected');
       selectedTime = this.getAttribute('data-time');
-      console.log('Selected time:', selectedTime);
     });
   });
 

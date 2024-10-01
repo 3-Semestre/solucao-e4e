@@ -76,7 +76,6 @@ async function desautenticarUsuario() {
     const token = sessionStorage.getItem('token')
     const nivelAcesso = sessionStorage.getItem('nivel_acesso_cod');
     const id = sessionStorage.getItem('id')
-    console.log(id)
     usuario = "";
     switch (nivelAcesso) {
         case "1":
@@ -97,7 +96,6 @@ async function desautenticarUsuario() {
 
     if (respostaDesautenticar.ok) {
         sessionStorage.clear()
-        console.log("ok")
         window.location.href = "login2.html"
     }
 }
