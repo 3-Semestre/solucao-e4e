@@ -1,10 +1,12 @@
 let paginaAtual = 0;
 let totalPaginas = 0;
 
-async function buscarAlunos() {
+async function buscarAlunos(pagina) {
+    if (pagina < 0 || (totalPaginas > 0 && pagina >= totalPaginas)) return; // Limita as páginas
+
     const cardsAlunos = document.getElementById("listagem_usuarios")
 
-    const resposta = await fetch(`http://localhost:8080/usuarios/aluno/paginado?page=${paginaAtual}`, {
+    const resposta = await fetch(`http://localhost:8080/usuarios/aluno/paginado?page=${pagina}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -18,7 +20,6 @@ async function buscarAlunos() {
     }
 
     const listaAlunos = await resposta.json();
-    console.log(listaAlunos.content)
 
     cardsAlunos.innerHTML += listaAlunos.content.map((aluno) => {
         return `
@@ -67,6 +68,8 @@ async function buscarAlunos() {
 </div>
 <hr class="line">
 `}).join('');
+
+atualizarBotoesPaginacaoAluno(listaAlunos.totalPages, listaAlunos.pageable.pageNumber)
 }
 
 async function filtraUsuarios() {
@@ -194,8 +197,6 @@ function confirmacaoDeleteAluno(id) {
     });
 }
 
-
-
 async function deletarAluno(id) {
     const respostaDelete = await fetch(`http://localhost:8080/usuarios/aluno/${id}`, {
         method: "DELETE",
@@ -215,4 +216,29 @@ async function deletarAluno(id) {
             timer: 1500
         });
     }
+}
+
+function atualizarBotoesPaginacaoAluno(total, atual) {
+    const paginacao = document.getElementById('paginacao_visualizacao');
+    paginacao.innerHTML = '';
+
+    const anterior = document.createElement('li');
+    anterior.classList.add('page-item');
+    anterior.innerHTML = `<a class="page-link" href="#" onclick="carregarVisualizacoesAluno(${atual - 1})">&laquo;</a>`;
+    paginacao.appendChild(anterior);
+
+    for (let i = 0; i < total; i++) {
+        const item = document.createElement('li');
+        item.classList.add('page-item');
+        if (i === atual) {
+            item.classList.add('active'); // Marca a página atual
+        }
+        item.innerHTML = `<a class="page-link" href="#" onclick="carregarVisualizacoesAluno(${i})">${i + 1}</a>`;
+        paginacao.appendChild(item);
+    }
+
+    const proximo = document.createElement('li');
+    proximo.classList.add('page-item');
+    proximo.innerHTML = `<a class="page-link" href="#" onclick="carregarVisualizacoesAluno(${atual + 1})">&raquo;</a>`;
+    paginacao.appendChild(proximo);
 }
