@@ -17,8 +17,7 @@ async function buscarAlunos() {
         return
     }
 
-    const listaAlunos = await resposta.json();
-    console.log(listaAlunos.content)
+    const listaAlunos = await resposta.json();4
 
     cardsAlunos.innerHTML += listaAlunos.content.map((aluno) => {
         return `
@@ -36,7 +35,7 @@ async function buscarAlunos() {
             </div>
             <div class="form-group">
                 <label for="data-nascimento">Data de Nascimento:</label>
-                <label class="label2" type="date" id="data-nascimento">${aluno.data_nascimento}</label>
+                <label class="label2" type="date" id="data-nascimento">${formatarData(aluno.data_nascimento)}</label>
             </div>
             <div class="form-group">
                 <label for="email">E-mail:</label>
