@@ -224,11 +224,11 @@ async function buscarDetalhes(id) {
                 html: `
               <label for="novoStatus" style="color: #072B59; position: relative; top: 0.1vh;">Selecione o novo status:</label>
               <select id="novoStatus" class="swal2-input" style="width: 10vw;height: 4vh;color: #072B59;border-radius: 5px;border: 1px solid #072B5">
-              <option value="cancelado">Selecione</option>
-                <option value="pendente" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Pendente</option>
-                <option value="confirmado" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Confirmar</option>
-                <option value="concluido" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Concluir</option>
-                <option value="cancelado">Cancelar</option>
+              <option value="#">Selecione</option>
+                <option value="1" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Pendente</option>
+                <option value="2" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Confirmar</option>
+                <option value="3" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Concluir</option>
+                <option value="4">Cancelar</option>
               </select>
             `,
                 showCancelButton: true,
@@ -242,9 +242,15 @@ async function buscarDetalhes(id) {
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const statusSelecionado = result.value;
+                    try {
+                        novoStatus(id, result.value);
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }
             });
+        } else {
+            return
         }
     });
 }
@@ -272,6 +278,45 @@ function atualizarBotoesPaginacao(total, atual) {
     proximo.classList.add('page-item');
     proximo.innerHTML = `<a class="page-link" href="#" onclick="carregarAgendamentos(${atual + 1})">&raquo;</a>`;
     paginacao.appendChild(proximo);
+}
+
+async function novoStatus(id, statusId) {
+    try {
+        const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        agendamento = await respostaAgendamento.json()
+
+        const respostaStatus = await fetch(`http://localhost:8080/status/${statusId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        statusObj = await respostaStatus.json()
+
+        const dadosAlteracao = {
+            "novoAgendamento": agendamento,
+            "status": statusObj
+        }
+
+        const novoStatus = await fetch("http://localhost:8080/historico-agendamento", {
+            method: "POST",
+            body: JSON.stringify(dadosAlteracao),
+            headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+        });
+
+        console.log(novoStatus.status)
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 window.onload = function () {

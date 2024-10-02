@@ -62,6 +62,8 @@ function preencherInput(dados) {
     horarioAtendimentoFim.value = (dados.fim || '');
     horarioIntervaloInicio.value = (dados.pausa_inicio || '');
     horarioIntervaloFim.value = (dados.pausa_fim || '');
+
+    
 }
 
 async function buscarNivelIngles() {
