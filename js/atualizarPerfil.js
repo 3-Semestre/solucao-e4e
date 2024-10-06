@@ -116,7 +116,7 @@ async function atualizarNichoUsuario() {
         for (const nicho of novosNichos) {
             const dadosNicho = {
                 usuario: { id: id },
-                nicho: { id: nicho }
+                nicho: { id: nicho }    
             };
 
             try {
