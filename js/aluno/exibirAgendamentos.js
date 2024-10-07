@@ -1,5 +1,6 @@
 const id = sessionStorage.getItem('id');
 const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod');
+const nivel_acesso = sessionStorage.getItem('nivel_acesso');
 const token = sessionStorage.getItem('token');
 
 
@@ -254,6 +255,64 @@ async function buscarDetalhes(id) {
         }
     });
 }
+
+async function filtraAgendamentos() {
+
+    const nome = document.getElementById("input_nome").value;
+    const data_inicio = document.getElementById("data_inicio").value;
+    const data_fim = document.getElementById("data_fim").value;
+    const horario_inicio = document.getElementById("horario_inicio").value;
+    const horario_fim = document.getElementById("horario_fim").value;
+    const assunto = document.getElementById("assunto").value;
+
+    const data = {};
+    if (nome) data.nome = nome;
+    if (data_inicio) data.data_inicio = data_inicio;
+    if (data_fim && data_fim !== "") data.data_fim = data_fim;
+    if (horario_inicio && horario_inicio !== "") data.horario_inicio = horario_inicio
+    if (horario_fim && horario_fim !== "") data.horario_fim = horario_fim
+    if (assunto && assunto !== "") data.assunto = assunto;
+
+    
+    console.log("Filtro a ser buscado")
+    console.log(data)
+
+    var tipoNome = ""
+
+    if (nivel_acesso != "aluno") {
+        tipoNome = "professor"
+        const resposta = await fetch(`localhost:8080/agendamento/filtro/professor/4`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+    
+    } else {
+        tipoNome = "aluno"
+        const resposta = await fetch(`localhost:8080/agendamento/filtro/aluno/4`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+    
+    }
+
+
+    if (resposta.status == 204) {
+        return
+    }
+
+    const listaAgendamentos = await resposta.json();
+    preencherTabela(listaAgendamentos)
+    limparTabela();
+}
+
 
 function atualizarBotoesPaginacao(total, atual) {
     const paginacao = document.getElementById('paginacao_tabela');
