@@ -63,7 +63,11 @@ function preencherInput(dados) {
     horarioIntervaloInicio.value = (dados.pausa_inicio || '');
     horarioIntervaloFim.value = (dados.pausa_fim || '');
 
-    
+    sessionStorage.setItem('horarioAtendimentoInicio', (dados.inicio || ''));
+    sessionStorage.setItem('horarioAtendimentoFim',(dados.fim || ''));
+    sessionStorage.setItem('horarioIntervaloInicio', (dados.pausa_inicio || ''));
+    sessionStorage.setItem('horarioIntervaloFim', (dados.pausa_fim || ''));
+    console.log(sessionStorage.getItem('horarioIntervaloFim'))
 }
 
 async function buscarNivelIngles() {
