@@ -9,7 +9,7 @@ async function atualizarPerfil() {
     const profissao = document.getElementById("input_profissao").value;
     const senha = document.getElementById("input_senha").value;
     const nivel_acesso = sessionStorage.getItem('nivel_acesso_cod');
-    
+
     const dados = {
         "nomeCompleto": nome,
         "cpf": cpf,
@@ -23,16 +23,6 @@ async function atualizarPerfil() {
         },
         "situacao": {
             "id": 1
-        }
-    }
-
-    function retornaNivelRequisicao() {
-        if (nivel_acesso === "1") {
-            return "representante-legal"
-        } else if (nivel_acesso === "2") {
-            return "professor"
-        } else if (nivel_acesso === "3") {
-            return "aluno"
         }
     }
 
@@ -59,6 +49,40 @@ async function atualizarPerfil() {
             */
     } catch (e) {
         console.log(e)
+    }
+}
+
+async function atualizaHorarioAtendimento() {
+    const horarioAtendimentoInicio = formatarHorarioPut(document.getElementById("input_atendimento_inicio").value);
+    console.log(horarioAtendimentoInicio + " horario inicio")
+    const horarioAtendimentoFim = formatarHorarioPut(document.getElementById("input_atendimento_fim").value);
+    console.log(horarioAtendimentoFim + " horario fim")
+    const horarioIntervaloInicio = formatarHorarioPut(document.getElementById("input_intervalo_inicio").value);
+    console.log(horarioIntervaloInicio + " horario intervalo inicio")
+    const horarioIntervaloFim = formatarHorarioPut(document.getElementById("input_intervalo_fim").value);
+    console.log(horarioIntervaloFim + " horario intervalo fim")
+
+    var validacaoUm = horarioAtendimentoInicio != sessionStorage.getItem("horarioAtendimentoInicio");
+    var validacaoDois = horarioAtendimentoFim != sessionStorage.getItem("horarioAtendimentoFim");
+    var validacaoTres = horarioIntervaloInicio != sessionStorage.getItem("input_intervalo_inicio");
+    var validacaoQuatro = horarioIntervaloFim != sessionStorage.getItem("input_intervalo_fim");
+
+    if (validacaoUm || validacaoDois || validacaoTres || validacaoQuatro) {
+        var id = Number(sessionStorage.getItem('id'));
+        const dados = {
+            "inicio": horarioAtendimentoInicio,
+            "fim": horarioAtendimentoFim,
+            "pausaInicio": horarioIntervaloInicio,
+            "pausaFim": horarioIntervaloFim
+        }
+
+        const respostaAtt = await fetch(`http://localhost:8080/horario-professor/${id}`, {
+            method: "PUT",
+            body: JSON.stringify(dados),
+            headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+        });
+
+        console.log(respostaAtt.status)
     }
 }
 
@@ -140,18 +164,4 @@ async function atualizarNichoUsuario() {
             }
         }
     }
-}
-
-
-
-function salvarInformacoes(usuario) {
-    console.log("teste")
-    sessionStorage.id = usuario.id;
-    sessionStorage.cpf = usuario.cpf;
-    sessionStorage.data_nascimento = usuario.dataNasc;
-    sessionStorage.email = usuario.email; sessionStorage
-    sessionStorage.nivel_acesso = usuario.nivelAcesso.nome;
-    sessionStorage.nome_completo = usuario.nomeCompleto;
-    sessionStorage.profissao = usuario.profissao;
-    sessionStorage.telefone = usuario.telefone;
 }

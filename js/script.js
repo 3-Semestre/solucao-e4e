@@ -53,17 +53,17 @@ function carregarNavBar() {
 
     const link_dashboard = document.getElementById("dashboard_href")
 
-    switch (nivelAcesso) {
-        case "3":
+    switch (Number(nivelAcesso)) {
+        case 3:
             link_dashboard.href = "dashboardProfessor.html"
             agenda_novo_agendamento_navbar.style.display = "none";
             break;
-        case "2":
+        case 2:
             link_dashboard.href = "dashboardProfessor.html"
             agenda_novo_agendamento_navbar.style.display = "none";
             dashboard_representante_legal.style.display = "none";
             break;
-        case "1":
+        case 1:
             link_dashboard.href = "dashboardAluno.html"
             gerenciar_aluno_navbar.style.display = "none";
             gerenciar_professores_navbar.style.display = "none";
@@ -76,18 +76,7 @@ async function desautenticarUsuario() {
     const token = sessionStorage.getItem('token')
     const nivelAcesso = sessionStorage.getItem('nivel_acesso_cod');
     const id = sessionStorage.getItem('id')
-    usuario = "";
-    switch (nivelAcesso) {
-        case "1":
-            usuario = "aluno";
-            break;
-        case "2":
-            usuario = "professor";
-            break;
-        case "3":
-            usuario = "representante-legal";
-            break;
-    }
+    usuario = retornaNivelRequisicao(Number(nivelAcesso))
 
     const respostaDesautenticar = await fetch(`http://localhost:8080/usuarios/${usuario}/desautenticar/${id}`, {
         method: "POST",
@@ -112,6 +101,13 @@ function formatarHorario(horario) {
     const periodo = horaInt >= 12 ? 'PM' : 'AM';
     const horaFormatada = horaInt % 12 || 12;
     return `${horaFormatada}:${minuto} ${periodo}`;
+}
+
+function formatarHorarioPut(horario) {
+    if(horario.length === 5){
+        return horario + ':00';
+    }
+    return horario
 }
 
 function tratarNome(nome) {
@@ -158,6 +154,16 @@ function buscaUltimoStatus(status) {
             break;
     }
     return status;
+}
+
+function retornaNivelRequisicao(nivel_acesso) {
+    if (nivel_acesso == 1) {
+        return "representante-legal"
+    } else if (nivel_acesso === 2) {
+        return "professor"
+    } else if (nivel_acesso === 3) {
+        return "aluno"
+    }
 }
 
 carregarNavBar()

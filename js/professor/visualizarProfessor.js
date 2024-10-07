@@ -113,7 +113,7 @@ async function deletarProfessor(id) {
 
     if (respostaDelete.status == 204) {
         Swal.fire({ title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green' });
-        setTimeout(window.location.reload(), 2000);
+        setTimeout(() => window.location.reload(), 2500);
     } else {
         Swal.fire({
             icon: 'error',

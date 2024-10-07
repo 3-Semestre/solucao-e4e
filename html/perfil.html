@@ -37,19 +37,24 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#agendaDropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#agendaDropdown"
+                    aria-expanded="false">
                     <img src="../imgs/calendar-days.png" alt=""> <span class="ms-2">Agenda</span>
                 </a>
                 <div class="collapse" id="agendaDropdown">
                     <ul class="nav flex-column dropdown-container">
-                        <li><a href="calendarioAluno.html" id="agenda_novo_agendamento_navbar" class="nav-link">Novo Agendamento</a></li>
-                        <li><a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar" class="nav-link">Meus Agendamentos</a></li>
-                        <li><a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar" class="nav-link">Histórico</a></li>
+                        <li><a href="calendarioAluno.html" id="agenda_novo_agendamento_navbar" class="nav-link">Novo
+                                Agendamento</a></li>
+                        <li><a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar"
+                                class="nav-link">Meus Agendamentos</a></li>
+                        <li><a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar"
+                                class="nav-link">Histórico</a></li>
                     </ul>
                 </div>
             </li>
             <li class="nav-item" id="alunos_navbar">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#alunosDropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#alunosDropdown"
+                    aria-expanded="false">
                     <img src="../imgs/students.png" alt=""> <span class="ms-2">Alunos</span>
                 </a>
                 <div class="collapse" id="alunosDropdown">
@@ -60,7 +65,8 @@
                 </div>
             </li>
             <li class="nav-item" id="professores_navbar">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#professoresDropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"
+                    data-bs-target="#professoresDropdown" aria-expanded="false">
                     <img src="../imgs/professor.png" alt=""> <span class="ms-2">Professores</span>
                 </a>
                 <div class="collapse" id="professoresDropdown">
@@ -252,16 +258,25 @@
 
         botaoCancela.style.display = "inline-block";
         botaoConfirma.style.display = "inline-block";
-
         senhaInput.style.display = "inline-block";
         senhaInputTitulo.style.display = "inline-block";
-
         botaoCadastro.style.display = "none";
 
         const inputs = document.querySelectorAll('#cadastroForm input');
         inputs.forEach(input => {
             input.readOnly = false;
         });
+
+        const nivelSelect = document.getElementById("nivel");
+        const nichoSelect = document.getElementById("nicho");
+
+        if (nivelSelect) nivelSelect.disabled = false;
+        if (nichoSelect) nichoSelect.disabled = false;
+
+        document.getElementById("input_atendimento_inicio").readOnly = false;
+        document.getElementById("input_atendimento_fim").readOnly = false;
+        document.getElementById("input_intervalo_inicio").readOnly = false;
+        document.getElementById("input_intervalo_fim").readOnly = false;
     }
 
     function cancelarEdicao() {
@@ -272,9 +287,6 @@
         botaoCancela.style.display = "none";
         botaoConfirma.style.display = "none";
         botaoCadastro.style.display = "inline-block";
-
-        botaoCancela.style.display = "none";
-        botaoConfirma.style.display = "none";
 
         const senhaInput = document.getElementById("input_senha");
         const senhaInputTitulo = document.getElementById("input_senha_label");
@@ -288,7 +300,16 @@
             input.readOnly = true;
         });
 
-        exibirDadosPerfil();
+        const nivelSelect = document.getElementById("nivel");
+        const nichoSelect = document.getElementById("nicho");
+
+        if (nivelSelect) nivelSelect.disabled = true;
+        if (nichoSelect) nichoSelect.disabled = true;
+
+        document.getElementById("input_atendimento_inicio").readOnly = true;
+        document.getElementById("input_atendimento_fim").readOnly = true;
+        document.getElementById("input_intervalo_inicio").readOnly = true;
+        document.getElementById("input_intervalo_fim").readOnly = true;
     }
 
     document.getElementById('botaoAtualizar').addEventListener('click', editarPerfil);
@@ -314,6 +335,9 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 try {
+                    if (sessionStorage.getItem("nivel_acesso_cod") != "1") {
+                        atualizaHorarioAtendimento()
+                    }
                     atualizarPerfil()
                         .then(() => {
                             Swal.fire({ title: "Alterações salvas com sucesso", icon: "success", confirmButtonColor: 'green' });

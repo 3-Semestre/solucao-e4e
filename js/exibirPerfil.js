@@ -12,7 +12,7 @@ async function exibirDadosPerfil() {
             'Content-Type': 'application/json'
         }
     });
-    ;
+
     if (!resposta.ok) {
         throw new Error('Erro ao buscar dados do servidor');
     }
@@ -62,6 +62,11 @@ function preencherInput(dados) {
     horarioAtendimentoFim.value = (dados.fim || '');
     horarioIntervaloInicio.value = (dados.pausa_inicio || '');
     horarioIntervaloFim.value = (dados.pausa_fim || '');
+
+    sessionStorage.setItem('horarioAtendimentoInicio', (dados.inicio || ''));
+    sessionStorage.setItem('horarioAtendimentoFim',(dados.fim || ''));
+    sessionStorage.setItem('horarioIntervaloInicio', (dados.pausa_inicio || ''));
+    sessionStorage.setItem('horarioIntervaloFim', (dados.pausa_fim || ''));
 }
 
 async function buscarNivelIngles() {
@@ -161,6 +166,8 @@ function preencherNivelInglesUsuario(niveis) {
             opcaoSelect.selected = true;
         }
     }
+
+    nivelInglesElement.setAttribute('required', 'true');
 }
 
 
@@ -187,6 +194,8 @@ function preencherNichoUsuario(nichos) {
             opcaoSelect.selected = true;
         }
     }
+
+    nichoElement.setAttribute('required', 'true');
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
