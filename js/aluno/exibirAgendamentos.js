@@ -280,28 +280,19 @@ async function filtraAgendamentos() {
     var tipoNome = ""
 
     if (nivel_acesso != "aluno") {
-        tipoNome = "professor"
-        const resposta = await fetch(`localhost:8080/agendamento/filtro/professor/4`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-    
+        tipoNome = "professor"    
     } else {
         tipoNome = "aluno"
-        const resposta = await fetch(`localhost:8080/agendamento/filtro/aluno/4`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-    
     }
+
+    const resposta = await fetch(`localhost:8080/agendamento/filtro/${tipoNome}/${sessionStorage.getItem('token')`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
 
 
     if (resposta.status == 204) {
