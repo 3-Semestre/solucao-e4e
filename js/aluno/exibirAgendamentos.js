@@ -148,9 +148,9 @@ function preencherTabela(dados) {
 function preencherTabelaHistorico(dados) {
     const resultados = dados.map((agendamento) => `
         <tr>
-            <td ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>${agendamento.aluno.nome}</td>
+            <td ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>${agendamento.aluno.nomeCompleto}</td>
             <td>${agendamento.assunto}</td>
-            <td>${agendamento.professor.nome}</td>
+            <td>${agendamento.professor.nomeCompleto}</td>
             <td>${formatarData(agendamento.data)}</td>
             <td>${formatarHorario(agendamento.horarioInicio)}</td>
             <td>${formatarHorario(agendamento.horarioFim)}</td>
@@ -285,7 +285,6 @@ async function buscarDetalhes(id) {
 
 async function filtraAgendamentos() {
 
-    const nome = document.getElementById("input_nome").value;
     const data_inicio = document.getElementById("data_inicio").value;
     const data_fim = document.getElementById("data_fim").value;
     const horario_inicio = document.getElementById("horario_inicio").value;
@@ -293,7 +292,6 @@ async function filtraAgendamentos() {
     const assunto = document.getElementById("assunto").value;
 
     const data = {};
-    if (nome) data.nome = nome;
     if (data_inicio) data.data_inicio = data_inicio;
     if (data_fim && data_fim !== "") data.data_fim = data_fim;
     if (horario_inicio && horario_inicio !== "") data.horario_inicio = horario_inicio
@@ -312,7 +310,7 @@ async function filtraAgendamentos() {
         tipoNome = "aluno"
     }
 
-    const resposta = await fetch(`localhost:8080/agendamento/filtro/${tempo}/${tipoNome}/${sessionStorage.getItem('id')}`, {
+    const resposta = await fetch(`http://localhost:8080/agendamento/filtro/${tempo}/${tipoNome}/${sessionStorage.getItem('id')}`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -327,7 +325,10 @@ async function filtraAgendamentos() {
     }
 
     const listaAgendamentos = await resposta.json();
-    preencherTabela(listaAgendamentos)
+    
+    console.log("Resposta do filtro: ")
+    console.log(listaAgendamentos)
+    preencherTabelaHistorico(listaAgendamentos)
     limparTabela();
 }
 
