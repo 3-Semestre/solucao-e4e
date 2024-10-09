@@ -3,6 +3,7 @@ let nav = 0;
 let clicked = null;
 let events = localStorage.getItem('events') ? JSON.parse(localStorage.getItem('events')) : [];
 let selectedTime = null; // Armazena o horário selecionado
+const professorSelect = document.getElementById('professor-select');
 
 // Variáveis do modal
 const newEvent = document.getElementById('newEventModal');
@@ -22,6 +23,7 @@ function formatDate(dateString) {
 
 // Função para abrir o modal
 function openModal(date) {
+  console.log("Abrindo o calendário")
   clicked = date;
   const eventDay = events.find(event => event.date === clicked);
 
@@ -29,7 +31,7 @@ function openModal(date) {
   document.getElementById('professor-select').value = '';
   document.querySelectorAll('.time-button').forEach(button => button.classList.remove('selected'));
   selectedTime = null; // Limpar o horário selecionado
-  
+
   // Definir a data selecionada no campo do modal
   dateInput.value = formatDate(clicked);
 
@@ -42,20 +44,23 @@ function openModal(date) {
   statusElement.className = 'status'; // Limpar a classe de status
 
   if (eventDay) {
+    console.log("Evento encontrado")
     // Se existe um evento para a data selecionada, preencher o modal de deletar evento
     document.getElementById('deleteDateInput').value = formatDate(clicked);
     document.getElementById('deleteProfessorInput').value = eventDay.professor;
     document.getElementById('deleteTimeInput').value = eventDay.time;
     document.getElementById('eventText').innerText = eventDay.title;
-    
+
     statusElement.className = `status ${eventDay.status.toLowerCase()}`;
     statusElement.innerText = eventDay.status === 'PENDENTE' ? 'Agendamento pendente' :
-                               eventDay.status === 'CONFIRMADO' ? 'Agendamento confirmado' :
-                               eventDay.status === 'CONCLUIDO' ? 'Agendamento concluído' :
-                               'Agendamento cancelado';
+      eventDay.status === 'CONFIRMADO' ? 'Agendamento confirmado' :
+        eventDay.status === 'CONCLUIDO' ? 'Agendamento concluído' :
+          'Agendamento cancelado';
 
     deleteEventModal.style.display = 'block';
   } else {
+    console.log("Evento não encontrado")
+    buscarProfessores()
     // Se não há evento para a data, abrir o modal de novo evento
     newEvent.style.display = 'block';
   }
@@ -125,13 +130,13 @@ function load() {
 }
 
 // Adiciona alerta quando o usuário tenta alterar a data diretamente
-dateInput.addEventListener('change', function() {
+dateInput.addEventListener('change', function () {
   alert('Para alterar a data, selecione-a no calendário.');
   dateInput.value = formatDate(clicked);
 });
 
 // Adiciona alerta quando o campo de entrada de data é clicado
-dateInput.addEventListener('click', function() {
+dateInput.addEventListener('click', function () {
   alert('Para alterar a data, selecione-a no calendário.');
 });
 
@@ -144,6 +149,69 @@ function closeModal() {
   selectedTime = null; // Limpa a seleção de horário
   load();
 }
+
+async function buscarProfessores() {
+  repostaBuscaProfessor = await fetch('http://localhost:8080/usuarios/professor', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (repostaBuscaProfessor.status == 204) {
+    Swal.fire({
+      title: 'Erro',
+      text: 'Não há professores cadastrados.',
+      icon: 'error',
+      confirmButtonText: 'OK',
+      confirmButtonColor: 'red',
+      background: '#f2f2f2',
+      color: '#333'
+    });
+    return
+  } else if (repostaBuscaProfessor.status == 200) {
+    const professores = await repostaBuscaProfessor.json();
+    console.log(professores)
+
+    professores.forEach(professor => {
+      const option = document.createElement('option');
+      option.value = professor.id;
+      option.innerText = professor.nomeCompleto;
+      professorSelect.appendChild(option);
+    });
+  }
+
+}
+
+professorSelect.addEventListener('change', async (event) => {
+    const selectedProfessor = event.target.value;
+    console.log("data selecionada " + dateInput.value);
+    try {
+        const response = await fetch(`http://localhost:8080/horario-professor/disponiveis/${selectedProfessor}?dia=${dateInput.value}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (response.ok) {
+            const professorData = await response.json();
+            console.log('Horarios disponiveis:', professorData);
+            professorData.forEach(horario => {
+              const horarioBtn = document.createElement('button');
+              horarioBtn.classList.add('time-button');
+              horarioBtn.setAttribute('data-time', `${horario.horario_inicio} - ${horario.horario_fim}`);
+              horarioBtn.innerText = `${horario.horario_inicio} - ${horario.horario_fim}`;
+            });
+        } else {
+            console.error('Erro ao buscar dados do professor');
+        }
+    } catch (error) {
+        console.error('Erro na requisição:', error);
+    }
+});
+
 
 // Função para salvar um novo evento
 function saveEvent() {
@@ -207,7 +275,7 @@ function deleteEvent() {
     if (result.isConfirmed) {
       events = events.filter((event) => event.date !== clicked);
       localStorage.setItem('events', JSON.stringify(events));
-      
+
       Swal.fire({
         title: 'Cancelado!',
         text: 'O agendamento foi cancelado com sucesso.',
@@ -217,7 +285,7 @@ function deleteEvent() {
         background: '#f2f2f2',
         color: '#333'
       }).then(() => {
-        closeModal(); 
+        closeModal();
         load();
       });
     } else {
@@ -252,7 +320,7 @@ function buttons() {
   document.getElementById('fechar-button').addEventListener('click', closeModal);
 
   document.querySelectorAll('.time-button').forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
       document.querySelectorAll('.time-button').forEach(btn => btn.classList.remove('selected'));
       this.classList.add('selected');
       selectedTime = this.getAttribute('data-time');
