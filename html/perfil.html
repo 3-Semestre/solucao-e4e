@@ -258,16 +258,20 @@
 
         botaoCancela.style.display = "inline-block";
         botaoConfirma.style.display = "inline-block";
-
         senhaInput.style.display = "inline-block";
         senhaInputTitulo.style.display = "inline-block";
-
         botaoCadastro.style.display = "none";
 
         const inputs = document.querySelectorAll('#cadastroForm input');
         inputs.forEach(input => {
             input.readOnly = false;
         });
+
+        const nivelSelect = document.getElementById("nivel");
+        const nichoSelect = document.getElementById("nicho");
+
+        if (nivelSelect) nivelSelect.disabled = false;
+        if (nichoSelect) nichoSelect.disabled = false;
 
         document.getElementById("input_atendimento_inicio").readOnly = false;
         document.getElementById("input_atendimento_fim").readOnly = false;
@@ -284,9 +288,6 @@
         botaoConfirma.style.display = "none";
         botaoCadastro.style.display = "inline-block";
 
-        botaoCancela.style.display = "none";
-        botaoConfirma.style.display = "none";
-
         const senhaInput = document.getElementById("input_senha");
         const senhaInputTitulo = document.getElementById("input_senha_label");
 
@@ -299,11 +300,16 @@
             input.readOnly = true;
         });
 
+        const nivelSelect = document.getElementById("nivel");
+        const nichoSelect = document.getElementById("nicho");
+
+        if (nivelSelect) nivelSelect.disabled = true;
+        if (nichoSelect) nichoSelect.disabled = true;
+
         document.getElementById("input_atendimento_inicio").readOnly = true;
         document.getElementById("input_atendimento_fim").readOnly = true;
         document.getElementById("input_intervalo_inicio").readOnly = true;
         document.getElementById("input_intervalo_fim").readOnly = true;
-
     }
 
     document.getElementById('botaoAtualizar').addEventListener('click', editarPerfil);
