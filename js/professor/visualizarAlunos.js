@@ -21,6 +21,7 @@ async function buscarAlunos(pagina) {
 
     const listaAlunos = await resposta.json();
 
+    cardsAlunos.innerHTML = "";
     cardsAlunos.innerHTML += listaAlunos.content.map((aluno) => {
         return `
 <div class="dados-student" id="card_dados">
@@ -224,7 +225,7 @@ function atualizarBotoesPaginacaoAluno(total, atual) {
 
     const anterior = document.createElement('li');
     anterior.classList.add('page-item');
-    anterior.innerHTML = `<a class="page-link" href="#" onclick="carregarVisualizacoesAluno(${atual - 1})">&laquo;</a>`;
+    anterior.innerHTML = `<a class="page-link" href="#" onclick="buscarAlunos(${atual - 1})">&laquo;</a>`;
     paginacao.appendChild(anterior);
 
     for (let i = 0; i < total; i++) {
@@ -233,12 +234,12 @@ function atualizarBotoesPaginacaoAluno(total, atual) {
         if (i === atual) {
             item.classList.add('active'); // Marca a página atual
         }
-        item.innerHTML = `<a class="page-link" href="#" onclick="carregarVisualizacoesAluno(${i})">${i + 1}</a>`;
+        item.innerHTML = `<a class="page-link" href="#" onclick="buscarAlunos(${i})">${i + 1}</a>`;
         paginacao.appendChild(item);
     }
 
     const proximo = document.createElement('li');
     proximo.classList.add('page-item');
-    proximo.innerHTML = `<a class="page-link" href="#" onclick="carregarVisualizacoesAluno(${atual + 1})">&raquo;</a>`;
+    proximo.innerHTML = `<a class="page-link" href="#" onclick="buscarAlunos(${atual + 1})">&raquo;</a>`;
     paginacao.appendChild(proximo);
 }

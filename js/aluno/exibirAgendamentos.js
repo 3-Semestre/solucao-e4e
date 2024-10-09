@@ -2,7 +2,6 @@ const id = sessionStorage.getItem('id');
 const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod');
 const token = sessionStorage.getItem('token');
 
-
 let paginaAtual = 0;
 let totalPaginas = 0;
 const urlParams = new URLSearchParams(window.location.search);
@@ -76,7 +75,6 @@ function carregarHeadersTabela() {
     carregarAgendamentos(paginaAtual);
 }
 
-
 async function carregarAgendamentos(pagina) {
     if (pagina < 0 || (totalPaginas > 0 && pagina >= totalPaginas)) return; // Limita as páginas
 
@@ -107,38 +105,6 @@ async function carregarAgendamentos(pagina) {
     limparTabela();
     preencherTabela(dados.content);
     atualizarBotoesPaginacao(dados.totalPages, dados.pageable.pageNumber);  
-}
-
-async function carregarVisualizacoesAluno(pagina) {
-    if (pagina < 0 || (totalPaginas > 0 && pagina >= totalPaginas)) return; // Limita as páginas
-
-    const resposta = await fetch(`http://localhost:8080/usuarios/aluno/paginado?page=${pagina}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        }
-    });
-
-    if (!resposta.ok) {
-        throw new Error('Erro ao buscar dados do servidor');
-    } else if (resposta.status == 204) {
-        const tabela = document.getElementById("tabela_agendamento");
-        tabela.innerHTML = 'Não há agendamentos registrados';
-        return;
-    }
-
-    const dados = await resposta.json();
-
-    if (!dados || dados.content.length === 0) {
-        throw new Error('Dados não encontrados');
-    }
-
-    totalPaginas = dados.totalPages;
-
-    limparTabela();
-    preencherTabela(dados.content);
-    atualizarBotoesPaginacaoProfessorEAluno(dados.totalPages, dados.pageable.pageNumber);  
 }
 
 function limparTabela() {
@@ -303,31 +269,6 @@ function atualizarBotoesPaginacao(total, atual) {
     const proximo = document.createElement('li');
     proximo.classList.add('page-item');
     proximo.innerHTML = `<a class="page-link" href="#" onclick="carregarAgendamentos(${atual + 1})">&raquo;</a>`;
-    paginacao.appendChild(proximo);
-}
-
-function atualizarBotoesPaginacaoProfessorEAluno(total, atual) {
-    const paginacao = document.getElementById('paginacao_visualizacao');
-    paginacao.innerHTML = '';
-
-    const anterior = document.createElement('li');
-    anterior.classList.add('page-item');
-    anterior.innerHTML = `<a class="page-link" href="#" onclick="carregarVisualizacoesAluno(${atual - 1})">&laquo;</a>`;
-    paginacao.appendChild(anterior);
-
-    for (let i = 0; i < total; i++) {
-        const item = document.createElement('li');
-        item.classList.add('page-item');
-        if (i === atual) {
-            item.classList.add('active'); // Marca a página atual
-        }
-        item.innerHTML = `<a class="page-link" href="#" onclick="carregarVisualizacoesAluno(${i})">${i + 1}</a>`;
-        paginacao.appendChild(item);
-    }
-
-    const proximo = document.createElement('li');
-    proximo.classList.add('page-item');
-    proximo.innerHTML = `<a class="page-link" href="#" onclick="carregarVisualizacoesAluno(${atual + 1})">&raquo;</a>`;
     paginacao.appendChild(proximo);
 }
 

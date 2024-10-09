@@ -1,8 +1,13 @@
+var paginaAtual = 0;
+var totalPaginas = 0;
+
 const id = sessionStorage.getItem('id')
 const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
 const token = sessionStorage.getItem('token')
 
-async function buscarProfessor() {
+async function buscarProfessor(paginaAtual) {
+    if (paginaAtual < 0 || (totalPaginas > 0 && paginaAtual >= totalPaginas)) return; // Limita as páginas
+
     const cardsProfessor = document.getElementById("listagem_usuarios")
 
     const resposta = await fetch(`http://localhost:8080/usuarios/professor/paginado?page=${paginaAtual}`, {
@@ -17,8 +22,10 @@ async function buscarProfessor() {
         cardsProfessor.innerHTML += "<span>Não há professores cadastrados...<span> <br/>Cadastre um novo clicando <a href='cadastrar.html?tipo=professor'>aqui</a>"
         return
     }
+
     const listaProfessors = await resposta.json();
 
+    cardsProfessor.innerHTML = "";
     cardsProfessor.innerHTML += listaProfessors.content.map((professor) => {
         return `
       <div class="dados-student" id="card_dados">
@@ -74,7 +81,11 @@ async function buscarProfessor() {
 </div>
 <hr class="line">`
     }).join('');
+
+    atualizarBotoesPaginacaoProfessor(listaProfessors.totalPages, listaProfessors.pageable.pageNumber)
 }
+
+
 
 function confirmacaoDeleteProfessor(id) {
     Swal.fire({
@@ -124,4 +135,29 @@ async function deletarProfessor(id) {
             timer: 2000
         });
     }
+}
+
+function atualizarBotoesPaginacaoProfessor(total, atual) {
+    const paginacao = document.getElementById('paginacao_visualizacao');
+    paginacao.innerHTML = '';
+
+    const anterior = document.createElement('li');
+    anterior.classList.add('page-item');
+    anterior.innerHTML = `<a class="page-link" href="#" onclick="buscarProfessor(${atual - 1})">&laquo;</a>`;
+    paginacao.appendChild(anterior);
+
+    for (let i = 0; i < total; i++) {
+        const item = document.createElement('li');
+        item.classList.add('page-item');
+        if (i === atual) {
+            item.classList.add('active'); // Marca a página atual
+        }
+        item.innerHTML = `<a class="page-link" href="#" onclick="buscarProfessor(${i})">${i + 1}</a>`;
+        paginacao.appendChild(item);
+    }
+
+    const proximo = document.createElement('li');
+    proximo.classList.add('page-item');
+    proximo.innerHTML = `<a class="page-link" href="#" onclick="buscarProfessor(${atual + 1})">&raquo;</a>`;
+    paginacao.appendChild(proximo);
 }
