@@ -1,5 +1,6 @@
 const id = sessionStorage.getItem('id');
 const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod');
+const nivel_acesso = sessionStorage.getItem('nivel_acesso');
 const token = sessionStorage.getItem('token');
 
 let paginaAtual = 0;
@@ -142,6 +143,33 @@ function preencherTabela(dados) {
     tabela.innerHTML += `<tbody>${resultados}</tbody>`;
 }
 
+function preencherTabelaHistorico(dados) {
+    const resultados = dados.map((agendamento) => `
+        <tr>
+            <td ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>${agendamento.aluno.nomeCompleto}</td>
+            <td>${agendamento.assunto}</td>
+            <td>${agendamento.professor.nomeCompleto}</td>
+            <td>${formatarData(agendamento.data)}</td>
+            <td>${formatarHorario(agendamento.horarioInicio)}</td>
+            <td>${formatarHorario(agendamento.horarioFim)}</td>
+            <td>${agendamento.status}</td>
+            <td>
+            ${tempo === "passado"
+            ? `<span onclick="buscarDetalhes(${agendamento.id})" style="background-color: #072B59; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; display: block; width: fit-content; margin: 0 auto;">Detalhes</span>`
+            : `
+                <div class="editar-lapis" id="editar_${agendamento.id}" onclick="buscarDetalhes(${agendamento.id})">
+                    <img src="../imgs/pen.png" alt="icone_editar">
+                </div>
+                `}
+            </td>
+        </tr>
+    `).join('');
+
+    const tabela = document.getElementById("tabela_agendamento");
+    tabela.innerHTML += `<tbody>${resultados}</tbody>`;
+}
+
+
 async function buscarDetalhes(id) {
     const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
         method: 'GET',
@@ -222,11 +250,11 @@ async function buscarDetalhes(id) {
                 html: `
               <label for="novoStatus" style="color: #072B59; position: relative; top: 0.1vh;">Selecione o novo status:</label>
               <select id="novoStatus" class="swal2-input" style="width: 10vw;height: 4vh;color: #072B59;border-radius: 5px;border: 1px solid #072B5">
-              <option value="cancelado">Selecione</option>
-                <option value="pendente" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Pendente</option>
-                <option value="confirmado" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Confirmar</option>
-                <option value="concluido" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Concluir</option>
-                <option value="cancelado">Cancelar</option>
+              <option value="#">Selecione</option>
+                <option value="1" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Pendente</option>
+                <option value="2" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Confirmar</option>
+                <option value="3" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Concluir</option>
+                <option value="4">Cancelar</option>
               </select>
             `,
                 showCancelButton: true,
@@ -240,12 +268,68 @@ async function buscarDetalhes(id) {
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const statusSelecionado = result.value;
+                    try {
+                        novoStatus(id, result.value);
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }
             });
+        } else {
+            return
         }
     });
 }
+
+async function filtraAgendamentos() {
+
+    const data_inicio = document.getElementById("data_inicio").value;
+    const data_fim = document.getElementById("data_fim").value;
+    const horario_inicio = document.getElementById("horario_inicio").value;
+    const horario_fim = document.getElementById("horario_fim").value;
+    const assunto = document.getElementById("assunto").value;
+
+    const data = {};
+    if (data_inicio) data.data_inicio = data_inicio;
+    if (data_fim && data_fim !== "") data.data_fim = data_fim;
+    if (horario_inicio && horario_inicio !== "") data.horario_inicio = horario_inicio
+    if (horario_fim && horario_fim !== "") data.horario_fim = horario_fim
+    if (assunto && assunto !== "") data.assunto = assunto;
+
+    
+    console.log("Filtro a ser buscado")
+    console.log(data)
+
+    var tipoNome = ""
+
+    if (nivel_acesso != "aluno") {
+        tipoNome = "professor"    
+    } else {
+        tipoNome = "aluno"
+    }
+
+    const resposta = await fetch(`http://localhost:8080/agendamento/filtro/${tempo}/${tipoNome}/${sessionStorage.getItem('id')}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+
+    if (resposta.status == 204) {
+        return
+    }
+
+    const listaAgendamentos = await resposta.json();
+    
+    console.log("Resposta do filtro: ")
+    console.log(listaAgendamentos)
+    preencherTabelaHistorico(listaAgendamentos)
+    limparTabela();
+}
+
 
 function atualizarBotoesPaginacao(total, atual) {
     const paginacao = document.getElementById('paginacao_tabela');
@@ -270,6 +354,45 @@ function atualizarBotoesPaginacao(total, atual) {
     proximo.classList.add('page-item');
     proximo.innerHTML = `<a class="page-link" href="#" onclick="carregarAgendamentos(${atual + 1})">&raquo;</a>`;
     paginacao.appendChild(proximo);
+}
+
+async function novoStatus(id, statusId) {
+    try {
+        const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        agendamento = await respostaAgendamento.json()
+
+        const respostaStatus = await fetch(`http://localhost:8080/status/${statusId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        statusObj = await respostaStatus.json()
+
+        const dadosAlteracao = {
+            "novoAgendamento": agendamento,
+            "status": statusObj
+        }
+
+        const novoStatus = await fetch("http://localhost:8080/historico-agendamento", {
+            method: "POST",
+            body: JSON.stringify(dadosAlteracao),
+            headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+        });
+
+        console.log(novoStatus.status)
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 window.onload = function () {
