@@ -197,12 +197,15 @@ professorSelect.addEventListener('change', async (event) => {
 
         if (response.ok) {
             const professorData = await response.json();
+            const divHorarios = document.getElementById("div-horarios");
+
             console.log('Horarios disponiveis:', professorData);
             professorData.forEach(horario => {
               const horarioBtn = document.createElement('button');
               horarioBtn.classList.add('time-button');
               horarioBtn.setAttribute('data-time', `${horario.horario_inicio} - ${horario.horario_fim}`);
-              horarioBtn.innerText = `${horario.horario_inicio} - ${horario.horario_fim}`;
+              horarioBtn.innerText = `${formatarHorario(horario.horario_inicio)} - ${formatarHorario(horario.horario_fim)}`;
+              divHorarios.appendChild(horarioBtn)
             });
         } else {
             console.error('Erro ao buscar dados do professor');
