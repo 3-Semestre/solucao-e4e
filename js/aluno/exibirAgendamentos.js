@@ -145,6 +145,33 @@ function preencherTabela(dados) {
     tabela.innerHTML += `<tbody>${resultados}</tbody>`;
 }
 
+function preencherTabelaHistorico(dados) {
+    const resultados = dados.map((agendamento) => `
+        <tr>
+            <td ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>${agendamento.aluno.nomeCompleto}</td>
+            <td>${agendamento.assunto}</td>
+            <td>${agendamento.professor.nomeCompleto}</td>
+            <td>${formatarData(agendamento.data)}</td>
+            <td>${formatarHorario(agendamento.horarioInicio)}</td>
+            <td>${formatarHorario(agendamento.horarioFim)}</td>
+            <td>${agendamento.status}</td>
+            <td>
+            ${tempo === "passado"
+            ? `<span onclick="buscarDetalhes(${agendamento.id})" style="background-color: #072B59; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; display: block; width: fit-content; margin: 0 auto;">Detalhes</span>`
+            : `
+                <div class="editar-lapis" id="editar_${agendamento.id}" onclick="buscarDetalhes(${agendamento.id})">
+                    <img src="../imgs/pen.png" alt="icone_editar">
+                </div>
+                `}
+            </td>
+        </tr>
+    `).join('');
+
+    const tabela = document.getElementById("tabela_agendamento");
+    tabela.innerHTML += `<tbody>${resultados}</tbody>`;
+}
+
+
 async function buscarDetalhes(id) {
     const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
         method: 'GET',
@@ -258,7 +285,6 @@ async function buscarDetalhes(id) {
 
 async function filtraAgendamentos() {
 
-    const nome = document.getElementById("input_nome").value;
     const data_inicio = document.getElementById("data_inicio").value;
     const data_fim = document.getElementById("data_fim").value;
     const horario_inicio = document.getElementById("horario_inicio").value;
@@ -266,7 +292,6 @@ async function filtraAgendamentos() {
     const assunto = document.getElementById("assunto").value;
 
     const data = {};
-    if (nome) data.nome = nome;
     if (data_inicio) data.data_inicio = data_inicio;
     if (data_fim && data_fim !== "") data.data_fim = data_fim;
     if (horario_inicio && horario_inicio !== "") data.horario_inicio = horario_inicio
@@ -280,28 +305,19 @@ async function filtraAgendamentos() {
     var tipoNome = ""
 
     if (nivel_acesso != "aluno") {
-        tipoNome = "professor"
-        const resposta = await fetch(`localhost:8080/agendamento/filtro/professor/4`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-    
+        tipoNome = "professor"    
     } else {
         tipoNome = "aluno"
-        const resposta = await fetch(`localhost:8080/agendamento/filtro/aluno/4`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-    
     }
+
+    const resposta = await fetch(`http://localhost:8080/agendamento/filtro/${tempo}/${tipoNome}/${sessionStorage.getItem('id')}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
 
 
     if (resposta.status == 204) {
@@ -309,7 +325,10 @@ async function filtraAgendamentos() {
     }
 
     const listaAgendamentos = await resposta.json();
-    preencherTabela(listaAgendamentos)
+    
+    console.log("Resposta do filtro: ")
+    console.log(listaAgendamentos)
+    preencherTabelaHistorico(listaAgendamentos)
     limparTabela();
 }
 
