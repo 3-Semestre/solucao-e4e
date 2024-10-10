@@ -213,7 +213,7 @@ html {
 .horarios-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 4px;
   max-width: 500px;
 }
 
@@ -222,13 +222,13 @@ html {
   border: 2px solid #072B59;
   background-color: white;
   color: #072B59;
-  padding: 10px 20px;
+  padding: 10px 10px;
   margin: 5px 0;
   cursor: pointer;
   font-size: 18px;
   transition: background-color 0.3s;
   margin-bottom: 2%;
-  width: 15vw;
+  width: 14.9vw;
 }
 
 .time-button.selected {

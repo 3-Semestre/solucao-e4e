@@ -100,7 +100,7 @@ function formatarHorario(horario) {
     const horaInt = parseInt(hora, 10);
     const periodo = horaInt >= 12 ? 'PM' : 'AM';
     const horaFormatada = "0" + horaInt % 12 || 12;
-    return `${horaFormatada}:${minuto}${periodo}`;
+    return `${horaFormatada}:${minuto} ${periodo}`;
 }
 
 function formatarHorarioPut(horario) {

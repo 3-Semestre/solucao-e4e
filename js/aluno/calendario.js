@@ -4,6 +4,7 @@ let clicked = null;
 let events = localStorage.getItem('events') ? JSON.parse(localStorage.getItem('events')) : [];
 let selectedTime = null; // Armazena o horário selecionado
 const professorSelect = document.getElementById('professor-select');
+const divHorarios = document.getElementById("div-horarios");
 
 // Variáveis do modal
 const newEvent = document.getElementById('newEventModal');
@@ -19,6 +20,11 @@ const weekdays = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'q
 function formatDate(dateString) {
   const [month, day, year] = dateString.split('/');
   return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
+}
+
+function undoFormatDate(dateString) {
+ const [day, month, year] = dateString.split('/');
+ return `${year}-${month}-${day}`;
 }
 
 // Função para abrir o modal
@@ -129,12 +135,6 @@ function load() {
   }
 }
 
-// Adiciona alerta quando o usuário tenta alterar a data diretamente
-dateInput.addEventListener('change', function () {
-  alert('Para alterar a data, selecione-a no calendário.');
-  dateInput.value = formatDate(clicked);
-});
-
 // Adiciona alerta quando o campo de entrada de data é clicado
 dateInput.addEventListener('click', function () {
   alert('Para alterar a data, selecione-a no calendário.');
@@ -145,6 +145,8 @@ function closeModal() {
   newEvent.style.display = 'none';
   deleteEventModal.style.display = 'none';
   backDrop.style.display = 'none';
+  divHorarios.innerHTML = "";
+  professorSelect.innerHTML = '<option value="" disabled selected>Selecione um professor</option>';
   clicked = null;
   selectedTime = null; // Limpa a seleção de horário
   load();
@@ -185,69 +187,84 @@ async function buscarProfessores() {
 }
 
 professorSelect.addEventListener('change', async (event) => {
-    const selectedProfessor = event.target.value;
-    console.log("data selecionada " + dateInput.value);
-    try {
-        const response = await fetch(`http://localhost:8080/horario-professor/disponiveis/${selectedProfessor}?dia=${dateInput.value}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
+  const selectedProfessor = event.target.value;
+  console.log("data selecionada " + dateInput.value);
+  try {
+    const response = await fetch(`http://localhost:8080/horario-professor/disponiveis/${selectedProfessor}?dia=${dateInput.value}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (response.ok) {
+      const professorData = await response.json();
+
+      console.log('Horarios disponiveis:', professorData);
+      professorData.forEach(horario => {
+        const horarioBtn = document.createElement('button');
+        horarioBtn.classList.add('time-button');
+        horarioBtn.setAttribute('data-time', `${horario.horario_inicio} - ${horario.horario_fim}`);
+        horarioBtn.innerText = `${formatarHorario(horario.horario_inicio)} - ${formatarHorario(horario.horario_fim)}`;
+        divHorarios.appendChild(horarioBtn)
+      });
+
+      document.querySelectorAll('.time-button').forEach(button => {
+        button.addEventListener('click', function () {
+          document.querySelectorAll('.time-button').forEach(btn => btn.classList.remove('selected'));
+          this.classList.add('selected');
+          selectedTime = this.getAttribute('data-time');
         });
-
-        if (response.ok) {
-            const professorData = await response.json();
-            const divHorarios = document.getElementById("div-horarios");
-
-            console.log('Horarios disponiveis:', professorData);
-            professorData.forEach(horario => {
-              const horarioBtn = document.createElement('button');
-              horarioBtn.classList.add('time-button');
-              horarioBtn.setAttribute('data-time', `${horario.horario_inicio} - ${horario.horario_fim}`);
-              horarioBtn.innerText = `${formatarHorario(horario.horario_inicio)} - ${formatarHorario(horario.horario_fim)}`;
-              divHorarios.appendChild(horarioBtn)
-            });
-        } else {
-            console.error('Erro ao buscar dados do professor');
-        }
-    } catch (error) {
-        console.error('Erro na requisição:', error);
+      });
+    } else {
+      console.error('Erro ao buscar dados do professor');
     }
+  } catch (error) {
+    console.error('Erro na requisição:', error);
+  }
 });
 
 
 // Função para salvar um novo evento
 function saveEvent() {
-  const professorSelect = document.getElementById('professor-select');
-  const horarioSelect = document.querySelector('.time-button.selected');
+  const professorSelecionado = document.getElementById('professor-select').value;
+  const horarioSelecionado = document.querySelector('.time-button.selected').getAttribute('data-time');
+  console.log(horarioSelecionado)
+  console.log(professorSelecionado)
 
-  if (professorSelect.value && horarioSelect) {
-    selectedTime = horarioSelect.getAttribute('data-time');
+  if (professorSelecionado != null && horarioSelecionado != null) {
+    console.log(horarioSelecionado)
+    try {
+      salvarAgendamento(professorSelecionado, horarioSelecionado);
 
-    events.push({
-      date: clicked,
-      professor: professorSelect.value,
-      time: selectedTime,
-      title: `${professorSelect.value} - ${selectedTime}`,
-      status: 'PENDENTE', // Status padrão ao agendar
-    });
-
-    localStorage.setItem('events', JSON.stringify(events));
-
-    Swal.fire({
-      title: 'Agendamento realizado com sucesso!',
-      html: `
+      Swal.fire({
+        title: 'Agendamento realizado com sucesso!',
+        html: `
         <p>A aula com o professor <strong>${professorSelect.value}</strong> foi agendada para <strong>${dateInput.value}</strong> às <strong>${selectedTime}</strong>.</p>
       `,
-      icon: 'success',
-      confirmButtonText: 'OK',
-      confirmButtonColor: 'green',
-      background: '#f2f2f2',
-      color: '#333'
-    }).then(() => {
-      closeModal(); // Fechar o modal após confirmação
-    });
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: 'green',
+        background: '#f2f2f2',
+        color: '#333'
+      }).then(() => {
+        closeModal(); // Fechar o modal após confirmação
+      });
 
+    } catch (error) {
+      console.log(error)
+    }
+    /*
+    events.push({
+      date: clicked,
+      professor: professorSelecionado,
+      time: horarioSelecionado,
+      title: `${professorSelecionado} - ${horarioSelecionado}`,
+      status: 'PENDENTE', // Status padrão ao agendar
+    });
+ 
+    localStorage.setItem('events', JSON.stringify(events));
+*/
   } else {
     Swal.fire({
       title: 'Erro',
@@ -322,17 +339,38 @@ function buttons() {
   document.getElementById('deletar-button').addEventListener('click', deleteEvent);
   document.getElementById('fechar-button').addEventListener('click', closeModal);
 
-  document.querySelectorAll('.time-button').forEach(button => {
-    button.addEventListener('click', function () {
-      document.querySelectorAll('.time-button').forEach(btn => btn.classList.remove('selected'));
-      this.classList.add('selected');
-      selectedTime = this.getAttribute('data-time');
-    });
-  });
-
   document.querySelectorAll('.modal-close').forEach(button => {
     button.addEventListener('click', closeModal);
   });
 }
 buttons();
 load();
+
+async function salvarAgendamento(professorId, horario) {
+  const [horarioInicio, horarioFim] = horario.split(" - ");
+
+  let agendamentos = {
+      "data": undoFormatDate(dateInput.value),
+      "horarioInicio": horarioInicio.trim(),
+      "horarioFim": horarioFim.trim(),
+      "fk_professor": professorId,
+      "fk_aluno": Number(sessionStorage.getItem('id'))
+  };
+
+  try {
+    const respostaAgendamento = await fetch("http://localhost:8080/agendamento", {
+      method: "POST",
+      body: JSON.stringify(agendamentos),
+      headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}`, "Content-type": "application/json; charset=UTF-8" }
+    });
+
+    if(respostaAgendamento == 201){
+      console.log("tudo joia")
+    }
+    console.log(respostaAgendamento)
+  } catch (error) {
+    console.log("Erro! " + error)
+  }
+
+
+}
