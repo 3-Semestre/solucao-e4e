@@ -1,7 +1,7 @@
 // Variáveis globais
 let nav = 0;
 let clicked = null;
-let events = localStorage.getItem('events') ? JSON.parse(localStorage.getItem('events')) : [];
+var eventDay;
 let selectedTime = null; // Armazena o horário selecionado
 const professorSelect = document.getElementById('professor-select');
 const divHorarios = document.getElementById("div-horarios");
@@ -23,15 +23,21 @@ function formatDate(dateString) {
 }
 
 function undoFormatDate(dateString) {
- const [day, month, year] = dateString.split('/');
- return `${year}-${month}-${day}`;
+  const [day, month, year] = dateString.split('/');
+  return `${year}-${month}-${day}`;
 }
 
 // Função para abrir o modal
 function openModal(date) {
-  console.log("Abrindo o calendário")
+  const today = new Date();
+  const selectedDate = new Date(date);
+
   clicked = date;
-  const eventDay = events.find(event => event.date === clicked);
+  const eventDay = events.find(event => {
+    const eventDate = new Date(event.data);
+    const eventDateString = `${(eventDate.getMonth() + 1).toString().padStart(2, '0')}/${eventDate.getDate().toString().padStart(2, '0')}/${eventDate.getFullYear()}`;
+    return eventDateString === clicked;
+  });
 
   // Limpar todos os campos do modal de novo evento
   document.getElementById('professor-select').value = '';
@@ -50,12 +56,13 @@ function openModal(date) {
   statusElement.className = 'status'; // Limpar a classe de status
 
   if (eventDay) {
-    console.log("Evento encontrado")
+    console.log("Evento encontrado");
     // Se existe um evento para a data selecionada, preencher o modal de deletar evento
     document.getElementById('deleteDateInput').value = formatDate(clicked);
-    document.getElementById('deleteProfessorInput').value = eventDay.professor;
-    document.getElementById('deleteTimeInput').value = eventDay.time;
-    document.getElementById('eventText').innerText = eventDay.title;
+    document.getElementById('deleteProfessorInput').value = eventDay.professor.nomeCompleto;
+    document.getElementById('deleteTimeInput').value = `${formatarHorario(eventDay.horarioInicio)} - ${formatarHorario(eventDay.horarioFim)}`;
+    console.log(eventDay)
+    document.getElementById('eventText').innerText = eventDay.assunto;
 
     statusElement.className = `status ${eventDay.status.toLowerCase()}`;
     statusElement.innerText = eventDay.status === 'PENDENTE' ? 'Agendamento pendente' :
@@ -64,15 +71,31 @@ function openModal(date) {
           'Agendamento cancelado';
 
     deleteEventModal.style.display = 'block';
-  } else {
-    console.log("Evento não encontrado")
-    buscarProfessores()
-    // Se não há evento para a data, abrir o modal de novo evento
-    newEvent.style.display = 'block';
+    backDrop.style.display = 'block';
+    return; // Se encontrou um evento, exibe o modal de detalhes e não tenta abrir o modal de novo agendamento.
   }
 
+  // Se a data é anterior ao dia de hoje, bloquear novos agendamentos, mas permitir visualização
+  if (selectedDate < today.setHours(0, 0, 0, 0)) {
+    Swal.fire({
+      title: 'Data Anterior',
+      text: 'Você não pode criar um agendamento em uma data anterior, mas pode visualizar os detalhes dos eventos.',
+      icon: 'info',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#3085d6',
+      background: '#f2f2f2',
+      color: '#333'
+    });
+    return;
+  }
+
+  // Se não há evento e a data é válida, abre o modal de criação de evento
+  console.log("Abrindo o calendário para agendar novo evento");
+  buscarProfessores();
+  newEvent.style.display = 'block';
   backDrop.style.display = 'block';
 }
+
 
 function load() {
   const date = new Date();
@@ -108,12 +131,17 @@ function load() {
     const dayS = document.createElement('div');
     dayS.classList.add('day');
 
-    const dayString = `${month + 1}/${i - paddingDays}/${year}`;
+    const dayString = `${(month + 1).toString().padStart(2, '0')}/${(i - paddingDays).toString().padStart(2, '0')}/${year}`;
 
     if (i > paddingDays) {
       dayS.innerText = i - paddingDays;
 
-      const eventDay = events.find((event) => event.date === dayString);
+      // Comparar a data corretamente com a do banco
+      const eventDay = events.find((event) => {
+        const eventDate = new Date(event.data); // Converte a data do evento em Date
+        const eventDateString = `${(eventDate.getMonth() + 1).toString().padStart(2, '0')}/${eventDate.getDate().toString().padStart(2, '0')}/${eventDate.getFullYear()}`;
+        return eventDateString === dayString;
+      });
 
       if (i - paddingDays === day && nav === 0) {
         dayS.id = 'currentDay';
@@ -122,7 +150,7 @@ function load() {
       if (eventDay) {
         const eventDiv = document.createElement('div');
         eventDiv.classList.add('event');
-        eventDiv.innerText = eventDay.title;
+        eventDiv.innerText = eventDay.assunto; // Ajuste para pegar o campo correto do evento
         dayS.appendChild(eventDiv);
       }
 
@@ -134,6 +162,7 @@ function load() {
     calendar.appendChild(dayS);
   }
 }
+
 
 // Adiciona alerta quando o campo de entrada de data é clicado
 dateInput.addEventListener('click', function () {
@@ -254,17 +283,6 @@ function saveEvent() {
     } catch (error) {
       console.log(error)
     }
-    /*
-    events.push({
-      date: clicked,
-      professor: professorSelecionado,
-      time: horarioSelecionado,
-      title: `${professorSelecionado} - ${horarioSelecionado}`,
-      status: 'PENDENTE', // Status padrão ao agendar
-    });
- 
-    localStorage.setItem('events', JSON.stringify(events));
-*/
   } else {
     Swal.fire({
       title: 'Erro',
@@ -344,17 +362,17 @@ function buttons() {
   });
 }
 buttons();
-load();
+carregarEventos();
 
 async function salvarAgendamento(professorId, horario) {
   const [horarioInicio, horarioFim] = horario.split(" - ");
 
   let agendamentos = {
-      "data": undoFormatDate(dateInput.value),
-      "horarioInicio": horarioInicio.trim(),
-      "horarioFim": horarioFim.trim(),
-      "fk_professor": professorId,
-      "fk_aluno": Number(sessionStorage.getItem('id'))
+    "data": undoFormatDate(dateInput.value),
+    "horarioInicio": horarioInicio.trim(),
+    "horarioFim": horarioFim.trim(),
+    "fk_professor": professorId,
+    "fk_aluno": Number(sessionStorage.getItem('id'))
   };
 
   try {
@@ -364,13 +382,40 @@ async function salvarAgendamento(professorId, horario) {
       headers: { 'Authorization': `Bearer ${sessionStorage.getItem('token')}`, "Content-type": "application/json; charset=UTF-8" }
     });
 
-    if(respostaAgendamento == 201){
+    if (respostaAgendamento == 201) {
       console.log("tudo joia")
     }
     console.log(respostaAgendamento)
   } catch (error) {
     console.log("Erro! " + error)
   }
-
-
 }
+
+async function carregarEventos() {
+  try {
+    const response = await fetch(`http://localhost:8080/agendamento/1/${sessionStorage.getItem('id')}?page=0&size=5&sortDirection=desc`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      const dados = await response.json();
+      console.log(dados);
+
+      events = Array.isArray(dados.content) ? dados.content : [];
+      console.log('Eventos carregados:', events);
+
+      load();
+    } else {
+      console.error('Erro ao carregar eventos do banco');
+      events = [];
+    }
+  } catch (error) {
+    console.error('Erro na requisição:', error);
+    events = [];
+  }
+}
+
