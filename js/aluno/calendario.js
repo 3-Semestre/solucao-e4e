@@ -32,11 +32,16 @@ function openModal(date) {
   const today = new Date();
   const selectedDate = new Date(date);
 
+  // Removendo horas para garantir que as comparações sejam feitas apenas com base em dia/mês/ano
+  today.setHours(0, 0, 0, 0);
+  selectedDate.setHours(0, 0, 0, 0);
+
   clicked = date;
+  
+  // Comparando diretamente a data no formato YYYY-MM-DD
   const eventDay = events.find(event => {
-    const eventDate = new Date(event.data);
-    const eventDateString = `${(eventDate.getMonth() + 1).toString().padStart(2, '0')}/${eventDate.getDate().toString().padStart(2, '0')}/${eventDate.getFullYear()}`;
-    return eventDateString === clicked;
+    const eventDateString = event.data; // Já está no formato correto 'YYYY-MM-DD'
+    return eventDateString === clicked; // Comparação direta com a data clicada
   });
 
   // Limpar todos os campos do modal de novo evento
@@ -57,7 +62,6 @@ function openModal(date) {
 
   if (eventDay) {
     console.log("Evento encontrado");
-    // Se existe um evento para a data selecionada, preencher o modal de deletar evento
     document.getElementById('deleteDateInput').value = formatDate(clicked);
     document.getElementById('deleteProfessorInput').value = eventDay.professor.nomeCompleto;
     document.getElementById('deleteTimeInput').value = `${formatarHorario(eventDay.horarioInicio)} - ${formatarHorario(eventDay.horarioFim)}`;
@@ -71,30 +75,15 @@ function openModal(date) {
           'Agendamento cancelado';
 
     deleteEventModal.style.display = 'block';
-    backDrop.style.display = 'block';
-    return; // Se encontrou um evento, exibe o modal de detalhes e não tenta abrir o modal de novo agendamento.
+  } else {
+    console.log("Evento não encontrado");
+    buscarProfessores();
+    newEvent.style.display = 'block';
   }
 
-  // Se a data é anterior ao dia de hoje, bloquear novos agendamentos, mas permitir visualização
-  if (selectedDate < today.setHours(0, 0, 0, 0)) {
-    Swal.fire({
-      title: 'Data Anterior',
-      text: 'Você não pode criar um agendamento em uma data anterior, mas pode visualizar os detalhes dos eventos.',
-      icon: 'info',
-      confirmButtonText: 'OK',
-      confirmButtonColor: '#3085d6',
-      background: '#f2f2f2',
-      color: '#333'
-    });
-    return;
-  }
-
-  // Se não há evento e a data é válida, abre o modal de criação de evento
-  console.log("Abrindo o calendário para agendar novo evento");
-  buscarProfessores();
-  newEvent.style.display = 'block';
   backDrop.style.display = 'block';
 }
+
 
 
 function load() {
@@ -131,16 +120,14 @@ function load() {
     const dayS = document.createElement('div');
     dayS.classList.add('day');
 
-    const dayString = `${(month + 1).toString().padStart(2, '0')}/${(i - paddingDays).toString().padStart(2, '0')}/${year}`;
+    // Formatando corretamente a data no formato 'YYYY-MM-DD'
+    const dayString = `${year}-${(month + 1).toString().padStart(2, '0')}-${(i - paddingDays).toString().padStart(2, '0')}`;
 
     if (i > paddingDays) {
       dayS.innerText = i - paddingDays;
 
-      // Comparar a data corretamente com a do banco
-      const eventDay = events.find((event) => {
-        const eventDate = new Date(event.data); // Converte a data do evento em Date
-        const eventDateString = `${(eventDate.getMonth() + 1).toString().padStart(2, '0')}/${eventDate.getDate().toString().padStart(2, '0')}/${eventDate.getFullYear()}`;
-        return eventDateString === dayString;
+      const eventDay = events.find(event => {
+        return event.data === dayString; // Comparação direta no formato correto
       });
 
       if (i - paddingDays === day && nav === 0) {
@@ -150,7 +137,7 @@ function load() {
       if (eventDay) {
         const eventDiv = document.createElement('div');
         eventDiv.classList.add('event');
-        eventDiv.innerText = eventDay.assunto; // Ajuste para pegar o campo correto do evento
+        eventDiv.innerText = eventDay.assunto;
         dayS.appendChild(eventDiv);
       }
 
