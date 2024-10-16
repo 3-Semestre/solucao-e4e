@@ -186,10 +186,15 @@ body {
 }
 
 .box-chart {
-    width: 30vw;
     display: flex;
     position: relative;
     flex-direction: column;
+}
+
+#pizzaChartAgendamento{
+    width: 25vw !important;
+    height: 50vh !important;
+    align-self: center;
 }
 
 .data h2 {
@@ -204,11 +209,15 @@ body {
     width: 100%;
     display: flex;
     justify-content: space-around;
+}
 
+#kpis{
+    gap: 8rem;
 }
 
 .box-chart2 {
-    width: 60vw;
+    width: 60%;
+    height: 60vh;
     border: 1px solid #072B59;
     border-radius: 10px;
     box-shadow: 5px 5px 5px #888;
@@ -243,22 +252,22 @@ body {
     display: flex;
     gap: 1rem;
     position: relative;
-    bottom: 4vh;
     height: 5vh;
     justify-content: center;
+    top: 5vh;
 }
 
 #botaoChart {
     background-color: rgba(52, 209, 191, 1) !important;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 15px;
     border: none;
 }
 
 #botaoChartN {
     background-color: rgba(7, 43, 89, 1) !important;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 15px;
     border: none;
     width: 10vw;
 }
@@ -267,8 +276,13 @@ body {
     font-weight: bold;
     color: #072B59;
     position: relative;
-    font-size: 25px;
-    top: 5vh;
+    font-size: 20px;
+    top: 2vh;
+}
+
+.title-title{
+    font-weight: bolder;
+    color: #072B59;
 }
 
 .line {

@@ -96,32 +96,35 @@ function load() {
   for (let i = 1; i <= paddingDays + daysMonth; i++) {
     const dayS = document.createElement('div');
     dayS.classList.add('day');
-
+  
     const dayString = `${month + 1}/${i - paddingDays}/${year}`;
-
+  
     if (i > paddingDays) {
-      dayS.innerText = i - paddingDays;
-
-      const eventDay = events.find((event) => event.date === dayString);
-
+      const dayNumber = document.createElement('span'); // Cria um <span> para o número do dia
+      dayNumber.innerText = i - paddingDays; // Adiciona o número do dia ao <span>
+      dayS.appendChild(dayNumber); // Adiciona o <span> à <div> do dia
+  
+      // Verifica se o dia é o atual
       if (i - paddingDays === day && nav === 0) {
-        dayS.id = 'currentDay';
+        dayNumber.id = 'currentDay'; // Aplica a ID ao <span> do dia atual
       }
-
+  
+      const eventDay = events.find((event) => event.date === dayString);
       if (eventDay) {
         const eventDiv = document.createElement('div');
         eventDiv.classList.add('event');
         eventDiv.innerText = eventDay.title;
         dayS.appendChild(eventDiv);
       }
-
+  
       dayS.addEventListener('click', () => openModal(dayString));
     } else {
       dayS.classList.add('padding');
     }
-
+  
     calendar.appendChild(dayS);
   }
+  
 }
 
 // Adiciona alerta quando o usuário tenta alterar a data diretamente

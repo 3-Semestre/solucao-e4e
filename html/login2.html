@@ -4,18 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="../css/login2.css">
-
-  <script src="../js/autenticarUsuario.js"></script>
-
+  <script src="../js/autenticarUsuario.js" defer></script>
   <link rel="icon" type="image/png" href="../imgs/english4ever.png">
-
   <title>Login</title>
 </head>
 
 <body>
-  <form id="loginForm">
+  <form id="loginForm" onsubmit="event.preventDefault(); autenticar();">
     <div class="titulo">
       <h1>Faça o seu login</h1>
       <div class="barra-horizontal"></div>
@@ -23,34 +19,21 @@
     <div class="campo-input">
       <label for="input_email">Seu e-mail*</label>
       <input type="email" id="input_email" placeholder="nome@exemplo.com" required />
+      <div id="email-error" class="error-message">E-mail incorreto.</div>
     </div>
     <div class="campo-input">
       <label for="input_senha">Sua senha*</label>
       <input type="password" id="input_senha" placeholder="********" required />
+      <div id="senha-error" class="error-message">Senha incorreta.</div>
     </div>
     <div class="lembrar-me">
       <input type="checkbox" id="check_lembrar" />
       <p>Lembrar-me</p>
     </div>
-    <button>Entrar</button>
+    <button type="submit">Entrar</button>
   </form>
-
-  <div id="mensagemErro" class="mensagem-erro" style="display: none;">
-    Email ou Senha inválidos
-  </div>
-
 </body>
 
 </html>
-<script>
-  document.getElementById('loginForm').addEventListener('submit', function (event) {
-    event.preventDefault();
 
-    try {
-      autenticar()
-    } catch (e) {
-      //TODO EXIBIR MENSAGEM DE ERRO LOGIN
-    }
 
-  });
-</script>
