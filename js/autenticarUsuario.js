@@ -24,9 +24,8 @@ async function autenticar() {
                 window.location.href = "dashboardProfessor.html"
             }
 
-
         } else if (respostaLogin.status == 403) {
-            exibirMensagemErro();
+            exibirMensagemErro();  // Exibe erros de login
         }
     } catch (error) {
         // TODO TRATIVA ERRO LOGIN
@@ -44,31 +43,41 @@ async function autenticar() {
         let check = document.getElementById("check_lembrar")
 
         if (check.checked) {
-            localStorage.email = usuario.email; sessionStorage
+            localStorage.email = usuario.email;
             localStorage.senha = document.getElementById("input_senha").value;
         } else {
             localStorage.removeItem('senha');
         }
     }
-
 }
 
 function exibirMensagemErro() {
-    document.getElementById('mensagemErro').style.display = 'block';
+    const emailInput = document.getElementById("input_email");
+    const senhaInput = document.getElementById("input_senha");
 
-    document.getElementById("input_email").addEventListener("input", function () {
-        document.getElementById('mensagemErro').style.display = 'none';
+    // Seta o estilo de erro
+    emailInput.classList.add('error');
+    senhaInput.classList.add('error');
+    
+    // Exibe a mensagem de erro
+    document.getElementById('email-error').style.display = 'block';
+    document.getElementById('senha-error').style.display = 'block';
+
+    // Remove as mensagens de erro quando o usuário começa a digitar novamente
+    emailInput.addEventListener("input", function () {
+        emailInput.classList.remove('error');
+        document.getElementById('email-error').style.display = 'none';
     });
 
-    document.getElementById("input_senha").addEventListener("input", function () {
-        document.getElementById('mensagemErro').style.display = 'none';
+    senhaInput.addEventListener("input", function () {
+        senhaInput.classList.remove('error');
+        document.getElementById('senha-error').style.display = 'none';
     });
 }
 
 function preencherDadosLogin() {
     var email = localStorage.getItem('email');
     var senha = localStorage.getItem('senha');
-
 
     if (email && senha) {
         check = document.getElementById("check_lembrar")

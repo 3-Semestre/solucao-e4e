@@ -3,7 +3,6 @@ const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod');
 const nivel_acesso = sessionStorage.getItem('nivel_acesso');
 const token = sessionStorage.getItem('token');
 
-
 let paginaAtual = 0;
 let totalPaginas = 0;
 const urlParams = new URLSearchParams(window.location.search);
@@ -77,7 +76,6 @@ function carregarHeadersTabela() {
     carregarAgendamentos(paginaAtual);
 }
 
-
 async function carregarAgendamentos(pagina) {
     if (pagina < 0 || (totalPaginas > 0 && pagina >= totalPaginas)) return; // Limita as páginas
 
@@ -107,7 +105,57 @@ async function carregarAgendamentos(pagina) {
 
     limparTabela();
     preencherTabela(dados.content);
-    atualizarBotoesPaginacao(dados.totalPages, dados.pageable.pageNumber);
+    atualizarBotoesPaginacao(dados.totalPages, dados.pageable.pageNumber); 
+    
+    const loadingGif = document.getElementById('loading');
+    const tabela = document.getElementById("tabela_agendamento");
+    const tempoMinimoCarregamento = 700; // 1 segundo (1000 ms) de tempo mínimo de carregamento
+
+    // Mostrar o GIF de carregamento
+    loadingGif.style.display = 'block';
+
+    // Função para simular o tempo de carregamento mínimo
+    const esperarMinimoCarregamento = new Promise(resolve => setTimeout(resolve, tempoMinimoCarregamento));
+
+    try {
+        if (pagina < 0 || (totalPaginas > 0 && pagina >= totalPaginas)) return; // Limita as páginas
+
+        const resposta = await fetch(`http://localhost:8080/agendamento/historico/${id}?page=${pagina}&tempo=${tempo}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!resposta.ok) {
+            throw new Error('Erro ao buscar dados do servidor');
+        } else if (resposta.status == 204) {
+            tabela.innerHTML = 'Não há agendamentos registrados';
+            return;
+        }
+
+        const dados = await resposta.json();
+
+        if (!dados || dados.content.length === 0) {
+            throw new Error('Dados não encontrados');
+        }
+
+        totalPaginas = dados.totalPages;
+
+        limparTabela();
+        preencherTabela(dados.content);
+        atualizarBotoesPaginacao(dados.totalPages, dados.pageable.pageNumber);
+    } catch (error) {
+        console.error(error.message);
+        tabela.innerHTML = 'Erro ao carregar agendamentos';
+    } finally {
+        // Garantir que o tempo mínimo de carregamento foi respeitado antes de esconder o GIF
+        await Promise.all([esperarMinimoCarregamento]);
+
+        // Esconder o GIF de carregamento
+        loadingGif.style.display = 'none';
+    }
 }
 
 function limparTabela() {

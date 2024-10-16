@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="../css/visualizarAlunos.css">
     <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/loading.css">
 
     <script defer src="../js/script.js"></script>
     <script src="../js/professor/visualizarProfessor.js"></script>
@@ -24,6 +25,9 @@
 </head>
 
 <body>
+    <div class="loading-container">
+        <div id="loading"></div>
+      </div>
     <nav class="sidebar" id="sidebar">
         <div class="hamburger">
             <a class="main-nav-toggle" href="#main-nav" id="toggle-btn"><i>Menu</i></a>
@@ -151,6 +155,14 @@
             </div>
         </div>
         <div id="listagem_usuarios"></div>
+        <ul class="pagination" id="paginacao_visualizacao">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Anterior">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Anterior</span>
+                </a>
+            </li>
+        </ul>
         <script>
             const urlParams = new URLSearchParams(window.location.search);
 
@@ -169,9 +181,9 @@
             });
 
             if (tipo != "aluno") {
-                buscarProfessor()
+                buscarProfessor(0)
             } else if (tipo == "aluno") {
-                buscarAlunos()
+                buscarAlunos(0)
             } else {
                 Swal.fire({
                     icon: 'error',
