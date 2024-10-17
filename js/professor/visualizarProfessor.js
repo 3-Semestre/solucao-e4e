@@ -74,7 +74,9 @@ async function buscarProfessor(paginaAtual) {
             </div>
         </div>
     </div>
-
+    <div class="lapis" onclick="confirmacaoDeleteAluno(${professor.id})">
+        <img src="../imgs/pen.png" alt="Excluir aluno"  style="width: 3vw; height: 6vh">
+    </div>
     <div class="lixeira" onclick="confirmacaoDeleteProfessor(${professor.id})">
         <img src="../imgs/trash-bin.png" alt="Excluir professor">
     </div>
