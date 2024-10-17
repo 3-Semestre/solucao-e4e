@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../../css/Aluno/visualizarAgendamentos.css">
     <link rel="stylesheet" href="../../css/Aluno/tabelaAgendamentos.css">
     <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/loading.css">
 
     <script defer src="../js/script.js"></script>
     <script src="../js/aluno/exibirAgendamentos.js"></script>
@@ -25,6 +26,12 @@
 </head>
 
 <body>
+    <!-- <div id="loading" style="display:none;">
+        <img src="../imgs/Spin@1x-1.0s-200px-200px.gif" alt="Loading">
+    </div> -->
+    <div class="loading-container">
+        <div id="loading"></div>
+      </div>
     <nav class="sidebar" id="sidebar">
         <div class="hamburger">
             <a class="main-nav-toggle" href="#main-nav" id="toggle-btn"><i>Menu</i></a>
@@ -105,20 +112,12 @@
             <br>
             <div class="inputs">
                 <div class="mb-3 d-flex justify-content-center align-items-center">
-                    <label for="input_nome" class="form-label me-3">Data de:</label>
+                    <label for="input_nome" class="form-label me-3">Data:</label>
                     <input type="date" class="form-control" id="data_inicio" required>
                 </div>
                 <div class="mb-3 d-flex justify-content-center align-items-center">
-                    <label for="input_nome" class="form-label me-3">até:</label>
-                    <input type="date" class="form-control" id="data_fim" required>
-                </div>
-                <div class="mb-3 d-flex justify-content-center align-items-center">
-                    <label for="input_cpf" class="form-label me-3" id="cpf">Horário de:</label>
+                    <label for="input_cpf" class="form-label me-3" id="cpf">Horário:</label>
                     <input type="time" class="form-control" id="horario_inicio" required>
-                </div>
-                <div class="mb-3 d-flex justify-content-center align-items-center">
-                    <label for="input_cpf" class="form-label me-3" id="cpf">até:</label>
-                    <input type="time" class="form-control" id="horario_fim" required>
                 </div>
                 <div class="mb-3 d-flex justify-content-center align-items-center">
                     <label for="input_cpf" class="form-label me-3" id="cpf">Assunto:</label>
@@ -126,7 +125,7 @@
                         required>
                 </div>
                 <div class="button-filter">
-                    <button type="button" class="btn btn-primary" id="botaoFilter"
+                    <button type="button" class="form-control" id="botaoFilter"
                         onclick="filtraAgendamentos()">Aplicar</button>
                 </div>
             </div>
@@ -145,3 +144,7 @@
 </body>
 
 </html>
+
+<script>
+   
+</script>

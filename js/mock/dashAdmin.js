@@ -41,8 +41,8 @@ function plotarGrafios() {
             datasets: [{
                 label: 'Quantidade de Alunos',
                 data: [2, 3, 4, 1, 5, 2, 4, 3, 5, 7, 6, 4], // Mock de dados
-                backgroundColor: 'rgba(173, 216, 230, 0.5)',
-                borderColor: 'rgba(0, 123, 255, 1)',
+                backgroundColor: '#072b59c0',
+                borderColor: '#072B59',
                 borderWidth: 2,
                 fill: true,
                 tension: 0.4,

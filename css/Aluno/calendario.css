@@ -126,10 +126,20 @@ html {
 }
 
 #currentDay {
-  color: #ffffff;
-  font-weight: 700;
-  background-color: var(--current-day);
+  color: #072B59; /* Cor do texto */
+  font-weight: 700; /* Peso do texto */
+  background-color: rgba(128, 128, 128, 0.466); /* Fundo do número do dia atual */
+  border-radius: 50%; /* Arredondar a borda */
+  width: 30px; /* Largura do círculo */
+  height: 30px; /* Altura do círculo (para que seja um círculo perfeito) */
+  display: flex; /* Centraliza o conteúdo dentro do círculo */
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  transform: translateX(-6px); /* Ajuste a quantidade para mover para a esquerda */
+  transform: translateY(-3px);
 }
+
+
 
 .event {
   font-size: 10px;

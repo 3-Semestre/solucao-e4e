@@ -1,10 +1,12 @@
 var paginaAtual = 0;
 var totalPaginas = 0;
 
-async function buscarAlunos() {
+async function buscarAlunos(pagina) {
+    if (pagina < 0 || (totalPaginas > 0 && pagina >= totalPaginas)) return; // Limita as páginas
+
     const cardsAlunos = document.getElementById("listagem_usuarios")
 
-    const resposta = await fetch(`http://localhost:8080/usuarios/aluno/paginado?page=${paginaAtual}`, {
+    const resposta = await fetch(`http://localhost:8080/usuarios/aluno/paginado?page=${pagina}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -17,8 +19,9 @@ async function buscarAlunos() {
         return
     }
 
-    const listaAlunos = await resposta.json();4
+    const listaAlunos = await resposta.json();
 
+    cardsAlunos.innerHTML = "";
     cardsAlunos.innerHTML += listaAlunos.content.map((aluno) => {
         return `
 <div class="dados-student" id="card_dados">
@@ -66,6 +69,58 @@ async function buscarAlunos() {
 </div>
 <hr class="line">
 `}).join('');
+
+atualizarBotoesPaginacaoAluno(listaAlunos.totalPages, listaAlunos.pageable.pageNumber)
+const loadingGif = document.getElementById('loading');
+    const tabela = document.getElementById("tabela_agendamento");
+    const tempoMinimoCarregamento = 700; // 1 segundo (1000 ms) de tempo mínimo de carregamento
+
+    // Mostrar o GIF de carregamento
+    loadingGif.style.display = 'block';
+
+    // Função para simular o tempo de carregamento mínimo
+    const esperarMinimoCarregamento = new Promise(resolve => setTimeout(resolve, tempoMinimoCarregamento));
+
+    try {
+        if (pagina < 0 || (totalPaginas > 0 && pagina >= totalPaginas)) return; // Limita as páginas
+
+        const resposta = await fetch(`http://localhost:8080/agendamento/historico/${id}?page=${pagina}&tempo=${tempo}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!resposta.ok) {
+            throw new Error('Erro ao buscar dados do servidor');
+        } else if (resposta.status == 204) {
+            tabela.innerHTML = 'Não há agendamentos registrados';
+            return;
+        }
+
+        const dados = await resposta.json();
+
+        if (!dados || dados.content.length === 0) {
+            throw new Error('Dados não encontrados');
+        }
+
+        totalPaginas = dados.totalPages;
+
+        limparTabela();
+        preencherTabela(dados.content);
+        atualizarBotoesPaginacao(dados.totalPages, dados.pageable.pageNumber);
+    } catch (error) {
+        console.error(error.message);
+        tabela.innerHTML = 'Erro ao carregar agendamentos';
+    } finally {
+        // Garantir que o tempo mínimo de carregamento foi respeitado antes de esconder o GIF
+        await Promise.all([esperarMinimoCarregamento]);
+
+        // Esconder o GIF de carregamento
+        loadingGif.style.display = 'none';
+    }
+
 }
 
 async function filtraUsuarios() {
@@ -193,8 +248,6 @@ function confirmacaoDeleteAluno(id) {
     });
 }
 
-
-
 async function deletarAluno(id) {
     const respostaDelete = await fetch(`http://localhost:8080/usuarios/aluno/${id}`, {
         method: "DELETE",
@@ -214,4 +267,29 @@ async function deletarAluno(id) {
             timer: 2000
         });
     }
+}
+
+function atualizarBotoesPaginacaoAluno(total, atual) {
+    const paginacao = document.getElementById('paginacao_visualizacao');
+    paginacao.innerHTML = '';
+
+    const anterior = document.createElement('li');
+    anterior.classList.add('page-item');
+    anterior.innerHTML = `<a class="page-link" href="#" onclick="buscarAlunos(${atual - 1})">&laquo;</a>`;
+    paginacao.appendChild(anterior);
+
+    for (let i = 0; i < total; i++) {
+        const item = document.createElement('li');
+        item.classList.add('page-item');
+        if (i === atual) {
+            item.classList.add('active'); // Marca a página atual
+        }
+        item.innerHTML = `<a class="page-link" href="#" onclick="buscarAlunos(${i})">${i + 1}</a>`;
+        paginacao.appendChild(item);
+    }
+
+    const proximo = document.createElement('li');
+    proximo.classList.add('page-item');
+    proximo.innerHTML = `<a class="page-link" href="#" onclick="buscarAlunos(${atual + 1})">&raquo;</a>`;
+    paginacao.appendChild(proximo);
 }
