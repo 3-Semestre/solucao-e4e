@@ -72,48 +72,6 @@ async function plotarProximosAgendamentos(nivelAcesso) {
     }).join('');
 }
 
-
-async function plotarKPIsAluno() {
-
-    const top3MesesAula = await fetch(`http://localhost:7000/dashboard/top-3-meses-aluno/${sessionStorage.getItem('id')}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-        }
-    });
-
-    if (top3MesesAula.status !== 200) {
-        cardsAlunos.innerHTML = "Não há top 3 meses realizados."
-        return
-    }
-
-
-    const respostaTop3MesesAula = await top3MesesAula.json();
-
-    const cardNovoAgendamento = document.getElementById("top3-meses");
-    const porcentagem = ["20,53", "70,00", "30,53"]
-
-    cardNovoAgendamento.innerHTML = respostaTop3MesesAula.map((top, index) => {
-        return `
-                <div class="box-kpis">
-                <div class="line-box">
-                </div>
-                <div class="content-kpis" id="alunos-novos">
-                    <p>${top.mes}</p>
-                    <h2>${top.quantidade_Aulas_Concluidas}</h2>
-                    <div class="variação">
-                        <div class="seta-cima">
-                        </div>
-                        <div class="porcentagem">
-                            <p class="bom">${porcentagem[index]} %</p>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
-    }).join('');
-}
-
 async function plotarKPIsProfessor() {
     try {
         const proximosAgendamentosFetch = await fetch("http://localhost:7000/dashboard/qtd-agendamento-mes-professor", {
@@ -235,7 +193,6 @@ async function plotarKPIsProfessor() {
     } catch {
         console.log("Erro ao buscar próximos agendamentos")
     }
-
 
 }
 

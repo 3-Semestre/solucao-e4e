@@ -96,48 +96,6 @@ var chartCancelamentoConfig = {
 var chartCancelamento = new Chart(document.getElementById('chartCancelamento'), chartCancelamentoConfig);
 
 }
-async function buscarDadosCancelamentoAluno() {
-    const resposta = await fetch(`http://localhost:7000/dashboard/visao-mes-aluno/${sessionStorage.getItem('id')}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-        }
-    });
-
-    const respostaDados = await resposta.json();
-
-    let aulasRealizadas = {
-        labels: [],
-        datasets: [{
-            label: 'Aulas Realizadas',
-            data: [],
-            fill: true,
-            backgroundColor: '#072b59c0',
-            borderColor: '#072B59',
-            borderWidth: 1
-        }]
-    };
-
-    for (var i = 0; i < respostaDados.length; i++) {
-        aulasRealizadas.datasets[0].data.push(respostaDados[i].quantidade_Aulas_Concluidas);
-        aulasRealizadas.labels.push(respostaDados[i].mes)
-    }
-
-    if (window.chartAulasRealizadas instanceof Chart) {
-        window.chartAulasRealizadas.destroy();
-    }
-
-    var chartAulasRealizadasConfig = {
-        type: 'line',
-        data: aulasRealizadas,
-        options: {}
-    };
-
-    var chartAulasRealizadas = new Chart(document.getElementById('chartAulasRealizadas'), chartAulasRealizadasConfig);
-    window.chartAulasRealizadas = chartAulasRealizadas;
-}
-
 try {
     var nivelAcesso = sessionStorage.getItem('nivel_acesso')
     if (nivelAcesso !== "ALUNO") {
