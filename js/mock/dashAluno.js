@@ -30,6 +30,4 @@ function carregarGrafico() {
     window.myChart = myChart;
 }
 
-window.onload = function () {
-    carregarGrafico()
-}
+carregarGrafico()

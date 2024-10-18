@@ -326,26 +326,35 @@ function deleteEvent() {
 }
 
 // Funções adicionais
+// Função para carregar os agendamentos e exibi-los no calendário
 async function carregarEventos() {
-    try {
-        const response = await fetch(`http://localhost:8080/agendamento/1/${sessionStorage.getItem('id')}?page=0&size=5&sortDirection=desc`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            }
-        });
+  try {
+      const response = await fetch(`http://localhost:8080/agendamento/1/${sessionStorage.getItem('id')}?page=0&size=5&sortDirection=desc`, {
+          method: 'GET',
+          headers: {
+              'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+              'Content-Type': 'application/json'
+          }
+      });
 
-        if (response.ok) {
-            const dados = await response.json();
-            events = Array.isArray(dados.content) ? dados.content : [];
-            load();
-        } else {
-            console.error('Erro ao carregar eventos');
-        }
-    } catch (error) {
-        console.error('Erro na requisição:', error);
-    }
+      if (response.ok) {
+          const dados = await response.json();
+          console.log(dados);
+
+          // Verifica se os dados retornados são um array de agendamentos
+          events = Array.isArray(dados.content) ? dados.content : [];
+          console.log('Eventos carregados:', events);
+
+          // Chama a função para exibir os eventos no calendário
+          load();
+      } else {
+          console.error('Erro ao carregar eventos do banco');
+          events = [];
+      }
+  } catch (error) {
+      console.error('Erro na requisição:', error);
+      events = [];
+  }
 }
 
 // Função para adicionar os eventos aos botões
