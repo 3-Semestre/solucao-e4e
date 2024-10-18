@@ -338,17 +338,10 @@
                         atualizaHorarioAtendimento()
                     }
                     atualizarPerfil()
-                        .then(() => {
-                            Swal.fire({ title: "Alterações salvas com sucesso", icon: "success", confirmButtonColor: 'green' });
-                            cancelarEdicao();
-                        })
-                        .catch(e => {
-                            Swal.fire({ title: "As alterações não foram salvas", icon: "error", confirmButtonColor: 'green' });
-                        });
                 } catch (e) {
                     Swal.fire({ title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green' });
-                    cancelarEdicao();
                 }
+                cancelarEdicao();
             }
         });
     }
