@@ -223,6 +223,17 @@
     </div>
 </body>
 
-<script src="../js/dashboard/exibirKPI.js"></script>
-
+<script>
+    window.onload = () => {
+        const script = document.createElement("script");
+        if (ambiente === "desenvolvimento") {
+            script.src = "../js/mock/dashProfessor.js";
+        } else if (ambiente === "apresentacao") {
+            script.src = "../js/dashboard/dashProfessor.js";
+        }
+        script.defer = true;
+        document.head.appendChild(script);
+        console.log(`VOCÊ ESTÁ EM ${ambiente.toUpperCase()}`);
+    };
+</script>
 </html>
