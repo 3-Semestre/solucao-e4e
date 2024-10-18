@@ -335,11 +335,23 @@
             if (result.isConfirmed) {
                 try {
                     if (sessionStorage.getItem("nivel_acesso_cod") != "1") {
-                        atualizaHorarioAtendimento()
-                    }
-                    atualizarPerfil()
+                        if (!atualizaHorarioAtendimento()) {
+                            throw new Error("Erro ao atualizar nicho");
+                        } else if (!atualizarNichoUsuario()) {
+                            throw new Error("Erro ao atualizar nicho");
+                        } else if (!atualizarNivelUsuario()) {
+                            throw new Error("Erro ao atualizar nível");
+                        }
+                    } atualizarPerfil()
                 } catch (e) {
-                    Swal.fire({ title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green' });
+                    cancelarEdicao();
+                    console.log(e)
+                    Swal.fire({
+                        title: "Erro",
+                        text: e.message || "As alterações não foram salvas devido a um erro",
+                        icon: "error",
+                        confirmButtonColor: 'red'
+                    });
                 }
                 cancelarEdicao();
             }

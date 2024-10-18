@@ -69,115 +69,146 @@ async function atualizarPerfil() {
             footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>'
         });
     }
+}
 
+async function atualizaHorarioAtendimento() {
+    const horarioAtendimentoInicio = formatarHorarioPut(document.getElementById("input_atendimento_inicio").value);
+    const horarioAtendimentoFim = formatarHorarioPut(document.getElementById("input_atendimento_fim").value);
+    const horarioIntervaloInicio = formatarHorarioPut(document.getElementById("input_intervalo_inicio").value);
+    const horarioIntervaloFim = formatarHorarioPut(document.getElementById("input_intervalo_fim").value);
 
-    async function atualizaHorarioAtendimento() {
-        const horarioAtendimentoInicio = formatarHorarioPut(document.getElementById("input_atendimento_inicio").value);
-        const horarioAtendimentoFim = formatarHorarioPut(document.getElementById("input_atendimento_fim").value);
-        const horarioIntervaloInicio = formatarHorarioPut(document.getElementById("input_intervalo_inicio").value);
-        const horarioIntervaloFim = formatarHorarioPut(document.getElementById("input_intervalo_fim").value);
+    var validacaoUm = horarioAtendimentoInicio != sessionStorage.getItem("horarioAtendimentoInicio");
+    var validacaoDois = horarioAtendimentoFim != sessionStorage.getItem("horarioAtendimentoFim");
+    var validacaoTres = horarioIntervaloInicio != sessionStorage.getItem("input_intervalo_inicio");
+    var validacaoQuatro = horarioIntervaloFim != sessionStorage.getItem("input_intervalo_fim");
 
-        var validacaoUm = horarioAtendimentoInicio != sessionStorage.getItem("horarioAtendimentoInicio");
-        var validacaoDois = horarioAtendimentoFim != sessionStorage.getItem("horarioAtendimentoFim");
-        var validacaoTres = horarioIntervaloInicio != sessionStorage.getItem("input_intervalo_inicio");
-        var validacaoQuatro = horarioIntervaloFim != sessionStorage.getItem("input_intervalo_fim");
-
-        if (validacaoUm || validacaoDois || validacaoTres || validacaoQuatro) {
-            var id = Number(sessionStorage.getItem('id'));
-            const dados = {
-                "inicio": horarioAtendimentoInicio,
-                "fim": horarioAtendimentoFim,
-                "pausaInicio": horarioIntervaloInicio,
-                "pausaFim": horarioIntervaloFim
-            }
-
-            const respostaAtt = await fetch(`http://localhost:8080/horario-professor/${id}`, {
-                method: "PUT",
-                body: JSON.stringify(dados),
-                headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
-            });
-
-            console.log(respostaAtt.status)
+    if (validacaoUm || validacaoDois || validacaoTres || validacaoQuatro) {
+        var id = Number(sessionStorage.getItem('id'));
+        const dados = {
+            "inicio": horarioAtendimentoInicio,
+            "fim": horarioAtendimentoFim,
+            "pausaInicio": horarioIntervaloInicio,
+            "pausaFim": horarioIntervaloFim
         }
+
+        const respostaAtt = await fetch(`http://localhost:8080/horario-professor/${id}`, {
+            method: "PUT",
+            body: JSON.stringify(dados),
+            headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+        });
+
+        if (respostaAtt.ok) {
+            return true;
+        }
+        return false;
     }
+}
 
-    async function atualizarNivelIngles() {
-        const id = sessionStorage.getItem('id');
-        const nivelAnteriores = JSON.parse(sessionStorage.getItem('nivel')) || [];
+async function atualizarNivelIngles() {
+    const id = sessionStorage.getItem('id');
+    const nivelAnteriores = JSON.parse(sessionStorage.getItem('nivel')) || [];
 
-        const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="nivel_"]');
-        const novosnivel = Array.from(checkboxes)
-            .filter(checkbox => checkbox.checked)
-            .map(checkbox => parseInt(checkbox.id.split('_')[1]))
-            .filter(nivel => !nivelAnteriores.includes(nivel));
+    const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="nivel_"]');
+    const novosnivel = Array.from(checkboxes)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => parseInt(checkbox.id.split('_')[1]))
+        .filter(nivel => !nivelAnteriores.includes(nivel));
 
-        if (novosnivel.length > 0) {
-            for (const nivelIngles of novosnivel) {
-                const dadosNivel = {
-                    usuario: { id: id },
-                    nivelIngles: { id: nivelIngles }
-                };
+    if (novosnivel.length > 0) {
+        for (const nivelIngles of novosnivel) {
+            const dadosNivel = {
+                usuario: { id: id },
+                nivelIngles: { id: nivelIngles }
+            };
 
-                try {
-                    const respostaCadastro = await fetch(`http://localhost:8080/usuario-nivel-ingles`, {
-                        method: "POST",
-                        body: JSON.stringify(dadosNivel),
-                        headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
-                    });
+            try {
+                const respostaCadastro = await fetch(`http://localhost:8080/usuario-nivel-ingles`, {
+                    method: "POST",
+                    body: JSON.stringify(dadosNivel),
+                    headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+                });
 
-                    if (respostaCadastro.status == 201) {
-                        console.log(`Nicho ${nicho} atualizado com sucesso`);
-                        atualizarNichoUsuario();
-                    } else {
-                        console.log(`Erro ao atualizar nicho ${nicho}`);
-                        return;
-                    }
-                } catch (e) {
-                    console.log(e);
+                if (respostaCadastro.status == 201) {
+                    console.log(`Nicho ${nicho} atualizado com sucesso`);
+                    atualizarNichoUsuario();
+                } else {
+                    console.log(`Erro ao atualizar nicho ${nicho}`);
                     return;
                 }
+            } catch (e) {
+                console.log(e);
+                return;
             }
         }
     }
+}
 
-    async function atualizarNichoUsuario() {
-        console.log("Atualizando nicho do usuário...");
-        const id = sessionStorage.getItem('id');
-        const nichosAnteriores = JSON.parse(sessionStorage.getItem('nichos')) || [];
+let nichosSelecionados = new Set();
+let niveisSelecionados = new Set();
 
-        const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="nicho_"]');
-        const novosNichos = Array.from(checkboxes)
-            .filter(checkbox => checkbox.checked)
-            .map(checkbox => parseInt(checkbox.id.split('_')[1]))
-            .filter(nicho => !nichosAnteriores.includes(nicho));
+const todosNichos = [1, 2, 3, 4, 5];
+const todosNiveis = [1, 2, 3, 4, 5, 6];
 
-        if (novosNichos.length > 0) {
-            for (const nicho of novosNichos) {
-                const dadosNicho = {
-                    usuario: { id: id },
-                    nicho: { id: nicho }
-                };
-
-                try {
-                    const respostaCadastro = await fetch(`http://localhost:8080/usuario-nicho`, {
-                        method: "POST",
-                        body: JSON.stringify(dadosNicho),
-                        headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
-                    });
-
-                    if (respostaCadastro.status == 201) {
-                        console.log(`Nicho ${nicho} atualizado com sucesso`);
-                        Swal.fire({ title: "Salvo!", icon: "success", confirmButtonColor: 'green' });
-                        exibirDadosPerfil();
-                    } else {
-                        console.log(`Erro ao atualizar nicho ${nicho}`);
-                        return;
-                    }
-                } catch (e) {
-                    console.log(e);
-                    return;
-                }
-            }
-        }
+function toggleItem(itemId, isChecked, selectedSet) {
+    if (isChecked) {
+        selectedSet.add(itemId);
+    } else {
+        selectedSet.delete(itemId);
     }
+}
+
+function obterItensAtuais(todosItens, selectedSet) {
+    const selecionadosArray = Array.from(selectedSet);
+    const naoSelecionados = todosItens.filter(itemId => !selectedSet.has(itemId));
+
+    return {
+        selecionados: selecionadosArray,
+        naoSelecionados: naoSelecionados
+    };
+}
+
+async function atualizarItensUsuario(prefixo, todosItens, selectedSet) {
+    console.log(`Atualizando ${prefixo}`);
+
+    todosItens.forEach(itemId => {
+        const checkbox = document.getElementById(`${prefixo}_${itemId}`);
+        if (checkbox) {
+            toggleItem(itemId, checkbox.checked, selectedSet);
+        }
+    });
+
+    const { selecionados, naoSelecionados } = obterItensAtuais(todosItens, selectedSet);
+
+    const dados = {
+        "usuarioId": sessionStorage.getItem("id"),
+        [`${prefixo}Selecionados`]: selecionados,
+        [`${prefixo}NaoSelecionados`]: naoSelecionados
+    };
+
+    try {
+        const url = `http://localhost:8080/usuario-${prefixo === 'nivel' ? 'nivel-ingles' : 'nicho'}/professor/${sessionStorage.getItem("id")}`;
+        console.log(dados)
+        const resposta = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(dados),
+            headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+        });
+
+        console.log(resposta.status)
+        if (resposta.ok) {
+            return true
+        }
+        return false
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
+async function atualizarNichoUsuario() {
+    return await atualizarItensUsuario('nicho', todosNichos, nichosSelecionados);
+}
+
+async function atualizarNivelUsuario() {
+    return await atualizarItensUsuario('nivel', todosNiveis, niveisSelecionados);
 }
