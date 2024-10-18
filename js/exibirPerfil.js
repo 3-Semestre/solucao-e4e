@@ -83,7 +83,6 @@ async function buscarNivelIngles() {
 
     checkboxList.innerHTML = "";
 
-
     if (nivel_acesso_cod != 1) {
         const checkboxes = listaNiveis.map(nivel => `
                 <div class="form-check">
@@ -93,20 +92,13 @@ async function buscarNivelIngles() {
             `).join('');
         checkboxList.innerHTML += `<label class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>` + checkboxes;
     } else {
-        const options = listaNiveis.map(nivel => `
-            <option value="${nivel.id}" id="nivel_${nivel.id}">
-                ${tratarNome(nivel.nome)}
-            </option>
-        `).join('');
         checkboxList.innerHTML += `
          <label class="form-label" id="nivelTitle"><span>*</span>Nível de Inglês:</label>
-            <select class="form-select" name="nivel" id="nivel" aria-label="Default select example" required>
-                <option value="">Selecione uma opção</option>
-                ${options}
-            </select>
+         <input type="text" class="form-control" name="nivel" id="input_nivel" required readonly>
         `;
     }
 }
+
 
 async function buscarNichos() {
     const resposta = await fetch("http://localhost:8080/nichos", {
@@ -129,16 +121,8 @@ async function buscarNichos() {
             `).join('');
         checkboxList.innerHTML += checkboxes;
     } else {
-        const options = listaNichos.map(nicho => `
-            <option value="${nicho.id}" id="${nicho.nome}">
-                ${tratarNome(nicho.nome)}
-            </option>
-        `).join('');
         checkboxList.innerHTML += `
-            <select class="form-select" name="nicho" id="nicho" aria-label="Default select example" required>
-                <option value="">Selecione uma opção</option>
-                ${options}
-            </select>
+        <input type="text" class="form-control" name="nivel" id="input_nicho" required readonly>
         `;
     }
 }
@@ -158,13 +142,7 @@ function preencherNivelInglesUsuario(niveis) {
             }
         });
     } else {
-        const opcaoSelect = Array.from(document.querySelector('select[name="nivel"]')).find(option => tratarNome(option.textContent.trim()) === niveisArray[0]);
-
-        if (opcaoSelect) {
-            Array.from(document.querySelector('select[name="nivel"]')).forEach(option => option.selected = false);
-
-            opcaoSelect.selected = true;
-        }
+        document.getElementById("input_nivel").value = niveis;
     }
 
     nivelInglesElement.setAttribute('required', 'true');
@@ -186,13 +164,7 @@ function preencherNichoUsuario(nichos) {
             }
         });
     } else {
-        const opcaoSelect = Array.from(document.querySelector('select[name="nicho"]')).find(option => tratarNome(option.textContent.trim()) === nichosArray[0]);
-
-        if (opcaoSelect) {
-            Array.from(document.querySelector('select[name="nicho"]')).forEach(option => option.selected = false);
-
-            opcaoSelect.selected = true;
-        }
+        document.getElementById("input_nicho").value = tratarNome(nichos)
     }
 
     nichoElement.setAttribute('required', 'true');

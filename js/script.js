@@ -2,7 +2,7 @@ const toggleBtn = document.getElementById('toggle-btn');
 const sidebar = document.getElementById('sidebar')
 const conteudo = document.querySelector('.conteudo'); // Seleciona a div conteudo
 // trocar entre "desenvolvimento" e "apresentacao"
-const ambiente = "apresentacao"
+const ambiente = "desenvolvimento"
 
 function closeAllDropdowns() {
     const dropdowns = document.querySelectorAll('.collapse.show'); // Seleciona todos os dropdowns abertos
