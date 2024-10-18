@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="../css/menu.css">
 
     <script defer src="../js/script.js"></script>
-    <script src="../js/mock/dashAdmin.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -19,10 +18,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        
+
     <link rel="icon" type="image/png" href="../imgs/english4ever.png">
 
-    </head>
+</head>
 
 <body>
     <nav class="sidebar" id="sidebar">
@@ -36,19 +35,24 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#agendaDropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#agendaDropdown"
+                    aria-expanded="false">
                     <img src="../imgs/calendar-days.png" alt=""> <span class="ms-2">Agenda</span>
                 </a>
                 <div class="collapse" id="agendaDropdown">
                     <ul class="nav flex-column dropdown-container">
-                        <li><a href="calendarioAluno.html" id="agenda_novo_agendamento_navbar" class="nav-link">Novo Agendamento</a></li>
-                        <li><a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar" class="nav-link">Meus Agendamentos</a></li>
-                        <li><a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar" class="nav-link">Histórico</a></li>
+                        <li><a href="calendarioAluno.html" id="agenda_novo_agendamento_navbar" class="nav-link">Novo
+                                Agendamento</a></li>
+                        <li><a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar"
+                                class="nav-link">Meus Agendamentos</a></li>
+                        <li><a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar"
+                                class="nav-link">Histórico</a></li>
                     </ul>
                 </div>
             </li>
             <li class="nav-item" id="alunos_navbar">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#alunosDropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#alunosDropdown"
+                    aria-expanded="false">
                     <img src="../imgs/students.png" alt=""> <span class="ms-2">Alunos</span>
                 </a>
                 <div class="collapse" id="alunosDropdown">
@@ -59,7 +63,8 @@
                 </div>
             </li>
             <li class="nav-item" id="professores_navbar">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#professoresDropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"
+                    data-bs-target="#professoresDropdown" aria-expanded="false">
                     <img src="../imgs/professor.png" alt=""> <span class="ms-2">Professores</span>
                 </a>
                 <div class="collapse" id="professoresDropdown">
@@ -94,72 +99,69 @@
 
     <div class="conteudo">
         <div class="spaces-professor">
-        <br>
-        <div class="title-agendamento">
-            <div class="spaces-professor">
-            <h2 class="title-title">Visão Global de Performance e Gestão de Professores</h2>
-        </div>
-        </div>
-        <div class="select-professor">
-            <p>Selecione um professor:</p>
-            <select name="professores" id="professores">
-                <option value="">Selecione um professor</option>
-                <option value="professor1">Professor 1</option>
-                <option value="professor2">Professor 2</option>
-                <option value="professor3">Professor 3</option>
-        </select>
-        </div>
-    </div>
-            <div class="kpis">
-                <div class="box-kpis">
-                    <div class="line-box">
-                    </div>
-                    <div class="content-kpis" id="novos-agendamentos">
-                        <p>Aulas mês</p>
-                        <h2>55</h2>
-                    </div>
-                </div>
-                <div class="box-kpis">
-                    <div class="line-box">
-                    </div>
-                    <div class="content-kpis" id="confirmacao-agendamento">
-                        <p>Aulas canceladas</p>
-                        <h2>2</h2>
-                    </div>
-                </div>
-                <div class="box-kpis">
-                    <div class="line-box">
-                    </div>
-                    <div class="content-kpis" id="confirmacao-agendamento">
-                        <p>Aulas substituídas</p>
-                        <h2>10</h2>
-                    </div>
-                </div>
-                <div class="box-kpis">
-                    <div class="line-box">
-                    </div>
-                    <div class="content-kpis" id="confirmacao-agendamento">
-                        <p>Aulas reagendadas</p>
-                        <h2>7</h2>
-                    </div>
+            <br>
+            <div class="title-agendamento">
+                <div class="spaces-professor">
+                    <h2 class="title-title">Visão Global de Performance e Gestão de Professores</h2>
                 </div>
             </div>
-            <br><br><br><br>
-            <h2 class="title-title">Cumprimento professor</h2>
-            <span id="title-chart">Taxa de cumprimento de aulas</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <span id="title-chart">Alunos por mês</span>
-            <div class="kpis" id="kpis">
-                <div class="box-chart">
-                    <canvas id="pizzaChartAgendamento"></canvas>
-                    <div class="box-buttons">
-                        <button type="button" class="btn btn-primary" id="botaoChart">CUMPRIDAS</button>
-                        <button type="button" class="btn btn-primary" id="botaoChartN">NÃO CUMPRIDAS</button>
-                    </div>
+            <div class="select-professor">
+                <p>Selecione um professor:</p>
+                <select name="professores" id="professores">
+                    <option value="">Selecione um professor</option>
+                </select>
+            </div>
+        </div>
+        <div class="kpis">
+            <div class="box-kpis">
+                <div class="line-box">
                 </div>
-                <div class="box-chart2">
-                    <canvas id="chartCancelamento"></canvas>
+                <div class="content-kpis" id="novos-agendamentos">
+                    <p>Aulas mês</p>
+                    <h2 id="">55</h2>
                 </div>
             </div>
+            <div class="box-kpis">
+                <div class="line-box">
+                </div>
+                <div class="content-kpis" id="confirmacao-agendamento">
+                    <p>Aulas canceladas</p>
+                    <h2 id="qtd-agendamentos-cancelados">2</h2>
+                </div>
+            </div>
+            <div class="box-kpis">
+                <div class="line-box">
+                </div>
+                <div class="content-kpis" id="confirmacao-agendamento">
+                    <p>Aulas substituídas</p>
+                    <h2 id="aulas-tranferidas-professor">10</h2>
+                </div>
+            </div>
+            <div class="box-kpis">
+                <div class="line-box">
+                </div>
+                <div class="content-kpis" id="confirmacao-agendamento">
+                    <p>Aulas reagendadas</p>
+                    <h2>7</h2>
+                </div>
+            </div>
+        </div>
+        <br><br><br><br>
+        <h2 class="title-title">Cumprimento professor</h2>
+        <span id="title-chart">Taxa de cumprimento de aulas</span>
+        <span id="title-chart">Alunos por mês</span>
+        <div class="kpis" id="kpis">
+            <div class="box-chart">
+                <canvas id="pizzaChartAgendamento"></canvas>
+                <div class="box-buttons">
+                    <button type="button" class="btn btn-primary" id="botaoChart">CUMPRIDAS</button>
+                    <button type="button" class="btn btn-primary" id="botaoChartN">NÃO CUMPRIDAS</button>
+                </div>
+            </div>
+            <div class="box-chart2">
+                <canvas id="chartCancelamento"></canvas>
+            </div>
+        </div>
 
     </div>
 </body>
@@ -167,6 +169,18 @@
 </html>
 
 <script>
+    window.onload = () => {
+        const script = document.createElement("script");
+        if (ambiente === "desenvolvimento") {
+            script.src = "../js/mock/dashAdmin.js";
+        } else if (ambiente === "apresentacao") {
+            script.src = "../js/dashboard/dashAdmin.js";
+        }
+        script.defer = true;
+        document.head.appendChild(script);
+        console.log(`VOCÊ ESTÁ EM ${ambiente.toUpperCase()}`);
+    };
+    /*
    document.getElementById('toggle-btn').addEventListener('click', function () {
             var boxChart2 = document.querySelector('.box-chart2');
             var boxKpis = document.querySelectorAll('.box-kpis');
@@ -179,4 +193,5 @@
                 box.classList.toggle('reduzido');
             });
         });
+        */
 </script>
