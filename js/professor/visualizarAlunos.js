@@ -62,7 +62,9 @@ async function buscarAlunos(pagina) {
             
         </div>
     </div>
-
+    <div class="lapis" onclick="confirmacaoDeleteAluno(${aluno.id})">
+        <img src="../imgs/pen.png" alt="Excluir aluno"  style="width: 3vw; height: 6vh">
+    </div>
     <div class="lixeira" onclick="confirmacaoDeleteAluno(${aluno.id})">
         <img src="../imgs/trash-bin.png" alt="Excluir aluno"  style="width: 3vw; height: 6vh">
     </div>
@@ -70,8 +72,8 @@ async function buscarAlunos(pagina) {
 <hr class="line">
 `}).join('');
 
-atualizarBotoesPaginacaoAluno(listaAlunos.totalPages, listaAlunos.pageable.pageNumber)
-const loadingGif = document.getElementById('loading');
+    atualizarBotoesPaginacaoAluno(listaAlunos.totalPages, listaAlunos.pageable.pageNumber)
+    const loadingGif = document.getElementById('loading');
     const tabela = document.getElementById("tabela_agendamento");
     const tempoMinimoCarregamento = 700; // 1 segundo (1000 ms) de tempo mínimo de carregamento
 
@@ -188,7 +190,7 @@ async function filtraUsuarios() {
             </div>
             <div class="form-group">
                 <label for="data-nascimento">Data de Nascimento:</label>
-                <label class="label2" type="date" id="data-nascimento">${aluno.dataNascimento}</label>
+                <label class="label2" type="date" id="data-nascimento">${formatarData(aluno.dataNasc)}</label>
             </div>
             <div class="form-group">
                 <label for="email">E-mail:</label>
@@ -200,11 +202,11 @@ async function filtraUsuarios() {
             </div>
             <div class="form-group">
                 <label for="nivel-ingles">Nível de Inglês:</label>
-                <label class="label2" type="text" id="nivel-ingles">${aluno.nicho.map((nicho) => {return nicho.nicho.nome})}</label>
+                <label class="label2" type="text" id="nivel-ingles">${aluno.nivelIngles.map((nivel) => { return nivel.nivelIngles.nome })}</label>
             </div>
             <div class="form-group">
                 <label for="nicho">Nicho:</label>
-                <label class="label2" type="text" id="nicho">${aluno.nivelIngles.map((nivel) => {return nivel.nivelIngles.nome})}</label>
+                <label class="label2" type="text" id="nicho">${aluno.nicho.map((nicho) => { return nicho.nicho.nome })}</label>
             </div>
         </div>
 
