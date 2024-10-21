@@ -176,11 +176,24 @@ label {
     padding: 3vw;
 }
 
+.lapis{
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    bottom: 12vh;
+}
+
+.lapis img{
+    width: 3vw;
+    height: 6vh;
+    cursor: pointer;
+}
+
 .lixeira {
     display: flex;
     justify-content: flex-end;
     position: relative;
-    bottom: 5vh;
+    bottom: 10vh;
 }
 
 .lixeira img {
