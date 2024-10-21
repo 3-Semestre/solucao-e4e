@@ -32,35 +32,50 @@ async function atualizarPerfil() {
             body: JSON.stringify(dados),
             headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
         });
-        /*
-        if (!respostaCadastro.status == 200) {
+
+        console.log(respostaCadastro)
+
+        if (respostaCadastro.status == 401) {
             Swal.fire({
                 icon: 'error',
-                title: 'Erro ao cadastrar',
+                title: 'Senha incorreta',
                 showConfirmButton: false,
                 text: 'Por favor, revise os dados inseridos e tente novamente. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
                 footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>'
             });
-        } else {
-            const usuario = await respostaCadastro.json();
-            salvarInformacoes(usuario)
-            //atualizarNivelIngles()
+        } else if (respostaCadastro.status == 400) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro ao realizar o cadastro',
+                showConfirmButton: false,
+                text: 'Por favor, revise os dados inseridos e tente novamente. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
+                footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>'
+            });
+        } else if (respostaCadastro.status == 200) {
+            Swal.fire({
+                icon: "success",
+                title: "Dados atualizados com sucesso!",
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
-            */
     } catch (e) {
         console.log(e)
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro ao cadastrar',
+            showConfirmButton: false,
+            text: 'Por favor, revise os dados inseridos e tente novamente. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
+            footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>'
+        });
     }
 }
 
 async function atualizaHorarioAtendimento() {
     const horarioAtendimentoInicio = formatarHorarioPut(document.getElementById("input_atendimento_inicio").value);
-    console.log(horarioAtendimentoInicio + " horario inicio")
     const horarioAtendimentoFim = formatarHorarioPut(document.getElementById("input_atendimento_fim").value);
-    console.log(horarioAtendimentoFim + " horario fim")
     const horarioIntervaloInicio = formatarHorarioPut(document.getElementById("input_intervalo_inicio").value);
-    console.log(horarioIntervaloInicio + " horario intervalo inicio")
     const horarioIntervaloFim = formatarHorarioPut(document.getElementById("input_intervalo_fim").value);
-    console.log(horarioIntervaloFim + " horario intervalo fim")
 
     var validacaoUm = horarioAtendimentoInicio != sessionStorage.getItem("horarioAtendimentoInicio");
     var validacaoDois = horarioAtendimentoFim != sessionStorage.getItem("horarioAtendimentoFim");
@@ -82,7 +97,10 @@ async function atualizaHorarioAtendimento() {
             headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
         });
 
-        console.log(respostaAtt.status)
+        if (respostaAtt.ok) {
+            return true;
+        }
+        return false;
     }
 }
 
@@ -125,43 +143,72 @@ async function atualizarNivelIngles() {
     }
 }
 
-async function atualizarNichoUsuario() {
-    console.log("Atualizando nicho do usuário...");
-    const id = sessionStorage.getItem('id');
-    const nichosAnteriores = JSON.parse(sessionStorage.getItem('nichos')) || [];
+let nichosSelecionados = new Set();
+let niveisSelecionados = new Set();
 
-    const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="nicho_"]');
-    const novosNichos = Array.from(checkboxes)
-        .filter(checkbox => checkbox.checked)
-        .map(checkbox => parseInt(checkbox.id.split('_')[1]))
-        .filter(nicho => !nichosAnteriores.includes(nicho));
+const todosNichos = [1, 2, 3, 4, 5];
+const todosNiveis = [1, 2, 3, 4, 5, 6];
 
-    if (novosNichos.length > 0) {
-        for (const nicho of novosNichos) {
-            const dadosNicho = {
-                usuario: { id: id },
-                nicho: { id: nicho }    
-            };
-
-            try {
-                const respostaCadastro = await fetch(`http://localhost:8080/usuario-nicho`, {
-                    method: "POST",
-                    body: JSON.stringify(dadosNicho),
-                    headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
-                });
-
-                if (respostaCadastro.status == 201) {
-                    console.log(`Nicho ${nicho} atualizado com sucesso`);
-                    Swal.fire({ title: "Salvo!", icon: "success", confirmButtonColor: 'green' });
-                    exibirDadosPerfil();
-                } else {
-                    console.log(`Erro ao atualizar nicho ${nicho}`);
-                    return;
-                }
-            } catch (e) {
-                console.log(e);
-                return;
-            }
-        }
+function toggleItem(itemId, isChecked, selectedSet) {
+    if (isChecked) {
+        selectedSet.add(itemId);
+    } else {
+        selectedSet.delete(itemId);
     }
+}
+
+function obterItensAtuais(todosItens, selectedSet) {
+    const selecionadosArray = Array.from(selectedSet);
+    const naoSelecionados = todosItens.filter(itemId => !selectedSet.has(itemId));
+
+    return {
+        selecionados: selecionadosArray,
+        naoSelecionados: naoSelecionados
+    };
+}
+
+async function atualizarItensUsuario(prefixo, todosItens, selectedSet) {
+    console.log(`Atualizando ${prefixo}`);
+
+    todosItens.forEach(itemId => {
+        const checkbox = document.getElementById(`${prefixo}_${itemId}`);
+        if (checkbox) {
+            toggleItem(itemId, checkbox.checked, selectedSet);
+        }
+    });
+
+    const { selecionados, naoSelecionados } = obterItensAtuais(todosItens, selectedSet);
+
+    const dados = {
+        "usuarioId": sessionStorage.getItem("id"),
+        [`${prefixo}Selecionados`]: selecionados,
+        [`${prefixo}NaoSelecionados`]: naoSelecionados
+    };
+
+    try {
+        const url = `http://localhost:8080/usuario-${prefixo === 'nivel' ? 'nivel-ingles' : 'nicho'}/professor/${sessionStorage.getItem("id")}`;
+        console.log(dados)
+        const resposta = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(dados),
+            headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+        });
+
+        console.log(resposta.status)
+        if (resposta.ok) {
+            return true
+        }
+        return false
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
+async function atualizarNichoUsuario() {
+    return await atualizarItensUsuario('nicho', todosNichos, nichosSelecionados);
+}
+
+async function atualizarNivelUsuario() {
+    return await atualizarItensUsuario('nivel', todosNiveis, niveisSelecionados);
 }

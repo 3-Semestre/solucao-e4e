@@ -1,6 +1,8 @@
 const toggleBtn = document.getElementById('toggle-btn');
 const sidebar = document.getElementById('sidebar')
 const conteudo = document.querySelector('.conteudo'); // Seleciona a div conteudo
+// trocar entre "desenvolvimento" e "apresentacao"
+const ambiente = "desenvolvimento"
 
 function closeAllDropdowns() {
     const dropdowns = document.querySelectorAll('.collapse.show'); // Seleciona todos os dropdowns abertos
@@ -99,12 +101,12 @@ function formatarHorario(horario) {
     const [hora, minuto] = horario.split(':');
     const horaInt = parseInt(hora, 10);
     const periodo = horaInt >= 12 ? 'PM' : 'AM';
-    const horaFormatada = horaInt % 12 || 12;
+    const horaFormatada = "0" + horaInt % 12 || 12;
     return `${horaFormatada}:${minuto} ${periodo}`;
 }
 
 function formatarHorarioPut(horario) {
-    if(horario.length === 5){
+    if (horario.length === 5) {
         return horario + ':00';
     }
     return horario

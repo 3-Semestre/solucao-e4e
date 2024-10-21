@@ -19,7 +19,7 @@ function plotarGrafios() {
                 },
                 tooltip: {
                     callbacks: {
-                        label: function(tooltipItem) {
+                        label: function (tooltipItem) {
                             let dataset = tooltipItem.dataset.data;
                             let currentValue = dataset[tooltipItem.dataIndex];
                             let total = dataset.reduce((previousValue, currentValue) => previousValue + currentValue, 0);
@@ -31,7 +31,7 @@ function plotarGrafios() {
             }
         }
     });
-    
+
     // Gráfico de Linha
     const ctxLine = document.getElementById('chartCancelamento').getContext('2d');
     const lineChart = new Chart(ctxLine, {
@@ -61,7 +61,6 @@ function plotarGrafios() {
             }
         }
     });
-    }
-    window.onload = function(){
-        plotarGrafios()
-    }
+}
+
+plotarGrafios();
