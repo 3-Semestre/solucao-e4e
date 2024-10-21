@@ -134,11 +134,10 @@ function plotarGrafios() {
             datasets: [{
                 label: 'Taxa de Cancelamento',
                 data: [],
-                backgroundColor: 'rgba(173, 216, 230, 0.5)',
                 borderColor: 'rgba(0, 123, 255, 1)',
                 borderWidth: 2,
                 fill: true,
-                tension: 0.4,
+                tension: 0.1,
             }]
         },
         options: {

@@ -65,7 +65,8 @@ body {
 
 .agendamentos {
     display: flex;
-    justify-content: space-between;
+    gap: 6rem;
+    align-items: center;
     margin-top: 20px;
 }
 
@@ -273,6 +274,11 @@ body {
     margin: auto;
     position: relative;
     bottom: 5vh;
+}
+
+.agendamentos.horizontal {
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
 }
 
 @media only screen and (max-device-width: 430px) {

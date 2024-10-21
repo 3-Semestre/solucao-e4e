@@ -21,7 +21,7 @@ async function autenticar() {
             if (usuario.nivelAcesso.nome == "ALUNO") {
                 window.location.href = "dashboardAluno.html"
             } else {
-                window.location.href = "dashboardProfessor.html"
+                window.location.href = "dashboardAdmin.html"
             }
 
         } else if (respostaLogin.status == 403) {

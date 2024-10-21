@@ -7,6 +7,7 @@
     <title>Dashboard Admin</title>
 
     <link rel="stylesheet" href="../css/dashboardAdmin.css">
+    <link rel="stylesheet" href="../css/dashboardProfessor.css">
     <link rel="stylesheet" href="../css/menu.css">
 
     <script defer src="../js/script.js"></script>
@@ -75,11 +76,6 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a href="dashboardAdmin.html" id="dashboard_rep_legal" class="nav-link">
-                    <img src="../imgs/painel.png" alt=""> <span class="ms-2">Dashboard</span>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a href="perfil.html" id="perfil_navbar" class="nav-link">
                     <img src="../imgs/perfil.png" alt=""> <span class="ms-2">Perfil</span>
                 </a>
@@ -102,7 +98,7 @@
             <br>
             <div class="title-agendamento">
                 <div class="spaces-professor">
-                    <h2 class="title-title">Visão Global de Performance e Gestão de Professores</h2>
+                    <h2 class="title-title">Visão Global de Performance de Professores</h2>
                 </div>
             </div>
             <div class="select-professor">
@@ -111,9 +107,61 @@
                     <option value="">Selecione um professor</option>
                 </select>
             </div>
+            <div class="space-professor">
+                <div class="buttons-professor">
+                    <h2 id="nome_titulo">Joseph Smith</h2>
+                </div>
+                <br>
+                <div class="title-agendamento">
+                    <p>Próximos Agendamentos</p>
+                </div>
+            </div>
+            <div class="agendamentos" id="agendamentos">
+                <div class="box">
+                    <div class="data">
+                        <h2 class="dia_proxima_data">28</h2>
+                        <p class="mes_proxima_data">Setembro</p>
+                    </div>
+                    <div class="content">
+                        <p class="dia_semana_proxima_data">Quinta-Feira</p>
+                        <p class="horario_proxima_data">08:00 PM</p>
+                        <p class="nome_aluno_proxima_data">Lucas Silva</p>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="data">
+                        <h2>29</h2>
+                        <p>Outubro</p>
+                    </div>
+                    <div class="content">
+                        <p>Sexta-Feira</p>
+                        <p>08:00 PM</p>
+                        <p>Lucas Silva</p>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="data">
+                        <h2>30</h2>
+                        <p>Novembro</p>
+                    </div>
+                    <div class="content">
+                        <p>Sábado</p>
+                        <p>08:00 PM</p>
+                        <p>Lucas Silva</p>
+                    </div>
+                </div>
+            </div>
+            <br><br>
         </div>
-        <div class="kpis">
-            <div class="box-kpis">
+        <hr class="line">
+        <br>
+        <div class="space-professor">
+            <div class="title-agendamento">
+                <p>KPI's</p>
+            </div>
+        </div>
+        <div class="kpis" style="position: relative; bottom: 5vh;">
+            <div class="box-kpis-admin">
                 <div class="line-box">
                 </div>
                 <div class="content-kpis" id="novos-agendamentos">
@@ -121,48 +169,67 @@
                     <h2 id="">55</h2>
                 </div>
             </div>
-            <div class="box-kpis">
+            <div class="box-kpis-admin">
+                <div class="line-box">
+                </div>
+                <div class="content-kpis" id="confirmacao-agendamento">
+                    <p>Aulas concluídas</p>
+                    <h2 id="qtd-agendamentos-cancelados">2</h2>
+                </div>
+            </div>
+            <div class="box-kpis-admin">
+                <div class="line-box">
+                </div>
+                <div class="content-kpis" id="confirmacao-agendamento">
+                    <p>Aulas transferidas</p>
+                    <h2 id="aulas-tranferidas-professor">10</h2>
+                </div>
+            </div>
+            <div class="box-kpis-admin">
                 <div class="line-box">
                 </div>
                 <div class="content-kpis" id="confirmacao-agendamento">
                     <p>Aulas canceladas</p>
-                    <h2 id="qtd-agendamentos-cancelados">2</h2>
-                </div>
-            </div>
-            <div class="box-kpis">
-                <div class="line-box">
-                </div>
-                <div class="content-kpis" id="confirmacao-agendamento">
-                    <p>Aulas substituídas</p>
-                    <h2 id="aulas-tranferidas-professor">10</h2>
-                </div>
-            </div>
-            <div class="box-kpis">
-                <div class="line-box">
-                </div>
-                <div class="content-kpis" id="confirmacao-agendamento">
-                    <p>Aulas reagendadas</p>
                     <h2>7</h2>
                 </div>
             </div>
         </div>
-        <br><br><br><br>
+        <br>
+        <hr class="line">
+        <br><br>
         <h2 class="title-title">Cumprimento professor</h2>
-        <span id="title-chart">Taxa de cumprimento de aulas</span>
-        <span id="title-chart">Alunos por mês</span>
+        <span id="title-chart-admin">Taxa de cumprimento de aulas</span>
         <div class="kpis" id="kpis">
-            <div class="box-chart">
-                <canvas id="pizzaChartAgendamento"></canvas>
-                <div class="box-buttons">
-                    <button type="button" class="btn btn-primary" id="botaoChart">CUMPRIDAS</button>
-                    <button type="button" class="btn btn-primary" id="botaoChartN">NÃO CUMPRIDAS</button>
+            <div class="box-chart-admin">
+                <canvas id="myChartMeta"></canvas>
+            </div>
+            <div class="kpis-metas" id="top3-meses">
+                <div class="box-kpis-metas">
+                    <div class="line-box-metas">
+                    </div>
+                    <div class="content-kpis" id="alunos-novos">
+                        <p>Meta de aulas</p>
+                        <h2>30</h2>
+                    </div>
+                </div>
+                <div class="box-kpis-metas">
+                    <div class="line-box-metas">
+                    </div>
+                    <div class="content-kpis" id="cancelamento">
+                        <p>Progresso atual</p>
+                        <h2>30%</h2>
+                    </div>
                 </div>
             </div>
-            <div class="box-chart2">
-                <canvas id="chartCancelamento"></canvas>
-            </div>
         </div>
-
+        <br><br>
+        <hr class="line">
+        <br><br>
+        <h2 class="title-title">Taxa de Cancelamento</h2>
+        <br><br>
+        <div class="box-chart2">
+            <canvas id="chartCancelamento"></canvas>
+        </div>
     </div>
 </body>
 
