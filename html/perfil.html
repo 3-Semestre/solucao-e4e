@@ -76,7 +76,7 @@
                 <div class="collapse" id="professoresDropdown">
                     <ul class="nav flex-column dropdown-container">
                         <li><a href="visualizar.html?tipo=professor" class="nav-link">Visualizar</a></li>
-                        <li><a href="cadastrar.html?tipo=professor" class="nav-link">Cadastrar</a></li>
+                        <li><a href="cadastrar.html?tipo=professor" id="cadastro_professor" class="nav-link">Cadastrar</a></li>
                     </ul>
                 </div>
             </li>
@@ -215,6 +215,10 @@
                                 Intervalo:</label>
                             <input type="time" class="form-control" id="input_intervalo_inicio" readonly required>
                             <input type="time" class="form-control" id="input_intervalo_fim" readonly required>
+                        </div>
+                        <div class="mb-3" id="horario_intervalo_form">
+                            <label for="input_intervalo" class="form-label" id="horarioPausaTitle"><span>*</span>Meta:</label>
+                            <input type="text" value="esperando a view do nunes" class="form-control" id="input_meta" readonly required>
                         </div>
                         </form>
                     </div>
