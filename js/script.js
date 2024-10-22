@@ -50,8 +50,8 @@ function carregarNavBar() {
 
     const gerenciar_aluno_navbar = document.getElementById("alunos_navbar");
     const gerenciar_professores_navbar = document.getElementById("professores_navbar");
+    const cadastrar_professor_navbar = document.getElementById("cadastro_professor");
     const agenda_novo_agendamento_navbar = document.getElementById("agenda_novo_agendamento_navbar");
-    const dashboard_representante_legal = document.getElementById("dashboard_rep_legal");
 
     const link_dashboard = document.getElementById("dashboard_href")
 
@@ -63,13 +63,12 @@ function carregarNavBar() {
         case 2:
             link_dashboard.href = "dashboardAdmin.html"
             agenda_novo_agendamento_navbar.style.display = "none";
-            dashboard_representante_legal.style.display = "none";
+            cadastrar_professor_navbar.style.display = "none";
             break;
         case 1:
             link_dashboard.href = "dashboardAluno.html"
             gerenciar_aluno_navbar.style.display = "none";
             gerenciar_professores_navbar.style.display = "none";
-            dashboard_representante_legal.style.display = "none";
             break;
     }
 }
