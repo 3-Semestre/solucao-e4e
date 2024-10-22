@@ -9,7 +9,7 @@ body {
     display: flex;
 }
 
-.spaces-professor{
+.spaces-professor {
     width: 100%;
     display: inline-block;
     font-size: 25px;
@@ -17,15 +17,18 @@ body {
 }
 
 .conteudo {
-    margin-left: 100px; /* Valor inicial quando o menu está fechado */
+    margin-left: 100px;
+    /* Valor inicial quando o menu está fechado */
     transition: margin-left 0.3s ease, width 0.3s ease;
     padding: 20px;
     width: calc(100% - 200px);
 }
 
 .conteudo.open {
-    margin-left: 250px; /* Valor quando o menu está aberto */
-    width: calc(100% - 250px); /* Ajusta a largura para que o conteúdo não seja coberto */
+    margin-left: 250px;
+    /* Valor quando o menu está aberto */
+    width: calc(100% - 250px);
+    /* Ajusta a largura para que o conteúdo não seja coberto */
 }
 
 .buttons-professor {
@@ -109,7 +112,7 @@ body {
     position: relative;
 }
 
-.box-kpis {
+.box-kpis-admin {
     width: 20vw;
     height: 23vh;
     border: 1px solid #072B59;
@@ -185,15 +188,15 @@ body {
     color: red;
 }
 
-.box-chart {
+.box-chart-admin {
     display: flex;
     position: relative;
     flex-direction: column;
 }
 
-#pizzaChartAgendamento{
-    width: 25vw !important;
-    height: 50vh !important;
+#myChartMeta {
+    width: 50vw !important;
+    height: 60vh !important;
     align-self: center;
 }
 
@@ -211,7 +214,7 @@ body {
     justify-content: space-around;
 }
 
-#kpis{
+#kpis {
     gap: 8rem;
 }
 
@@ -232,7 +235,8 @@ body {
     margin: auto;
 }
 
-.box-chart2, .box-kpis {
+.box-chart2,
+.box-kpis-admin {
     transition: all 0.3s ease;
 }
 
@@ -241,7 +245,7 @@ body {
     height: 60vh;
 }
 
-.box-kpis.reduzido {
+.box-kpis-admin.reduzido {
     width: 80%;
     height: 22vh;
     margin-right: 1vw;
@@ -272,7 +276,7 @@ body {
     width: 10vw;
 }
 
-#title-chart {
+#title-chart-admin {
     font-weight: bold;
     color: #072B59;
     position: relative;
@@ -280,7 +284,7 @@ body {
     top: 2vh;
 }
 
-.title-title{
+.title-title {
     font-weight: bolder;
     color: #072B59;
 }
@@ -312,23 +316,51 @@ body {
     height: 5vh;
     color: #072B59;
     border-radius: 5px;
-    border: 1px solid #072B59;  
+    border: 1px solid #072B59;
 }
 
-#professores{
+#professores {
     font-size: 20px;
     font-weight: bolder;
+}
+
+.kpis-metas {
+    display: flex;
+    gap: 5rem;
+    flex-direction: column;
+}
+
+.box-kpis-metas {
+    width: 20vw;
+    height: 23vh;
+    background-color: #072B59;
+    border: 1px solid #072B59;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px #888;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1rem;
+}
+
+.line-box-metas {
+    border: 4px solid white;
+    height: 16vh;
+    border-radius: 10px;
+    position: relative;
 }
 
 
 @media only screen and (max-device-width: 430px) {
 
-    .dropdown-btn{
+    .dropdown-btn {
         font-size: 10px;
-        color: rgba(255, 255, 255, 0);  
+        color: rgba(255, 255, 255, 0);
     }
 
-    .dropdown-container a{
+    .dropdown-container a {
         font-size: 10px;
     }
 
@@ -376,7 +408,7 @@ body {
         line-height: 1.6;
     }
 
-    .box-kpis {
+    .box-kpis-admin {
         width: 60vw;
         height: 20vh;
         gap: 1rem;
@@ -388,7 +420,7 @@ body {
         gap: 2rem;
     }
 
-    .kpis2{
+    .kpis2 {
         display: grid;
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -403,8 +435,8 @@ body {
     #botaoChartN {
         width: 60vw;
     }
-    
-    .box-chart2{
+
+    .box-chart2 {
         width: 68vw;
         height: 30vh;
         padding: 0;
@@ -412,16 +444,16 @@ body {
         right: 4vw;
     }
 
-    .none{
+    .none {
         display: none;
     }
 
-    .conteudo .title-agendamento{
+    .conteudo .title-agendamento {
         right: 11vw;
         position: relative;
     }
 
-    #kpi{
+    #kpi {
         right: 18vw;
         position: relative;
     }
@@ -431,7 +463,7 @@ body {
         top: 0.5vh;
     }
 
-    .variação{
+    .variação {
         gap: 1vw;
     }
 
@@ -439,25 +471,25 @@ body {
         position: relative;
         right: 5.5vw;
     }
-    
+
     .seta-baixo {
         position: relative;
         right: 5.5vw;
     }
-    
+
     .seta-cima {
         position: relative;
         right: 5.5vw;
     }
 
 
-    .line{
+    .line {
         width: 90%;
         position: relative;
         right: 4vw;
     }
 
-    .line2{
+    .line2 {
         width: 90%;
         position: relative;
         right: 4vw;

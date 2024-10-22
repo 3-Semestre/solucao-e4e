@@ -2,7 +2,7 @@ const toggleBtn = document.getElementById('toggle-btn');
 const sidebar = document.getElementById('sidebar')
 const conteudo = document.querySelector('.conteudo'); // Seleciona a div conteudo
 // trocar entre "desenvolvimento" e "apresentacao"
-const ambiente = "desenvolvimento"
+const ambiente = "apresentacao"
 
 function closeAllDropdowns() {
     const dropdowns = document.querySelectorAll('.collapse.show'); // Seleciona todos os dropdowns abertos
@@ -57,11 +57,11 @@ function carregarNavBar() {
 
     switch (Number(nivelAcesso)) {
         case 3:
-            link_dashboard.href = "dashboardProfessor.html"
+            link_dashboard.href = "dashboardAdmin.html"
             agenda_novo_agendamento_navbar.style.display = "none";
             break;
         case 2:
-            link_dashboard.href = "dashboardProfessor.html"
+            link_dashboard.href = "dashboardAdmin.html"
             agenda_novo_agendamento_navbar.style.display = "none";
             dashboard_representante_legal.style.display = "none";
             break;

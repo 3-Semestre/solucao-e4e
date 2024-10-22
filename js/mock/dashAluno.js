@@ -10,7 +10,7 @@ function carregarGrafico() {
                 backgroundColor: '#072b59c0',
                 borderColor: '#072B59',
                 borderWidth: 2,
-                fill: true, // Preenche a área sob a linha
+                fill: false, // Preenche a área sob a linha
                 tension: 0.4, // Curvatura da linha
             }]
         },
