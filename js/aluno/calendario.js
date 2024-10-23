@@ -106,7 +106,7 @@ function getEventStatusText(status) {
 function load() {
   const date = new Date();
   console.log(date)
-  
+
   // Ajusta o mês com base na navegação
   date.setMonth(date.getMonth() + nav);
   console.log(nav)
@@ -287,6 +287,8 @@ async function saveEvent() {
   }
 }
 
+let agendamentoStack = []
+
 // Função para salvar um novo agendamento
 async function salvarAgendamento(professorId, horario) {
   const [horarioInicio, horarioFim] = horario.split(" - ");
@@ -306,16 +308,65 @@ async function salvarAgendamento(professorId, horario) {
       headers: {
         'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
         "Content-type": "application/json; charset=UTF-8"
-      }
-    });
+      });
 
     if (respostaAgendamento.status === 201) {
+
       console.log("Agendamento realizado com sucesso!");
+      const respostaJson = await respostaAgendamento.json();
+      const agendamentoId = respostaJson.id;
+      agendamentoStack.push(agendamentoId);
     } else {
       console.log("Erro ao realizar o agendamento:", respostaAgendamento.status);
     }
   } catch (error) {
     console.log("Erro na requisição:", error);
+  }
+}
+
+
+async function desfazerAgendamento() {
+  const idAgendamento = agendamentoStack[agendamentoStack.length - 1]
+  const statusId = 4
+  const token = sessionStorage.getItem('token');
+
+  // Mesmo codigo da função novoStatus de exibirAgendamento, porem se importar a função de lá quebra o calendario
+  try {
+    const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${idAgendamento}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    agendamento = await respostaAgendamento.json()
+
+    const respostaStatus = await fetch(`http://localhost:8080/status/${statusId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    statusObj = await respostaStatus.json()
+
+    const dadosAlteracao = {
+      "novoAgendamento": agendamento,
+      "status": statusObj
+    }
+
+    const novoStatus = await fetch("http://localhost:8080/historico-agendamento", {
+      method: "POST",
+      body: JSON.stringify(dadosAlteracao),
+      headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+    });
+
+    console.log(novoStatus.status)
+    agendamentoStack.pop()
+  } catch (error) {
+    console.log(error)
   }
 }
 
