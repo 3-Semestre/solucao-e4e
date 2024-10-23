@@ -35,19 +35,24 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#agendaDropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#agendaDropdown"
+                    aria-expanded="false">
                     <img src="../imgs/calendar-days.png" alt=""> <span class="ms-2">Agenda</span>
                 </a>
                 <div class="collapse" id="agendaDropdown">
                     <ul class="nav flex-column dropdown-container">
-                        <li><a href="calendarioAluno.html" id="agenda_novo_agendamento_navbar" class="nav-link">Novo Agendamento</a></li>
-                        <li><a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar" class="nav-link">Meus Agendamentos</a></li>
-                        <li><a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar" class="nav-link">Histórico</a></li>
+                        <li><a href="calendarioAluno.html" id="agenda_novo_agendamento_navbar" class="nav-link">Novo
+                                Agendamento</a></li>
+                        <li><a href="agendamentos.html?tipo=futuro" id="agenda_meus_agendamentos_navbar"
+                                class="nav-link">Meus Agendamentos</a></li>
+                        <li><a href="agendamentos.html?tipo=passado" id="agenda_historico_navbar"
+                                class="nav-link">Histórico</a></li>
                     </ul>
                 </div>
             </li>
             <li class="nav-item" id="alunos_navbar">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#alunosDropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#alunosDropdown"
+                    aria-expanded="false">
                     <img src="../imgs/students.png" alt=""> <span class="ms-2">Alunos</span>
                 </a>
                 <div class="collapse" id="alunosDropdown">
@@ -58,13 +63,15 @@
                 </div>
             </li>
             <li class="nav-item" id="professores_navbar">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#professoresDropdown" aria-expanded="false">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"
+                    data-bs-target="#professoresDropdown" aria-expanded="false">
                     <img src="../imgs/professor.png" alt=""> <span class="ms-2">Professores</span>
                 </a>
                 <div class="collapse" id="professoresDropdown">
                     <ul class="nav flex-column dropdown-container">
                         <li><a href="visualizar.html?tipo=professor" class="nav-link">Visualizar</a></li>
-                        <li><a href="cadastrar.html?tipo=professor" id="cadastro_professor" class="nav-link">Cadastrar</a></li>
+                        <li><a href="cadastrar.html?tipo=professor" id="cadastro_professor"
+                                class="nav-link">Cadastrar</a></li>
                     </ul>
                 </div>
             </li>
@@ -157,6 +164,10 @@
                             <div class="mb-3" id="nichoCheckboxList">
                                 <label class="form-label" id="nichoTitle"><span>*</span>Nicho:</label>
                             </div>
+                            <div class="mb-3" id="campo-meta">
+                                <label for="input_meta" class="form-label"><span>*</span>Meta de Aulas Concluídas:</label>
+                                <input type="number" class="form-control" id="input_meta" required>
+                            </div>
                         </div>
 
                         </form>
@@ -177,6 +188,11 @@
     document.getElementById("tipo-cadastro").innerHTML = Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()
     document.getElementById("tipo-breadcrump").innerHTML = Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()
     document.title += ` ${Array.from(tipo)[0].toLocaleUpperCase() + tipo.slice(1).toLocaleLowerCase()}`;
+
+    if(tipo == "aluno"){
+        document.getElementById("campo-meta").style.display = "none";
+        document.getElementById("input_meta").required = false;
+    }
 
     async function buscarNivelIngles() {
         const resposta = await fetch("http://localhost:8080/nivel-ingles", {
@@ -292,12 +308,12 @@
     });
 
     document.getElementById('input_telefone').addEventListener('input', function (e) {
-    let value = e.target.value;
-    value = value.replace(/\D/g, '');
-    value = value.replace(/(\d{2})(\d)/, '+$1 $2');
-    value = value.replace(/(\d{5})(\d)/, '$1-$2');
-    e.target.value = value.substring(0, 14);
-});
+        let value = e.target.value;
+        value = value.replace(/\D/g, '');
+        value = value.replace(/(\d{2})(\d)/, '+$1 $2');
+        value = value.replace(/(\d{5})(\d)/, '$1-$2');
+        e.target.value = value.substring(0, 14);
+    });
 
     buscarNivelIngles()
     buscarNichos()

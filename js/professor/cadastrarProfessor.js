@@ -7,6 +7,7 @@ async function cadastrarProfessor() {
     const email = document.getElementById("input_email").value;
     const profissao = document.getElementById("input_profissao").value;
     const senha = document.getElementById("input_senha").value;
+    const meta = document.getElementById("input_meta").value;
     const listaDeNiveis = coletarIdsCheckboxes("nivel");
     const listaDeNichos = coletarIdsCheckboxes("nicho");
     
@@ -22,7 +23,8 @@ async function cadastrarProfessor() {
             "id": 2
         },
         "listaDeNiveis": listaDeNiveis,
-        "listaDeNichos": listaDeNichos
+        "listaDeNichos": listaDeNichos,
+        "meta": meta
     };
 
     const respostaCadastro = await fetch("http://localhost:8080/usuarios/salvar/professor", {
