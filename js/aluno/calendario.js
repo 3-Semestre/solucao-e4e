@@ -150,7 +150,7 @@ function load() {
         dayNumber.id = 'currentDay';
       }
 
-      if (eventDay) {
+      if (eventDay && eventDay.status != "CANCELADO") {
         const eventDiv = document.createElement('div');
         eventDiv.classList.add('event');
         eventDiv.innerText = eventDay.assunto;
