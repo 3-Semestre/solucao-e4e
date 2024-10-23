@@ -26,6 +26,10 @@ async function buscarAlunos(paginaAtual) {
     cardsAlunos.innerHTML += listaAlunos.content.map((aluno) => {
         const alunoId = aluno.id; // ID do aluno para garantir unicidade
 
+        // Converte as strings em arrays
+        const niveisInglesArray = aluno.niveis_Ingles ? aluno.niveis_Ingles.split(", ") : [];
+        const nichosArray = aluno.nichos ? aluno.nichos.split(", ") : [];
+
         return `
         <div class="dados-student" id="card_dados_${alunoId}">
             <div class="header-student">
@@ -53,11 +57,16 @@ async function buscarAlunos(paginaAtual) {
                     </div>
                     <div class="form-group">
                         <label for="nivel-ingles_${alunoId}">Nível de Inglês:</label>
-                        <label class="label2" type="text" id="nivel-ingles_${alunoId}">${aluno.niveis_Ingles}</label>
+                        <select class="label2" id="nivel-ingles_${alunoId}" disabled>
+                            ${niveisInglesArray.map((nivel) => `<option value="${nivel}">${nivel}</option>`).join('')}
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="nicho_${alunoId}">Nicho:</label>
-                        <label class="label2" type="text" id="nicho_${alunoId}">${aluno.nichos}</label>
+                        <select class="label2" id="nicho_${alunoId}" disabled>
+                            ${nichosArray.map((nicho) => `<option value="${nicho}">${nicho}</option>`).join('')}
+                            <option> teste </option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -74,6 +83,7 @@ async function buscarAlunos(paginaAtual) {
         <hr class="line">
         `;
     }).join('');
+
 
     atualizarBotoesPaginacaoAluno(listaAlunos.totalPages, listaAlunos.pageable.pageNumber);
 
@@ -197,10 +207,17 @@ function confirmacaoDeleteAluno(id) {
 }
 
 function editarAluno(id) {
-    const input = document.getElementById(`nivel-ingles_${id}`);
-    if (input) {
-        input.removeAttribute("readonly"); 
-        input.focus(); 
+    const nivelSelect = document.getElementById(`nivel-ingles_${id}`);
+    const nichoSelect = document.getElementById(`nicho_${id}`);
+
+    if (nivelSelect) {
+        nivelSelect.removeAttribute("disabled");
+        nivelSelect.focus();
+    }
+
+    if (nichoSelect) {
+        nichoSelect.removeAttribute("disabled");
+        nichoSelect.focus();
     }
 }
 
@@ -248,4 +265,8 @@ function atualizarBotoesPaginacaoAluno(total, atual) {
     proximo.classList.add('page-item');
     proximo.innerHTML = `<a class="page-link" href="#" onclick="buscarAlunos(${atual + 1})">&raquo;</a>`;
     paginacao.appendChild(proximo);
+}
+
+async function buscarNivel(id) {
+    
 }
