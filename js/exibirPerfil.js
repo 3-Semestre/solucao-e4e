@@ -44,6 +44,7 @@ function preencherInput(dados) {
     const horarioIntervaloFim = document.getElementById("input_intervalo_fim");
     const nicho = document.getElementById("nicho");
     const nivelIngles = document.getElementById("nivel");
+    const meta = document.getElementById("input_meta");
 
     nomeTitulo.innerHTML = dados.nome_completo || '';
     nome.innerHTML = dados.nome_completo || '';
@@ -55,6 +56,7 @@ function preencherInput(dados) {
     profissaoInput.value = dados.profissao || '';
     nicho.innerHTML = tratarNome(dados.nichos) || '';
     nivelIngles.innerHTML = tratarNome(dados.niveis_Ingles) || '';
+    meta.value = dados.qtd_aula || '';
 
     horario.innerHTML = `${formatarHorario(dados.inicio || '')} às ${formatarHorario(dados.fim || '')}`;
 
@@ -67,6 +69,7 @@ function preencherInput(dados) {
     sessionStorage.setItem('horarioAtendimentoFim',(dados.fim || ''));
     sessionStorage.setItem('horarioIntervaloInicio', (dados.pausa_inicio || ''));
     sessionStorage.setItem('horarioIntervaloFim', (dados.pausa_fim || ''));
+    sessionStorage.getItem("meta", (dados.qtd_aula || ''));
 }
 
 async function buscarNivelIngles() {

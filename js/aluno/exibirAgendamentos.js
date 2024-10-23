@@ -301,13 +301,21 @@ async function buscarDetalhes(id) {
                   <label for="novoStatus" style="color: #072B59; position: relative; top: 0.1vh;">Selecione o novo status:</label>
                   <select id="novoStatus" class="swal2-input" style="width: 10vw;height: 4vh;color: #072B59;border-radius: 5px;border: 1px solid #072B5">
                     <option value="#">Selecione</option>
-                    ${dadosAgendamentos.status === 'CONFIRMADO' ? `
-                        <option value="3">Concluir</option>
-                        <option value="4">Cancelar</option>
-                    ` : dadosAgendamentos.status === 'PENDENTE' ? `
-                        <option value="2">Confirmar</option>
-                        <option value="4">Cancelar</option>
-                    ` : ''}
+                    ${
+                        nivel_acesso_cod === "1"
+                        ? `<option value="4">Cancelar</option>`
+                        : dadosAgendamentos.status === 'CONFIRMADO'
+                        ? `
+                            <option value="3">Concluir</option>
+                            <option value="4">Cancelar</option>
+                          `
+                        : dadosAgendamentos.status === 'PENDENTE'
+                        ? `
+                            <option value="2">Confirmar</option>
+                            <option value="4">Cancelar</option>
+                          `
+                        : ''
+                    }
                   </select>
                   <div id="assuntoContainer" style="margin-top: 10px; display: none;">
                     <label for="assunto" style="color: #072B59;">Assunto:</label>

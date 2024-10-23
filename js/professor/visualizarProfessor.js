@@ -75,7 +75,7 @@ async function buscarProfessor(paginaAtual) {
                 </div>
                 <div class="form-group">
                     <label for="meta_${professorId}">Metas:</label>
-                    <input class="label2" type="text" id="meta_${professorId}" value="toDo" readonly>
+                    <input class="label2" type="text" id="meta_${professorId}" value="${professor.qtd_aula} aulas" readonly>
                 </div>
             </div>
         </div>

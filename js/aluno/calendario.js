@@ -153,7 +153,7 @@ function load() {
       if (eventDay && eventDay.status != "CANCELADO") {
         const eventDiv = document.createElement('div');
         eventDiv.classList.add('event');
-        eventDiv.innerText = eventDay.assunto;
+        eventDiv.innerHTML = "Professor: <br>" + eventDay.professor.nomeCompleto
         dayS.appendChild(eventDiv);
       }
 
