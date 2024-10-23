@@ -65,7 +65,7 @@ function openModal(date) {
   const statusElement = document.getElementById('deleteStatus');
   statusElement.className = 'status';
 
-  if (eventDay) {
+  if (eventDay && eventDay.status != "CANCELADO") {
     document.getElementById('deleteDateInput').value = formatDate(clicked);
     document.getElementById('deleteProfessorInput').value = eventDay.professor.nomeCompleto;
     document.getElementById('deleteTimeInput').value = `${formatarHorario(eventDay.horarioInicio)} - ${formatarHorario(eventDay.horarioFim)}`;
@@ -287,8 +287,6 @@ async function saveEvent() {
   }
 }
 
-let agendamentoStack = []
-
 // Função para salvar um novo agendamento
 async function salvarAgendamento(professorId, horario) {
   const [horarioInicio, horarioFim] = horario.split(" - ");
@@ -308,12 +306,13 @@ async function salvarAgendamento(professorId, horario) {
       headers: {
         'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
         "Content-type": "application/json; charset=UTF-8"
-      });
+      }
+    });
+
+    const respostaJson = await respostaAgendamento.json();
 
     if (respostaAgendamento.status === 201) {
-
       console.log("Agendamento realizado com sucesso!");
-      const respostaJson = await respostaAgendamento.json();
       const agendamentoId = respostaJson.id;
       agendamentoStack.push(agendamentoId);
     } else {

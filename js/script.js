@@ -3,6 +3,7 @@ const sidebar = document.getElementById('sidebar')
 const conteudo = document.querySelector('.conteudo'); // Seleciona a div conteudo
 // trocar entre "desenvolvimento" e "apresentacao"
 const ambiente = "apresentacao"
+const agendamentoStack = []
 
 function closeAllDropdowns() {
     const dropdowns = document.querySelectorAll('.collapse.show'); // Seleciona todos os dropdowns abertos
