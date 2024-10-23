@@ -105,14 +105,15 @@ function getEventStatusText(status) {
 
 function load() {
   const date = new Date();
+  console.log(date)
+  
+  // Ajusta o mês com base na navegação
+  date.setMonth(date.getMonth() + nav);
+  console.log(nav)
+  console.log(date)
 
-  if (nav !== 0) {
-    date.setMonth(new Date().getMonth() + nav);
-  }
-
-  const day = date.getDate();
-  const month = date.getMonth();
   const year = date.getFullYear();
+  const month = date.getMonth();
 
   const daysMonth = new Date(year, month + 1, 0).getDate();
   const firstDayMonth = new Date(year, month, 1);
@@ -126,7 +127,7 @@ function load() {
 
   const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
 
-  let monthName = date.toLocaleDateString('pt-BR', { month: 'long' });
+  let monthName = firstDayMonth.toLocaleDateString('pt-BR', { month: 'long' });
   monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
 
   document.getElementById('monthDisplay').innerText = `${monthName} ${year}`;
@@ -146,14 +147,14 @@ function load() {
 
       const eventDay = events.find((event) => event.data === dayString);
 
-      if (i - paddingDays === day && nav === 0 && month === new Date().getMonth() && year === new Date().getFullYear()) {
+      if (i - paddingDays === date.getDate() && nav === 0 && month === date.getMonth() && year === date.getFullYear()) {
         dayNumber.id = 'currentDay';
       }
 
-      if (eventDay && eventDay.status != "CANCELADO") {
+      if (eventDay && eventDay.status !== "CANCELADO") {
         const eventDiv = document.createElement('div');
         eventDiv.classList.add('event');
-        eventDiv.innerHTML = "Professor: <br>" + eventDay.professor.nomeCompleto
+        eventDiv.innerHTML = "Professor: <br>" + eventDay.professor.nomeCompleto;
         dayS.appendChild(eventDiv);
       }
 
@@ -165,7 +166,6 @@ function load() {
     calendar.appendChild(dayS);
   }
 }
-
 
 // Função para fechar o modal
 function closeModal() {
@@ -354,7 +354,13 @@ function deleteEvent() {
 // Função para carregar os agendamentos e exibi-los no calendário
 async function carregarEventos() {
   try {
-    const response = await fetch(`http://localhost:8080/agendamento/1/${sessionStorage.getItem('id')}?page=0&size=5&sortDirection=desc`, {
+    // Calcular o mês e ano com base na navegação (nav)
+    const currentDate = new Date();
+    currentDate.setMonth(currentDate.getMonth() + nav); // Ajusta o mês com base na navegação
+    const currentMonth = currentDate.getMonth() + 1; // O mês é baseado em zero, então somamos 1
+    const currentYear = currentDate.getFullYear();
+
+    const response = await fetch(`http://localhost:8080/agendamento/1/${sessionStorage.getItem('id')}/${currentMonth}/${currentYear}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -362,23 +368,22 @@ async function carregarEventos() {
       }
     });
 
-    if (response.ok) {
+    if (response.status === 204) {
+      console.error('Não há agendamentos');
+      events = [];
+    } else if (response.ok) {
       const dados = await response.json();
-      console.log(dados);
-
-      // Verifica se os dados retornados são um array de agendamentos
-      events = Array.isArray(dados.content) ? dados.content : [];
+      events = Array.isArray(dados) ? dados : [];
       console.log('Eventos carregados:', events);
-
-      // Chama a função para exibir os eventos no calendário
-      load();
     } else {
       console.error('Erro ao carregar eventos do banco');
       events = [];
     }
+    load();
   } catch (error) {
     console.error('Erro na requisição:', error);
     events = [];
+    load();
   }
 }
 
@@ -386,12 +391,12 @@ async function carregarEventos() {
 function buttons() {
   document.getElementById('backButton').addEventListener('click', () => {
     nav--;
-    load();
+    carregarEventos();
   });
 
   document.getElementById('nextButton').addEventListener('click', () => {
     nav++;
-    load();
+    carregarEventos();
   });
 
   document.getElementById('agendar-button').addEventListener('click', saveEvent);
@@ -404,11 +409,6 @@ function buttons() {
   });
 }
 
-// Chama a função para configurar os botões
-buttons();
-
-
 // Chama as funções principais
 buttons();
 carregarEventos();
-load();
