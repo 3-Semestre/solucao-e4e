@@ -247,8 +247,6 @@ async function buscarDetalhes(id) {
         throw new Error('Erro ao buscar dados do servidor');
     }
 
-    const dadosHistorico = await respostaHistorico.json();
-
     Swal.fire({
         title: '<h2 style="color: #072B59; font-weight: bolder;">Detalhes do agendamento</h2>',
         html: `
@@ -373,7 +371,7 @@ async function buscarDetalhes(id) {
                                 timer: 1500
                             });
                         }
-                        setTimeout(() => carregarHeadersTabela(), 1500);
+                        setTimeout(() => carregarAgendamentos(paginaAtual), 1500);
                     } catch (error) {
                         Swal.fire({
                             icon: 'error',
@@ -479,6 +477,7 @@ function atualizarBotoesPaginacao(total, atual) {
 }
 
 async function novoStatus(id, statusId) {
+    console.log(id + "id")
     try {
         const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
             method: 'GET',
