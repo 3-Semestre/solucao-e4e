@@ -71,6 +71,23 @@ async function atualizarPerfil() {
     }
 }
 
+async function atualizarMeta() {
+    const meta = document.getElementById("input_meta").value;
+
+    if (meta != sessionStorage.getItem("meta")) {
+        const respostaAtt = await fetch(`http://localhost:8080/metas/${sessionStorage.getItem("id")}`, {
+            method: "PUT",
+            body: meta,
+            headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+        });
+    }
+
+    if (respostaAtt.status == 201) {
+        return true;
+    }
+    return false;
+}
+
 async function atualizaHorarioAtendimento() {
     const horarioAtendimentoInicio = formatarHorarioPut(document.getElementById("input_atendimento_inicio").value);
     const horarioAtendimentoFim = formatarHorarioPut(document.getElementById("input_atendimento_fim").value);

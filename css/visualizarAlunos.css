@@ -151,6 +151,63 @@ label {
     flex: 1 1 30%;
 }
 
+.form-group input.label2 {
+    font-weight: 300;
+    min-width: 250px;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: none;
+    outline: none;
+}
+
+.form-group input.label2:not([readonly]) {
+    border-bottom: 1px solid #000;
+}
+
+/* Estilo do select desativado para parecer com a label */
+select[disabled] {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background: none;
+    border: none;
+    color: #333;
+    cursor: not-allowed;
+    font-weight: 300;
+    min-width: 250px;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0;
+}
+
+/* Estilo do select quando habilitado */
+select:not([disabled]) {
+    appearance: auto;
+    -moz-appearance: auto;
+    -webkit-appearance: auto;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    color: #333;
+    cursor: pointer;
+    font-weight: 300;
+    min-width: 250px;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 8px;
+}
+
+/* Estilo adicional para manter a consistência com inputs */
+select {
+    border-radius: 4px;
+    outline: none;
+}
+
 .form-group label {
     display: block;
     margin-bottom: 5px;

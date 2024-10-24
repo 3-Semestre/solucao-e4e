@@ -105,8 +105,8 @@ async function carregarAgendamentos(pagina) {
 
     limparTabela();
     preencherTabela(dados.content);
-    atualizarBotoesPaginacao(dados.totalPages, dados.pageable.pageNumber); 
-    
+    atualizarBotoesPaginacao(dados.totalPages, dados.pageable.pageNumber);
+
     const loadingGif = document.getElementById('loading');
     const tabela = document.getElementById("tabela_agendamento");
     const tempoMinimoCarregamento = 700; // 1 segundo (1000 ms) de tempo mínimo de carregamento
@@ -247,8 +247,6 @@ async function buscarDetalhes(id) {
         throw new Error('Erro ao buscar dados do servidor');
     }
 
-    const dadosHistorico = await respostaHistorico.json();
-
     Swal.fire({
         title: '<h2 style="color: #072B59; font-weight: bolder;">Detalhes do agendamento</h2>',
         html: `
@@ -290,7 +288,7 @@ async function buscarDetalhes(id) {
     `,
         confirmButtonText: 'Fechar',
         confirmButtonColor: '#072B59',
-        showCancelButton: tempo !== 'passado' && nivel_acesso_cod !== 1, // Mostra o botão "Editar Status" apenas se o nivel_acesso_cod for diferente de 1
+        showCancelButton: tempo !== 'passado' && nivel_acesso_cod !== 1,
         cancelButtonText: 'Editar Status',
         cancelButtonColor: '#830f0f',
     }).then((result) => {
@@ -298,35 +296,107 @@ async function buscarDetalhes(id) {
             Swal.fire({
                 title: '<h2 style="color: #072B59; font-weight: bolder;">Editar Status</h2>',
                 html: `
-              <label for="novoStatus" style="color: #072B59; position: relative; top: 0.1vh;">Selecione o novo status:</label>
-              <select id="novoStatus" class="swal2-input" style="width: 10vw;height: 4vh;color: #072B59;border-radius: 5px;border: 1px solid #072B5">
-              <option value="#">Selecione</option>
-                <option value="1" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Pendente</option>
-                <option value="2" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Confirmar</option>
-                <option value="3" ${nivel_acesso_cod == "1" ? 'style="display: none;"' : ''}>Concluir</option>
-                <option value="4">Cancelar</option>
-              </select>
-            `,
+                  <label for="novoStatus" style="color: #072B59; position: relative; top: 0.1vh;">Selecione o novo status:</label>
+                  <select id="novoStatus" class="swal2-input" style="width: 10vw;height: 4vh;color: #072B59;border-radius: 5px;border: 1px solid #072B5">
+                    <option value="#">Selecione</option>
+                    ${
+                        nivel_acesso_cod === "1"
+                        ? `<option value="4">Cancelar</option>`
+                        : dadosAgendamentos.status === 'CONFIRMADO'
+                        ? `
+                            <option value="3">Concluir</option>
+                            <option value="4">Cancelar</option>
+                          `
+                        : dadosAgendamentos.status === 'PENDENTE'
+                        ? `
+                            <option value="2">Confirmar</option>
+                            <option value="4">Cancelar</option>
+                          `
+                        : ''
+                    }
+                  </select>
+                  <div id="assuntoContainer" style="margin-top: 10px; display: none;">
+                    <label for="assunto" style="color: #072B59;">Assunto:</label>
+                    <input type="text" id="assunto" class="swal2-input" placeholder="Digite o assunto" style="width: 20vw;" />
+                  </div>
+                `,
                 showCancelButton: true,
                 cancelButtonText: 'Cancelar',
                 confirmButtonText: 'Salvar',
                 confirmButtonColor: '#072B59',
                 cancelButtonColor: '#830f0f',
                 preConfirm: () => {
-                    const novoStatus = document.getElementById('novoStatus').value;
-                    return novoStatus;
+                    const novoStatusValue = document.getElementById('novoStatus').value;
+                    const assunto = document.getElementById('assunto').value;
+
+                    if (novoStatusValue === "2" && !assunto) {
+                        Swal.showValidationMessage('O campo Assunto é obrigatório ao confirmar.');
+                        return false;
+                    }
+
+                    return { novoStatusValue, assunto };
                 }
-            }).then((result) => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
                     try {
-                        novoStatus(id, result.value);
+                        const { novoStatusValue, assunto } = result.value;
+
+                        if (assunto) {
+                            const assuntoAtualizado = await novoAssunto(id, assunto);
+                            if (assuntoAtualizado) {
+                                await novoStatus(id, novoStatusValue, assunto);
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Sucesso!',
+                                    text: 'O status foi atualizado com sucesso.',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Erro!',
+                                    text: 'Falha ao atualizar o assunto.',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        } else {
+                            await novoStatus(id, novoStatusValue, assunto);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Sucesso!',
+                                text: 'O status foi atualizado com sucesso.',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                        setTimeout(() => carregarAgendamentos(paginaAtual), 1500);
                     } catch (error) {
-                        console.log(error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erro!',
+                            text: 'Ocorreu um erro ao tentar atualizar o status.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
                     }
+                } else {
+                    return;
+                }
+            });
+
+            // Adiciona o evento para mostrar/esconder o campo de assunto após o Swal ser exibido
+            Swal.getPopup().querySelector('#novoStatus').addEventListener('change', function () {
+                const assuntoContainer = Swal.getPopup().querySelector('#assuntoContainer');
+                if (this.value === "2") {
+                    assuntoContainer.style.display = 'block';
+                } else {
+                    assuntoContainer.style.display = 'none';
                 }
             });
         } else {
-            return
+            return;
         }
     });
 }
@@ -346,14 +416,14 @@ async function filtraAgendamentos() {
     if (horario_fim && horario_fim !== "") data.horario_fim = horario_fim
     if (assunto && assunto !== "") data.assunto = assunto;
 
-    
+
     console.log("Filtro a ser buscado")
     console.log(data)
 
     var tipoNome = ""
 
     if (nivel_acesso != "aluno") {
-        tipoNome = "professor"    
+        tipoNome = "professor"
     } else {
         tipoNome = "aluno"
     }
@@ -373,7 +443,7 @@ async function filtraAgendamentos() {
     }
 
     const listaAgendamentos = await resposta.json();
-    
+
     console.log("Resposta do filtro: ")
     console.log(listaAgendamentos)
     preencherTabelaHistorico(listaAgendamentos)
@@ -407,6 +477,7 @@ function atualizarBotoesPaginacao(total, atual) {
 }
 
 async function novoStatus(id, statusId) {
+    console.log(id + "id")
     try {
         const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
             method: 'GET',
@@ -440,6 +511,24 @@ async function novoStatus(id, statusId) {
         });
 
         console.log(novoStatus.status)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function novoAssunto(id, assunto) {
+    try {
+        const novoStatus = await fetch(`http://localhost:8080/agendamento/${id}`, {
+            method: "PUT",
+            body: assunto,
+            headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+        });
+
+        if (novoStatus.ok) {
+            return true
+        }
+
+        return false
     } catch (error) {
         console.log(error)
     }

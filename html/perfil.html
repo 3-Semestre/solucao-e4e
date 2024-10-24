@@ -76,7 +76,8 @@
                 <div class="collapse" id="professoresDropdown">
                     <ul class="nav flex-column dropdown-container">
                         <li><a href="visualizar.html?tipo=professor" class="nav-link">Visualizar</a></li>
-                        <li><a href="cadastrar.html?tipo=professor" class="nav-link">Cadastrar</a></li>
+                        <li><a href="cadastrar.html?tipo=professor" id="cadastro_professor"
+                                class="nav-link">Cadastrar</a></li>
                     </ul>
                 </div>
             </li>
@@ -216,6 +217,10 @@
                             <input type="time" class="form-control" id="input_intervalo_inicio" readonly required>
                             <input type="time" class="form-control" id="input_intervalo_fim" readonly required>
                         </div>
+                        <div class="mb-3" id="campo-meta">
+                            <label for="input_meta" class="form-label"><span>*</span>Meta de Aulas Concluídas:</label>
+                            <input type="number" class="form-control" id="input_meta" readonly required>
+                        </div>
                         </form>
                     </div>
                 </div>
@@ -232,15 +237,19 @@
         const horario_intervalo_form = document.getElementById("horario_intervalo_form");
         const horario_card_titulo = document.getElementById("horario_card_titulo");
         const horario_card = document.getElementById("horario_card");
+        const meta_div = document.getElementById("campo-meta");
+        const input_meta = document.getElementById("input_meta");
 
         horario_atendimento_form.style.display = "none";
         horario_intervalo_form.style.display = "none";
         horario_card_titulo.style.display = "none";
         horario_card.style.display = "none";
-        div_nivel_nicho = document.getElementById("div_nivel_nicho")
+        div_nivel_nicho = document.getElementById("div_nivel_nicho");
         div_nivel_nicho.style.display = "flex"
-        div_nivel_nicho.style.flexDirection = "column"
-        div_nivel_nicho.style.gap = "0px"
+        div_nivel_nicho.style.flexDirection = "column";
+        div_nivel_nicho.style.gap = "0px";
+        meta_div.style.display = "none";
+        input_meta.required = false;
     }
 
 
@@ -273,6 +282,10 @@
         document.getElementById("input_atendimento_fim").readOnly = false;
         document.getElementById("input_intervalo_inicio").readOnly = false;
         document.getElementById("input_intervalo_fim").readOnly = false;
+
+        if (sessionStorage.getItem("nivel_acesso_cod") != "1") {
+            document.getElementById("input_meta").readOnly = false;
+        }
     }
 
     function cancelarEdicao() {
@@ -306,6 +319,10 @@
         document.getElementById("input_atendimento_fim").readOnly = true;
         document.getElementById("input_intervalo_inicio").readOnly = true;
         document.getElementById("input_intervalo_fim").readOnly = true;
+
+        if (sessionStorage.getItem("nivel_acesso_cod") != "1") {
+            document.getElementById("input_meta").readOnly = true;
+        }
     }
 
     document.getElementById('botaoAtualizar').addEventListener('click', editarPerfil);
@@ -333,10 +350,12 @@
                 try {
                     if (sessionStorage.getItem("nivel_acesso_cod") != "1") {
                         if (!atualizaHorarioAtendimento()) {
-                            throw new Error("Erro ao atualizar nicho");
+                            throw new Error("Erro ao atualizar horario atendimento");
                         } else if (!atualizarNichoUsuario()) {
                             throw new Error("Erro ao atualizar nicho");
                         } else if (!atualizarNivelUsuario()) {
+                            throw new Error("Erro ao atualizar nível");
+                        } else if (!atualizarMeta()) {
                             throw new Error("Erro ao atualizar nível");
                         }
                     } atualizarPerfil()

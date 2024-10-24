@@ -16,92 +16,118 @@ const dateInput = document.getElementById('dateInput');
 const calendar = document.getElementById('calendar');
 const weekdays = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
 
-// Função para formatar a data no formato YYYY-MM-DD
+// Função para formatar a data no formato DD/MM/YYYY
 function formatDate(dateString) {
-    const [month, day, year] = dateString.split('/');
+  if (!dateString) return dateString;
+
+  // Verifica se a data está no formato AAAA-MM-DD
+  if (dateString.includes('-')) {
+    const [year, month, day] = dateString.split('-');
     return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
+  }
+
+  // Caso contrário, assume que está no formato MM/DD/AAAA
+  const [month, day, year] = dateString.split('/');
+  if (!month || !day || !year) return dateString;
+
+  return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
 }
 
+
+
 function undoFormatDate(dateString) {
-    const [day, month, year] = dateString.split('/');
-    return `${year}-${month}-${day}`;
+  const [day, month, year] = dateString.split('/');
+  return `${year}-${month}-${day}`;
 }
 
 // Função para abrir o modal
 function openModal(date) {
-    const today = new Date();
-    const selectedDate = new Date(date);
+  const today = new Date();
+  const selectedDate = new Date(date);
 
-    today.setHours(0, 0, 0, 0);
-    selectedDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+  selectedDate.setHours(0, 0, 0, 0);
 
-    clicked = date;
-    
-    const eventDay = events.find(event => event.data === clicked);
+  clicked = date;
 
-    document.getElementById('professor-select').value = '';
-    document.querySelectorAll('.time-button').forEach(button => button.classList.remove('selected'));
-    selectedTime = null; 
+  const eventDay = events.find(event => event.data === clicked);
 
-    dateInput.value = formatDate(clicked);
+  document.getElementById('professor-select').value = '';
+  document.querySelectorAll('.time-button').forEach(button => button.classList.remove('selected'));
+  selectedTime = null;
 
-    document.getElementById('deleteDateInput').value = '';
-    document.getElementById('deleteProfessorInput').value = '';
-    document.getElementById('deleteTimeInput').value = '';
-    document.getElementById('eventText').innerText = '';
-    const statusElement = document.getElementById('deleteStatus');
-    statusElement.className = 'status'; 
+  dateInput.value = formatDate(clicked);
 
-    if (eventDay) {
-        document.getElementById('deleteDateInput').value = formatDate(clicked);
-        document.getElementById('deleteProfessorInput').value = eventDay.professor.nomeCompleto;
-        document.getElementById('deleteTimeInput').value = `${formatarHorario(eventDay.horarioInicio)} - ${formatarHorario(eventDay.horarioFim)}`;
-        document.getElementById('eventText').innerText = eventDay.assunto;
+  document.getElementById('deleteDateInput').value = '';
+  document.getElementById('deleteProfessorInput').value = '';
+  document.getElementById('deleteTimeInput').value = '';
+  document.getElementById('eventText').innerText = '';
+  const statusElement = document.getElementById('deleteStatus');
+  statusElement.className = 'status';
 
-        statusElement.className = `status ${eventDay.status.toLowerCase()}`;
-        statusElement.innerText = getEventStatusText(eventDay.status);
+  if (eventDay && eventDay.status != "CANCELADO") {
+    document.getElementById('deleteDateInput').value = formatDate(clicked);
+    document.getElementById('deleteProfessorInput').value = eventDay.professor.nomeCompleto;
+    document.getElementById('deleteTimeInput').value = `${formatarHorario(eventDay.horarioInicio)} - ${formatarHorario(eventDay.horarioFim)}`;
+    document.getElementById('eventText').innerText = eventDay.assunto;
 
-        deleteEventModal.style.display = 'block';
-    } else {
-        buscarProfessores();
-        newEvent.style.display = 'block';
+    statusElement.className = `status ${eventDay.status.toLowerCase()}`;
+    statusElement.innerText = getEventStatusText(eventDay.status);
+
+    deleteEventModal.style.display = 'block';
+  } else {
+    if (selectedDate < today) {
+      Swal.fire({
+        title: 'Erro',
+        text: 'Não é possível selecionar uma data anterior a de hoje.',
+        icon: 'info',
+        confirmButtonText: 'OK',
+        confirmButtonColor: 'red',
+        background: '#f2f2f2',
+        color: '#333'
+      });
+      return;
     }
+    buscarProfessores();
+    newEvent.style.display = 'block';
+  }
 
-    backDrop.style.display = 'block';
+  backDrop.style.display = 'block';
 }
 
 // Função para obter o texto do status do evento
 function getEventStatusText(status) {
-    return status === 'PENDENTE' ? 'Agendamento pendente' :
-           status === 'CONFIRMADO' ? 'Agendamento confirmado' :
-           status === 'CONCLUIDO' ? 'Agendamento concluído' :
-           'Agendamento cancelado';
+  return status === 'PENDENTE' ? 'Agendamento pendente' :
+    status === 'CONFIRMADO' ? 'Agendamento confirmado' :
+      status === 'CONCLUIDO' ? 'Agendamento concluído' :
+        'Agendamento cancelado';
 }
 
 function load() {
   const date = new Date();
+  console.log(date)
 
-  if (nav !== 0) {
-      date.setMonth(new Date().getMonth() + nav);
-  }
+  // Ajusta o mês com base na navegação
+  date.setMonth(date.getMonth() + nav);
+  console.log(nav)
+  console.log(date)
 
-  const day = date.getDate();
-  const month = date.getMonth();
   const year = date.getFullYear();
+  const month = date.getMonth();
 
   const daysMonth = new Date(year, month + 1, 0).getDate();
   const firstDayMonth = new Date(year, month, 1);
 
   const dateString = firstDayMonth.toLocaleDateString('pt-BR', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
+    weekday: 'long',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
   });
 
   const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
 
-  let monthName = date.toLocaleDateString('pt-BR', { month: 'long' });
+  let monthName = firstDayMonth.toLocaleDateString('pt-BR', { month: 'long' });
   monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
 
   document.getElementById('monthDisplay').innerText = `${monthName} ${year}`;
@@ -109,157 +135,156 @@ function load() {
   calendar.innerHTML = '';
 
   for (let i = 1; i <= paddingDays + daysMonth; i++) {
-      const dayS = document.createElement('div');
-      dayS.classList.add('day');
+    const dayS = document.createElement('div');
+    dayS.classList.add('day');
 
-      const dayString = `${month + 1}/${i - paddingDays}/${year}`;
+    const dayString = `${year}-${(month + 1).toString().padStart(2, '0')}-${(i - paddingDays).toString().padStart(2, '0')}`;
 
-      if (i > paddingDays) {
-          const dayNumber = document.createElement('span'); // Cria um <span> para o número do dia
-          dayNumber.innerText = i - paddingDays; // Adiciona o número do dia ao <span>
-          dayS.appendChild(dayNumber); // Adiciona o <span> à <div> do dia
+    if (i > paddingDays) {
+      const dayNumber = document.createElement('span');
+      dayNumber.innerText = i - paddingDays;
+      dayS.appendChild(dayNumber);
 
-          // Verifica se o dia é o atual
-          if (i - paddingDays === day && nav === 0 && month === new Date().getMonth() && year === new Date().getFullYear()) {
-              dayNumber.id = 'currentDay'; // Aplica a ID ao <span> do dia atual
-          }
+      const eventDay = events.find((event) => event.data === dayString);
 
-          const eventDay = events.find((event) => event.date === dayString);
-          if (eventDay) {
-              const eventDiv = document.createElement('div');
-              eventDiv.classList.add('event');
-              eventDiv.innerText = eventDay.assunto;
-              dayS.appendChild(eventDiv);
-          }
-
-          dayS.addEventListener('click', () => openModal(dayString));
-      } else {
-          dayS.classList.add('padding');
+      if (i - paddingDays === date.getDate() && nav === 0 && month === date.getMonth() && year === date.getFullYear()) {
+        dayNumber.id = 'currentDay';
       }
 
-      calendar.appendChild(dayS);
+      if (eventDay && eventDay.status !== "CANCELADO") {
+        const eventDiv = document.createElement('div');
+        eventDiv.classList.add('event');
+        eventDiv.innerHTML = "Professor: <br>" + eventDay.professor.nomeCompleto;
+        dayS.appendChild(eventDiv);
+      }
+
+      dayS.addEventListener('click', () => openModal(dayString));
+    } else {
+      dayS.classList.add('padding');
+    }
+
+    calendar.appendChild(dayS);
   }
 }
 
-
 // Função para fechar o modal
 function closeModal() {
-    newEvent.style.display = 'none';
-    deleteEventModal.style.display = 'none';
-    backDrop.style.display = 'none';
-    divHorarios.innerHTML = "";
-    professorSelect.innerHTML = '<option value="" disabled selected>Selecione um professor</option>';
-    clicked = null;
-    selectedTime = null;
-    load();
+  newEvent.style.display = 'none';
+  deleteEventModal.style.display = 'none';
+  backDrop.style.display = 'none';
+  divHorarios.innerHTML = "";
+  professorSelect.innerHTML = '<option value="" disabled selected>Selecione um professor</option>';
+  clicked = null;
+  selectedTime = null;
+  load();
 }
 
 // Função para buscar professores
 async function buscarProfessores() {
-    try {
-        const response = await fetch('http://localhost:8080/usuarios/professor', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            }
-        });
+  try {
+    const response = await fetch('http://localhost:8080/usuarios/professor', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+      }
+    });
 
-        if (response.ok) {
-            const professores = await response.json();
-            professores.forEach(professor => {
-                const option = document.createElement('option');
-                option.value = professor.id;
-                option.innerText = professor.nomeCompleto;
-                professorSelect.appendChild(option);
-            });
-        } else {
-            Swal.fire({
-                title: 'Erro',
-                text: 'Não há professores cadastrados.',
-                icon: 'error',
-                confirmButtonText: 'OK',
-                confirmButtonColor: 'red',
-                background: '#f2f2f2',
-                color: '#333'
-            });
-        }
-    } catch (error) {
-        console.error('Erro na requisição:', error);
+    if (response.ok) {
+      const professores = await response.json();
+      professores.forEach(professor => {
+        const option = document.createElement('option');
+        option.value = professor.id;
+        option.innerText = professor.nomeCompleto;
+        professorSelect.appendChild(option);
+      });
+    } else {
+      Swal.fire({
+        title: 'Erro',
+        text: 'Não há professores cadastrados.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+        confirmButtonColor: 'red',
+        background: '#f2f2f2',
+        color: '#333'
+      });
     }
+  } catch (error) {
+    console.error('Erro na requisição:', error);
+  }
 }
 
 professorSelect.addEventListener('change', async (event) => {
   const selectedProfessor = event.target.value;
   console.log("Data selecionada: " + dateInput.value);
   try {
-      const response = await fetch(`http://localhost:8080/horario-professor/disponiveis/${selectedProfessor}?dia=${dateInput.value}`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-          }
+    const response = await fetch(`http://localhost:8080/horario-professor/disponiveis/${selectedProfessor}?dia=${dateInput.value}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (response.ok) {
+      const professorData = await response.json();
+      console.log('Horários disponíveis:', professorData);
+      divHorarios.innerHTML = ''; // Limpa os horários anteriores
+
+      professorData.forEach(horario => {
+        const horarioBtn = document.createElement('button');
+        horarioBtn.classList.add('time-button');
+        horarioBtn.setAttribute('data-time', `${horario.horario_inicio} - ${horario.horario_fim}`);
+        horarioBtn.innerText = `${formatarHorario(horario.horario_inicio)} - ${formatarHorario(horario.horario_fim)}`;
+        divHorarios.appendChild(horarioBtn);
       });
 
-      if (response.ok) {
-          const professorData = await response.json();
-          console.log('Horários disponíveis:', professorData);
-          divHorarios.innerHTML = ''; // Limpa os horários anteriores
-
-          professorData.forEach(horario => {
-              const horarioBtn = document.createElement('button');
-              horarioBtn.classList.add('time-button');
-              horarioBtn.setAttribute('data-time', `${horario.horario_inicio} - ${horario.horario_fim}`);
-              horarioBtn.innerText = `${formatarHorario(horario.horario_inicio)} - ${formatarHorario(horario.horario_fim)}`;
-              divHorarios.appendChild(horarioBtn);
-          });
-
-          // Adicionar evento de clique para selecionar o horário
-          document.querySelectorAll('.time-button').forEach(button => {
-              button.addEventListener('click', function () {
-                  document.querySelectorAll('.time-button').forEach(btn => btn.classList.remove('selected'));
-                  this.classList.add('selected');
-                  selectedTime = this.getAttribute('data-time');
-              });
-          });
-      } else {
-          console.error('Erro ao buscar dados do professor');
-      }
+      // Adicionar evento de clique para selecionar o horário
+      document.querySelectorAll('.time-button').forEach(button => {
+        button.addEventListener('click', function () {
+          document.querySelectorAll('.time-button').forEach(btn => btn.classList.remove('selected'));
+          this.classList.add('selected');
+          selectedTime = this.getAttribute('data-time');
+        });
+      });
+    } else {
+      console.error('Erro ao buscar dados do professor');
+    }
   } catch (error) {
-      console.error('Erro na requisição:', error);
+    console.error('Erro na requisição:', error);
   }
 });
 
 // Função para salvar um novo evento
 async function saveEvent() {
-    const professorSelecionado = professorSelect.value;
-    const horarioSelecionado = selectedTime;
+  const professorSelecionado = professorSelect.value;
+  const horarioSelecionado = selectedTime;
 
-    if (professorSelecionado && horarioSelecionado) {
-        try {
-            await salvarAgendamento(professorSelecionado, horarioSelecionado);
-            Swal.fire({
-                title: 'Agendamento realizado com sucesso!',
-                html: `<p>A aula com o professor <strong>${professorSelecionado}</strong> foi agendada para <strong>${dateInput.value}</strong> às <strong>${selectedTime}</strong>.</p>`,
-                icon: 'success',
-                confirmButtonText: 'OK',
-                confirmButtonColor: 'green',
-                background: '#f2f2f2',
-                color: '#333'
-            }).then(() => closeModal());
-        } catch (error) {
-            console.log('Erro ao salvar agendamento:', error);
-        }
-    } else {
-        Swal.fire({
-            title: 'Erro',
-            text: 'Preencha todos os campos e selecione um horário.',
-            icon: 'error',
-            confirmButtonText: 'OK',
-            confirmButtonColor: 'red',
-            background: '#f2f2f2',
-            color: '#333'
-        });
+  if (professorSelecionado && horarioSelecionado) {
+    try {
+      await salvarAgendamento(professorSelecionado, horarioSelecionado);
+      Swal.fire({
+        title: 'Agendamento realizado com sucesso!',
+        html: `<p>A aula com o professor <strong>${professorSelecionado}</strong> foi agendada para <strong>${dateInput.value}</strong> às <strong>${selectedTime}</strong>.</p>`,
+        icon: 'success',
+        showConfirmButton: false, // Remove o botão de confirmação
+        timer: 2000,
+        background: '#f2f2f2',
+        color: '#333'
+      }).then(() => closeModal());
+    } catch (error) {
+      console.log('Erro ao salvar agendamento:', error);
     }
+  } else {
+    Swal.fire({
+      title: 'Erro',
+      text: 'Preencha todos os campos e selecione um horário.',
+      icon: 'error',
+      confirmButtonText: 'OK',
+      confirmButtonColor: 'red',
+      background: '#f2f2f2',
+      color: '#333'
+    });
+  }
 }
 
 // Função para salvar um novo agendamento
@@ -267,106 +292,116 @@ async function salvarAgendamento(professorId, horario) {
   const [horarioInicio, horarioFim] = horario.split(" - ");
 
   let agendamento = {
-      "data": undoFormatDate(dateInput.value),
-      "horarioInicio": horarioInicio.trim(),
-      "horarioFim": horarioFim.trim(),
-      "fk_professor": professorId,
-      "fk_aluno": Number(sessionStorage.getItem('id'))
+    "data": undoFormatDate(dateInput.value),
+    "horarioInicio": horarioInicio.trim(),
+    "horarioFim": horarioFim.trim(),
+    "fk_professor": professorId,
+    "fk_aluno": Number(sessionStorage.getItem('id'))
   };
 
   try {
-      const respostaAgendamento = await fetch("http://localhost:8080/agendamento", {
-          method: "POST",
-          body: JSON.stringify(agendamento),
-          headers: { 
-              'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-              "Content-type": "application/json; charset=UTF-8"
-          }
-      });
-
-      if (respostaAgendamento.status === 201) {
-          console.log("Agendamento realizado com sucesso!");
-      } else {
-          console.log("Erro ao realizar o agendamento:", respostaAgendamento.status);
+    const respostaAgendamento = await fetch("http://localhost:8080/agendamento", {
+      method: "POST",
+      body: JSON.stringify(agendamento),
+      headers: {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+        "Content-type": "application/json; charset=UTF-8"
       }
+    });
+
+    const respostaJson = await respostaAgendamento.json();
+
+    if (respostaAgendamento.status === 201) {
+      console.log("Agendamento realizado com sucesso!");
+      const agendamentoId = respostaJson.id;
+      pushAgendamentoStack(agendamentoId);
+      localStorage.setItem('exibirAlerta', true)
+      setTimeout("location.href = 'agendamentos.html?tipo=futuro'", 2000);
+    } else {
+      console.log("Erro ao realizar o agendamento:", respostaAgendamento.status);
+    }
   } catch (error) {
-      console.log("Erro na requisição:", error);
+    console.log("Erro na requisição:", error);
   }
 }
 
-
 // Função para deletar um evento
 function deleteEvent() {
-    Swal.fire({
-        title: 'Tem certeza?',
-        text: 'Você deseja cancelar este agendamento?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sim, cancelar',
-        cancelButtonText: 'Não, manter',
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+  Swal.fire({
+    title: 'Tem certeza?',
+    text: 'Você deseja cancelar este agendamento?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sim, cancelar',
+    cancelButtonText: 'Não, manter',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    background: '#f2f2f2',
+    color: '#333'
+  }).then(result => {
+    if (result.isConfirmed) {
+      events = events.filter(event => event.data !== clicked);
+      localStorage.setItem('events', JSON.stringify(events));
+      Swal.fire({
+        title: 'Cancelado!',
+        text: 'O agendamento foi cancelado com sucesso.',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: 'green',
         background: '#f2f2f2',
         color: '#333'
-    }).then(result => {
-        if (result.isConfirmed) {
-            events = events.filter(event => event.data !== clicked);
-            localStorage.setItem('events', JSON.stringify(events));
-            Swal.fire({
-                title: 'Cancelado!',
-                text: 'O agendamento foi cancelado com sucesso.',
-                icon: 'success',
-                confirmButtonText: 'OK',
-                confirmButtonColor: 'green',
-                background: '#f2f2f2',
-                color: '#333'
-            }).then(() => closeModal());
-        }
-    });
+      }).then(() => closeModal());
+    }
+  });
 }
 
 // Funções adicionais
 // Função para carregar os agendamentos e exibi-los no calendário
 async function carregarEventos() {
   try {
-      const response = await fetch(`http://localhost:8080/agendamento/1/${sessionStorage.getItem('id')}?page=0&size=5&sortDirection=desc`, {
-          method: 'GET',
-          headers: {
-              'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-              'Content-Type': 'application/json'
-          }
-      });
+    // Calcular o mês e ano com base na navegação (nav)
+    const currentDate = new Date();
+    currentDate.setMonth(currentDate.getMonth() + nav); // Ajusta o mês com base na navegação
+    const currentMonth = currentDate.getMonth() + 1; // O mês é baseado em zero, então somamos 1
+    const currentYear = currentDate.getFullYear();
 
-      if (response.ok) {
-          const dados = await response.json();
-          console.log(dados);
-
-          // Verifica se os dados retornados são um array de agendamentos
-          events = Array.isArray(dados.content) ? dados.content : [];
-          console.log('Eventos carregados:', events);
-
-          // Chama a função para exibir os eventos no calendário
-          load();
-      } else {
-          console.error('Erro ao carregar eventos do banco');
-          events = [];
+    const response = await fetch(`http://localhost:8080/agendamento/1/${sessionStorage.getItem('id')}/${currentMonth}/${currentYear}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
       }
-  } catch (error) {
-      console.error('Erro na requisição:', error);
+    });
+
+    if (response.status === 204) {
+      console.error('Não há agendamentos');
       events = [];
+    } else if (response.ok) {
+      const dados = await response.json();
+      events = Array.isArray(dados) ? dados : [];
+      console.log('Eventos carregados:', events);
+    } else {
+      console.error('Erro ao carregar eventos do banco');
+      events = [];
+    }
+    load();
+  } catch (error) {
+    console.error('Erro na requisição:', error);
+    events = [];
+    load();
   }
 }
 
 // Função para adicionar os eventos aos botões
 function buttons() {
   document.getElementById('backButton').addEventListener('click', () => {
-      nav--;
-      load();
+    nav--;
+    carregarEventos();
   });
 
   document.getElementById('nextButton').addEventListener('click', () => {
-      nav++;
-      load();
+    nav++;
+    carregarEventos();
   });
 
   document.getElementById('agendar-button').addEventListener('click', saveEvent);
@@ -375,15 +410,10 @@ function buttons() {
   document.getElementById('fechar-button').addEventListener('click', closeModal);
 
   document.querySelectorAll('.modal-close').forEach(button => {
-      button.addEventListener('click', closeModal);
+    button.addEventListener('click', closeModal);
   });
 }
-
-// Chama a função para configurar os botões
-buttons();
-
 
 // Chama as funções principais
 buttons();
 carregarEventos();
-load();
