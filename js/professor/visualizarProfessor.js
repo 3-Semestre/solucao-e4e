@@ -73,18 +73,24 @@ async function buscarProfessor(paginaAtual) {
                     <label for="horario-intervalo_${professorId}">Horário de intervalo:</label>
                     <label class="label2" type="text" id="horario-intervalo_${professorId}">${formatarHorario(professor.pausa_inicio || '')} às ${formatarHorario(professor.pausa_fim || '')} </label>
                 </div>
+            
+            </div>
+        </div>
+
+        <br>
+
+        <div class="course-information">
                 <div class="form-group">
                     <label for="meta_${professorId}">Metas:</label>
                     <input class="label2" type="text" id="meta_${professorId}" value="${professor.qtd_aula} aulas" readonly>
                 </div>
-            </div>
         </div>
 
         ${nivelAcesso === 3 ? `
-            <div class="lapis">
+            <div class="lapis-professor">
                 <img src="../imgs/pen.png" alt="Editar professor" style="width: 3vw; height: 6vh" onclick="editarProfessor(${professorId})">
             </div>
-            <div class="lixeira" onclick="confirmacaoDeleteProfessor(${professorId})">
+            <div class="lixeira-professor" onclick="confirmacaoDeleteProfessor(${professorId})">
                 <img src="../imgs/trash-bin.png" alt="Excluir professor" style="width: 3vw; height: 6vh">
             </div>
             ` : ''}

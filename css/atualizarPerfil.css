@@ -101,7 +101,7 @@ body {
     align-items: center;
     flex-direction: column;
     width: 18vw;
-    height: 30vh;
+    height: 36vh;
     object-fit: cover; /* Corta a imagem para preencher o espaço sem distorção */
     border-radius: 5%;
 }
@@ -109,7 +109,7 @@ body {
 
 .photo-professor {
     width: 20vw; /* Define um tamanho fixo para a moldura */
-    height: 30vh; /* Define um tamanho fixo para a moldura */
+    height: 36vh; /* Define um tamanho fixo para a moldura */
 }
 
 

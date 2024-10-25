@@ -101,7 +101,7 @@ label {
     align-items: center;
     justify-content: space-between;
     padding: 20px;
-    margin-bottom: 15px;
+    margin-bottom: -74px;
     width: 100%;
     gap: 20px;
 }
@@ -237,7 +237,14 @@ select {
     display: flex;
     justify-content: flex-end;
     position: relative;
-    bottom: 12vh;
+    bottom: 6vh;
+}
+
+.lapis-professor{
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    bottom: 28vh;
 }
 
 .lapis img{
@@ -250,7 +257,14 @@ select {
     display: flex;
     justify-content: flex-end;
     position: relative;
-    bottom: 10vh;
+    bottom: 23vh;
+}
+
+.lixeira-professor {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    bottom: 23vh;
 }
 
 .lixeira img {
