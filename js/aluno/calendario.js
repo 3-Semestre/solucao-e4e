@@ -379,7 +379,7 @@ async function carregarEventos() {
     } else if (response.ok) {
       const dados = await response.json();
       events = Array.isArray(dados) ? dados : [];
-      console.log('Eventos carregados:', events);
+      console.log('Eventos carregados:', events); 
     } else {
       console.error('Erro ao carregar eventos do banco');
       events = [];

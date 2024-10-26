@@ -120,7 +120,7 @@ body {
 }
 
 .box-kpis {
-    width: 22vw;
+    width: 25vw;
     height: 25vh;
     border: 1px solid #072B59;
     border-radius: 10px;
@@ -195,11 +195,10 @@ body {
 }
 
 .kpis2 {
-    width: 100%;
     display: flex;
-    position: relative;
-    justify-content: space-between;
-    bottom: 20vh;
+    gap: 6rem;
+    align-items: center;
+    margin-top: 20px;
 }
 
 .box-chart2 {
