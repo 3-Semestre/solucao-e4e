@@ -477,7 +477,6 @@ function atualizarBotoesPaginacao(total, atual) {
 }
 
 async function novoStatus(id, statusId) {
-    console.log(id + "id")
     try {
         const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
             method: 'GET',
