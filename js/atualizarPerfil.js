@@ -53,10 +53,13 @@ async function atualizarPerfil() {
             });
         } else if (respostaCadastro.status == 200) {
             Swal.fire({
+                title: "Alterações salvas com sucesso!",
                 icon: "success",
-                title: "Dados atualizados com sucesso!",
-                showConfirmButton: false,
-                timer: 1500
+                background: '#f2f2f2',
+                color: '#333',
+                showConfirmButton: false, 
+                timer: 1500,
+                timerProgressBar: true
             });
         }
     } catch (e) {

@@ -294,8 +294,16 @@ async function deletarAluno(id) {
     });
 
     if (respostaDelete.status == 204) {
-        Swal.fire({ title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green' });
-        setTimeout(() => window.location.reload(), 2500);
+        Swal.fire({
+            title: "Aluno excluído com sucesso!",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+            background: '#f2f2f2',
+            color: '#333',
+            timerProgressBar: true
+        });
+        setTimeout(() => buscarAlunos(0), 1500);
     } else {
         Swal.fire({
             icon: 'error',
@@ -303,7 +311,7 @@ async function deletarAluno(id) {
             showConfirmButton: false,
             text: 'Por favor, tente novamente mais tarde. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
             footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
-            timer: 2000
+            timer: 1500
         });
     }
 }
