@@ -316,8 +316,7 @@ async function buscarDetalhes(id) {
                     }
                   </select>
                   <div id="assuntoContainer" style="margin-top: 10px; display: none;">
-                    <label for="assunto" style="color: #072B59;">Assunto:</label>
-                    <input type="text" id="assunto" class="swal2-input" placeholder="Digite o assunto" style="width: 20vw;" />
+                    <input type="text" id="assunto" class="swal2-input" placeholder="Digite o assunto" style="width: 24vw; height: 5vh; color: #072B59;" />
                   </div>
                 `,
                 showCancelButton: true,
