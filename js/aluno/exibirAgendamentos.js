@@ -8,6 +8,10 @@ let totalPaginas = 0;
 const urlParams = new URLSearchParams(window.location.search);
 const tempo = urlParams.get('tipo');
 
+var dataAgendamento;
+var horarioInicioAgendamento;
+var horarioFimAgendamento;
+
 function carregarHeadersTabela() {
     const tabela = document.getElementById("tabela_agendamento");
     if (Number(nivel_acesso_cod) == 3 || Number(nivel_acesso_cod) == 2) {
@@ -219,7 +223,6 @@ function preencherTabelaHistorico(dados) {
     tabela.innerHTML += `<tbody>${resultados}</tbody>`;
 }
 
-
 async function buscarDetalhes(id) {
     const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
         method: 'GET',
@@ -233,8 +236,6 @@ async function buscarDetalhes(id) {
         throw new Error('Erro ao buscar dados do servidor');
     }
 
-    const dadosAgendamentos = await respostaAgendamento.json();
-
     const respostaHistorico = await fetch(`http://localhost:8080/historico-agendamento/${id}`, {
         method: 'GET',
         headers: {
@@ -247,6 +248,12 @@ async function buscarDetalhes(id) {
         throw new Error('Erro ao buscar dados do servidor');
     }
 
+    const dadosAgendamentos = await respostaAgendamento.json();
+
+    dataAgendamento = dadosAgendamentos.data;
+    horarioInicioAgendamento = dadosAgendamentos.horarioInicio;
+    horarioFimAgendamento = dadosAgendamentos.horarioFim;
+
     Swal.fire({
         title: '<h2 style="color: #072B59; font-weight: bolder;">Detalhes do agendamento</h2>',
         html: `
@@ -254,10 +261,9 @@ async function buscarDetalhes(id) {
         <p><strong>Nome do aluno:</strong> ${dadosAgendamentos.aluno.nomeCompleto} <br />
         <p><strong>Professor:</strong> ${dadosAgendamentos.professor.nomeCompleto} <br />
         <p><strong>Assunto:</strong> ${dadosAgendamentos.assunto} <br />
-        <p><strong>Data:</strong> ${formatarData(dadosAgendamentos.data)} <br />
-        <p><strong>Horário de Início:</strong> ${formatarHorario(dadosAgendamentos.horarioInicio)} <br />
-        <p><strong>Horário de fim:</strong> ${formatarHorario(dadosAgendamentos.horarioFim)} <br />
-        
+        <p id="data"><strong>Data:</strong> <span id="data-valor">${formatarData(dadosAgendamentos.data)}</span></p>
+        <p id="horario_inicio"><strong>Horário de Início:</strong> <span id="horario-inicio-valor">${formatarHorario(dadosAgendamentos.horarioInicio)}</span></p>
+        <p id="horario_fim"><strong>Horário de fim:</strong> <span id="horario-fim-valor">${formatarHorario(dadosAgendamentos.horarioFim)}</span></p> 
         <div style="margin: 20px 0;">
       <div style="display: flex; align-items: center;">
         
@@ -296,28 +302,37 @@ async function buscarDetalhes(id) {
             Swal.fire({
                 title: '<h2 style="color: #072B59; font-weight: bolder;">Editar Status</h2>',
                 html: `
-                  <label for="novoStatus" style="color: #072B59; position: relative; top: 0.1vh;">Selecione o novo status:</label>
-                  <select id="novoStatus" class="swal2-input" style="width: 10vw;height: 4vh;color: #072B59;border-radius: 5px;border: 1px solid #072B5">
-                    <option value="#">Selecione</option>
-                    ${
-                        nivel_acesso_cod === "1"
-                        ? `<option value="4">Cancelar</option>`
-                        : dadosAgendamentos.status === 'CONFIRMADO'
-                        ? `
-                            <option value="3">Concluir</option>
-                            <option value="4">Cancelar</option>
-                          `
-                        : dadosAgendamentos.status === 'PENDENTE'
-                        ? `
-                            <option value="2">Confirmar</option>
-                            <option value="4">Cancelar</option>
-                          `
-                        : ''
-                    }
-                  </select>
-                  <div id="assuntoContainer" style="margin-top: 10px; display: none;">
-                    <input type="text" id="assunto" class="swal2-input" placeholder="Digite o assunto" style="width: 24vw; height: 5vh; color: #072B59;" />
-                  </div>
+                    <label for="novoStatus" style="color: #072B59; position: relative; top: 0.1vh;">Selecione o novo status:</label>
+                    <select id="novoStatus" class="swal2-input" style="width: 10vw;height: 4vh;color: #072B59;border-radius: 5px;border: 1px solid #072B5">
+                        <option value="#">Selecione</option>
+                        ${nivel_acesso_cod === "1"
+                            ? `<option value="4">Cancelar</option>`
+                            : dadosAgendamentos.status === 'CONFIRMADO'
+                                ? `
+                                <option value="3">Concluir</option>
+                                <option value="5">Transferir</option>
+                                <option value="4">Cancelar</option>
+                              `
+                                : dadosAgendamentos.status === 'PENDENTE'
+                                    ? `
+                                <option value="2">Confirmar</option>
+                                <option value="4">Cancelar</option>
+                              `
+                                    : ''
+                        }
+                    </select>
+                    <div id="assuntoContainer" style="margin-top: 10px; display: none;">
+                        <input type="text" id="assunto" class="swal2-input" placeholder="Digite o assunto" style="width: 24vw; height: 5vh; color: #072B59;" />
+                    </div>
+                    
+                    <div id="transferenciaContainer" style="margin-top: 10px; display: none;">
+                        <label for="professorSelect" style="margin-top: 10px; color: #072B59; align-self: left; display: flex; margin-left: 3vw">Selecione o novo professor:</label>
+                        <select id="professorSelect" class="swal2-input" style="width: 24vw; height: 5vh; color: #072B59;">
+                            <option value="">Carregando professores...</option>
+                        </select>
+                    </div>
+            
+                    <span id="mensagem-204" style="display: none;">Não há professores nesse dia e horário disponíveis para transferência</span>    
                 `,
                 showCancelButton: true,
                 cancelButtonText: 'Cancelar',
@@ -327,21 +342,49 @@ async function buscarDetalhes(id) {
                 preConfirm: () => {
                     const novoStatusValue = document.getElementById('novoStatus').value;
                     const assunto = document.getElementById('assunto').value;
-
+                    const professorId = document.getElementById('professorSelect').value; // Captura o professor selecionado
+            
+                    // Validações
                     if (novoStatusValue === "2" && !assunto) {
                         Swal.showValidationMessage('O campo Assunto é obrigatório ao confirmar.');
                         return false;
                     }
-
-                    return { novoStatusValue, assunto };
+                    if (novoStatusValue === "5" && !professorId) { // Verifica se o professor foi selecionado para transferência
+                        Swal.showValidationMessage('Selecione um professor para a transferência.');
+                        return false;
+                    }
+            
+                    return { novoStatusValue, assunto, professorId };
                 }
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     try {
-                        const { novoStatusValue, assunto } = result.value;
-
-                        if (assunto) {
+                        const { novoStatusValue, assunto, professorId } = result.value;
+            
+                        if (novoStatusValue === "5" && professorId) { // Verifica se é transferência
+                            const transferenciaRealizada = await novoStatusTransferencia(id, professorId); // Passa apenas id do agendamento e id do professor
+            
+                            if (transferenciaRealizada) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Sucesso!',
+                                    text: 'A transferência foi realizada com sucesso.',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Erro!',
+                                    text: 'Falha ao realizar a transferência.',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        } else if (assunto) {
+                            // Lógica para atualização de assunto (caso não seja transferência)
                             const assuntoAtualizado = await novoAssunto(id, assunto);
+            
                             if (assuntoAtualizado) {
                                 await novoStatus(id, novoStatusValue, assunto);
                                 Swal.fire({
@@ -361,6 +404,7 @@ async function buscarDetalhes(id) {
                                 });
                             }
                         } else {
+                            // Lógica para atualização de status sem transferência e sem atualização de assunto
                             await novoStatus(id, novoStatusValue, assunto);
                             Swal.fire({
                                 icon: 'success',
@@ -370,12 +414,14 @@ async function buscarDetalhes(id) {
                                 timer: 1500
                             });
                         }
+            
+                        // Recarregar a lista de agendamentos após a operação
                         setTimeout(() => carregarAgendamentos(paginaAtual), 1500);
                     } catch (error) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Erro!',
-                            text: 'Ocorreu um erro ao tentar atualizar o status.',
+                            text: 'Ocorreu um erro ao tentar realizar a transferência.',
                             showConfirmButton: false,
                             timer: 1500
                         });
@@ -383,7 +429,7 @@ async function buscarDetalhes(id) {
                 } else {
                     return;
                 }
-            });
+            });            
 
             // Adiciona o evento para mostrar/esconder o campo de assunto após o Swal ser exibido
             Swal.getPopup().querySelector('#novoStatus').addEventListener('change', function () {
@@ -392,6 +438,15 @@ async function buscarDetalhes(id) {
                     assuntoContainer.style.display = 'block';
                 } else {
                     assuntoContainer.style.display = 'none';
+                }
+            });
+            // Adiciona o evento para mostrar/esconder o campo de transferencia após o Swal ser exibido
+            Swal.getPopup().querySelector('#novoStatus').addEventListener('change', function () {
+                const transferenciaContainer = Swal.getPopup().querySelector('#transferenciaContainer');
+                if (this.value === "5") {
+                    buscarProfessoreDisponveis()
+                } else {
+                    transferenciaContainer.style.display = 'none';
                 }
             });
         } else {
@@ -448,7 +503,6 @@ async function filtraAgendamentos() {
     preencherTabelaHistorico(listaAgendamentos)
     limparTabela();
 }
-
 
 function atualizarBotoesPaginacao(total, atual) {
     const paginacao = document.getElementById('paginacao_tabela');
@@ -529,6 +583,72 @@ async function novoAssunto(id, assunto) {
         return false
     } catch (error) {
         console.log(error)
+    }
+}
+
+async function novoStatusTransferencia(idAgendamento, novoProfessorId) {
+    try {
+        const resposta = await fetch(`http://localhost:8080/agendamento/transferir`, {
+            method: "POST",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "idAgendamento": idAgendamento,
+                "novoProfessorId": novoProfessorId
+            })
+        });
+
+        return resposta.ok;
+    } catch (error) {
+        console.error("Erro ao realizar a transferência:", error);
+        return false;
+    }
+}
+
+async function buscarProfessoreDisponveis() {
+    agendamento = {
+        "data": dataAgendamento,
+        "horarioInicio": horarioInicioAgendamento,
+        "horarioFim": horarioFimAgendamento
+    }
+
+    console.log("Buscando professores disponíveis para:", agendamento);
+
+    try {
+        const resposta = await fetch("http://localhost:8080/horario-professor/transferencia", {
+            method: "POST",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(agendamento)
+        });
+
+        if (resposta.status == 204) {
+            document.getElementById("mensagem-204").style.display = "block";
+            return;
+        }
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao buscar professores disponíveis");
+        }
+
+        document.getElementById("transferenciaContainer").style.display = "block";
+        const professorSelect = document.getElementById("professorSelect");
+        const professores = await resposta.json();
+        console.log("Professores disponíveis:", professores);
+        professorSelect.innerHTML = "<option value=''>Selecione um professor</option>";
+        professores.forEach(professor => {
+            const option = document.createElement("option");
+            option.value = professor.professor_Id;
+            option.textContent = professor.nome_Completo;
+            professorSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Erro:", error);
+        Swal.fire("Erro", "Não foi possível buscar professores disponíveis", "error");
     }
 }
 

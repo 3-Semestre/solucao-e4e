@@ -153,6 +153,9 @@ function buscaUltimoStatus(status) {
         case 4:
             status = "Cancelado";
             break;
+        case 5:
+            status = "Transferido";
+            break;
     }
     return status;
 }
