@@ -302,7 +302,7 @@ async function plotarGraficoTaxaCancelamento(id) {
             let taxaCancelamento = {
                 labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
                 datasets: [{
-                    label: 'Aulas Realizadas',
+                    label: 'Cancelamentos(%)',
                     data: Array(12).fill(0),
                     fill: false,
                     backgroundColor: '#072b59c0',
@@ -348,7 +348,12 @@ async function plotarGraficoTaxaCancelamento(id) {
                     scales: {
                         y: {
                             beginAtZero: true,
-                            min: 0
+                            min: 0,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
                         }
                     }
                 }
