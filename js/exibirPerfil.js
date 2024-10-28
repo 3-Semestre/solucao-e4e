@@ -102,7 +102,6 @@ async function buscarNivelIngles() {
     }
 }
 
-
 async function buscarNichos() {
     const resposta = await fetch("http://localhost:8080/nichos", {
         method: 'GET',
@@ -130,7 +129,6 @@ async function buscarNichos() {
     }
 }
 
-
 function preencherNivelInglesUsuario(niveis) {
     const nivelInglesElement = document.getElementById("nivel");
     const niveisArray = niveis.split(',').map(n => tratarNome(n.trim()));
@@ -150,7 +148,6 @@ function preencherNivelInglesUsuario(niveis) {
 
     nivelInglesElement.setAttribute('required', 'true');
 }
-
 
 function preencherNichoUsuario(nichos) {
     const nichoElement = document.getElementById("nicho");
