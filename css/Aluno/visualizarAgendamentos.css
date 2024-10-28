@@ -70,10 +70,10 @@ thead {
     background-color: white !important;
     border: none;
     font-weight: bold;
-    width: 76w;
+    width: 8vw !important;
     height: 5.2vh;
     position: relative;
-    left: 2px;
+    left: 1vw;
 }
 
 .active>.page-link{
