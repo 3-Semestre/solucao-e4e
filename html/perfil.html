@@ -283,7 +283,7 @@
         document.getElementById("input_intervalo_inicio").readOnly = false;
         document.getElementById("input_intervalo_fim").readOnly = false;
 
-        if (sessionStorage.getItem("nivel_acesso_cod") != "1") {
+        if (sessionStorage.getItem("nivel_acesso_cod") == "3") {
             document.getElementById("input_meta").readOnly = false;
         }
     }

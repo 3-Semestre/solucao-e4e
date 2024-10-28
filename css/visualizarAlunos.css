@@ -160,10 +160,12 @@ label {
     text-overflow: ellipsis;
     border: none;
     outline: none;
+    color: #072B59;
 }
 
 .form-group input.label2:not([readonly]) {
     border-bottom: 1px solid #000;
+    color: #072B59;
 }
 
 /* Estilo do select desativado para parecer com a label */
