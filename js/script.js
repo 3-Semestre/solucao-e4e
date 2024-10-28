@@ -99,16 +99,15 @@ function formatarData(data) {
 function formatarHorario(horario) {
     const [hora, minuto] = horario.split(':');
     const horaInt = parseInt(hora, 10);
-    const periodo = horaInt >= 12 ? 'PM' : 'AM';
-    const horaFormatada = "0" + horaInt % 12 || 12;
-    return `${horaFormatada}:${minuto} ${periodo}`;
+    const horaFormatada = horaInt < 10 ? `0${horaInt}` : `${horaInt}`;
+    return `${horaFormatada}:${minuto}`;
 }
 
 function formatarHorarioPut(horario) {
     if (horario.length === 5) {
         return horario + ':00';
     }
-    return horario
+    return horario;
 }
 
 function tratarNome(nome) {

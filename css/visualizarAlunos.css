@@ -190,9 +190,10 @@ select[disabled]:not(.no-custom-style),
 /* Estilo do select quando habilitado */
 select:not([disabled]):not(.no-custom-style),
 .form-select:not([disabled]):not(.no-custom-style) {
+    position: relative;
+    display: block;
+    z-index: 10;
     appearance: auto;
-    -moz-appearance: auto;
-    -webkit-appearance: auto;
     background-color: #fff;
     border: 1px solid #ccc;
     color: #333;
@@ -200,11 +201,10 @@ select:not([disabled]):not(.no-custom-style),
     font-weight: 300;
     min-width: 250px;
     max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     padding: 8px;
+    border-radius: 4px;
 }
+
 
 /* Estilo adicional para manter a consistência com inputs */
 select:not(.no-custom-style),
