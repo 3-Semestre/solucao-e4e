@@ -27,7 +27,7 @@ async function atualizarPerfil() {
     }
 
     try {
-        const respostaCadastro = await fetch(`http://localhost:8080/usuarios/${retornaNivelRequisicao()}/${sessionStorage.getItem('id')}`, {
+        const respostaCadastro = await fetch(`http://localhost:8080/usuarios/${retornaNivelRequisicao(Number(sessionStorage.getItem('nivel_acesso_cod')))}/${sessionStorage.getItem('id')}`, {
             method: "PUT",
             body: JSON.stringify(dados),
             headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
