@@ -293,10 +293,10 @@ async function buscarDetalhes(id) {
     </div>
     `,
         confirmButtonText: 'Fechar',
-        confirmButtonColor: '#072B59',
+        confirmButtonColor: '#830f0f',
         showCancelButton: tempo !== 'passado' && nivel_acesso_cod !== 1,
         cancelButtonText: 'Editar Status',
-        cancelButtonColor: '#830f0f',
+        cancelButtonColor: '#072B59',
     }).then((result) => {
         if (result.dismiss === Swal.DismissReason.cancel && tempo !== 'passado') {
             Swal.fire({

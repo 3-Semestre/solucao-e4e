@@ -190,8 +190,8 @@ function confirmarEdicaoProfessor(id) {
         showCancelButton: true,
         confirmButtonText: "Sim",
         cancelButtonText: "Cancelar",
-        confirmButtonColor: 'green',
-        cancelButtonColor: '#aaa',
+        confirmButtonColor: '#072B59',
+        cancelButtonColor: '#830f0f',
         background: '#f2f2f2',
         color: '#333'
     }).then(async (result) => {

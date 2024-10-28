@@ -86,7 +86,7 @@ function openModal(date, id) {
         text: 'Não é possível selecionar uma data anterior a de hoje.',
         icon: 'info',
         confirmButtonText: 'OK',
-        confirmButtonColor: 'red',
+        confirmButtonColor: '#830f0f',
         background: '#f2f2f2',
         color: '#333'
       });
@@ -339,8 +339,8 @@ function deleteEvent(id) {
     showCancelButton: true,
     confirmButtonText: 'Sim, cancelar',
     cancelButtonText: 'Não, manter',
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
+    confirmButtonColor: '#830f0f',
+    cancelButtonColor: '#072B59',
     background: '#f2f2f2',
     color: '#333'
   }).then(result => {
