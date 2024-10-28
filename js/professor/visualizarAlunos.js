@@ -224,18 +224,13 @@ function editarAluno(id) {
     botaoEditar.classList.add("trocando");
     botaoExcluir.classList.add("trocando");
 
-    setTimeout(() => {
-        botaoEditar.src = "../imgs/check.png";
-        botaoEditar.alt = "Confirmar edição";
-        botaoEditar.onclick = () => confirmarEdicao(id);
+    botaoEditar.src = "../imgs/check.png";
+    botaoEditar.alt = "Confirmar edição";
+    botaoEditar.onclick = () => confirmarEdicao(id);
 
-        botaoExcluir.src = "../imgs/cancel.png";
-        botaoExcluir.alt = "Cancelar edição";
-        botaoExcluir.onclick = () => cancelarEdicao(id);
-
-        botaoEditar.classList.remove("trocando");
-        botaoExcluir.classList.remove("trocando");
-    }, 300);
+    botaoExcluir.src = "../imgs/cancel.png";
+    botaoExcluir.alt = "Cancelar edição";
+    botaoExcluir.onclick = () => cancelarEdicao(id);
 }
 
 function confirmarEdicao(id) {
@@ -248,9 +243,12 @@ function confirmarEdicao(id) {
         cancelButtonColor: '#aaa',
         background: '#f2f2f2',
         color: '#333'
-    }).then((result) => {
+    }).then(async (result) => {
         if (result.isConfirmed) {
-            if (atualizarNivel(id) && atualizarNicho(id)) {
+            const nivelAtualizado = await atualizarNivel(id);
+            const nichoAtualizado = await atualizarNicho(id);
+
+            if (nivelAtualizado && nichoAtualizado) {
                 Swal.fire({
                     title: "Aluno atualizado com sucesso!",
                     icon: "success",
