@@ -229,6 +229,7 @@ function cancelarEdicaoProfessor(id) {
     botaoExcluir.src = "../imgs/trash-bin.png";
     botaoExcluir.alt = "Excluir professor";
     botaoExcluir.onclick = () => confirmacaoDeleteProfessor(id);
+    buscarProfessor(paginaAtual);
 }
 
 async function atualizarMetaProfessor(id) {
@@ -279,4 +280,5 @@ function atualizarBotoesPaginacaoProfessor(total, atual) {
     proximo.classList.add('page-item');
     proximo.innerHTML = `<a class="page-link" href="#" onclick="buscarProfessor(${atual + 1})">&raquo;</a>`;
     paginacao.appendChild(proximo);
+    paginaAtual = atual;
 }
