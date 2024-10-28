@@ -347,6 +347,10 @@ select {
   font-weight: bolder;
 }
 
+.button-container {
+  display: flex;
+  margin-top: 20px; /* Ajuste opcional para posicionamento vertical */
+}
   /* #cancelar-button:hover {
     background-color: #ff0000;
     color: white;
