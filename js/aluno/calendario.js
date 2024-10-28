@@ -72,7 +72,9 @@ function openModal(date, id) {
     document.getElementById('deleteProfessorInput').value = eventDay.professor.nomeCompleto;
     document.getElementById('deleteTimeInput').value = `${formatarHorario(eventDay.horarioInicio)} - ${formatarHorario(eventDay.horarioFim)}`;
     document.getElementById('eventText').innerText = eventDay.assunto;
-
+    if (eventDay.status === "CONCLUIDO") {
+      document.getElementById('deletar-button').style.display = 'none';
+    }
     statusElement.className = `status ${eventDay.status.toLowerCase()}`;
     statusElement.innerText = getEventStatusText(eventDay.status);
 
@@ -434,7 +436,7 @@ async function carregarEventos() {
     } else if (response.ok) {
       const dados = await response.json();
       events = Array.isArray(dados) ? dados : [];
-      console.log('Eventos carregados:', events); 
+      console.log('Eventos carregados:', events);
     } else {
       console.error('Erro ao carregar eventos do banco');
       events = [];
