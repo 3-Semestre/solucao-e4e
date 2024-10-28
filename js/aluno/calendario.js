@@ -74,6 +74,8 @@ function openModal(date, id) {
     document.getElementById('eventText').innerText = eventDay.assunto;
     if (eventDay.status === "CONCLUIDO") {
       document.getElementById('deletar-button').style.display = 'none';
+    } else{
+      document.getElementById('deletar-button').style.display = 'block';
     }
     statusElement.className = `status ${eventDay.status.toLowerCase()}`;
     statusElement.innerText = getEventStatusText(eventDay.status);
@@ -263,13 +265,14 @@ professorSelect.addEventListener('change', async (event) => {
 async function saveEvent() {
   const professorSelecionado = professorSelect.value;
   const horarioSelecionado = selectedTime;
-
+  
   if (professorSelecionado && horarioSelecionado) {
     try {
       await salvarAgendamento(professorSelecionado, horarioSelecionado);
+      const professorNome = professorSelect.options[professorSelect.selectedIndex].text;
       Swal.fire({
         title: 'Agendamento realizado com sucesso!',
-        html: `<p>A aula com o professor <strong>${professorSelecionado}</strong> foi agendada para <strong>${dateInput.value}</strong> às <strong>${selectedTime}</strong>.</p>`,
+        html: `<p>A aula com o professor <strong>${professorNome}</strong> foi agendada para <strong>${dateInput.value}</strong> às <strong>${selectedTime}</strong>.</p>`,
         icon: 'success',
         showConfirmButton: false, // Remove o botão de confirmação
         timer: 2000,

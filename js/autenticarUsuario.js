@@ -33,6 +33,13 @@ async function autenticar() {
 
     function salvarInformacoes(usuario) {
         sessionStorage.id = usuario.id;
+        if(usuario.id == "1") {
+            localStorage.setItem('teacherImage', cris);
+        } else if(usuario.id == "4") {
+            localStorage.setItem('teacherImage', felipe);
+        } else{
+            localStorage.setItem('teacherImage', "");
+        }
         sessionStorage.nivel_acesso = usuario.nivelAcesso.nome;
         sessionStorage.nivel_acesso_cod = usuario.nivelAcesso.id;
         sessionStorage.nome_completo = usuario.nomeCompleto;

@@ -90,27 +90,7 @@ async function carregarAgendamentos(pagina) {
             'Content-Type': 'application/json'
         }
     });
-
-    if (!resposta.ok) {
-        throw new Error('Erro ao buscar dados do servidor');
-    } else if (resposta.status == 204) {
-        const tabela = document.getElementById("tabela_agendamento");
-        tabela.innerHTML = 'Não há agendamentos registrados';
-        return;
-    }
-
-    const dados = await resposta.json();
-
-    if (!dados || dados.content.length === 0) {
-        throw new Error('Dados não encontrados');
-    }
-
-    totalPaginas = dados.totalPages;
-
-    limparTabela();
-    preencherTabela(dados.content);
-    atualizarBotoesPaginacao(dados.totalPages, dados.pageable.pageNumber);
-
+    
     const loadingGif = document.getElementById('loading');
     const tabela = document.getElementById("tabela_agendamento");
     const tempoMinimoCarregamento = 700; // 1 segundo (1000 ms) de tempo mínimo de carregamento

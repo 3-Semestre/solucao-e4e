@@ -90,8 +90,8 @@ async function buscarProfessor(paginaAtual) {
             <div class="lapis-professor">
                 <img src="../imgs/pen.png" alt="Editar professor" style="width: 3vw; height: 6vh" onclick="editarProfessor(${professorId})">
             </div>
-            <div class="lixeira-professor" onclick="confirmacaoDeleteProfessor(${professorId})">
-                <img src="../imgs/trash-bin.png" alt="Excluir professor" style="width: 3vw; height: 6vh">
+            <div class="lixeira-professor" >
+                <img src="../imgs/trash-bin.png" onclick="confirmacaoDeleteProfessor(${professorId})" alt="Excluir professor" style="width: 3vw; height: 6vh">
             </div>
             ` : ''}
       </div>
@@ -113,8 +113,8 @@ function confirmacaoDeleteProfessor(id) {
         showDenyButton: true,
         confirmButtonText: "Sim",
         denyButtonText: "Não",
-        confirmButtonColor: 'green',
-        denyButtonColor: '#870000',
+        confirmButtonColor: '#072B59',
+        denyButtonColor: '#830f0f',
         background: '#f2f2f2',
         color: '#333'
     }).then((result) => {
@@ -176,6 +176,7 @@ function editarProfessor(id) {
     botaoEditar.alt = "Confirmar edição";
     botaoEditar.onclick = () => confirmarEdicaoProfessor(id);
 
+    // Troca o ícone e a função do botão de excluir para cancelar
     botaoExcluir.src = "../imgs/cancel.png";
     botaoExcluir.alt = "Cancelar edição";
     botaoExcluir.onclick = () => cancelarEdicaoProfessor(id);
@@ -224,9 +225,11 @@ function cancelarEdicaoProfessor(id) {
     botaoEditar.alt = "Editar professor";
     botaoEditar.onclick = () => editarProfessor(id);
 
+    // Restaura o ícone e função do botão de excluir
     botaoExcluir.src = "../imgs/trash-bin.png";
     botaoExcluir.alt = "Excluir professor";
     botaoExcluir.onclick = () => confirmacaoDeleteProfessor(id);
+    buscarProfessor(paginaAtual);
 }
 
 async function atualizarMetaProfessor(id) {
@@ -277,4 +280,5 @@ function atualizarBotoesPaginacaoProfessor(total, atual) {
     proximo.classList.add('page-item');
     proximo.innerHTML = `<a class="page-link" href="#" onclick="buscarProfessor(${atual + 1})">&raquo;</a>`;
     paginacao.appendChild(proximo);
+    paginaAtual = atual;
 }

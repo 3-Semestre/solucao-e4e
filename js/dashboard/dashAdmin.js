@@ -80,7 +80,7 @@ async function plotarProximosAgendamentos(id) {
                     </div>
                     <div class="content">
                         <p class="dia_semana_proxima_data">${diaSemanaPortugues}</p>
-                        <p class="horario_proxima_data">${horario}</p>
+                        <p class="horario_proxima_data">${formatarHorario(agendamento.horario_Inicio)}</p>
                         <p class="nome_aluno_proxima_data">${agendamento.aluno_Nome}</p>
                     </div>
                 </div>`;

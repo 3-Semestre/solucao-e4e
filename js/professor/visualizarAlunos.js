@@ -221,9 +221,6 @@ function editarAluno(id) {
         buscarNicho(nichoSelect);
     }
 
-    botaoEditar.classList.add("trocando");
-    botaoExcluir.classList.add("trocando");
-
     botaoEditar.src = "../imgs/check.png";
     botaoEditar.alt = "Confirmar edição";
     botaoEditar.onclick = () => confirmarEdicao(id);
