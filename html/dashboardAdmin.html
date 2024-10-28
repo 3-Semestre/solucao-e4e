@@ -101,9 +101,9 @@
                     <h2 class="title-title">Visão Global de Performance de Professores</h2>
                 </div>
             </div>
-            <div class="select-professor">
+            <div class="select-professor" id="div-professor-select" style="display: none;">
                 <p>Selecione um professor para visualizar os dados:</p>
-                <select name="professores" id="professores">
+                <select name="professores" id="professores"> a
                     <option value="">Selecione um professor</option>
                 </select>
             </div>
@@ -116,7 +116,7 @@
                     <p>Próximos Agendamentos</p>
                 </div>
             </div>
-            <div class="agendamentos" id="agendamentos">
+            <div class="agendamentos" id="agendamentos-futuros">
                 <div class="box">
                     <div class="data">
                         <h2 class="dia_proxima_data">28</h2>
@@ -164,33 +164,33 @@
             <div class="box-kpis-admin">
                 <div class="line-box">
                 </div>
-                <div class="content-kpis" id="novos-agendamentos">
+                <div class="content-kpis">
                     <p>Aulas mês</p>
-                    <h2 id="">55</h2>
+                    <h2 id="agendamentos-total"></h2>
                 </div>
             </div>
             <div class="box-kpis-admin">
                 <div class="line-box">
                 </div>
-                <div class="content-kpis" id="confirmacao-agendamento">
+                <div class="content-kpis">
                     <p>Aulas concluídas</p>
-                    <h2 id="qtd-agendamentos-cancelados">2</h2>
+                    <h2 id="agendamentos-concluido"></h2>
                 </div>
             </div>
             <div class="box-kpis-admin">
                 <div class="line-box">
                 </div>
-                <div class="content-kpis" id="confirmacao-agendamento">
+                <div class="content-kpis">
                     <p>Aulas transferidas</p>
-                    <h2 id="aulas-tranferidas-professor">10</h2>
+                    <h2 id="agendamentos-transferido"></h2>
                 </div>
             </div>
             <div class="box-kpis-admin">
                 <div class="line-box">
                 </div>
-                <div class="content-kpis" id="confirmacao-agendamento">
+                <div class="content-kpis">
                     <p>Aulas canceladas</p>
-                    <h2>7</h2>
+                    <h2 id="agendamentos-cancelado"></h2>
                 </div>
             </div>
         </div>
@@ -198,7 +198,7 @@
         <hr class="line">
         <br><br>
         <h2 class="title-title">Cumprimento professor</h2>
-        <span id="title-chart-admin">Taxa de cumprimento de aulas</span>
+        <span id="title-chart-admin">Aulas Concluídas vs. Meta Mensal</span>
         <div class="kpis" id="kpis">
             <div class="box-chart-admin">
                 <canvas id="myChartMeta"></canvas>
@@ -209,7 +209,7 @@
                     </div>
                     <div class="content-kpis" id="alunos-novos">
                         <p>Meta de aulas</p>
-                        <h2>30</h2>
+                        <h2 id="agendamento-meta">30</h2>
                     </div>
                 </div>
                 <div class="box-kpis-metas">
@@ -217,7 +217,7 @@
                     </div>
                     <div class="content-kpis" id="cancelamento">
                         <p>Progresso atual</p>
-                        <h2>30%</h2>
+                        <h2 id="agendamento-meta-percentual">30%</h2>
                     </div>
                 </div>
             </div>

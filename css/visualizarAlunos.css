@@ -160,14 +160,17 @@ label {
     text-overflow: ellipsis;
     border: none;
     outline: none;
+    color: #072B59;
 }
 
 .form-group input.label2:not([readonly]) {
     border-bottom: 1px solid #000;
+    color: #072B59;
 }
 
 /* Estilo do select desativado para parecer com a label */
-select[disabled] {
+select[disabled]:not(.no-custom-style),
+.form-select[disabled]:not(.no-custom-style) {
     appearance: none;
     -moz-appearance: none;
     -webkit-appearance: none;
@@ -185,7 +188,8 @@ select[disabled] {
 }
 
 /* Estilo do select quando habilitado */
-select:not([disabled]) {
+select:not([disabled]):not(.no-custom-style),
+.form-select:not([disabled]):not(.no-custom-style) {
     appearance: auto;
     -moz-appearance: auto;
     -webkit-appearance: auto;
@@ -203,7 +207,8 @@ select:not([disabled]) {
 }
 
 /* Estilo adicional para manter a consistência com inputs */
-select {
+select:not(.no-custom-style),
+.form-select:not(.no-custom-style) {
     border-radius: 4px;
     outline: none;
 }

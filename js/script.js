@@ -3,7 +3,6 @@ const sidebar = document.getElementById('sidebar')
 const conteudo = document.querySelector('.conteudo'); // Seleciona a div conteudo
 // trocar entre "desenvolvimento" e "apresentacao"
 const ambiente = "apresentacao"
-const agendamentoStack = []
 
 function closeAllDropdowns() {
     const dropdowns = document.querySelectorAll('.collapse.show'); // Seleciona todos os dropdowns abertos
@@ -153,6 +152,9 @@ function buscaUltimoStatus(status) {
             break;
         case 4:
             status = "Cancelado";
+            break;
+        case 5:
+            status = "Transferido";
             break;
     }
     return status;

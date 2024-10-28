@@ -1,4 +1,5 @@
 // Variáveis globais
+const token = sessionStorage.getItem('token');
 let nav = 0;
 let clicked = null;
 let selectedTime = null; // Armazena o horário selecionado
@@ -41,7 +42,7 @@ function undoFormatDate(dateString) {
 }
 
 // Função para abrir o modal
-function openModal(date) {
+function openModal(date, id) {
   const today = new Date();
   const selectedDate = new Date(date);
 
@@ -51,6 +52,7 @@ function openModal(date) {
   clicked = date;
 
   const eventDay = events.find(event => event.data === clicked);
+  document.getElementById('deletar-button').addEventListener('click', () => deleteEvent(eventDay.id));
 
   document.getElementById('professor-select').value = '';
   document.querySelectorAll('.time-button').forEach(button => button.classList.remove('selected'));
@@ -70,7 +72,9 @@ function openModal(date) {
     document.getElementById('deleteProfessorInput').value = eventDay.professor.nomeCompleto;
     document.getElementById('deleteTimeInput').value = `${formatarHorario(eventDay.horarioInicio)} - ${formatarHorario(eventDay.horarioFim)}`;
     document.getElementById('eventText').innerText = eventDay.assunto;
-
+    if (eventDay.status === "CONCLUIDO") {
+      document.getElementById('deletar-button').style.display = 'none';
+    }
     statusElement.className = `status ${eventDay.status.toLowerCase()}`;
     statusElement.innerText = getEventStatusText(eventDay.status);
 
@@ -156,9 +160,10 @@ function load() {
         eventDiv.classList.add('event');
         eventDiv.innerHTML = "Professor: <br>" + eventDay.professor.nomeCompleto;
         dayS.appendChild(eventDiv);
+        dayS.addEventListener('click', () => openModal(dayString, eventDay.id));
+      } else {
+        dayS.addEventListener('click', () => openModal(dayString));
       }
-
-      dayS.addEventListener('click', () => openModal(dayString));
     } else {
       dayS.classList.add('padding');
     }
@@ -326,7 +331,7 @@ async function salvarAgendamento(professorId, horario) {
 }
 
 // Função para deletar um evento
-function deleteEvent() {
+function deleteEvent(id) {
   Swal.fire({
     title: 'Tem certeza?',
     text: 'Você deseja cancelar este agendamento?',
@@ -340,19 +345,71 @@ function deleteEvent() {
     color: '#333'
   }).then(result => {
     if (result.isConfirmed) {
-      events = events.filter(event => event.data !== clicked);
-      localStorage.setItem('events', JSON.stringify(events));
-      Swal.fire({
-        title: 'Cancelado!',
-        text: 'O agendamento foi cancelado com sucesso.',
-        icon: 'success',
-        confirmButtonText: 'OK',
-        confirmButtonColor: 'green',
-        background: '#f2f2f2',
-        color: '#333'
-      }).then(() => closeModal());
+      if (cancelarAgendamento(id)) {
+        Swal.fire({
+          title: 'Cancelado!',
+          text: 'O agendamento foi cancelado com sucesso.',
+          icon: 'success',
+          background: '#f2f2f2',
+          color: '#333',
+          timer: 2000,
+          showConfirmButton: false
+        }).then(() => {
+          closeModal()
+          carregarEventos()
+        });
+      } else {
+        Swal.fire({
+          title: 'Erro!',
+          text: 'Houve um erro ao cancelar o agendamento.',
+          icon: 'error',
+          background: '#f2f2f2',
+          color: '#333',
+          timer: 2000,
+          showConfirmButton: false
+        }).then(() => closeModal());
+      }
     }
   });
+}
+
+async function cancelarAgendamento(id) {
+  try {
+    const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    agendamento = await respostaAgendamento.json()
+
+    const respostaStatus = await fetch(`http://localhost:8080/status/4`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    statusObj = await respostaStatus.json()
+
+    const dadosAlteracao = {
+      "novoAgendamento": agendamento,
+      "status": statusObj
+    }
+
+    const novoStatus = await fetch("http://localhost:8080/historico-agendamento", {
+      method: "POST",
+      body: JSON.stringify(dadosAlteracao),
+      headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+    });
+
+    console.log(novoStatus.status)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 // Funções adicionais
@@ -368,7 +425,7 @@ async function carregarEventos() {
     const response = await fetch(`http://localhost:8080/agendamento/1/${sessionStorage.getItem('id')}/${currentMonth}/${currentYear}`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
     });
@@ -379,7 +436,7 @@ async function carregarEventos() {
     } else if (response.ok) {
       const dados = await response.json();
       events = Array.isArray(dados) ? dados : [];
-      console.log('Eventos carregados:', events); 
+      console.log('Eventos carregados:', events);
     } else {
       console.error('Erro ao carregar eventos do banco');
       events = [];
@@ -406,7 +463,6 @@ function buttons() {
 
   document.getElementById('agendar-button').addEventListener('click', saveEvent);
   document.getElementById('cancelar-button').addEventListener('click', closeModal);
-  document.getElementById('deletar-button').addEventListener('click', deleteEvent);
   document.getElementById('fechar-button').addEventListener('click', closeModal);
 
   document.querySelectorAll('.modal-close').forEach(button => {

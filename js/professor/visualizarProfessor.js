@@ -109,41 +109,45 @@ async function buscarProfessor(paginaAtual) {
 function confirmacaoDeleteProfessor(id) {
     Swal.fire({
         title: "Deseja excluir esse Professor?",
+        showCancelButton: false,
         showDenyButton: true,
-        showCancelButton: true,
         confirmButtonText: "Sim",
-        denyButtonText: `Não`,
-        cancelButtonText: "Cancelar",
+        denyButtonText: "Não",
         confirmButtonColor: 'green',
         denyButtonColor: '#870000',
-        cancelButtonColor: '#aaa',
         background: '#f2f2f2',
         color: '#333'
     }).then((result) => {
         if (result.isConfirmed) {
             try {
-                deletarProfessor(id)
+                deletarProfessor(id);
             } catch (e) {
-                console.log(e)
+                console.log(e);
             }
-        } else if (result.isDenied) {
-            Swal.fire({ title: "As alterações não foram salvas", icon: "info", confirmButtonColor: 'green' });
         }
     });
 }
 
-
-
 async function deletarProfessor(id) {
-
     const respostaDelete = await fetch(`http://localhost:8080/usuarios/Professor/${id}`, {
         method: "DELETE",
-        headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            "Content-type": "application/json; charset=UTF-8"
+        }
     });
 
-    if (respostaDelete.status == 204) {
-        Swal.fire({ title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green' });
-        setTimeout(() => window.location.reload(), 2500);
+    if (respostaDelete.status === 204) {
+        Swal.fire({
+            title: "Professor excluído com sucesso!",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+            background: '#f2f2f2',
+            color: '#333',
+            timerProgressBar: true
+        });
+        setTimeout(() => buscarProfessor(0), 1500);
     } else {
         Swal.fire({
             icon: 'error',
@@ -157,10 +161,96 @@ async function deletarProfessor(id) {
 }
 
 function editarProfessor(id) {
-    const input = document.getElementById(`meta_${id}`);
-    if (input) {
-        input.removeAttribute("readonly"); 
-        input.focus(); 
+    const metaInput = document.getElementById(`meta_${id}`);
+    const botaoEditar = document.querySelector(`#card_dados_${id} .lapis-professor img`);
+    const botaoExcluir = document.querySelector(`#card_dados_${id} .lixeira-professor img`);
+
+    // Permite edição no campo de meta
+    if (metaInput) {
+        metaInput.removeAttribute("readonly");
+        metaInput.focus();
+    }
+
+    // Troca os ícones de editar para confirmar e excluir para cancelar
+    botaoEditar.src = "../imgs/check.png";
+    botaoEditar.alt = "Confirmar edição";
+    botaoEditar.onclick = () => confirmarEdicaoProfessor(id);
+
+    botaoExcluir.src = "../imgs/cancel.png";
+    botaoExcluir.alt = "Cancelar edição";
+    botaoExcluir.onclick = () => cancelarEdicaoProfessor(id);
+}
+
+function confirmarEdicaoProfessor(id) {
+    const metaInput = document.getElementById(`meta_${id}`);
+    const novaMeta = metaInput.value;
+
+    Swal.fire({
+        title: "Deseja confirmar a nova meta?",
+        showCancelButton: true,
+        confirmButtonText: "Sim",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: 'green',
+        cancelButtonColor: '#aaa',
+        background: '#f2f2f2',
+        color: '#333'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const sucesso = await atualizarMetaProfessor(id, novaMeta);
+            if (sucesso) {
+                Swal.fire({
+                    title: "Meta atualizada com sucesso!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    background: '#f2f2f2',
+                    color: '#333',
+                    timerProgressBar: true
+                });
+            }
+            cancelarEdicaoProfessor(id);
+        }
+    });
+}
+
+function cancelarEdicaoProfessor(id) {
+    const metaInput = document.getElementById(`meta_${id}`);
+    const botaoEditar = document.querySelector(`#card_dados_${id} .lapis-professor img`);
+    const botaoExcluir = document.querySelector(`#card_dados_${id} .lixeira-professor img`);
+
+    metaInput.setAttribute("readonly", "true");
+
+    botaoEditar.src = "../imgs/pen.png";
+    botaoEditar.alt = "Editar professor";
+    botaoEditar.onclick = () => editarProfessor(id);
+
+    botaoExcluir.src = "../imgs/trash-bin.png";
+    botaoExcluir.alt = "Excluir professor";
+    botaoExcluir.onclick = () => confirmacaoDeleteProfessor(id);
+}
+
+async function atualizarMetaProfessor(id) {
+    try {
+        const meta = (document.getElementById(`meta_${id}`).value).split(" ")[0];
+
+        const resposta = await fetch(`http://localhost:8080/metas/${id}`, {
+            method: "PUT",
+            body: meta,
+            headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+        });
+
+        return resposta.status === 201;
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro ao atualizar a meta do professor',
+            showConfirmButton: false,
+            text: 'Por favor, tente novamente mais tarde.',
+            footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
+            timer: 2000
+        });
+        console.log(error);
+        return false;
     }
 }
 

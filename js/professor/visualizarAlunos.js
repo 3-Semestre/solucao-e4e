@@ -64,8 +64,7 @@ async function buscarAlunos(paginaAtual) {
                     <div class="form-group">
                         <label for="nicho_${alunoId}">Nicho:</label>
                         <select class="label2" id="nicho_${alunoId}" disabled>
-                            ${nichosArray.map((nicho) => `<option value="${nicho}">${nicho}</option>`).join('')}
-                            <option> teste </option>
+                            ${nichosArray.map((nicho) => `<option value="${nicho}">${tratarNome(nicho)}</option>`).join('')}
                         </select>
                     </div>
                 </div>
@@ -182,7 +181,6 @@ async function filtraUsuarios() {
     }
 }
 
-
 function confirmacaoDeleteAluno(id) {
     Swal.fire({
         title: "Deseja excluir esse aluno?",
@@ -209,16 +207,82 @@ function confirmacaoDeleteAluno(id) {
 function editarAluno(id) {
     const nivelSelect = document.getElementById(`nivel-ingles_${id}`);
     const nichoSelect = document.getElementById(`nicho_${id}`);
+    const botaoEditar = document.querySelector(`#card_dados_${id} .lapis img`);
+    const botaoExcluir = document.querySelector(`#card_dados_${id} .lixeira img`);
 
     if (nivelSelect) {
         nivelSelect.removeAttribute("disabled");
         nivelSelect.focus();
+        buscarNivel(nivelSelect);
     }
 
     if (nichoSelect) {
         nichoSelect.removeAttribute("disabled");
-        nichoSelect.focus();
+        buscarNicho(nichoSelect);
     }
+
+    botaoEditar.classList.add("trocando");
+    botaoExcluir.classList.add("trocando");
+
+    botaoEditar.src = "../imgs/check.png";
+    botaoEditar.alt = "Confirmar edição";
+    botaoEditar.onclick = () => confirmarEdicao(id);
+
+    botaoExcluir.src = "../imgs/cancel.png";
+    botaoExcluir.alt = "Cancelar edição";
+    botaoExcluir.onclick = () => cancelarEdicao(id);
+}
+
+function confirmarEdicao(id) {
+    Swal.fire({
+        title: "Deseja confirmar as alterações?",
+        showCancelButton: true,
+        confirmButtonText: "Sim",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: 'green',
+        cancelButtonColor: '#aaa',
+        background: '#f2f2f2',
+        color: '#333'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const nivelAtualizado = await atualizarNivel(id);
+            const nichoAtualizado = await atualizarNicho(id);
+
+            if (nivelAtualizado && nichoAtualizado) {
+                Swal.fire({
+                    title: "Aluno atualizado com sucesso!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    background: '#f2f2f2',
+                    color: '#333',
+                    timerProgressBar: true
+                });
+            }
+        }
+        cancelarEdicao(id);
+    });
+}
+
+function cancelarEdicao(id) {
+    const nivelSelect = document.getElementById(`nivel-ingles_${id}`);
+    const nichoSelect = document.getElementById(`nicho_${id}`);
+    const botaoEditar = document.querySelector(`#card_dados_${id} .lapis img`);
+    const botaoExcluir = document.querySelector(`#card_dados_${id} .lixeira img`);
+
+    botaoEditar.classList.add("trocando");
+    botaoExcluir.classList.add("trocando");
+
+    nivelSelect.setAttribute("disabled", "true");
+    nichoSelect.setAttribute("disabled", "true");
+
+    botaoEditar.src = "../imgs/pen.png";
+    botaoEditar.alt = "Editar aluno";
+    botaoEditar.onclick = () => editarAluno(id);
+
+    botaoExcluir.src = "../imgs/trash-bin.png";
+    botaoExcluir.alt = "Excluir aluno";
+    botaoExcluir.onclick = () => confirmacaoDeleteAluno(id);
 }
 
 async function deletarAluno(id) {
@@ -228,8 +292,16 @@ async function deletarAluno(id) {
     });
 
     if (respostaDelete.status == 204) {
-        Swal.fire({ title: "Excluído com sucesso!", icon: "success", confirmButtonColor: 'green' });
-        setTimeout(() => window.location.reload(), 2500);
+        Swal.fire({
+            title: "Aluno excluído com sucesso!",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+            background: '#f2f2f2',
+            color: '#333',
+            timerProgressBar: true
+        });
+        setTimeout(() => buscarAlunos(0), 1500);
     } else {
         Swal.fire({
             icon: 'error',
@@ -237,7 +309,7 @@ async function deletarAluno(id) {
             showConfirmButton: false,
             text: 'Por favor, tente novamente mais tarde. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
             footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
-            timer: 2000
+            timer: 1500
         });
     }
 }
@@ -267,6 +339,131 @@ function atualizarBotoesPaginacaoAluno(total, atual) {
     paginacao.appendChild(proximo);
 }
 
-async function buscarNivel(id) {
-    
+async function buscarNivel(selectElement) {
+    const textoSelecionado = selectElement.options[selectElement.selectedIndex]?.textContent;
+
+    const resposta = await fetch("http://localhost:8080/nivel-ingles", {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const listaNiveis = await resposta.json();
+
+    selectElement.innerHTML = "";
+
+    listaNiveis.forEach((nivel) => {
+        let optionExistente = Array.from(selectElement.options).find(option => option.textContent === nivel.nome);
+
+        if (optionExistente) {
+            optionExistente.value = nivel.id;
+        } else {
+            const option = document.createElement("option");
+            option.value = nivel.id;
+            option.textContent = nivel.nome;
+            selectElement.appendChild(option);
+        }
+    });
+
+    const optionToSelect = Array.from(selectElement.options).find(option => option.textContent === textoSelecionado);
+    if (optionToSelect) {
+        optionToSelect.selected = true;
+    }
+}
+
+async function buscarNicho(selectElement) {
+    const textoSelecionado = selectElement.options[selectElement.selectedIndex]?.textContent;
+
+    const resposta = await fetch("http://localhost:8080/nichos", {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const listaNichos = await resposta.json();
+
+    selectElement.innerHTML = "";
+
+    listaNichos.forEach((nicho) => {
+        let optionExistente = Array.from(selectElement.options).find(option => option.textContent === tratarNome(nicho.nome));
+
+        if (optionExistente) {
+            optionExistente.value = nicho.id;
+        } else {
+            const option = document.createElement("option");
+            option.value = nicho.id;
+            option.textContent = tratarNome(nicho.nome);
+            selectElement.appendChild(option);
+        }
+    });
+
+    const optionToSelect = Array.from(selectElement.options).find(option => option.textContent === textoSelecionado);
+    if (optionToSelect) {
+        optionToSelect.selected = true;
+    }
+}
+
+async function atualizarNivel(id) {
+    const nivelSelect = document.getElementById(`nivel-ingles_${id}`);
+    var id_nivel = nivelSelect.value;
+
+    try {
+        var resposta = await fetch(`http://localhost:8080/usuario-nivel-ingles/${id}`, {
+            method: "PUT",
+            body: id_nivel,
+            headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+        });
+
+        if (resposta.status == 201) {
+            return true;
+        }
+
+    } catch (error) {
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro ao atualizar o nivel do aluno',
+            showConfirmButton: false,
+            text: 'Por favor, tente novamente mais tarde. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
+            footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
+            timer: 2000
+        });
+        console.log(error);
+    }
+}
+
+async function atualizarNicho(id) {
+    console.log(id);
+    const nichoSelect = document.getElementById(`nicho_${id}`);
+    var id_nicho = nichoSelect.value;
+
+    console.log(id_nicho);
+
+    try {
+        var resposta = await fetch(`http://localhost:8080/usuario-nicho/${id}`, {
+            method: "PUT",
+            body: id_nicho,
+            headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
+        });
+
+        if (resposta.status == 201) {
+            return true;
+        }
+
+    } catch (error) {
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro ao atualizar o nicho do aluno',
+            showConfirmButton: false,
+            text: 'Por favor, tente novamente mais tarde. Se o problema persistir, entre em contato com nosso suporte pelo telefone (xx) xxxx-xxxx.',
+            footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
+            timer: 2000
+        });
+        console.log(error);
+    }
 }
