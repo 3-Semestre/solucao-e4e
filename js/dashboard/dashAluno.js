@@ -121,7 +121,7 @@ async function plotarAulasRealizadas() {
         datasets: [{
             label: 'Aulas Realizadas',
             data: Array(12).fill(0),
-            fill: true,
+            fill: false,
             backgroundColor: '#072b59c0',
             borderColor: '#072B59',
             borderWidth: 1
