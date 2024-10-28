@@ -1,5 +1,5 @@
 const professorSelect = document.getElementById("professores");
-const id = sessionStorage.getItem("id");
+var id = sessionStorage.getItem("id");
 const meta = async (id) => {
     try {
         const response = await fetch(`http://localhost:8080/metas/usuario/${id}`, {
@@ -160,7 +160,6 @@ async function plotarKPIsProfessor() {
                 document.getElementById("agendamento-meta-percentual").innerHTML = Number(cumprimentoData[0].taxa_cumprimento).toFixed(0) + "%";
             } else {
                 document.getElementById("agendamento-meta-percentual").innerHTML = "0%";
-                throw new Error("Não foi possível encontrar os dados");
             }
         }
     } catch (error) {
@@ -177,9 +176,10 @@ async function plotarKPIsProfessor() {
             }
         });
 
-        if (responseConcluido.ok) {
+        if (responseConcluido.status == 204) {
+            document.getElementById("agendamentos-concluido").innerHTML = 0;
+        } else if (responseConcluido.ok) {
             const conclusao = await responseConcluido.json();
-            console.log(conclusao)
             document.getElementById("agendamentos-concluido").innerHTML = conclusao.quantidade_Aulas_Concluidas;
         }
     } catch (error) {
@@ -412,8 +412,12 @@ async function plotarGraficoCumprimento(id) {
                 }
             });
 
+            if (window.barChartMeta instanceof Chart) {
+                window.barChartMeta.destroy();
+            }
+
             const ctxBar = document.getElementById('myChartMeta').getContext('2d');
-            const barChart = new Chart(ctxBar, {
+            window.barChartMeta = new Chart(ctxBar, {
                 type: 'bar',
                 data: {
                     labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
@@ -465,17 +469,44 @@ async function plotarGraficoCumprimento(id) {
     }
 }
 
+function limparDadosProfessor() {
+    document.getElementById("agendamentos-total").innerHTML = "0";
+    document.getElementById("agendamentos-cancelado").innerHTML = "0";
+    document.getElementById("agendamentos-transferido").innerHTML = "0";
+    document.getElementById("agendamento-meta-percentual").innerHTML = "0";
+    document.getElementById("agendamentos-concluido").innerHTML = "0";
+    document.getElementById("agendamento-meta").innerHTML = "0";
+    document.getElementById("agendamentos-futuros").innerHTML = "0";
 
-professorSelect.addEventListener('change', async (event) => {
-    console.log("Professor selecionado: " + professorSelect.value);
-    professor = professorSelect.value
-    plotarKPIsProfessor(professor);
-    buscarComprimentoMeta(professor);
-});
+    if (window.chartTaxaCancelamento instanceof Chart) {
+        window.chartTaxaCancelamento.destroy();
+        window.chartTaxaCancelamento = null;
+    }
 
-buscarProfessores();
-plotarProximosAgendamentos(id);
-plotarKPIsProfessor(id);
-buscarComprimentoMeta(id);
-plotarGraficoTaxaCancelamento(id);
-plotarGraficoCumprimento(id);
+    if (window.barChartMeta instanceof Chart) {
+        window.barChartMeta.destroy();
+        window.barChartMeta = null;
+    }
+}
+
+if (Number(sessionStorage.getItem("nivel_acesso_cod")) == 3) {
+    document.getElementById("div-professor-select").style.display = "block";
+    buscarProfessores();
+
+    professorSelect.addEventListener('change', async (event) => {
+        id = professorSelect.value;
+        console.log("Professor selecionado: " + id);
+        buscarDados(id);
+    });
+}
+
+async function buscarDados(id) {
+    limparDadosProfessor();
+    await plotarProximosAgendamentos(id);
+    await plotarKPIsProfessor(id);
+    await buscarComprimentoMeta(id);
+    await plotarGraficoTaxaCancelamento(id);
+    await plotarGraficoCumprimento(id);
+}
+
+buscarDados(id);
