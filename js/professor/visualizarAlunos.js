@@ -98,10 +98,10 @@ async function filtraUsuarios() {
 
     const nome = document.getElementById("input_nome").value;
     const cpf = document.getElementById("input_cpf").value;
-    const nicho = document.getElementById("nicho").value;
-    const nivel = document.getElementById("nivel").value;
+    const nicho = document.getElementById("select_nicho").value;
+    const nivel = document.getElementById("select_nivel").value;
 
-    const data = {};
+    const data = {};    
     if (nome) data.nome = nome;
     if (cpf) data.cpf = cpf;
     if (nicho && nicho !== "") data.nicho = nicho;
