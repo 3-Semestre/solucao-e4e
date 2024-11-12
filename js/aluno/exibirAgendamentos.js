@@ -441,16 +441,17 @@ async function filtraAgendamentos() {
     const data_fim = document.getElementById("data_fim").value;
     const horario_inicio = document.getElementById("horario_inicio").value;
     const horario_fim = document.getElementById("horario_fim").value;
-    const assunto = document.getElementById("assunto").value;
+    //const assunto = document.getElementById("assunto").value;
 
     const data = {};
     if (data_inicio) data.data_inicio = data_inicio;
     if (data_fim && data_fim !== "") data.data_fim = data_fim;
     if (horario_inicio && horario_inicio !== "") data.horario_inicio = horario_inicio
     if (horario_fim && horario_fim !== "") data.horario_fim = horario_fim
-    if (assunto && assunto !== "") data.assunto = assunto;
+    //if (assunto && assunto !== "") data.assunto = assunto;
 
-
+    console.log(data_inicio)
+    console.log(data_fim)
     console.log("Filtro a ser buscado")
     console.log(data)
 
