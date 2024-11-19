@@ -87,11 +87,11 @@ async function buscarProfessor(paginaAtual) {
         </div>
 
         ${nivelAcesso === 3 ? `
-            <div class="lapis-professor">
-                <img src="../imgs/pen.png" alt="Editar professor" style="width: 3vw; height: 6vh" onclick="editarProfessor(${professorId})">
-            </div>
             <div class="lixeira-professor" >
                 <img src="../imgs/trash-bin.png" onclick="confirmacaoDeleteProfessor(${professorId})" alt="Excluir professor" style="width: 3vw; height: 6vh">
+            </div>
+            <div class="lapis-professor">
+                <img src="../imgs/pen.png" alt="Editar professor" style="width: 3vw; height: 6vh" onclick="editarProfessor(${professorId})">
             </div>
             ` : ''}
       </div>
@@ -108,7 +108,7 @@ async function buscarProfessor(paginaAtual) {
 
 function confirmacaoDeleteProfessor(id) {
     Swal.fire({
-        title: "Deseja excluir esse Professor?",
+        title: "Deseja inativar esse Professor?",
         showCancelButton: false,
         showDenyButton: true,
         confirmButtonText: "Sim",
