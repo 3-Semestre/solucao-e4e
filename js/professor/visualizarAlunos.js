@@ -67,6 +67,14 @@ async function buscarAlunos(paginaAtual) {
                             ${nichosArray.map((nicho) => `<option value="${nicho}">${tratarNome(nicho)}</option>`).join('')}
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="ativo_inativo" class="form-label me-3" id="select_ativo_inativo">Status:</label>
+                    <select class="label2" aria-label="Default select example" disabled>
+                        <option value="">Selecione</option>
+                        <option value="1">Ativo</option>
+                        <option value="0">Inativo</option>
+                    </select>
+                    </div>
                 </div>
             </div>
             
@@ -83,12 +91,17 @@ async function buscarAlunos(paginaAtual) {
         `;
     }).join('');
 
+    const elementos = document.querySelectorAll('.dados-student');
+    elementos.forEach(elemento => {
+        elemento.style.height = "50vh";
+    });
 
     atualizarBotoesPaginacaoAluno(listaAlunos.totalPages, listaAlunos.pageable.pageNumber);
 
     // Esconde o GIF de carregamento
     const loadingGif = document.getElementById('loading');
     loadingGif.style.display = 'none';
+
 }
 
 async function filtraUsuarios() {
@@ -98,7 +111,6 @@ async function filtraUsuarios() {
 
     const nome = document.getElementById("input_nome").value;
     const cpf = document.getElementById("input_cpf").value;
-
     const nicho = document.getElementById("select_nicho").value;
     const nivel = document.getElementById("select_nivel").value;
 
@@ -131,7 +143,7 @@ async function filtraUsuarios() {
         const listaUsuarios = await resposta.json();
 
         console.log(listaUsuarios)
-        console.log('fafak',tipoNome)
+        console.log('fafak', tipoNome)
         if (tipoNome === "aluno") {
             cardsUsuarios.innerHTML = listaUsuarios.content.map((aluno) => {
                 const alunoId = aluno.id;
@@ -185,7 +197,7 @@ async function filtraUsuarios() {
             console.log('opa')
             cardsUsuarios.innerHTML = listaUsuarios.content.map((professor) => {
                 const professorId = professor.id; // ID do professor para garantir unicidade
-        
+
                 return `
               <div class="dados-student" id="card_dados_${professorId}">
                 <div class="header-student">
@@ -257,7 +269,7 @@ async function filtraUsuarios() {
             `;
             }).join('');
         }
-       
+
 
     } catch (error) {
         console.error("Erro ao filtrar usuários:", error);
@@ -267,7 +279,7 @@ async function filtraUsuarios() {
 
 function confirmacaoDeleteAluno(id) {
     Swal.fire({
-        title: "Deseja excluir esse aluno?",
+        title: "Deseja inativar esse aluno?",
         showCancelButton: true,
         confirmButtonText: "Sim",
         cancelButtonText: "Cancelar",

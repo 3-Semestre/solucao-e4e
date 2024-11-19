@@ -199,6 +199,30 @@
         <br><br>
         <h2 class="title-title">Cumprimento professor</h2>
         <span id="title-chart-admin">Aulas Concluídas vs. Meta Mensal</span>
+        <br><br>
+        <div class="filtro-graph">
+            <label for="mes" class="form-filtro-graph">Selecione o Ano:</label>
+            <select class="form-select-graph" id="ano" aria-label="Seleção de Ano" onchange="mostrarDadosPorAno()" required>
+                <option value="">Selecione</option>
+                <option value="Janeiro">2024</option>
+            </select>
+            <label for="mes" class="form-filtro-graph">Selecione o Mês:</label>
+            <select class="form-select-graph" id="mes" aria-label="Seleção de Mês" onchange="mostrarDadosPorMes()" required>
+                <option value="">Selecione</option>
+                <option value="Janeiro">Janeiro</option>
+                <option value="Fevereiro">Fevereiro</option>
+                <option value="Março">Março</option>
+                <option value="Abril">Abril</option>
+                <option value="Maio">Maio</option>
+                <option value="Junho">Junho</option>
+                <option value="Julho">Julho</option>
+                <option value="Agosto">Agosto</option>
+                <option value="Setembro">Setembro</option>
+                <option value="Outubro">Outubro</option>
+                <option value="Novembro">Novembro</option>
+                <option value="Dezembro">Dezembro</option>
+            </select>
+        </div>
         <div class="kpis" id="kpis">
             <div class="box-chart-admin">
                 <canvas id="myChartMeta"></canvas>
@@ -226,6 +250,13 @@
         <hr class="line">
         <br><br>
         <h2 class="title-title">Taxa de Cancelamento</h2>
+        <div class="filtro-graph">
+            <label for="mes" class="form-filtro-graph">Selecione o Ano:</label>
+            <select class="form-select-graph" id="ano" aria-label="Seleção de Ano" onchange="mostrarDadosPorAno()" required>
+                <option value="">Selecione</option>
+                <option value="Janeiro">2024</option>
+            </select>
+        </div>
         <br><br>
         <div class="box-chart2">
             <canvas id="chartCancelamento"></canvas>
@@ -247,18 +278,4 @@
         document.head.appendChild(script);
         console.log(`VOCÊ ESTÁ EM ${ambiente.toUpperCase()}`);
     };
-    /*
-   document.getElementById('toggle-btn').addEventListener('click', function () {
-            var boxChart2 = document.querySelector('.box-chart2');
-            var boxKpis = document.querySelectorAll('.box-kpis');
-
-            // Alterna a classe 'reduzido' para 'box-chart2'
-            boxChart2.classList.toggle('reduzido');
-
-            // Alterna a classe 'reduzido' para cada elemento 'box-kpis'
-            boxKpis.forEach(function (box) {
-                box.classList.toggle('reduzido');
-            });
-        });
-        */
 </script>
