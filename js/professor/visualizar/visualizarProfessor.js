@@ -9,7 +9,7 @@ async function buscarProfessor(paginaAtual) {
 
     const cardsProfessor = document.getElementById("listagem_usuarios");
 
-    const resposta = await fetch(`http://localhost:8080/usuarios/professor/paginado?page=${paginaAtual}`, {
+    const resposta = await fetch(`http://localhost:8080/usuarios/professor/paginado?page=${paginaAtual}` + Filters.buildQueryString(), {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -18,11 +18,18 @@ async function buscarProfessor(paginaAtual) {
     });
 
     if (resposta.status == 204) {
-        cardsProfessor.innerHTML += "<span>Não há professores cadastrados...<span> <br/>Cadastre um novo clicando <a href='cadastrar.html?tipo=professor'>aqui</a>";
+        atualizarBotoesPaginacaoProfessor(0, 0)
+        cardsProfessor.innerHTML = "<span>Não há professores cadastrados...<span> <br/>Cadastre um novo clicando <a href='cadastrar.html?tipo=professor'>aqui</a>";
         return;
     }
 
     const listaProfessors = await resposta.json();
+
+    if (listaProfessors.content == null || listaProfessors.content.length === 0) {
+        atualizarBotoesPaginacaoProfessor(0, 0);
+        cardsProfessor.innerHTML = `<span class="text-muted">Não há professores cadastrados com os filtros aplicados. <br/></span>`;
+        return;
+    }
 
     cardsProfessor.innerHTML = "";
     cardsProfessor.innerHTML += listaProfessors.content.map((professor) => {
@@ -87,11 +94,11 @@ async function buscarProfessor(paginaAtual) {
         </div>
 
         ${nivelAcesso === 3 ? `
-            <div class="lapis-professor">
-                <img src="../imgs/pen.png" alt="Editar professor" style="width: 3vw; height: 6vh" onclick="editarProfessor(${professorId})">
-            </div>
             <div class="lixeira-professor" >
                 <img src="../imgs/trash-bin.png" onclick="confirmacaoDeleteProfessor(${professorId})" alt="Excluir professor" style="width: 3vw; height: 6vh">
+            </div>
+            <div class="lapis-professor">
+                <img src="../imgs/pen.png" alt="Editar professor" style="width: 3vw; height: 6vh" onclick="editarProfessor(${professorId})">
             </div>
             ` : ''}
       </div>
@@ -108,7 +115,7 @@ async function buscarProfessor(paginaAtual) {
 
 function confirmacaoDeleteProfessor(id) {
     Swal.fire({
-        title: "Deseja excluir esse Professor?",
+        title: "Deseja inativar esse Professor?",
         showCancelButton: false,
         showDenyButton: true,
         confirmButtonText: "Sim",
@@ -263,22 +270,44 @@ function atualizarBotoesPaginacaoProfessor(total, atual) {
 
     const anterior = document.createElement('li');
     anterior.classList.add('page-item');
-    anterior.innerHTML = `<a class="page-link" href="#" onclick="buscarProfessor(${atual - 1})">&laquo;</a>`;
+    if(total === 0 && atual === 0) {
+        paginacao.style.display = 'none';
+        return;
+    }else if (atual === 0) {
+        anterior.classList.add('disabled');
+    }
+    paginacao.style.display = 'flex';
+    anterior.innerHTML = `
+        <a class="page-link" href="#" onclick="buscarProfessor(${atual - 1})" aria-disabled="${atual === 0}">
+            &laquo; Anterior
+        </a>
+    `;
     paginacao.appendChild(anterior);
 
+    // Botões numéricos
     for (let i = 0; i < total; i++) {
         const item = document.createElement('li');
         item.classList.add('page-item');
         if (i === atual) {
-            item.classList.add('active'); // Marca a página atual
+            item.classList.add('active');
         }
-        item.innerHTML = `<a class="page-link" href="#" onclick="buscarProfessor(${i})">${i + 1}</a>`;
+        item.innerHTML = `
+            <a class="page-link" href="#" onclick="buscarProfessor(${i})">${i + 1}</a>
+        `;
         paginacao.appendChild(item);
     }
 
     const proximo = document.createElement('li');
     proximo.classList.add('page-item');
-    proximo.innerHTML = `<a class="page-link" href="#" onclick="buscarProfessor(${atual + 1})">&raquo;</a>`;
+    if (atual === total - 1) {
+        proximo.classList.add('disabled');
+    }
+    proximo.innerHTML = `
+        <a class="page-link" href="#" onclick="buscarProfessor(${atual + 1})" aria-disabled="${atual === total - 1}">
+            Próximo &raquo;
+        </a>
+    `;
     paginacao.appendChild(proximo);
+
     paginaAtual = atual;
 }

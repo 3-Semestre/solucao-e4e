@@ -352,6 +352,31 @@ body {
     position: relative;
 }
 
+.filtro-graph {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-filtro-graph {
+    font-weight: bold;
+    color: #072B59;
+}
+
+/* Estilo para o select */
+.form-select-graph {
+    border: 2px solid #072B59;
+    border-radius: 5px;
+    color: #072B59;
+    font-weight: bolder;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+.form-select-graph option {
+    color: #072B59;
+    font-weight: bolder;
+}
 
 @media only screen and (max-device-width: 430px) {
 

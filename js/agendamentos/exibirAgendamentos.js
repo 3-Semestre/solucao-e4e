@@ -81,16 +81,6 @@ function carregarHeadersTabela() {
 }
 
 async function carregarAgendamentos(pagina) {
-    if (pagina < 0 || (totalPaginas > 0 && pagina >= totalPaginas)) return; // Limita as páginas
-
-    const resposta = await fetch(`http://localhost:8080/agendamento/historico/${id}?page=${pagina}&tempo=${tempo}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        }
-    });
-    
     const loadingGif = document.getElementById('loading');
     const tabela = document.getElementById("tabela_agendamento");
     const tempoMinimoCarregamento = 700; // 1 segundo (1000 ms) de tempo mínimo de carregamento
@@ -104,7 +94,7 @@ async function carregarAgendamentos(pagina) {
     try {
         if (pagina < 0 || (totalPaginas > 0 && pagina >= totalPaginas)) return; // Limita as páginas
 
-        const resposta = await fetch(`http://localhost:8080/agendamento/historico/${id}?page=${pagina}&tempo=${tempo}`, {
+        const resposta = await fetch(`http://localhost:8080/agendamento/historico/${id}?page=${pagina}&tempo=${tempo}` + Filters.buildQueryString(), {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -112,10 +102,33 @@ async function carregarAgendamentos(pagina) {
             }
         });
 
+        const tabela = document.getElementById("tabela_agendamento");
+        let tbody = tabela.querySelector("tbody");
+
+        if (!tbody) {
+            tbody = document.createElement("tbody");
+            tabela.appendChild(tbody);
+        }
+
         if (!resposta.ok) {
+            atualizarBotoesPaginacao(0, 0);
+            tbody.innerHTML = `
+            <tr>
+                <td colspan="8" style="text-align: center; color: gray;">
+                    Erro ao buscar dados do servidor
+                </td>
+            </tr>
+            `;
             throw new Error('Erro ao buscar dados do servidor');
         } else if (resposta.status == 204) {
-            tabela.innerHTML = 'Não há agendamentos registrados';
+            atualizarBotoesPaginacao(0, 0);
+            tbody.innerHTML = `
+            <tr>
+                <td colspan="8" style="text-align: center; color: gray;">
+                    Não há agendamentos registrados
+                </td>
+            </tr>
+            `;
             return;
         }
 
@@ -132,12 +145,9 @@ async function carregarAgendamentos(pagina) {
         atualizarBotoesPaginacao(dados.totalPages, dados.pageable.pageNumber);
     } catch (error) {
         console.error(error.message);
-        tabela.innerHTML = 'Erro ao carregar agendamentos';
     } finally {
-        // Garantir que o tempo mínimo de carregamento foi respeitado antes de esconder o GIF
         await Promise.all([esperarMinimoCarregamento]);
 
-        // Esconder o GIF de carregamento
         loadingGif.style.display = 'none';
     }
 }
@@ -286,20 +296,20 @@ async function buscarDetalhes(id) {
                     <select id="novoStatus" class="swal2-input" style="width: 10vw;height: 4vh;color: #072B59;border-radius: 5px;border: 1px solid #072B5">
                         <option value="#">Selecione</option>
                         ${nivel_acesso_cod === "1"
-                            ? `<option value="4">Cancelar</option>`
-                            : dadosAgendamentos.status === 'CONFIRMADO'
-                                ? `
+                        ? `<option value="4">Cancelar</option>`
+                        : dadosAgendamentos.status === 'CONFIRMADO'
+                            ? `
                                 <option value="3">Concluir</option>
                                 <option value="5">Transferir</option>
                                 <option value="4">Cancelar</option>
                               `
-                                : dadosAgendamentos.status === 'PENDENTE'
-                                    ? `
+                            : dadosAgendamentos.status === 'PENDENTE'
+                                ? `
                                 <option value="2">Confirmar</option>
                                 <option value="4">Cancelar</option>
                               `
-                                    : ''
-                        }
+                                : ''
+                    }
                     </select>
                     <div id="assuntoContainer" style="margin-top: 10px; display: none;">
                         <input type="text" id="assunto" class="swal2-input" placeholder="Digite o assunto" style="width: 24vw; height: 5vh; color: #072B59;" />
@@ -323,7 +333,7 @@ async function buscarDetalhes(id) {
                     const novoStatusValue = document.getElementById('novoStatus').value;
                     const assunto = document.getElementById('assunto').value;
                     const professorId = document.getElementById('professorSelect').value; // Captura o professor selecionado
-            
+
                     // Validações
                     if (novoStatusValue === "2" && !assunto) {
                         Swal.showValidationMessage('O campo Assunto é obrigatório ao confirmar.');
@@ -333,17 +343,17 @@ async function buscarDetalhes(id) {
                         Swal.showValidationMessage('Selecione um professor para a transferência.');
                         return false;
                     }
-            
+
                     return { novoStatusValue, assunto, professorId };
                 }
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     try {
                         const { novoStatusValue, assunto, professorId } = result.value;
-            
+
                         if (novoStatusValue === "5" && professorId) { // Verifica se é transferência
                             const transferenciaRealizada = await novoStatusTransferencia(id, professorId); // Passa apenas id do agendamento e id do professor
-            
+
                             if (transferenciaRealizada) {
                                 Swal.fire({
                                     icon: 'success',
@@ -364,7 +374,7 @@ async function buscarDetalhes(id) {
                         } else if (assunto) {
                             // Lógica para atualização de assunto (caso não seja transferência)
                             const assuntoAtualizado = await novoAssunto(id, assunto);
-            
+
                             if (assuntoAtualizado) {
                                 await novoStatus(id, novoStatusValue, assunto);
                                 Swal.fire({
@@ -394,7 +404,7 @@ async function buscarDetalhes(id) {
                                 timer: 1500
                             });
                         }
-            
+
                         // Recarregar a lista de agendamentos após a operação
                         setTimeout(() => carregarAgendamentos(paginaAtual), 1500);
                     } catch (error) {
@@ -409,7 +419,7 @@ async function buscarDetalhes(id) {
                 } else {
                     return;
                 }
-            });            
+            });
 
             // Adiciona o evento para mostrar/esconder o campo de assunto após o Swal ser exibido
             Swal.getPopup().querySelector('#novoStatus').addEventListener('change', function () {
@@ -435,78 +445,52 @@ async function buscarDetalhes(id) {
     });
 }
 
-async function filtraAgendamentos() {
-
-    const data_inicio = document.getElementById("data_inicio").value;
-    const data_fim = document.getElementById("data_fim").value;
-    const horario_inicio = document.getElementById("horario_inicio").value;
-    const horario_fim = document.getElementById("horario_fim").value;
-    const assunto = document.getElementById("assunto").value;
-
-    const data = {};
-    if (data_inicio) data.data_inicio = data_inicio;
-    if (data_fim && data_fim !== "") data.data_fim = data_fim;
-    if (horario_inicio && horario_inicio !== "") data.horario_inicio = horario_inicio
-    if (horario_fim && horario_fim !== "") data.horario_fim = horario_fim
-    if (assunto && assunto !== "") data.assunto = assunto;
-
-
-    console.log("Filtro a ser buscado")
-    console.log(data)
-
-    var tipoNome = ""
-
-    if (nivel_acesso != "aluno") {
-        tipoNome = "professor"
-    } else {
-        tipoNome = "aluno"
-    }
-
-    const resposta = await fetch(`http://localhost:8080/agendamento/filtro/${tempo}/${tipoNome}/${sessionStorage.getItem('id')}`, {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    });
-
-
-    if (resposta.status == 204) {
-        return
-    }
-
-    const listaAgendamentos = await resposta.json();
-
-    console.log("Resposta do filtro: ")
-    console.log(listaAgendamentos)
-    preencherTabelaHistorico(listaAgendamentos)
-    limparTabela();
-}
-
 function atualizarBotoesPaginacao(total, atual) {
     const paginacao = document.getElementById('paginacao_tabela');
     paginacao.innerHTML = '';
 
     const anterior = document.createElement('li');
     anterior.classList.add('page-item');
-    anterior.innerHTML = `<a class="page-link" href="#" onclick="carregarAgendamentos(${atual - 1})">&laquo;</a>`;
+    if(total === 0 && atual === 0) {
+        paginacao.style.display = 'none';
+        return;
+    }else if (atual === 0) {
+        anterior.classList.add('disabled');
+    }
+    paginacao.style.display = 'flex';
+    anterior.innerHTML = `
+        <a class="page-link" href="#" onclick="carregarAgendamentos(${atual - 1})" aria-disabled="${atual === 0}">
+            &laquo; Anterior
+        </a>
+    `;
     paginacao.appendChild(anterior);
 
+    // Botões numéricos
     for (let i = 0; i < total; i++) {
         const item = document.createElement('li');
         item.classList.add('page-item');
         if (i === atual) {
-            item.classList.add('active'); // Marca a página atual
+            item.classList.add('active');
         }
-        item.innerHTML = `<a class="page-link" href="#" onclick="carregarAgendamentos(${i})">${i + 1}</a>`;
+        item.innerHTML = `
+            <a class="page-link" href="#" onclick="carregarAgendamentos(${i})">${i + 1}</a>
+        `;
         paginacao.appendChild(item);
     }
 
     const proximo = document.createElement('li');
     proximo.classList.add('page-item');
-    proximo.innerHTML = `<a class="page-link" href="#" onclick="carregarAgendamentos(${atual + 1})">&raquo;</a>`;
+    if (atual === total - 1) {
+        proximo.classList.add('disabled');
+    }
+    proximo.innerHTML = `
+        <a class="page-link" href="#" onclick="carregarAgendamentos(${atual + 1})" aria-disabled="${atual === total - 1}">
+            Próximo &raquo;
+        </a>
+    `;
     paginacao.appendChild(proximo);
+
+    paginaAtual = atual;
 }
 
 async function novoStatus(id, statusId) {

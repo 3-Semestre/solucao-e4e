@@ -35,7 +35,7 @@ body {
 
 .dados {
     width: 100%;
-    height: 20vh;
+    height: 12vh;
     background-color: #a8b6bf40;
     border-radius: 10px;
 }
@@ -43,7 +43,6 @@ body {
 .filter {
     width: 100%;
     height: 7vh;
-    background-color: #072B59;
     display: flex;
     justify-content: space-around;
     gap: 10rem;
@@ -52,7 +51,7 @@ body {
 }
 
 .filter p {
-    color: white;
+    color: #072B59;
     font-weight: bold;
     position: relative;
     right: 33.5vw;
@@ -102,6 +101,7 @@ label {
     justify-content: space-between;
     padding: 20px;
     width: 100%;
+    height: 50vh;
     gap: 20px;
 }
 
@@ -167,6 +167,10 @@ label {
     color: #072B59;
 }
 
+.inputs select{
+    width: 10.5vw;
+}
+
 /* Estilo do select desativado para parecer com a label */
 select[disabled]:not(.no-custom-style),
 .form-select[disabled]:not(.no-custom-style) {
@@ -230,6 +234,10 @@ select:not(.no-custom-style),
     text-overflow: ellipsis;
 }
 
+.form-control{
+    width: 10.5vw !important;
+}
+
 .photo-student {
     display: flex;
     gap: 2vw;
@@ -241,7 +249,7 @@ select:not(.no-custom-style),
     display: flex;
     justify-content: flex-end;
     position: relative;
-    bottom: 6vh;
+    bottom: 6.5vh;
     cursor: pointer;
 }
 
@@ -249,7 +257,6 @@ select:not(.no-custom-style),
     display: flex;
     justify-content: flex-end;
     position: relative;
-    bottom: 28vh;
     cursor: pointer;
 }
 
@@ -271,7 +278,7 @@ select:not(.no-custom-style),
     display: flex;
     justify-content: flex-end;
     position: relative;
-    bottom: 23vh;
+    bottom: 15vh;
     cursor: pointer;
 }
 
@@ -293,9 +300,8 @@ hr.line {
     border: none;
     font-weight: bold;
     width: 8vw !important;
-    height: 5.2vh;
+    height: 5vh;
     position: relative;
-    left: vw;
 }
 
 .active>.page-link{
@@ -312,6 +318,40 @@ hr.line {
 #botaoFilter:hover{
     color: white !important;
     background-color: #a8b6bf40 !important;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    
+  }
+  
+  .custom-button i {
+    margin-right: 5px;
+  }
+
+  .custom-button {
+    background-color: #072B59;
+    color: white;
+    border: 2px solid #072B59;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bolder;
+  }
+  
+  .custom-button:hover {
+    background-color: rgba(128, 128, 128, 0.466);
+    border:  2px solid rgba(128, 128, 128, 0.466);
+    color: black;
+    font-weight: bolder;
+  }
+
+  .breadcrumb-container {
+    display: flex;
+    align-items: center; /* Alinha breadcrumb e botão verticalmente no centro */
+    justify-content: space-between; /* Distribui espaço entre breadcrumb e botão */
 }
 
 @media only screen and (max-device-width: 430px) {
