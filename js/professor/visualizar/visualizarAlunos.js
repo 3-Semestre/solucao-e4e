@@ -253,23 +253,39 @@ function atualizarBotoesPaginacaoAluno(total, atual) {
         anterior.classList.add('disabled');
     }
     paginacao.style.display = 'flex';
-    anterior.innerHTML = `<a class="page-link" href="#" onclick="buscarAlunos(${atual - 1})">&laquo;</a>`;
+    anterior.innerHTML = `
+        <a class="page-link" href="#" onclick="buscarAlunos(${atual - 1})" aria-disabled="${atual === 0}">
+            &laquo; Anterior
+        </a>
+    `;
     paginacao.appendChild(anterior);
 
+    // Botões numéricos
     for (let i = 0; i < total; i++) {
         const item = document.createElement('li');
         item.classList.add('page-item');
         if (i === atual) {
-            item.classList.add('active'); // Marca a página atual
+            item.classList.add('active');
         }
-        item.innerHTML = `<a class="page-link" href="#" onclick="buscarAlunos(${i})">${i + 1}</a>`;
+        item.innerHTML = `
+            <a class="page-link" href="#" onclick="buscarAlunos(${i})">${i + 1}</a>
+        `;
         paginacao.appendChild(item);
     }
 
     const proximo = document.createElement('li');
     proximo.classList.add('page-item');
-    proximo.innerHTML = `<a class="page-link" href="#" onclick="buscarAlunos(${atual + 1})">&raquo;</a>`;
+    if (atual === total - 1) {
+        proximo.classList.add('disabled');
+    }
+    proximo.innerHTML = `
+        <a class="page-link" href="#" onclick="buscarAlunos(${atual + 1})" aria-disabled="${atual === total - 1}">
+            Próximo &raquo;
+        </a>
+    `;
     paginacao.appendChild(proximo);
+
+    paginaAtual = atual;
 }
 
 async function buscarNivel(selectElement) {
