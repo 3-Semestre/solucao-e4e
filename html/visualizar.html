@@ -112,12 +112,12 @@
                     <button type="button" class="custom-button">
                         <i class="fas fa-download" style="margin-right: 5px;"></i> Exportar Dados
                     </button>
-                    <form id="import-form" action="/upload" method="POST" enctype="multipart/form-data">
+                    <form id="import-form" action="/upload" method="POST" enctype="multipart/form-data" style="display: none;">
                         <label for="file-input" class="custom-button" style="display: inline-flex; align-items: center; cursor: pointer;">
                           <i class="fas fa-upload" style="margin-right: 5px;"></i> Importar Dados
                         </label>
                         <input type="file" id="file-input" name="file" accept=".txt" style="display: none;" />
-                      </form>
+                    </form>
                 </div> 
             </div>
         </div>  
@@ -215,6 +215,11 @@
 </html>
 <script>
     const fileInput = document.getElementById('file-input');
+    const nivel = sessionStorage.getItem("nivel_acesso")
+    
+    if(nivel == "REPRESENTANTE_LEGAL"){
+        document.getElementById("import-form").style.display = "block";
+    }
     fileInput.addEventListener('click', importarDados);
 </script>
 
