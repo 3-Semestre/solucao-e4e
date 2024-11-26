@@ -23,7 +23,7 @@ async function buscarAlunos(paginaAtual) {
     const listaAlunos = await resposta.json();
 
     if (listaAlunos.content == null || listaAlunos.content.length === 0) {
-        atualizarBotoesPaginacaoProfessor(0, 0);
+        atualizarBotoesPaginacaoAluno(0, 0);
         cardsAlunos.innerHTML = `<span class="text-muted">Não há alunos cadastrados com os filtros aplicados. <br/></span>`;
         return;
     }
