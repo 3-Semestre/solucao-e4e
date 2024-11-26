@@ -146,6 +146,18 @@ label {
     gap: 1vw;
 }
 
+.course-information.inativo {
+    opacity: 0.5; /* Deixa opaco */
+    color: #f2f2f2; /* Adiciona um cinza claro */
+    pointer-events: none; /* Opcional: impede interação com os campos */
+}
+
+
+#status{
+    position: relative;
+    right: 20vw;
+}
+
 .form-group {
     flex: 1 1 30%;
 }
@@ -258,6 +270,7 @@ select:not(.no-custom-style),
     justify-content: flex-end;
     position: relative;
     cursor: pointer;
+    bottom: 12vh;
 }
 
 .lapis img{
@@ -323,7 +336,6 @@ hr.line {
 .button-container {
     display: flex;
     justify-content: flex-end;
-    
   }
   
   .custom-button i {
