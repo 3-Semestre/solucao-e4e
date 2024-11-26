@@ -80,18 +80,25 @@ async function buscarProfessor(paginaAtual) {
                     <label for="horario-intervalo_${professorId}">Horário de intervalo:</label>
                     <label class="label2" type="text" id="horario-intervalo_${professorId}">${formatarHorario(professor.pausa_inicio || '')} às ${formatarHorario(professor.pausa_fim || '')} </label>
                 </div>
-            
             </div>
         </div>
-
         <br>
+        <div class="course-information inativo">
+    <div class="form-group">
+        <label for="meta_${professorId}">Metas:</label>
+        <input class="label2" type="text" id="meta_${professorId}" value="${professor.qtd_aula} aulas" readonly>
+    </div>
+    <div class="form-group" id="status">
+        <label for="ativo_inativo" class="form-label me-3" id="select_ativo_inativo">Status:</label>
+        <select class="label2" aria-label="Default select example" disabled>
+            <option value="">Selecione</option>
+            <option value="1">Ativo</option>
+            <option value="0" selected>Inativo</option>
+        </select>
+    </div>
+</div>
 
-        <div class="course-information">
-                <div class="form-group">
-                    <label for="meta_${professorId}">Metas:</label>
-                    <input class="label2" type="text" id="meta_${professorId}" value="${professor.qtd_aula} aulas" readonly>
-                </div>
-        </div>
+    
 
         ${nivelAcesso === 3 ? `
             <div class="lixeira-professor" >
@@ -270,10 +277,10 @@ function atualizarBotoesPaginacaoProfessor(total, atual) {
 
     const anterior = document.createElement('li');
     anterior.classList.add('page-item');
-    if(total === 0 && atual === 0) {
+    if (total === 0 && atual === 0) {
         paginacao.style.display = 'none';
         return;
-    }else if (atual === 0) {
+    } else if (atual === 0) {
         anterior.classList.add('disabled');
     }
     paginacao.style.display = 'flex';
