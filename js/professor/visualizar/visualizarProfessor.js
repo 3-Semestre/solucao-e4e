@@ -33,6 +33,7 @@ async function buscarProfessor(paginaAtual) {
 
     cardsProfessor.innerHTML = "";
     cardsProfessor.innerHTML += listaProfessors.content.map((professor) => {
+        console.log(professor)
         const professorId = professor.id; // ID do professor para garantir unicidade
 
         return `
@@ -44,7 +45,7 @@ async function buscarProfessor(paginaAtual) {
         <br/>
         <br/>
         <div class="form-student">
-            <div class="personal-information">
+            <div class="personal-information ${professor.status === "INATIVO" ? "inativo" : ""}">
                 <div class="form-group">
                     <label for="cpf_${professorId}">CPF:</label>
                     <label class="label2" type="text" id="cpf_${professorId}"> ${professor.cpf} </label>
@@ -63,7 +64,7 @@ async function buscarProfessor(paginaAtual) {
                 </div>
             </div>
 
-            <div class="course-information">
+            <div class="course-information ${professor.status === "INATIVO" ? "inativo" : ""}">
                 <div class="form-group">
                     <label for="nivel-ingles_${professorId}">Nível de Inglês:</label>
                     <label class="label2" type="text" id="nivel-ingles_${professorId}"> ${professor.niveis_Ingles} </label>
@@ -83,18 +84,16 @@ async function buscarProfessor(paginaAtual) {
             </div>
         </div>
         <br>
-        <div class="course-information inativo">
-    <div class="form-group">
-        <label for="meta_${professorId}">Metas:</label>
-        <input class="label2" type="text" id="meta_${professorId}" value="${professor.qtd_aula} aulas" readonly>
-    </div>
-    <div class="form-group" id="status">
-        <label for="ativo_inativo" class="form-label me-3" id="select_ativo_inativo">Status:</label>
-        <select class="label2" aria-label="Default select example" disabled>
-            <option value="">Selecione</option>
-            <option value="1">Ativo</option>
-            <option value="0" selected>Inativo</option>
-        </select>
+        <div class="course-information ${professor.status === "INATIVO" ? "inativo" : ""}">   
+             <div class="form-group">
+                <label for="meta_${professorId}">Metas:</label>
+                <input class="label2" type="text" id="meta_${professorId}" value="${professor.qtd_aula} aulas" readonly>
+            </div>
+        <div class="form-group" id="status">
+            <div class="form-group">
+                <label for="status_${professorId}">Status:</label>
+                <label class="label2" type="text" id="status_${professorId}"> ${tratarNome(professor.status)} </label>
+        </div>
     </div>
 </div>
 

@@ -30,6 +30,7 @@ async function buscarAlunos(paginaAtual) {
 
     cardsAlunos.innerHTML = "";
     cardsAlunos.innerHTML += listaAlunos.content.map((aluno) => {
+        console.log(aluno)
         const alunoId = aluno.id; // ID do aluno para garantir unicidade
 
         // Converte as strings em arrays
@@ -44,7 +45,7 @@ async function buscarAlunos(paginaAtual) {
             </div>
             <br/><br/>
             <div class="form-student">
-                <div class="personal-information">
+                <div class="personal-information ${aluno.status === "INATIVO" ? "inativo" : ""}">
                     <div class="form-group">
                         <label for="cpf_${alunoId}">CPF:</label>
                         <label class="label2" type="text" id="cpf_${alunoId}">${aluno.cpf}</label>
@@ -74,12 +75,8 @@ async function buscarAlunos(paginaAtual) {
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="ativo_inativo" class="form-label me-3" id="select_ativo_inativo">Status:</label>
-                    <select class="label2" aria-label="Default select example" disabled>
-                        <option value="">Selecione</option>
-                        <option value="1">Ativo</option>
-                        <option value="0">Inativo</option>
-                    </select>
+                        <label for="status_${alunoId}">Status:</label>
+                        <label class="label2" type="text" id="status_${alunoId}"> ${tratarNome(aluno.status)} </label>
                     </div>
                 </div>
             </div>
