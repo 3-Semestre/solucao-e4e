@@ -37,7 +37,7 @@ async function buscarProfessor(paginaAtual) {
         const professorId = professor.id; // ID do professor para garantir unicidade
 
         return `
-      <div class="dados-student" id="card_dados_${professorId}">
+      <div class="dados-student${professor.status === "INATIVO" ? "inativo" : ""}" id="card_dados_${professorId}">
         <div class="header-student">
             <img src="../imgs/perfil_blue.png" alt="Foto do professor">
             <p>${professor.nome_completo}</p>
@@ -45,7 +45,7 @@ async function buscarProfessor(paginaAtual) {
         <br/>
         <br/>
         <div class="form-student">
-            <div class="personal-information ${professor.status === "INATIVO" ? "inativo" : ""}">
+            <div class="personal-information">
                 <div class="form-group">
                     <label for="cpf_${professorId}">CPF:</label>
                     <label class="label2" type="text" id="cpf_${professorId}"> ${professor.cpf} </label>

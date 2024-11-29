@@ -74,21 +74,19 @@ async function buscarAlunos(paginaAtual) {
                             ${nichosArray.map((nicho) => `<option value="${nicho}">${tratarNome(nicho)}</option>`).join('')}
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="status_${alunoId}">Status:</label>
-                        <label class="label2" type="text" id="status_${alunoId}"> ${tratarNome(aluno.status)} </label>
-                    </div>
+                <div class="form-group">
+                    <label for="status_${alunoId}">Status:</label>
+                    <select class="label2" id="status_${alunoId}" disabled>
+                        <option value="ATIVO" ${aluno.status === "ATIVO" ? "selected" : ""}>Ativo</option>
+                        <option value="INATIVO" ${aluno.status === "INATIVO" ? "selected" : ""}>Inativo</option>
+                    </select>
+                </div>
                 </div>
             </div>
             
             <div class="lapis">
                 <img src="../imgs/pen.png" alt="Editar aluno" style="width: 3vw; height: 6vh" onclick="editarAluno(${alunoId})">
             </div>
-            ${nivelAcesso === 3 ? `
-                <div class="lixeira">
-                    <img src="../imgs/trash-bin.png" alt="Excluir aluno" style="width: 3vw; height: 6vh" onclick="confirmacaoDeleteAluno(${alunoId})">
-                </div>
-            ` : ''}
         </div>
         <hr class="line">
         `;
@@ -133,8 +131,9 @@ function confirmacaoDeleteAluno(id) {
 function editarAluno(id) {
     const nivelSelect = document.getElementById(`nivel-ingles_${id}`);
     const nichoSelect = document.getElementById(`nicho_${id}`);
+    const statusSelect = document.getElementById(`status_${id}`);
     const botaoEditar = document.querySelector(`#card_dados_${id} .lapis img`);
-    const botaoExcluir = document.querySelector(`#card_dados_${id} .lixeira img`);
+//    const botaoExcluir = document.querySelector(`#card_dados_${id} .lixeira img`);
 
     if (nivelSelect) {
         nivelSelect.removeAttribute("disabled");
@@ -147,13 +146,17 @@ function editarAluno(id) {
         buscarNicho(nichoSelect);
     }
 
+    if (statusSelect) {
+        statusSelect.removeAttribute("disabled");
+    }
+
     botaoEditar.src = "../imgs/check.png";
     botaoEditar.alt = "Confirmar edição";
     botaoEditar.onclick = () => confirmarEdicao(id);
 
-    botaoExcluir.src = "../imgs/cancel.png";
-    botaoExcluir.alt = "Cancelar edição";
-    botaoExcluir.onclick = () => cancelarEdicao(id);
+//    botaoExcluir.src = "../imgs/cancel.png";
+//    botaoExcluir.alt = "Cancelar edição";
+//    botaoExcluir.onclick = () => cancelarEdicao(id);
 }
 
 function confirmarEdicao(id) {
@@ -190,22 +193,20 @@ function confirmarEdicao(id) {
 function cancelarEdicao(id) {
     const nivelSelect = document.getElementById(`nivel-ingles_${id}`);
     const nichoSelect = document.getElementById(`nicho_${id}`);
+    const statusSelect = document.getElementById(`status_${id}`);
     const botaoEditar = document.querySelector(`#card_dados_${id} .lapis img`);
-    const botaoExcluir = document.querySelector(`#card_dados_${id} .lixeira img`);
-
-    botaoEditar.classList.add("trocando");
-    botaoExcluir.classList.add("trocando");
 
     nivelSelect.setAttribute("disabled", "true");
     nichoSelect.setAttribute("disabled", "true");
+    statusSelect.setAttribute("disabled", "true");
 
     botaoEditar.src = "../imgs/pen.png";
     botaoEditar.alt = "Editar aluno";
     botaoEditar.onclick = () => editarAluno(id);
 
-    botaoExcluir.src = "../imgs/trash-bin.png";
-    botaoExcluir.alt = "Excluir aluno";
-    botaoExcluir.onclick = () => confirmacaoDeleteAluno(id);
+//    botaoExcluir.src = "../imgs/trash-bin.png";
+//    botaoExcluir.alt = "Excluir aluno";
+//    botaoExcluir.onclick = () => confirmacaoDeleteAluno(id);
 }
 
 async function deletarAluno(id) {
