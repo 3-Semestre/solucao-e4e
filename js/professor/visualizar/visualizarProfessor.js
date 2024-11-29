@@ -90,9 +90,11 @@ async function buscarProfessor(paginaAtual) {
                 <input class="label2" type="text" id="meta_${professorId}" value="${professor.qtd_aula} aulas" readonly>
             </div>
         <div class="form-group" id="status">
-            <div class="form-group">
-                <label for="status_${professorId}">Status:</label>
-                <label class="label2" type="text" id="status_${professorId}"> ${tratarNome(professor.status)} </label>
+            <label for="status_${professorId}">Status:</label>
+                <select class="label2" id="status_${professorId}" disabled>
+                    <option value="1" ${professor.status === "ATIVO" ? "selected" : ""}>Ativo</option>
+                    <option value="2" ${professor.status === "INATIVO" ? "selected" : ""}>Inativo</option>
+                </select>
         </div>
     </div>
 </div>
@@ -100,8 +102,8 @@ async function buscarProfessor(paginaAtual) {
     
 
         ${nivelAcesso === 3 ? `
-            <div class="lixeira-professor" >
-                <img src="../imgs/trash-bin.png" onclick="confirmacaoDeleteProfessor(${professorId})" alt="Excluir professor" style="width: 3vw; height: 6vh">
+            <div class="lixeira-professor" id="cancelar-edicao" style="display: none;">
+                <img src="../imgs/cancel.png" onclick="cancelarEdicaoProfessor(${professorId})" alt="Excluir professor" style="width: 3vw; height: 6vh">
             </div>
             <div class="lapis-professor">
                 <img src="../imgs/pen.png" alt="Editar professor" style="width: 3vw; height: 6vh" onclick="editarProfessor(${professorId})">
@@ -175,32 +177,25 @@ async function deletarProfessor(id) {
 
 function editarProfessor(id) {
     const metaInput = document.getElementById(`meta_${id}`);
+    const statusSelect = document.getElementById(`status_${id}`);
     const botaoEditar = document.querySelector(`#card_dados_${id} .lapis-professor img`);
-    const botaoExcluir = document.querySelector(`#card_dados_${id} .lixeira-professor img`);
+    const lixeira = document.querySelector(`.lixeira-professor`);
 
-    // Permite edição no campo de meta
-    if (metaInput) {
-        metaInput.removeAttribute("readonly");
-        metaInput.focus();
-    }
+    metaInput.removeAttribute("readonly");
+    statusSelect.removeAttribute("disabled");
+    statusSelect.setAttribute("data-original-value", statusSelect.value);
 
-    // Troca os ícones de editar para confirmar e excluir para cancelar
+    console.log(lixeira)
+    lixeira.style.display = "flex";
+
     botaoEditar.src = "../imgs/check.png";
     botaoEditar.alt = "Confirmar edição";
     botaoEditar.onclick = () => confirmarEdicaoProfessor(id);
-
-    // Troca o ícone e a função do botão de excluir para cancelar
-    botaoExcluir.src = "../imgs/cancel.png";
-    botaoExcluir.alt = "Cancelar edição";
-    botaoExcluir.onclick = () => cancelarEdicaoProfessor(id);
 }
 
 function confirmarEdicaoProfessor(id) {
-    const metaInput = document.getElementById(`meta_${id}`);
-    const novaMeta = metaInput.value;
-
     Swal.fire({
-        title: "Deseja confirmar a nova meta?",
+        title: "Deseja confirmar as alterações?",
         showCancelButton: true,
         confirmButtonText: "Sim",
         cancelButtonText: "Cancelar",
@@ -210,39 +205,52 @@ function confirmarEdicaoProfessor(id) {
         color: '#333'
     }).then(async (result) => {
         if (result.isConfirmed) {
-            const sucesso = await atualizarMetaProfessor(id, novaMeta);
-            if (sucesso) {
+            const metaInput = document.getElementById(`meta_${id}`);
+            const statusSelect = document.getElementById(`status_${id}`);
+            const novaMeta = metaInput.value.split(" ")[0];
+
+            let alteracoesFeitas = false;
+
+            if (statusSelect.value !== statusSelect.getAttribute("data-original-value")) {
+                const statusAtualizado = await atualizarStatus(id, statusSelect.value);
+                if (statusAtualizado) alteracoesFeitas = true;
+            }
+
+            const metaAtualizada = await atualizarMetaProfessor(id, novaMeta);
+            if (metaAtualizada) alteracoesFeitas = true;
+
+            if (alteracoesFeitas) {
                 Swal.fire({
-                    title: "Meta atualizada com sucesso!",
+                    title: "Alterações realizadas com sucesso!",
                     icon: "success",
-                    showConfirmButton: false,
-                    timer: 1500,
-                    background: '#f2f2f2',
-                    color: '#333',
-                    timerProgressBar: true
+                    timer: 1500
+                });
+            } else {
+                Swal.fire({
+                    title: "Nenhuma alteração foi feita.",
+                    icon: "info",
+                    timer: 1500
                 });
             }
-            cancelarEdicaoProfessor(id);
         }
+        cancelarEdicaoProfessor(id);
     });
 }
 
 function cancelarEdicaoProfessor(id) {
     const metaInput = document.getElementById(`meta_${id}`);
+    const statusSelect = document.getElementById(`status_${id}`);
     const botaoEditar = document.querySelector(`#card_dados_${id} .lapis-professor img`);
-    const botaoExcluir = document.querySelector(`#card_dados_${id} .lixeira-professor img`);
+    const lixeira = document.querySelector(`#card_dados_${id} .lixeira-professor`);
 
     metaInput.setAttribute("readonly", "true");
+    statusSelect.setAttribute("disabled", "true");
+
+    lixeira.style.display = "none";
 
     botaoEditar.src = "../imgs/pen.png";
     botaoEditar.alt = "Editar professor";
     botaoEditar.onclick = () => editarProfessor(id);
-
-    // Restaura o ícone e função do botão de excluir
-    botaoExcluir.src = "../imgs/trash-bin.png";
-    botaoExcluir.alt = "Excluir professor";
-    botaoExcluir.onclick = () => confirmacaoDeleteProfessor(id);
-    buscarProfessor(paginaAtual);
 }
 
 async function atualizarMetaProfessor(id) {
@@ -266,6 +274,43 @@ async function atualizarMetaProfessor(id) {
             timer: 2000
         });
         console.log(error);
+        return false;
+    }
+}
+
+async function atualizarStatus(id, novoStatus) {
+    try {
+        const resposta = await fetch(`http://localhost:8080/usuarios/desativar/${id}`, {
+            method: "PUT",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(novoStatus)
+        });
+
+        if (resposta.ok) {
+            return true;
+        } else {
+            const errorData = await resposta.json();
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro ao atualizar o status',
+                text: errorData.message || 'Por favor, tente novamente mais tarde.',
+                background: '#f2f2f2',
+                color: '#333'
+            });
+            return false;
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro ao atualizar o status',
+            text: 'Por favor, tente novamente mais tarde.',
+            background: '#f2f2f2',
+            color: '#333'
+        });
+        console.error("Erro ao atualizar o status:", error);
         return false;
     }
 }
