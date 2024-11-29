@@ -23,13 +23,14 @@ async function buscarAlunos(paginaAtual) {
     const listaAlunos = await resposta.json();
 
     if (listaAlunos.content == null || listaAlunos.content.length === 0) {
-        atualizarBotoesPaginacaoProfessor(0, 0);
+        atualizarBotoesPaginacaoAluno(0, 0);
         cardsAlunos.innerHTML = `<span class="text-muted">Não há alunos cadastrados com os filtros aplicados. <br/></span>`;
         return;
     }
 
     cardsAlunos.innerHTML = "";
     cardsAlunos.innerHTML += listaAlunos.content.map((aluno) => {
+        console.log(aluno)
         const alunoId = aluno.id; // ID do aluno para garantir unicidade
 
         // Converte as strings em arrays
@@ -44,7 +45,7 @@ async function buscarAlunos(paginaAtual) {
             </div>
             <br/><br/>
             <div class="form-student">
-                <div class="personal-information">
+                <div class="personal-information ${aluno.status === "INATIVO" ? "inativo" : ""}">
                     <div class="form-group">
                         <label for="cpf_${alunoId}">CPF:</label>
                         <label class="label2" type="text" id="cpf_${alunoId}">${aluno.cpf}</label>
@@ -74,12 +75,11 @@ async function buscarAlunos(paginaAtual) {
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="ativo_inativo" class="form-label me-3" id="select_ativo_inativo">Status:</label>
-                    <select class="label2" aria-label="Default select example" disabled>
-                        <option value="">Selecione</option>
-                        <option value="1">Ativo</option>
-                        <option value="0">Inativo</option>
-                    </select>
+                        <label for="status_${alunoId}">Status:</label>
+                        <select class="label2" id="status_${alunoId}" disabled>
+                            <option value="1" ${aluno.status === "ATIVO" ? "selected" : ""}>Ativo</option>
+                            <option value="2" ${aluno.status === "INATIVO" ? "selected" : ""}>Inativo</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -87,11 +87,9 @@ async function buscarAlunos(paginaAtual) {
             <div class="lapis">
                 <img src="../imgs/pen.png" alt="Editar aluno" style="width: 3vw; height: 6vh" onclick="editarAluno(${alunoId})">
             </div>
-            ${nivelAcesso === 3 ? `
-                <div class="lixeira">
-                    <img src="../imgs/trash-bin.png" alt="Excluir aluno" style="width: 3vw; height: 6vh" onclick="confirmacaoDeleteAluno(${alunoId})">
-                </div>
-            ` : ''}
+                <div class="lixeira" style="display: none;">
+                    <img src="../imgs/cancel.png" alt="Cancelar mudança" style="width: 3vw; height: 6vh" onclick="cancelarEdicao(${alunoId})">
+                </div>          
         </div>
         <hr class="line">
         `;
@@ -136,8 +134,9 @@ function confirmacaoDeleteAluno(id) {
 function editarAluno(id) {
     const nivelSelect = document.getElementById(`nivel-ingles_${id}`);
     const nichoSelect = document.getElementById(`nicho_${id}`);
+    const statusSelect = document.getElementById(`status_${id}`);
     const botaoEditar = document.querySelector(`#card_dados_${id} .lapis img`);
-    const botaoExcluir = document.querySelector(`#card_dados_${id} .lixeira img`);
+    const lixeira = document.querySelector(`#card_dados_${id} .lixeira`);
 
     if (nivelSelect) {
         nivelSelect.removeAttribute("disabled");
@@ -150,13 +149,18 @@ function editarAluno(id) {
         buscarNicho(nichoSelect);
     }
 
+    if (statusSelect) {
+        statusSelect.removeAttribute("disabled");
+        statusSelect.setAttribute("data-original-value", statusSelect.value); // Armazena o valor inicial
+    }
+
+    if (lixeira) {
+        lixeira.style.display = "flex";
+    }
+
     botaoEditar.src = "../imgs/check.png";
     botaoEditar.alt = "Confirmar edição";
     botaoEditar.onclick = () => confirmarEdicao(id);
-
-    botaoExcluir.src = "../imgs/cancel.png";
-    botaoExcluir.alt = "Cancelar edição";
-    botaoExcluir.onclick = () => cancelarEdicao(id);
 }
 
 function confirmarEdicao(id) {
@@ -171,13 +175,41 @@ function confirmarEdicao(id) {
         color: '#333'
     }).then(async (result) => {
         if (result.isConfirmed) {
-            const nivelAtualizado = await atualizarNivel(id);
-            const nichoAtualizado = await atualizarNicho(id);
+            let alteracoesFeitas = false;
 
-            if (nivelAtualizado && nichoAtualizado) {
+            const statusSelect = document.getElementById(`status_${id}`);
+            const nivelSelect = document.getElementById(`nivel-ingles_${id}`);
+            const nichoSelect = document.getElementById(`nicho_${id}`);
+
+            if (statusSelect && statusSelect.value !== statusSelect.getAttribute("data-original-value")) {
+                const statusAtualizado = await atualizarStatus(id, statusSelect.value);
+                if (statusAtualizado) alteracoesFeitas = true;
+            }
+
+            if (nivelSelect && nivelSelect.value !== nivelSelect.getAttribute("data-original-value")) {
+                const nivelAtualizado = await atualizarNivel(id);
+                if (nivelAtualizado) alteracoesFeitas = true;
+            }
+
+            if (nichoSelect && nichoSelect.value !== nichoSelect.getAttribute("data-original-value")) {
+                const nichoAtualizado = await atualizarNicho(id);
+                if (nichoAtualizado) alteracoesFeitas = true;
+            }
+
+            if (alteracoesFeitas) {
                 Swal.fire({
-                    title: "Aluno atualizado com sucesso!",
+                    title: "Alterações confirmadas com sucesso!",
                     icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    background: '#f2f2f2',
+                    color: '#333',
+                    timerProgressBar: true
+                });
+            } else {
+                Swal.fire({
+                    title: "Nenhuma alteração foi feita.",
+                    icon: "info",
                     showConfirmButton: false,
                     timer: 1500,
                     background: '#f2f2f2',
@@ -193,22 +225,21 @@ function confirmarEdicao(id) {
 function cancelarEdicao(id) {
     const nivelSelect = document.getElementById(`nivel-ingles_${id}`);
     const nichoSelect = document.getElementById(`nicho_${id}`);
+    const statusSelect = document.getElementById(`status_${id}`);
     const botaoEditar = document.querySelector(`#card_dados_${id} .lapis img`);
-    const botaoExcluir = document.querySelector(`#card_dados_${id} .lixeira img`);
-
-    botaoEditar.classList.add("trocando");
-    botaoExcluir.classList.add("trocando");
+    const lixeira = document.querySelector(`#card_dados_${id} .lixeira`); // Seleciona a lixeira
 
     nivelSelect.setAttribute("disabled", "true");
     nichoSelect.setAttribute("disabled", "true");
+    statusSelect.setAttribute("disabled", "true");
+
+    if (lixeira) {
+        lixeira.style.display = "none";
+    }
 
     botaoEditar.src = "../imgs/pen.png";
     botaoEditar.alt = "Editar aluno";
     botaoEditar.onclick = () => editarAluno(id);
-
-    botaoExcluir.src = "../imgs/trash-bin.png";
-    botaoExcluir.alt = "Excluir aluno";
-    botaoExcluir.onclick = () => confirmacaoDeleteAluno(id);
 }
 
 async function deletarAluno(id) {
@@ -414,5 +445,35 @@ async function atualizarNicho(id) {
             timer: 2000
         });
         console.log(error);
+    }
+}
+
+async function atualizarStatus(id, novoStatus) {
+    try {
+        const resposta = await fetch(`http://localhost:8080/usuarios/desativar/${id}`, {
+            method: "PUT",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(novoStatus)
+        });
+
+        if (resposta.ok) {
+            return true;
+        } else {
+            const errorData = await resposta.json();
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro ao atualizar o status',
+                text: errorData.message || 'Por favor, tente novamente mais tarde.',
+                background: '#f2f2f2',
+                color: '#333'
+            });
+            return false;
+        }
+    } catch (error) {
+        console.error("Erro ao atualizar o status:", error);
+        return false;
     }
 }

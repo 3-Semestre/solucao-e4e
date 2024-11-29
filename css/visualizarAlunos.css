@@ -147,9 +147,9 @@ label {
 }
 
 .course-information.inativo {
-    opacity: 0.5; /* Deixa opaco */
-    color: #f2f2f2; /* Adiciona um cinza claro */
-    pointer-events: none; /* Opcional: impede interação com os campos */
+    opacity: 0.5 !important; /* Deixa opaco */
+    color: #f2f2f2 !important; /* Adiciona um cinza claro */
+    pointer-events: none !important; /* Opcional: impede interação com os campos */
 }
 
 
