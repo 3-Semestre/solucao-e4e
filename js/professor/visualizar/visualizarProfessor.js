@@ -33,11 +33,11 @@ async function buscarProfessor(paginaAtual) {
 
     cardsProfessor.innerHTML = "";
     cardsProfessor.innerHTML += listaProfessors.content.map((professor) => {
-        console.log(professor)
         const professorId = professor.id; // ID do professor para garantir unicidade
 
-        return `
-      <div class="dados-student${professor.status === "INATIVO" ? "inativo" : ""}" id="card_dados_${professorId}">
+        return `<div id="listagem_usuarios">
+    <!-- Card de Professor -->
+    <div class="dados-student" id="card_dados_${professorId}">
         <div class="header-student">
             <img src="../imgs/perfil_blue.png" alt="Foto do professor">
             <p>${professor.nome_completo}</p>
@@ -84,34 +84,29 @@ async function buscarProfessor(paginaAtual) {
             </div>
         </div>
         <br>
-        <div class="course-information ${professor.status === "INATIVO" ? "inativo" : ""}">   
-             <div class="form-group">
+        <div class="course-information ${professor.status === "INATIVO" ? "inativo" : ""}">
+            <div class="form-group">
                 <label for="meta_${professorId}">Metas:</label>
                 <input class="label2" type="text" id="meta_${professorId}" value="${professor.qtd_aula} aulas" readonly>
             </div>
-        <div class="form-group" id="status">
-            <label for="status_${professorId}">Status:</label>
+            <div class="form-group">
+                <label for="status_${professorId}">Status:</label>
                 <select class="label2" id="status_${professorId}" disabled>
                     <option value="1" ${professor.status === "ATIVO" ? "selected" : ""}>Ativo</option>
                     <option value="2" ${professor.status === "INATIVO" ? "selected" : ""}>Inativo</option>
                 </select>
+            </div>
+        </div>
+        <div class="lixeira-professor" id="lixeira_${professorId}" style="display: none;">
+            <img src="../imgs/cancel.png" onclick="cancelarEdicaoProfessor(${professorId})" alt="Excluir professor" style="width: 3vw; height: 6vh">
+        </div>
+        <div class="lapis-professor" id="editar_${professorId}">
+            <img src="../imgs/pen.png" alt="Editar professor" style="width: 3vw; height: 6vh" onclick="editarProfessor(${professorId})">
         </div>
     </div>
+    <hr class="line">
 </div>
-
-    
-
-        ${nivelAcesso === 3 ? `
-            <div class="lixeira-professor" id="cancelar-edicao" style="display: none;">
-                <img src="../imgs/cancel.png" onclick="cancelarEdicaoProfessor(${professorId})" alt="Excluir professor" style="width: 3vw; height: 6vh">
-            </div>
-            <div class="lapis-professor">
-                <img src="../imgs/pen.png" alt="Editar professor" style="width: 3vw; height: 6vh" onclick="editarProfessor(${professorId})">
-            </div>
-            ` : ''}
-      </div>
-      <hr class="line">
-    `;
+`;
     }).join('');
 
     atualizarBotoesPaginacaoProfessor(listaProfessors.totalPages, listaProfessors.pageable.pageNumber);
@@ -176,21 +171,61 @@ async function deletarProfessor(id) {
 }
 
 function editarProfessor(id) {
-    const metaInput = document.getElementById(`meta_${id}`);
-    const statusSelect = document.getElementById(`status_${id}`);
-    const botaoEditar = document.querySelector(`#card_dados_${id} .lapis-professor img`);
-    const lixeira = document.querySelector(`.lixeira-professor`);
+    const cardProfessor = document.getElementById(`card_dados_${id}`);
+    if (!cardProfessor) {
+        console.error(`Card do professor com ID ${id} não encontrado.`);
+        return;
+    }
 
-    metaInput.removeAttribute("readonly");
-    statusSelect.removeAttribute("disabled");
-    statusSelect.setAttribute("data-original-value", statusSelect.value);
+    const metaInput = cardProfessor.querySelector(`#meta_${id}`);
+    const statusSelect = cardProfessor.querySelector(`#status_${￼id}`);
+    const botaoEditar = cardProfessor.querySelector(`#editar_${id} img`);
+    const lixeira = cardProfessor.querySelector(`#lixeira_${id}`);
 
-    console.log(lixeira)
-    lixeira.style.display = "flex";
+    if (metaInput && statusSelect && botaoEditar && lixeira) {
+        metaInput.removeAttribute("readonly");
+        statusSelect.removeAttribute("disabled");
+        statusSelect.style.pointerEvents = "auto";
+        statusSelect.style.opacity = "1";
+        statusSelect.setAttribute("data-original-value", statusSelect.value);
+        console.log(statusSelect)
 
-    botaoEditar.src = "../imgs/check.png";
-    botaoEditar.alt = "Confirmar edição";
-    botaoEditar.onclick = () => confirmarEdicaoProfessor(id);
+        lixeira.style.display = "flex";
+
+        botaoEditar.src = "../imgs/check.png";
+        botaoEditar.alt = "Confirmar edição";
+        botaoEditar.onclick = () => confirmarEdicaoProfessor(id);
+    } else {
+        console.error('Algum elemento não foi encontrado dentro do card do professor');
+    }
+}
+
+function cancelarEdicaoProfessor(id) {
+    const cardProfessor = document.getElementById(`card_dados_${id}`);
+    if (!cardProfessor) {
+        console.error(`Card do professor com ID ${id} não encontrado.`);
+        return;
+    }
+
+    const metaInput = cardProfessor.querySelector(`#meta_${id}`);
+    const statusSelect = cardProfessor.querySelector(`#status_${id}`);
+    const botaoEditar = cardProfessor.querySelector(`#editar_${id} img`);
+    const lixeira = cardProfessor.querySelector(`#lixeira_${id}`);
+
+    if (metaInput && statusSelect && botaoEditar && lixeira) {
+        metaInput.setAttribute("readonly", "true");
+        statusSelect.setAttribute("disabled", "true");
+        statusSelect.style.pointerEvents = "none";
+        statusSelect.style.opacity = "0.5";
+
+        lixeira.style.display = "none";
+
+        botaoEditar.src = "../imgs/pen.png";
+        botaoEditar.alt = "Editar professor";
+        botaoEditar.onclick = () => editarProfessor(id);
+    } else {
+        console.error('Algum elemento não foi encontrado dentro do card do professor');
+    }
 }
 
 function confirmarEdicaoProfessor(id) {
@@ -205,8 +240,14 @@ function confirmarEdicaoProfessor(id) {
         color: '#333'
     }).then(async (result) => {
         if (result.isConfirmed) {
-            const metaInput = document.getElementById(`meta_${id}`);
-            const statusSelect = document.getElementById(`status_${id}`);
+            const cardProfessor = document.getElementById(`card_dados_${id}`);
+            if (!cardProfessor) {
+                console.error(`Card do professor com ID ${id} não encontrado.`);
+                return;
+            }
+
+            const metaInput = cardProfessor.querySelector(`#meta_${id}`);
+            const statusSelect = cardProfessor.querySelector(`#status_${id}`);
             const novaMeta = metaInput.value.split(" ")[0];
 
             let alteracoesFeitas = false;
@@ -235,22 +276,6 @@ function confirmarEdicaoProfessor(id) {
         }
         cancelarEdicaoProfessor(id);
     });
-}
-
-function cancelarEdicaoProfessor(id) {
-    const metaInput = document.getElementById(`meta_${id}`);
-    const statusSelect = document.getElementById(`status_${id}`);
-    const botaoEditar = document.querySelector(`#card_dados_${id} .lapis-professor img`);
-    const lixeira = document.querySelector(`#card_dados_${id} .lixeira-professor`);
-
-    metaInput.setAttribute("readonly", "true");
-    statusSelect.setAttribute("disabled", "true");
-
-    lixeira.style.display = "none";
-
-    botaoEditar.src = "../imgs/pen.png";
-    botaoEditar.alt = "Editar professor";
-    botaoEditar.onclick = () => editarProfessor(id);
 }
 
 async function atualizarMetaProfessor(id) {
