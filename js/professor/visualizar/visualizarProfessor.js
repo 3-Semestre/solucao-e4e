@@ -178,7 +178,7 @@ function editarProfessor(id) {
     }
 
     const metaInput = cardProfessor.querySelector(`#meta_${id}`);
-    const statusSelect = cardProfessor.querySelector(`#status_${￼id}`);
+    const statusSelect = cardProfessor.querySelector(`#status_${id}`);
     const botaoEditar = cardProfessor.querySelector(`#editar_${id} img`);
     const lixeira = cardProfessor.querySelector(`#lixeira_${id}`);
 
