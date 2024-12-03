@@ -9,7 +9,7 @@ body {
     display: flex;
 }
 
-.space-aluno{
+.space-aluno {
     width: auto;
     margin-left: 2px;
     margin-right: auto;
@@ -23,16 +23,23 @@ body {
     justify-content: space-around;
 }
 
+.title-agendamento {
+    color: #072B59;
+}
+
 .conteudo {
-    margin-left: 100px; /* Valor inicial quando o menu está fechado */
+    margin-left: 100px;
+    /* Valor inicial quando o menu está fechado */
     transition: margin-left 0.3s ease, width 0.3s ease;
     padding: 20px;
     width: calc(100% - 200px);
 }
 
 .conteudo.open {
-    margin-left: 250px; /* Valor quando o menu está aberto */
-    width: calc(100% - 250px); /* Ajusta a largura para que o conteúdo não seja coberto */
+    margin-left: 250px;
+    /* Valor quando o menu está aberto */
+    width: calc(100% - 250px);
+    /* Ajusta a largura para que o conteúdo não seja coberto */
 }
 
 .buttons-professor {
@@ -281,14 +288,66 @@ body {
     justify-content: space-evenly;
 }
 
+.filtro-graph {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-filtro-graph {
+    font-weight: bold;
+    color: #072B59;
+}
+
+.form-select-graph {
+    border: 2px solid #072B59;
+    border-radius: 5px;
+    color: #072B59;
+    font-weight: bolder;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+.flatpickr-current-month {
+    color: #072B59 !important;
+    font-weight: bolder;
+}
+
+.flatpickr-next-month,
+.flatpickr-prev-month {
+    color: #072B59 !important;
+}
+
+.flatpickr-next-month:hover,
+.flatpickr-prev-month:hover svg {
+    fill: #072B59 !important;
+}
+
+.flatpickr-current-month input.cur-year {
+    color: #072B59 !important;
+    font-weight: bolder;
+}
+
+.flatpickr-monthSelect-month {
+    color: #072B59 !important;
+    font-weight: bolder;
+}
+
+.flatpickr-monthSelect-month.selected {
+    border: #a8b6bf40 !important;
+    background-color: #a8b6bf40 !important;
+    color: #072B59 !important;
+    font-weight: bolder;
+}
+
 @media only screen and (max-device-width: 430px) {
 
-    .dropdown-btn{
+    .dropdown-btn {
         font-size: 10px;
-        color: rgba(255, 255, 255, 0);  
+        color: rgba(255, 255, 255, 0);
     }
 
-    .dropdown-container a{
+    .dropdown-container a {
         font-size: 10px;
     }
 
@@ -348,7 +407,7 @@ body {
         gap: 2rem;
     }
 
-    .kpis2{
+    .kpis2 {
         display: grid;
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -363,8 +422,8 @@ body {
     #botaoChartN {
         width: 60vw;
     }
-    
-    .box-chart2{
+
+    .box-chart2 {
         width: 68vw;
         height: 30vh;
         padding: 0;
@@ -372,16 +431,16 @@ body {
         right: 4vw;
     }
 
-    .none{
+    .none {
         display: none;
     }
 
-    .conteudo .title-agendamento{
+    .conteudo .title-agendamento {
         right: 11vw;
         position: relative;
     }
 
-    #kpi{
+    #kpi {
         right: 18vw;
         position: relative;
     }
@@ -391,7 +450,7 @@ body {
         top: 0.5vh;
     }
 
-    .variação{
+    .variação {
         gap: 1vw;
     }
 
@@ -399,25 +458,25 @@ body {
         position: relative;
         right: 5.5vw;
     }
-    
+
     .seta-baixo {
         position: relative;
         right: 5.5vw;
     }
-    
+
     .seta-cima {
         position: relative;
         right: 5.5vw;
     }
 
 
-    .line{
+    .line {
         width: 90%;
         position: relative;
         right: 4vw;
     }
 
-    .line2{
+    .line2 {
         width: 90%;
         position: relative;
         right: 4vw;

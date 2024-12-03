@@ -38,13 +38,13 @@ async function buscarProfessor(paginaAtual) {
         return `<div id="listagem_usuarios">
     <!-- Card de Professor -->
     <div class="dados-student" id="card_dados_${professorId}">
-        <div class="header-student">
+        <div class="header-student ${professor.status === "INATIVO" ? "inativo" : ""}">
             <img src="../imgs/perfil_blue.png" alt="Foto do professor">
             <p>${professor.nome_completo}</p>
         </div>
         <br/>
         <br/>
-        <div class="form-student">
+        <div class="form-student ${professor.status === "INATIVO" ? "inativo" : ""}">
             <div class="personal-information">
                 <div class="form-group">
                     <label for="cpf_${professorId}">CPF:</label>
@@ -64,7 +64,7 @@ async function buscarProfessor(paginaAtual) {
                 </div>
             </div>
 
-            <div class="course-information ${professor.status === "INATIVO" ? "inativo" : ""}">
+            <div class="course-information">
                 <div class="form-group">
                     <label for="nivel-ingles_${professorId}">Nível de Inglês:</label>
                     <label class="label2" type="text" id="nivel-ingles_${professorId}"> ${professor.niveis_Ingles} </label>
@@ -89,7 +89,7 @@ async function buscarProfessor(paginaAtual) {
                 <label for="meta_${professorId}">Metas:</label>
                 <input class="label2" type="text" id="meta_${professorId}" value="${professor.qtd_aula} aulas" readonly>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="status">
                 <label for="status_${professorId}">Status:</label>
                 <select class="label2" id="status_${professorId}" disabled>
                     <option value="1" ${professor.status === "ATIVO" ? "selected" : ""}>Ativo</option>

@@ -403,6 +403,36 @@ body {
     border:  2px solid rgba(128, 128, 128, 0.466);
     color: black;
     font-weight: bolder;
+  }    
+
+  .flatpickr-current-month{
+    color: #072B59 !important;
+    font-weight: bolder;
+  }
+
+  .flatpickr-next-month, .flatpickr-prev-month {
+    color: #072B59 !important;
+  }
+
+  .flatpickr-next-month:hover, .flatpickr-prev-month:hover svg {
+    fill: #072B59 !important;
+}
+
+  .flatpickr-current-month input.cur-year{
+    color: #072B59 !important;
+    font-weight: bolder;
+  }
+
+  .flatpickr-monthSelect-month{
+    color: #072B59 !important;
+    font-weight: bolder;
+  }
+
+  .flatpickr-monthSelect-month.selected{
+    border: #a8b6bf40 !important;
+    background-color: #a8b6bf40 !important;
+    color: #072B59 !important;
+    font-weight: bolder;
   }
 
 @media only screen and (max-device-width: 430px) {

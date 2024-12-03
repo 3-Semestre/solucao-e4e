@@ -39,13 +39,13 @@ async function buscarAlunos(paginaAtual) {
 
         return `
         <div class="dados-student" id="card_dados_${alunoId}">
-            <div class="header-student">
+            <div class="header-student ${aluno.status === "INATIVO" ? "inativo" : ""}">
                 <img src="../imgs/perfil_blue.png" alt="Foto do Aluno">
                 <p>${aluno.nome_completo}</p>
             </div>
             <br/><br/>
-            <div class="form-student">
-                <div class="personal-information ${aluno.status === "INATIVO" ? "inativo" : ""}">
+            <div class="form-student ${aluno.status === "INATIVO" ? "inativo" : ""}">
+                <div class="personal-information">
                     <div class="form-group">
                         <label for="cpf_${alunoId}">CPF:</label>
                         <label class="label2" type="text" id="cpf_${alunoId}">${aluno.cpf}</label>
