@@ -149,15 +149,16 @@ async function importarDados() {
             }
         });
 
+        console.log(response)
+
         if (response.ok) {
-            const result = await response.json();
             Swal.fire({
                 icon: "success",
                 title: "Aluno cadastrado com sucesso!",
                 showConfirmButton: false,
                 timer: 1500
             });
-            console.log('Upload realizado com sucesso:', result);
+            console.log('Upload realizado com sucesso:', response);
         } else {
             Swal.fire({
                 icon: 'error',
