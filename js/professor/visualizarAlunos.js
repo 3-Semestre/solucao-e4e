@@ -560,36 +560,3 @@ async function atualizarNicho(id) {
         console.log(error);
     }
 }
-
-
-async function importarDados() {
-    console.log("Botão clicado! Função importarDados() executada.");
-
-    const file = fileInput.files[0]; 
-
-    if (!file) {
-        console.error("Nenhum arquivo selecionado.");
-        return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-        // Envia o arquivo ao endpoint
-        const response = await fetch('http://localhost:8080/import/txt/usuarios', {
-            method: 'POST',
-            body: formData,
-            headers: { 'Authorization': `Bearer ${token}`}
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log('Upload realizado com sucesso:', result);
-        } else {
-            console.error('Erro ao enviar o arquivo:', response.statusText);
-        }
-    } catch (error) {
-        console.error('Erro de rede ou servidor:', error);
-    }
-}

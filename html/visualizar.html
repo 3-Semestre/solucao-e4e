@@ -214,12 +214,12 @@
 
 </html>
 <script>
-    const fileInput = document.getElementById('file-input');
+    const importInput = document.getElementById('file-input');
     const nivel = sessionStorage.getItem("nivel_acesso")
     
     if(nivel == "REPRESENTANTE_LEGAL"){
         document.getElementById("import-form").style.display = "block";
     }
-    fileInput.addEventListener('click', importarDados);
+    importInput.addEventListener('change', importarDados);
 </script>
 
