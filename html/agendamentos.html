@@ -13,7 +13,8 @@
 
     <script defer src="../js/script.js"></script>
     <script defer src="../js/pilha.js"></script>
-    <script src="../js/aluno/exibirAgendamentos.js"></script>
+    <script src="../js/agendamentos/exibirAgendamentos.js"></script>
+    <script src="../js/agendamentos/filter.js"></script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -132,7 +133,7 @@
                     <li class="breadcrumb-item active" aria-current="page" id="titulo_breadcrumb">Agendamentos</li>
                 </ol>
             </nav>
-        
+
             <div class="button-container">
                 <button type="button" class="custom-button">
                     <i class="fas fa-download" style="margin-right: 5px;"></i> Baixar Dados
@@ -190,6 +191,19 @@
     const param = new URLSearchParams(window.location.search);
 
     console.log(param.get("tipo"));
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // Captura todos os inputs que têm IDs relacionados aos filtros
+        const filterInputs = document.querySelectorAll("#data_inicio, #data_fim, #horario_inicio, #horario_fim, #aluno");
+
+        // Adiciona o evento onchange para cada input
+        filterInputs.forEach((input) => {
+            input.addEventListener("change", () => {
+                Filters.updateFromInputs(); // Atualiza o objeto Filters com os valores dos inputs
+                carregarAgendamentos(0); // Chama a função para buscar agendamentos na página inicial
+            });
+        });
+    });
 
     if (param.get("tipo") === "passado") {
         document.querySelector(".button-container").style.display = "flex"; // Mostra a div

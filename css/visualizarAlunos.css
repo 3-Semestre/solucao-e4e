@@ -145,6 +145,35 @@ label {
     gap: 1vw;
 }
 
+.form-student.inativo{
+    opacity: 0.5 !important; /* Deixa opaco */
+    color: #f2f2f2 !important; /* Adiciona um cinza claro */ 
+}
+
+.header-student.inativo{
+    opacity: 0.5 !important; /* Deixa opaco */
+    color: #f2f2f2 !important; /* Adiciona um cinza claro */ 
+}
+
+.course-information.inativo{
+    opacity: 0.5 !important; /* Deixa opaco */
+    color: #f2f2f2 !important; /* Adiciona um cinza claro */ 
+}
+
+.inativo #status{
+    position: relative;
+    right: 20.5vw;
+}
+
+#status{
+    position: relative;
+    right: 20vw;
+}
+
+#select_ativo_inativo select option{
+    color: #072B59 !important;
+}
+
 .form-group {
     flex: 1 1 30%;
 }
@@ -178,7 +207,7 @@ select[disabled]:not(.no-custom-style),
     -webkit-appearance: none;
     background: none;
     border: none;
-    color: #333;
+    color: #072B59;
     cursor: not-allowed;
     font-weight: 300;
     min-width: 250px;
@@ -198,7 +227,7 @@ select:not([disabled]):not(.no-custom-style),
     appearance: auto;
     background-color: #fff;
     border: 1px solid #ccc;
-    color: #333;
+    color: #072B59;
     cursor: pointer;
     font-weight: 300;
     min-width: 250px;
@@ -257,6 +286,7 @@ select:not(.no-custom-style),
     justify-content: flex-end;
     position: relative;
     cursor: pointer;
+    bottom: 12vh;
 }
 
 .lapis img{
@@ -322,7 +352,6 @@ hr.line {
 .button-container {
     display: flex;
     justify-content: flex-end;
-    
   }
   
   .custom-button i {
