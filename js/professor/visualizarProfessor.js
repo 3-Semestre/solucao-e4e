@@ -141,7 +141,7 @@ async function importarDados() {
 
     try {
         // Envia o arquivo ao endpoint
-        const response = await fetch('http://localhost:8080/import/txt/usuarios', {
+        const response = await fetch('http://localhost:8080/archive/txt/usuarios', {
             method: 'POST',
             body: formData,
             headers: {
@@ -174,3 +174,46 @@ async function importarDados() {
         console.error('Erro de rede ou servidor:', error);
     }
 }
+
+async function exportarDados() {
+
+    try {
+      const response = await fetch(`http://localhost:8080/archive/csv/usuarios/${tipo}`, {
+        method: 'GET', 
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${sessionStorage.getItem('token')}` 
+        }
+      });
+
+      // Verifica se a resposta foi bem-sucedida
+      if (!response.ok) {
+        throw new Error(`Erro na requisição: ${response.status}`);
+      }
+
+      // Obtém o arquivo como um blob
+      const blob = await response.blob();
+
+      // Cria uma URL para o blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Cria um elemento <a> para simular o clique
+      const a = document.createElement('a');
+      a.href = url;
+
+      // Define o nome do arquivo a ser baixado
+      const filename = response.headers.get('Content-Disposition')?.split('filename=')[1] || 'arquivo_exportado';
+      a.download = filename;
+
+      // Simula o clique no link
+      document.body.appendChild(a);
+      a.click();
+
+      // Remove o link após o download
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Erro ao exportar arquivo:', error);
+      alert('Erro ao exportar o arquivo. Tente novamente mais tarde.');
+    }
+  }

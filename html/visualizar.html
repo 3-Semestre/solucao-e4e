@@ -109,7 +109,7 @@
         
             <div class="data_transition">
                 <div class="button-container" style="gap: 2vw;">
-                    <button type="button" class="custom-button">
+                    <button type="button" class="custom-button" id="export-button">
                         <i class="fas fa-download" style="margin-right: 5px;"></i> Exportar Dados
                     </button>
                     <form id="import-form" action="/upload" method="POST" enctype="multipart/form-data" style="display: none;">
@@ -215,11 +215,13 @@
 </html>
 <script>
     const importInput = document.getElementById('file-input');
+    const exportInput = document.getElementById('export-button');
     const nivel = sessionStorage.getItem("nivel_acesso")
     
     if(nivel == "REPRESENTANTE_LEGAL"){
         document.getElementById("import-form").style.display = "block";
     }
     importInput.addEventListener('change', importarDados);
+    exportInput.addEventListener('click', exportarDados);
 </script>
 
