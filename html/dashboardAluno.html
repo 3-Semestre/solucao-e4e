@@ -23,17 +23,23 @@
 
     <link rel="icon" type="image/png" href="../imgs/english4ever.png">
 
-     <!-- CSS do Flatpickr -->
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- CSS do Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-     <!-- JS do Flatpickr -->
-     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
- 
-     <!-- Plugin para Seleção de Mês -->
-     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
+    <!-- JS do Flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
+    <!-- Plugin para Seleção de Mês -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
 </head>
+
+<style>
+    .flatpickr-weekdays {
+        display: none !important;
+    }
+</style>
 
 <body>
     <nav class="sidebar" id="sidebar">
@@ -82,7 +88,8 @@
                 <div class="collapse" id="professoresDropdown">
                     <ul class="nav flex-column dropdown-container">
                         <li><a href="visualizar.html?tipo=professor" class="nav-link">Visualizar</a></li>
-                        <li><a href="cadastrar.html?tipo=professor" id="cadastro_professor" class="nav-link">Cadastrar</a></li>
+                        <li><a href="cadastrar.html?tipo=professor" id="cadastro_professor"
+                                class="nav-link">Cadastrar</a></li>
                     </ul>
                 </div>
             </li>
@@ -219,18 +226,17 @@
     };
 
     document.addEventListener("DOMContentLoaded", function () {
-    const agendamentos = document.querySelectorAll(".agendamentos .box");
-    if (agendamentos.length < 3) {
-        document.querySelector(".agendamentos").classList.add("horizontal");
-    }
-});
+        const agendamentos = document.querySelectorAll(".agendamentos .box");
+        if (agendamentos.length < 3) {
+            document.querySelector(".agendamentos").classList.add("horizontal");
+        }
 
-const flatpickrInputAno = document.querySelector("#ano-input");
+        const flatpickrInputAno = document.querySelector("#ano-input");
         if (flatpickrInputAno) {
             const flatpickrInstance = flatpickr("#ano-input", {
                 locale: "pt",
-                dateFormat: "Y", 
-                defaultDate: new Date(), 
+                dateFormat: "Y",
+                defaultDate: new Date(),
                 maxDate: new Date(),
                 onReady: function (selectedDates, dateStr, instance) {
                     const daysContainer = instance.calendarContainer.querySelector(".flatpickr-days");
@@ -258,14 +264,14 @@ const flatpickrInputAno = document.querySelector("#ano-input");
                 onChange: function (selectedDates, dateStr, instance) {
                     flatpickrInputAno.value = dateStr;
 
-                    plotarGraficoTaxaCancelamento(sessionStorage.getItem("id"));
+                    plotarAulasRealizadas();
                 }
             });
 
             function updateInputValueAndPlot(instance) {
                 const year = instance.currentYear.toString();
                 flatpickrInputAno.value = year;
-                plotarGraficoTaxaCancelamento(sessionStorage.getItem("id"));
+                plotarAulasRealizadas();
             }
 
             const initialYear = new Date().getFullYear().toString();
@@ -273,12 +279,7 @@ const flatpickrInputAno = document.querySelector("#ano-input");
         } else {
             console.error("Elemento #ano-input não encontrado na página.");
         }
-
-        if (typeof ambiente !== "undefined") {
-            console.log(`VOCÊ ESTÁ EM ${ambiente.toUpperCase()}`);
-        } else {
-            console.log("Ambiente não definido.");
-        }    ;
-
+    });
 </script>
+
 </html>
