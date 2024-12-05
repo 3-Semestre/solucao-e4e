@@ -219,6 +219,7 @@ function confirmarEdicao(id) {
             }
         }
         cancelarEdicao(id);
+        buscarAlunos(paginaAtual);
     });
 }
 

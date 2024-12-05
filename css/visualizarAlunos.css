@@ -161,11 +161,6 @@ label {
     color: #f2f2f2 !important; /* Adiciona um cinza claro */ 
 }
 
-.inativo #status{
-    position: relative;
-    right: 20.5vw;
-}
-
 #status{
     position: relative;
     right: 20vw;
