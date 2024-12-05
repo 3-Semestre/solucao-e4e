@@ -107,14 +107,19 @@
                     <li class="breadcrumb-item active" aria-current="page" id="titulo_breadcrump">Visualizar</li>
                 </ol>
             </nav>
-
-            <div class="button-container" style="gap: 2vw;">
-                <button type="button" class="custom-button">
-                    <i class="fas fa-download" style="margin-right: 5px;"></i> Exportar Dados
-                </button>
-                <button type="button" class="custom-button">
-                    <i class="fas fa-upload" style="margin-right: 5px;"></i> Importar Dados
-                </button>
+        
+            <div class="data_transition">
+                <div class="button-container" style="gap: 2vw;">
+                    <button type="button" class="custom-button" id="export-button">
+                        <i class="fas fa-download" style="margin-right: 5px;"></i> Exportar Dados
+                    </button>
+                    <form id="import-form" action="/upload" method="POST" enctype="multipart/form-data" style="display: none;">
+                        <label for="file-input" class="custom-button" style="display: inline-flex; align-items: center; cursor: pointer;">
+                          <i class="fas fa-upload" style="margin-right: 5px;"></i> Importar Dados
+                        </label>
+                        <input type="file" id="file-input" name="file" accept=".txt" style="display: none;" />
+                    </form>
+                </div> 
             </div>
         </div>
         <br>
@@ -225,10 +230,15 @@
 </body>
 
 </html>
-<!--
-    Icon confirmar
-    <div> Icons made by <a href="https://www.flaticon.com/authors/uniconlabs" title="Uniconlabs"> Uniconlabs </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com'</a></div>
+<script>
+    const importInput = document.getElementById('file-input');
+    const exportInput = document.getElementById('export-button');
+    const nivel = sessionStorage.getItem("nivel_acesso")
     
-    Icon cancelar
-    <div> Icons made by <a href="https://www.flaticon.com/authors/alfredo-hernandez" title="Alfredo Hernandez"> Alfredo Hernandez </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com'</a></div>
-    -->
+    if(nivel == "REPRESENTANTE_LEGAL"){
+        document.getElementById("import-form").style.display = "block";
+    }
+    importInput.addEventListener('change', importarDados);
+    exportInput.addEventListener('click', exportarDados);
+</script>
+

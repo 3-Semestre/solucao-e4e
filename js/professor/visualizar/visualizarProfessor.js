@@ -1,13 +1,9 @@
-var paginaAtual = 0;
-var totalPaginas = 0;
-
 const id = sessionStorage.getItem('id')
+const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
 const token = sessionStorage.getItem('token')
 
-async function buscarProfessor(paginaAtual) {
-    if (paginaAtual < 0 || (totalPaginas > 0 && paginaAtual >= totalPaginas)) return; // Limita as páginas
-
-    const cardsProfessor = document.getElementById("listagem_usuarios");
+async function buscarProfessor() { 
+    const cardsProfessor = document.getElementById("listagem_usuarios")
 
     const resposta = await fetch(`http://localhost:8080/usuarios/professor/paginado?page=${paginaAtual}` + Filters.buildQueryString(), {
         method: 'GET',
@@ -22,7 +18,6 @@ async function buscarProfessor(paginaAtual) {
         cardsProfessor.innerHTML = "<span>Não há professores cadastrados...<span> <br/>Cadastre um novo clicando <a href='cadastrar.html?tipo=professor'>aqui</a>";
         return;
     }
-
     const listaProfessors = await resposta.json();
 
     if (listaProfessors.content == null || listaProfessors.content.length === 0) {
@@ -108,12 +103,6 @@ async function buscarProfessor(paginaAtual) {
 </div>
 `;
     }).join('');
-
-    atualizarBotoesPaginacaoProfessor(listaProfessors.totalPages, listaProfessors.pageable.pageNumber);
-
-    // Esconde o GIF de carregamento
-    const loadingGif = document.getElementById('loading');
-    loadingGif.style.display = 'none';
 }
 
 function confirmacaoDeleteProfessor(id) {
@@ -387,3 +376,95 @@ function atualizarBotoesPaginacaoProfessor(total, atual) {
 
     paginaAtual = atual;
 }
+
+async function importarDados() {
+    console.log("Botão clicado! Função importarDados() executada.");
+    
+    const file = importInput.files[0]; 
+
+    if (!file) {
+        console.error("Nenhum arquivo selecionado.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        // Envia o arquivo ao endpoint
+        const response = await fetch('http://localhost:8080/archive/txt/usuarios', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+        });
+
+        console.log(response)
+
+        if (response.ok) {
+            Swal.fire({
+                icon: "success",
+                title: "Aluno cadastrado com sucesso!",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            console.log('Upload realizado com sucesso:', response);
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro ao deletar',
+                showConfirmButton: false,
+                text: 'Erro ao fazer o import de usuãrio.',
+                footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
+                timer: 2000
+            });
+            console.error('Erro ao enviar o arquivo:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Erro de rede ou servidor:', error);
+    }
+}
+
+async function exportarDados() {
+
+    try {
+      const response = await fetch(`http://localhost:8080/archive/csv/usuarios/${tipo}`, {
+        method: 'GET', 
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${sessionStorage.getItem('token')}` 
+        }
+      });
+
+      // Verifica se a resposta foi bem-sucedida
+      if (!response.ok) {
+        throw new Error(`Erro na requisição: ${response.status}`);
+      }
+
+      // Obtém o arquivo como um blob
+      const blob = await response.blob();
+
+      // Cria uma URL para o blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Cria um elemento <a> para simular o clique
+      const a = document.createElement('a');
+      a.href = url;
+
+      // Define o nome do arquivo a ser baixado
+      const filename = response.headers.get('Content-Disposition')?.split('filename=')[1] || 'arquivo_exportado';
+      a.download = filename;
+
+      // Simula o clique no link
+      document.body.appendChild(a);
+      a.click();
+
+      // Remove o link após o download
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Erro ao exportar arquivo:', error);
+      alert('Erro ao exportar o arquivo. Tente novamente mais tarde.');
+    }
+  }

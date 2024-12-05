@@ -34,8 +34,6 @@ function formatDate(dateString) {
   return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
 }
 
-
-
 function undoFormatDate(dateString) {
   const [day, month, year] = dateString.split('/');
   return `${year}-${month}-${day}`;
@@ -224,8 +222,10 @@ async function buscarProfessores() {
 professorSelect.addEventListener('change', async (event) => {
   const selectedProfessor = event.target.value;
   console.log("Data selecionada: " + dateInput.value);
+  const data = undoFormatDate(dateInput.value)
+  console.log(data)
   try {
-    const response = await fetch(`http://localhost:8080/horario-professor/disponiveis/${selectedProfessor}?dia=${dateInput.value}`, {
+    const response = await fetch(`http://localhost:8080/horario-professor/disponiveis/${selectedProfessor}?dia=${data}}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
