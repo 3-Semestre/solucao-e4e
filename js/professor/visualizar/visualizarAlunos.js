@@ -30,7 +30,6 @@ async function buscarAlunos(paginaAtual) {
 
     cardsAlunos.innerHTML = "";
     cardsAlunos.innerHTML += listaAlunos.content.map((aluno) => {
-        console.log(aluno)
         const alunoId = aluno.id; // ID do aluno para garantir unicidade
 
         // Converte as strings em arrays
