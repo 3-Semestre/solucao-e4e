@@ -2,7 +2,7 @@ const id = sessionStorage.getItem('id')
 const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
 const token = sessionStorage.getItem('token')
 
-async function buscarProfessor() { 
+async function buscarProfessor() {
     const cardsProfessor = document.getElementById("listagem_usuarios")
 
     const resposta = await fetch(`http://localhost:8080/usuarios/professor/paginado?page=${paginaAtual}` + Filters.buildQueryString(), {
@@ -103,6 +103,17 @@ async function buscarProfessor() {
 </div>
 `;
     }).join('');
+
+    const elementos = document.querySelectorAll('.dados-student');
+    elementos.forEach(elemento => {
+        elemento.style.height = "50vh";
+    });
+
+    atualizarBotoesPaginacaoProfessor(listaProfessors.totalPages, listaProfessors.pageable.pageNumber);
+
+    // Esconde o GIF de carregamento
+    const loadingGif = document.getElementById('loading');
+    loadingGif.style.display = 'none';
 }
 
 function confirmacaoDeleteProfessor(id) {
@@ -268,6 +279,7 @@ function confirmarEdicaoProfessor(id) {
             }
         }
         cancelarEdicaoProfessor(id);
+        buscarProfessor(paginaAtual);
     });
 }
 
@@ -383,8 +395,8 @@ function atualizarBotoesPaginacaoProfessor(total, atual) {
 
 async function importarDados() {
     console.log("Botão clicado! Função importarDados() executada.");
-    
-    const file = importInput.files[0]; 
+
+    const file = importInput.files[0];
 
     if (!file) {
         console.error("Nenhum arquivo selecionado.");
@@ -433,42 +445,42 @@ async function importarDados() {
 async function exportarDados() {
 
     try {
-      const response = await fetch(`http://localhost:8080/archive/csv/usuarios/${tipo}`, {
-        method: 'GET', 
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionStorage.getItem('token')}` 
+        const response = await fetch(`http://localhost:8080/archive/csv/usuarios/${tipo}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            }
+        });
+
+        // Verifica se a resposta foi bem-sucedida
+        if (!response.ok) {
+            throw new Error(`Erro na requisição: ${response.status}`);
         }
-      });
 
-      // Verifica se a resposta foi bem-sucedida
-      if (!response.ok) {
-        throw new Error(`Erro na requisição: ${response.status}`);
-      }
+        // Obtém o arquivo como um blob
+        const blob = await response.blob();
 
-      // Obtém o arquivo como um blob
-      const blob = await response.blob();
+        // Cria uma URL para o blob
+        const url = window.URL.createObjectURL(blob);
 
-      // Cria uma URL para o blob
-      const url = window.URL.createObjectURL(blob);
+        // Cria um elemento <a> para simular o clique
+        const a = document.createElement('a');
+        a.href = url;
 
-      // Cria um elemento <a> para simular o clique
-      const a = document.createElement('a');
-      a.href = url;
+        // Define o nome do arquivo a ser baixado
+        const filename = response.headers.get('Content-Disposition')?.split('filename=')[1] || 'arquivo_exportado';
+        a.download = filename;
 
-      // Define o nome do arquivo a ser baixado
-      const filename = response.headers.get('Content-Disposition')?.split('filename=')[1] || 'arquivo_exportado';
-      a.download = filename;
+        // Simula o clique no link
+        document.body.appendChild(a);
+        a.click();
 
-      // Simula o clique no link
-      document.body.appendChild(a);
-      a.click();
-
-      // Remove o link após o download
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
+        // Remove o link após o download
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Erro ao exportar arquivo:', error);
-      alert('Erro ao exportar o arquivo. Tente novamente mais tarde.');
+        console.error('Erro ao exportar arquivo:', error);
+        alert('Erro ao exportar o arquivo. Tente novamente mais tarde.');
     }
-  }
+}
