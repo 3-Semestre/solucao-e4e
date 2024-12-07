@@ -165,6 +165,11 @@ label {
     right: 20vw;
 }
 
+.inativo #status{
+    position: relative;
+    right: 20.5vw;
+}
+
 #select_ativo_inativo select option{
     color: #072B59 !important;
 }
@@ -271,8 +276,6 @@ select:not(.no-custom-style),
 .lapis{
     display: flex;
     justify-content: flex-end;
-    position: relative;
-    bottom: 6.5vh;
     cursor: pointer;
 }
 
@@ -281,13 +284,13 @@ select:not(.no-custom-style),
     justify-content: flex-end;
     position: relative;
     cursor: pointer;
-    bottom: 12vh;
+    bottom: 2.5vw !important;
 }
 
 .lapis img{
-    width: 3vw;
-    height: 6vh;
     cursor: pointer;
+    position: relative;
+    bottom: 3.1vw !important;
 }
 
 .lixeira {
@@ -302,13 +305,13 @@ select:not(.no-custom-style),
     display: flex;
     justify-content: flex-end;
     position: relative;
-    bottom: 15vh;
+    bottom: 17vh;
     cursor: pointer;
 }
 
 .lixeira img {
-    width: 3vw;
-    height: 6vh;
+    /* width: 3vw;
+    height: 6vh; */
     cursor: pointer;
 }
 

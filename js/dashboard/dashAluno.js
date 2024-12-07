@@ -62,6 +62,7 @@ async function plotarProximosAgendamentos() {
     };
 
     cardsAlunos.innerHTML = listaAgendamentos.map((aluno) => {
+        console.log(aluno);
         let dataString = aluno.data;
         let data = new Date(dataString);
 
@@ -91,7 +92,7 @@ async function plotarProximosAgendamentos() {
             <div class="content">
                 <p class="dia_semana_proxima_data">${diaSemanaPortugues}</p>
                 <p class="horario_proxima_data">${formatarHorario(aluno.horario_Inicio)}</p>
-                <p class="nome_aluno_proxima_data">${aluno.aluno_Nome}</p>
+                <p class="nome_aluno_proxima_data">${(aluno.professor_Nome).split(" ")[0]}</p>
             </div>
         </div>`;
     }).join('');
