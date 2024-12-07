@@ -183,6 +183,8 @@ function editarProfessor(id) {
 
         botaoEditar.src = "../imgs/check.png";
         botaoEditar.alt = "Confirmar edição";
+        botaoEditar.style.position = "relative";
+        botaoEditar.style.bottom = "3.5vw"
         botaoEditar.onclick = () => confirmarEdicaoProfessor(id);
     } else {
         console.error('Algum elemento não foi encontrado dentro do card do professor');
@@ -209,6 +211,8 @@ function cancelarEdicaoProfessor(id) {
 
         lixeira.style.display = "none";
 
+        botaoEditar.style.position = "relative";
+        botaoEditar.style.bottom = "0";
         botaoEditar.src = "../imgs/pen.png";
         botaoEditar.alt = "Editar professor";
         botaoEditar.onclick = () => editarProfessor(id);

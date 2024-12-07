@@ -83,10 +83,9 @@ async function buscarAlunos(paginaAtual) {
                     </div>
                 </div>
             </div>
-            
-            <div class="lapis">
-                <img src="../imgs/pen.png" alt="Editar aluno" style="width: 3vw; height: 6vh" onclick="editarAluno(${alunoId})">
-            </div>
+                <div class="lapis">
+                    <img src="../imgs/pen.png" alt="Editar aluno" style="width: 3vw; height: 6vh" onclick="editarAluno(${alunoId})">
+                </div>
                 <div class="lixeira" style="display: none;">
                     <img src="../imgs/cancel.png" alt="Cancelar mudança" style="width: 3vw; height: 6vh" onclick="cancelarEdicao(${alunoId})">
                 </div>          
@@ -137,6 +136,7 @@ function editarAluno(id) {
     const statusSelect = document.getElementById(`status_${id}`);
     const botaoEditar = document.querySelector(`#card_dados_${id} .lapis img`);
     const lixeira = document.querySelector(`#card_dados_${id} .lixeira`);
+    
 
     if (nivelSelect) {
         nivelSelect.removeAttribute("disabled");
@@ -156,10 +156,14 @@ function editarAluno(id) {
 
     if (lixeira) {
         lixeira.style.display = "flex";
+        lixeira.style.position = "relative"; // Define a posição como relativa
+        lixeira.style.bottom = "11vw";
     }
 
     botaoEditar.src = "../imgs/check.png";
     botaoEditar.alt = "Confirmar edição";
+    botaoEditar.style.position = "relative";
+    botaoEditar.style.bottom = "10vw"
     botaoEditar.onclick = () => confirmarEdicao(id);
 }
 
@@ -238,6 +242,8 @@ function cancelarEdicao(id) {
         lixeira.style.display = "none";
     }
 
+    botaoEditar.style.position = "relative";
+    botaoEditar.style.bottom = "0"
     botaoEditar.src = "../imgs/pen.png";
     botaoEditar.alt = "Editar aluno";
     botaoEditar.onclick = () => editarAluno(id);
@@ -278,10 +284,10 @@ function atualizarBotoesPaginacaoAluno(total, atual) {
 
     const anterior = document.createElement('li');
     anterior.classList.add('page-item');
-    if(total === 0 && atual === 0) {
+    if (total === 0 && atual === 0) {
         paginacao.style.display = 'none';
         return;
-    }else if (atual === 0) {
+    } else if (atual === 0) {
         anterior.classList.add('disabled');
     }
     paginacao.style.display = 'flex';
