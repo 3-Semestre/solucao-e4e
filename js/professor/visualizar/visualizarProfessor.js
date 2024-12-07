@@ -429,7 +429,7 @@ async function importarDados() {
         } else {
             Swal.fire({
                 icon: 'error',
-                title: 'Erro ao deletar',
+                title: 'Erro ao importar',
                 showConfirmButton: false,
                 text: 'Erro ao fazer o import de usuãrio.',
                 footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
@@ -443,13 +443,12 @@ async function importarDados() {
 }
 
 async function exportarDados() {
-
+    console.log("Iniciando exportação de dados...");
     try {
         const response = await fetch(`http://localhost:8080/archive/csv/usuarios/${tipo}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}` // Se necessário para autenticação
             }
         });
 
@@ -460,7 +459,6 @@ async function exportarDados() {
 
         // Obtém o arquivo como um blob
         const blob = await response.blob();
-
         // Cria uma URL para o blob
         const url = window.URL.createObjectURL(blob);
 
@@ -469,7 +467,7 @@ async function exportarDados() {
         a.href = url;
 
         // Define o nome do arquivo a ser baixado
-        const filename = response.headers.get('Content-Disposition')?.split('filename=')[1] || 'arquivo_exportado';
+        const filename = `usuarios_${tipo}.csv`;
         a.download = filename;
 
         // Simula o clique no link
@@ -479,8 +477,10 @@ async function exportarDados() {
         // Remove o link após o download
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
+        console.log("Usuários salvos com sucesso.");
     } catch (error) {
         console.error('Erro ao exportar arquivo:', error);
         alert('Erro ao exportar o arquivo. Tente novamente mais tarde.');
     }
 }
+
