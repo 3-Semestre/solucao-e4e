@@ -413,7 +413,7 @@ async function importarDados() {
         } else {
             Swal.fire({
                 icon: 'error',
-                title: 'Erro ao deletar',
+                title: 'Erro ao importar',
                 showConfirmButton: false,
                 text: 'Erro ao fazer o import de usuãrio.',
                 footer: '<a href="mailto:support@eduivonatte.com">Precisa de ajuda? Clique aqui para enviar um e-mail para o suporte.</a>',
@@ -427,44 +427,44 @@ async function importarDados() {
 }
 
 async function exportarDados() {
-
+    console.log("Iniciando exportação de dados...");
     try {
-      const response = await fetch(`http://localhost:8080/archive/csv/usuarios/${tipo}`, {
-        method: 'GET', 
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionStorage.getItem('token')}` 
+        const response = await fetch(`http://localhost:8080/archive/csv/usuarios/${tipo}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}` // Se necessário para autenticação
+            }
+        });
+
+        // Verifica se a resposta foi bem-sucedida
+        if (!response.ok) {
+            throw new Error(`Erro na requisição: ${response.status}`);
         }
-      });
 
-      // Verifica se a resposta foi bem-sucedida
-      if (!response.ok) {
-        throw new Error(`Erro na requisição: ${response.status}`);
-      }
+        // Obtém o arquivo como um blob
+        const blob = await response.blob();
+        // Cria uma URL para o blob
+        const url = window.URL.createObjectURL(blob);
 
-      // Obtém o arquivo como um blob
-      const blob = await response.blob();
+        // Cria um elemento <a> para simular o clique
+        const a = document.createElement('a');
+        a.href = url;
 
-      // Cria uma URL para o blob
-      const url = window.URL.createObjectURL(blob);
+        // Define o nome do arquivo a ser baixado
+        const filename = `usuarios_${tipo}.csv`;
+        a.download = filename;
 
-      // Cria um elemento <a> para simular o clique
-      const a = document.createElement('a');
-      a.href = url;
+        // Simula o clique no link
+        document.body.appendChild(a);
+        a.click();
 
-      // Define o nome do arquivo a ser baixado
-      const filename = response.headers.get('Content-Disposition')?.split('filename=')[1] || 'arquivo_exportado';
-      a.download = filename;
-
-      // Simula o clique no link
-      document.body.appendChild(a);
-      a.click();
-
-      // Remove o link após o download
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
+        // Remove o link após o download
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        console.log("Usuários salvos com sucesso.");
     } catch (error) {
-      console.error('Erro ao exportar arquivo:', error);
-      alert('Erro ao exportar o arquivo. Tente novamente mais tarde.');
+        console.error('Erro ao exportar arquivo:', error);
+        alert('Erro ao exportar o arquivo. Tente novamente mais tarde.');
     }
-  }
+}
+
