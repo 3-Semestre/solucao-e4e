@@ -2,7 +2,7 @@ const id = sessionStorage.getItem('id')
 const nivel_acesso_cod = sessionStorage.getItem('nivel_acesso_cod')
 const token = sessionStorage.getItem('token')
 
-async function buscarProfessor() { 
+async function buscarProfessor() {
     const cardsProfessor = document.getElementById("listagem_usuarios")
 
     const resposta = await fetch(`http://localhost:8080/usuarios/professor/paginado?page=${paginaAtual}` + Filters.buildQueryString(), {
@@ -103,6 +103,17 @@ async function buscarProfessor() {
 </div>
 `;
     }).join('');
+
+    const elementos = document.querySelectorAll('.dados-student');
+    elementos.forEach(elemento => {
+        elemento.style.height = "50vh";
+    });
+
+    atualizarBotoesPaginacaoProfessor(listaProfessors.totalPages, listaProfessors.pageable.pageNumber);
+
+    // Esconde o GIF de carregamento
+    const loadingGif = document.getElementById('loading');
+    loadingGif.style.display = 'none';
 }
 
 function confirmacaoDeleteProfessor(id) {
@@ -183,6 +194,8 @@ function editarProfessor(id) {
 
         botaoEditar.src = "../imgs/check.png";
         botaoEditar.alt = "Confirmar edição";
+        botaoEditar.style.position = "relative";
+        botaoEditar.style.bottom = "3.5vw"
         botaoEditar.onclick = () => confirmarEdicaoProfessor(id);
     } else {
         console.error('Algum elemento não foi encontrado dentro do card do professor');
@@ -209,6 +222,8 @@ function cancelarEdicaoProfessor(id) {
 
         lixeira.style.display = "none";
 
+        botaoEditar.style.position = "relative";
+        botaoEditar.style.bottom = "0";
         botaoEditar.src = "../imgs/pen.png";
         botaoEditar.alt = "Editar professor";
         botaoEditar.onclick = () => editarProfessor(id);
@@ -264,6 +279,7 @@ function confirmarEdicaoProfessor(id) {
             }
         }
         cancelarEdicaoProfessor(id);
+        buscarProfessor(paginaAtual);
     });
 }
 
@@ -379,8 +395,8 @@ function atualizarBotoesPaginacaoProfessor(total, atual) {
 
 async function importarDados() {
     console.log("Botão clicado! Função importarDados() executada.");
-    
-    const file = importInput.files[0]; 
+
+    const file = importInput.files[0];
 
     if (!file) {
         console.error("Nenhum arquivo selecionado.");

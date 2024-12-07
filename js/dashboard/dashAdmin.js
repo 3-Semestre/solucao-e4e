@@ -75,7 +75,7 @@ async function plotarProximosAgendamentos(id) {
                     <div class="content">
                         <p class="dia_semana_proxima_data">${diaSemanaPortugues}</p>
                         <p class="horario_proxima_data">${formatarHorario(agendamento.horario_Inicio)}</p>
-                        <p class="nome_aluno_proxima_data">${agendamento.aluno_Nome}</p>
+                        <p class="nome_aluno_proxima_data">${(agendamento.aluno_Nome).split(" ")[0]}</p>
                     </div>
                 </div>`;
 
@@ -137,28 +137,6 @@ async function plotarKPIsProfessor() {
     } catch (error) {
         console.log("Erro ao buscar a quantidade de aulas transferidas:", error);
         document.getElementById("agendamentos-transferido").innerHTML = 0;
-    }
-
-    try {
-        const responseCumprimento = await fetch(`http://localhost:7000/dashboard/taxa-cumprimento-metas/${id}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (responseCumprimento.ok) {
-            const cumprimentoData = await responseCumprimento.json();
-            if (cumprimentoData.length > 0) {
-                document.getElementById("agendamento-meta-percentual").innerHTML = Number(cumprimentoData[0].taxa_cumprimento).toFixed(0) + "%";
-            } else {
-                document.getElementById("agendamento-meta-percentual").innerHTML = "0%";
-            }
-        }
-    } catch (error) {
-        console.log("Erro ao buscar a taxa de cumprimento das metas:", error);
-        document.getElementById("agendamento-meta-percentual").innerHTML = "0%";
     }
 
     try {
@@ -442,6 +420,35 @@ async function plotarGraficoCumprimento(id) {
     }
 }
 
+async function plotarKpiCumprimento(id) {
+    const periodo = document.getElementById("mes-ano-input").value;
+        const mes = periodo.split(' ')[0];
+        const ano = periodo.split(' ')[1];
+
+    try {
+        const responseCumprimento = await fetch(`http://localhost:7000/dashboard/taxa-cumprimento-metas/${id}?mes=${mes}&ano=${ano}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (responseCumprimento.ok) {
+            const cumprimentoData = await responseCumprimento.json();
+            if (cumprimentoData.length > 0) {
+                document.getElementById("agendamento-meta-percentual").innerHTML = Number(cumprimentoData[0].taxa_cumprimento).toFixed(0) + "%";
+            } else {
+                document.getElementById("agendamento-meta-percentual").innerHTML = "0%";
+            }
+        }
+    } catch (error) {
+        console.log("Erro ao buscar a taxa de cumprimento das metas:", error);
+        document.getElementById("agendamento-meta-percentual").innerHTML = "0%";
+    }
+
+}
+
 function limparDadosProfessor() {
     document.getElementById("agendamentos-total").innerHTML = "0";
     document.getElementById("agendamentos-cancelado").innerHTML = "0";
@@ -480,6 +487,7 @@ async function buscarDados(id) {
     await buscarComprimentoMeta(id);
     await plotarGraficoTaxaCancelamento(id);
     await plotarGraficoCumprimento(id);
+    plotarKpiCumprimento(id)
 }
 
 buscarDados(id);

@@ -225,7 +225,7 @@ professorSelect.addEventListener('change', async (event) => {
   const data = undoFormatDate(dateInput.value)
   console.log(data)
   try {
-    const response = await fetch(`http://localhost:8080/horario-professor/disponiveis/${selectedProfessor}?dia=${data}}`, {
+    const response = await fetch(`http://localhost:8080/horario-professor/disponiveis/${selectedProfessor}?dia=${data}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
