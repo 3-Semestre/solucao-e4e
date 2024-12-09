@@ -182,23 +182,34 @@ function editarProfessor(id) {
     const botaoEditar = cardProfessor.querySelector(`#editar_${id} img`);
     const lixeira = cardProfessor.querySelector(`#lixeira_${id}`);
 
-    if (metaInput && statusSelect && botaoEditar && lixeira) {
-        metaInput.removeAttribute("readonly");
+    if (statusSelect) {
         statusSelect.removeAttribute("disabled");
         statusSelect.style.pointerEvents = "auto";
         statusSelect.style.opacity = "1";
         statusSelect.setAttribute("data-original-value", statusSelect.value);
-        console.log(statusSelect)
+    }
 
+    if (metaInput) {
+        if (statusSelect.value != "1") {
+            metaInput.setAttribute("readonly", true);
+        } else {
+            metaInput.removeAttribute("readonly");
+            metaInput.focus();
+        }
+    }
+
+    if (lixeira) {
         lixeira.style.display = "flex";
+    }
 
+    if (botaoEditar) {
         botaoEditar.src = "../imgs/check.png";
         botaoEditar.alt = "Confirmar edição";
         botaoEditar.style.position = "relative";
-        botaoEditar.style.bottom = "3.5vw"
+        botaoEditar.style.bottom = "3.5vw";
         botaoEditar.onclick = () => confirmarEdicaoProfessor(id);
     } else {
-        console.error('Algum elemento não foi encontrado dentro do card do professor');
+        console.error('Botão de edição não encontrado.');
     }
 }
 
