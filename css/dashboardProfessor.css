@@ -59,7 +59,8 @@ body {
 
 .agendamentos {
     display: flex;
-    justify-content: space-between;
+    gap: 6rem;
+    align-items: center;
     margin-top: 20px;
 }
 
