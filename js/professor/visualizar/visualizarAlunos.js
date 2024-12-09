@@ -135,34 +135,35 @@ function editarAluno(id) {
     const statusSelect = document.getElementById(`status_${id}`);
     const botaoEditar = document.querySelector(`#card_dados_${id} .lapis img`);
     const lixeira = document.querySelector(`#card_dados_${id} .lixeira`);
-    
 
-    if (nivelSelect) {
-        nivelSelect.removeAttribute("disabled");
-        nivelSelect.focus();
-        buscarNivel(nivelSelect);
-    }
+    if (statusSelect && statusSelect.value != "2") {
+        if (nivelSelect) {
+            nivelSelect.removeAttribute("disabled");
+            nivelSelect.focus();
+            buscarNivel(nivelSelect);
+        }
 
-    if (nichoSelect) {
-        nichoSelect.removeAttribute("disabled");
-        buscarNicho(nichoSelect);
+        if (nichoSelect) {
+            nichoSelect.removeAttribute("disabled");
+            buscarNicho(nichoSelect);
+        }
     }
 
     if (statusSelect) {
         statusSelect.removeAttribute("disabled");
-        statusSelect.setAttribute("data-original-value", statusSelect.value); // Armazena o valor inicial
+        statusSelect.setAttribute("data-original-value", statusSelect.value);
     }
 
     if (lixeira) {
         lixeira.style.display = "flex";
-        lixeira.style.position = "relative"; // Define a posição como relativa
+        lixeira.style.position = "relative";
         lixeira.style.bottom = "11vw";
     }
 
     botaoEditar.src = "../imgs/check.png";
     botaoEditar.alt = "Confirmar edição";
     botaoEditar.style.position = "relative";
-    botaoEditar.style.bottom = "10vw"
+    botaoEditar.style.bottom = "10vw";
     botaoEditar.onclick = () => confirmarEdicao(id);
 }
 

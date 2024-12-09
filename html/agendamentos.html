@@ -134,11 +134,11 @@
                 </ol>
             </nav>
 
-            <div class="button-container">
+            <!-- <div class="button-container">
                 <button type="button" class="custom-button">
                     <i class="fas fa-download" style="margin-right: 5px;"></i> Baixar Dados
                 </button>
-            </div>
+            </div> -->
         </div>
         <br>
         <div class="dados">
@@ -189,9 +189,7 @@
     let autoDismissTimeout;
 
     const param = new URLSearchParams(window.location.search);
-
-    console.log(param.get("tipo"));
-
+    
     document.addEventListener("DOMContentLoaded", () => {
         // Captura todos os inputs que têm IDs relacionados aos filtros
         const filterInputs = document.querySelectorAll("#data_inicio, #data_fim, #horario_inicio, #horario_fim, #aluno");
@@ -205,11 +203,11 @@
         });
     });
 
-    if (param.get("tipo") === "passado") {
-        document.querySelector(".button-container").style.display = "flex"; // Mostra a div
-    } else {
-        document.querySelector(".button-container").style.display = "none"; // Oculta a div
-    }
+    // if (param.get("tipo") === "passado") {
+    //     document.querySelector(".button-container").style.display = "flex"; // Mostra a div
+    // } else {
+    //     document.querySelector(".button-container").style.display = "none"; // Oculta a div
+    // }
 
     $(document).ready(function () {
         if (localStorage.getItem('exibirAlerta') === 'true') {
