@@ -59,12 +59,6 @@ body {
     justify-content: center;
 }
 
-.agendamentos {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
 .data {
     display: flex;
     flex-direction: column;
