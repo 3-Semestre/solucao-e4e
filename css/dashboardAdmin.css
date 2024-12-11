@@ -429,6 +429,43 @@ body {
     font-weight: bolder;
   }
 
+  .info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin-left: 8px; /* Espaço entre o texto e o ícone */
+    background-color: #072B59; /* Azul */
+    color: white;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    line-height: 16px;
+    position: relative;
+    bottom: 0.3vh;
+}
+
+.info-icon:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 7vh;
+    left: -4.5vw;
+    transform: translateX(-50%);
+    background:#072B59;
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 1;
+}
+
+
 @media only screen and (max-device-width: 430px) {
 
     .dropdown-btn {
