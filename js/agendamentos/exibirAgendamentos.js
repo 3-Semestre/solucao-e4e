@@ -449,15 +449,19 @@ function atualizarBotoesPaginacao(total, atual) {
     const paginacao = document.getElementById('paginacao_tabela');
     paginacao.innerHTML = '';
 
-    const anterior = document.createElement('li');
-    anterior.classList.add('page-item');
-    if(total === 0 && atual === 0) {
+    if (total === 0) {
         paginacao.style.display = 'none';
         return;
-    }else if (atual === 0) {
+    }
+
+    paginacao.style.display = 'flex';
+
+    // Botão "Anterior"
+    const anterior = document.createElement('li');
+    anterior.classList.add('page-item');
+    if (atual === 0) {
         anterior.classList.add('disabled');
     }
-    paginacao.style.display = 'flex';
     anterior.innerHTML = `
         <a class="page-link" href="#" onclick="carregarAgendamentos(${atual - 1})" aria-disabled="${atual === 0}">
             &laquo; Anterior
@@ -465,8 +469,30 @@ function atualizarBotoesPaginacao(total, atual) {
     `;
     paginacao.appendChild(anterior);
 
-    // Botões numéricos
-    for (let i = 0; i < total; i++) {
+    // Lógica para limitar os botões de páginas
+    const maxVisible = 3; // Número máximo de páginas visíveis antes de "..."
+    const start = Math.max(0, atual - maxVisible);
+    const end = Math.min(total - 1, atual + maxVisible);
+
+    // Página inicial
+    if (start > 0) {
+        const primeira = document.createElement('li');
+        primeira.classList.add('page-item');
+        primeira.innerHTML = `
+            <a class="page-link" href="#" onclick="carregarAgendamentos(0)">1</a>
+        `;
+        paginacao.appendChild(primeira);
+
+        if (start > 1) {
+            const ellipsis = document.createElement('li');
+            ellipsis.classList.add('page-item', 'disabled');
+            ellipsis.innerHTML = `<span class="page-link">...</span>`;
+            paginacao.appendChild(ellipsis);
+        }
+    }
+
+    // Páginas visíveis
+    for (let i = start; i <= end; i++) {
         const item = document.createElement('li');
         item.classList.add('page-item');
         if (i === atual) {
@@ -478,6 +504,24 @@ function atualizarBotoesPaginacao(total, atual) {
         paginacao.appendChild(item);
     }
 
+    // Página final
+    if (end < total - 1) {
+        if (end < total - 2) {
+            const ellipsis = document.createElement('li');
+            ellipsis.classList.add('page-item', 'disabled');
+            ellipsis.innerHTML = `<span class="page-link">...</span>`;
+            paginacao.appendChild(ellipsis);
+        }
+
+        const ultima = document.createElement('li');
+        ultima.classList.add('page-item');
+        ultima.innerHTML = `
+            <a class="page-link" href="#" onclick="carregarAgendamentos(${total - 1})">${total}</a>
+        `;
+        paginacao.appendChild(ultima);
+    }
+
+    // Botão "Próximo"
     const proximo = document.createElement('li');
     proximo.classList.add('page-item');
     if (atual === total - 1) {
