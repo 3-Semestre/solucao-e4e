@@ -94,7 +94,7 @@ async function carregarAgendamentos(pagina) {
     try {
         if (pagina < 0 || (totalPaginas > 0 && pagina >= totalPaginas)) return; // Limita as páginas
 
-        const resposta = await fetch(`http://localhost:8080/agendamento/historico/${id}?page=${pagina}&tempo=${tempo}` + Filters.buildQueryString(), {
+        const resposta = await fetch(`http://localhost:8080/api/agendamento/historico/${id}?page=${pagina}&tempo=${tempo}` + Filters.buildQueryString(), {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -214,7 +214,7 @@ function preencherTabelaHistorico(dados) {
 }
 
 async function buscarDetalhes(id) {
-    const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
+    const respostaAgendamento = await fetch(`http://localhost:8080/api/agendamento/${id}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -226,7 +226,7 @@ async function buscarDetalhes(id) {
         throw new Error('Erro ao buscar dados do servidor');
     }
 
-    const respostaHistorico = await fetch(`http://localhost:8080/historico-agendamento/${id}`, {
+    const respostaHistorico = await fetch(`http://localhost:8080/api/historico-agendamento/${id}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -539,7 +539,7 @@ function atualizarBotoesPaginacao(total, atual) {
 
 async function novoStatus(id, statusId) {
     try {
-        const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
+        const respostaAgendamento = await fetch(`http://localhost:8080/api/agendamento/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -549,7 +549,7 @@ async function novoStatus(id, statusId) {
 
         agendamento = await respostaAgendamento.json()
 
-        const respostaStatus = await fetch(`http://localhost:8080/status/${statusId}`, {
+        const respostaStatus = await fetch(`http://localhost:8080/api/status/${statusId}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -564,7 +564,7 @@ async function novoStatus(id, statusId) {
             "status": statusObj
         }
 
-        const novoStatus = await fetch("http://localhost:8080/historico-agendamento", {
+        const novoStatus = await fetch("http://localhost:8080/api/historico-agendamento", {
             method: "POST",
             body: JSON.stringify(dadosAlteracao),
             headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
@@ -578,7 +578,7 @@ async function novoStatus(id, statusId) {
 
 async function novoAssunto(id, assunto) {
     try {
-        const novoStatus = await fetch(`http://localhost:8080/agendamento/${id}`, {
+        const novoStatus = await fetch(`http://localhost:8080/api/agendamento/${id}`, {
             method: "PUT",
             body: assunto,
             headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
@@ -596,7 +596,7 @@ async function novoAssunto(id, assunto) {
 
 async function novoStatusTransferencia(idAgendamento, novoProfessorId) {
     try {
-        const resposta = await fetch(`http://localhost:8080/agendamento/transferir`, {
+        const resposta = await fetch(`http://localhost:8080/api/agendamento/transferir`, {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -625,7 +625,7 @@ async function buscarProfessoreDisponveis() {
     console.log("Buscando professores disponíveis para:", agendamento);
 
     try {
-        const resposta = await fetch("http://localhost:8080/horario-professor/transferencia", {
+        const resposta = await fetch("http://localhost:8080/api/horario-professor/transferencia", {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${token}`,
