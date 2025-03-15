@@ -5,7 +5,7 @@ const token = sessionStorage.getItem('token')
 async function buscarProfessor() {
     const cardsProfessor = document.getElementById("listagem_usuarios")
 
-    const resposta = await fetch(`http://localhost:8080/usuarios/professor/paginado?page=${paginaAtual}` + Filters.buildQueryString(), {
+    const resposta = await fetch(`http://3.81.35.190:8080/api/usuarios/professor/paginado?page=${paginaAtual}` + Filters.buildQueryString(), {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -139,7 +139,7 @@ function confirmacaoDeleteProfessor(id) {
 }
 
 async function deletarProfessor(id) {
-    const respostaDelete = await fetch(`http://localhost:8080/usuarios/Professor/${id}`, {
+    const respostaDelete = await fetch(`http://3.81.35.190:8080/api/usuarios/Professor/${id}`, {
         method: "DELETE",
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -287,7 +287,7 @@ async function atualizarMetaProfessor(id) {
     try {
         const meta = (document.getElementById(`meta_${id}`).value).split(" ")[0];
 
-        const resposta = await fetch(`http://localhost:8080/metas/${id}`, {
+        const resposta = await fetch(`http://3.81.35.190:8080/api/metas/${id}`, {
             method: "PUT",
             body: meta,
             headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
@@ -310,7 +310,7 @@ async function atualizarMetaProfessor(id) {
 
 async function atualizarStatus(id, novoStatus) {
     try {
-        const resposta = await fetch(`http://localhost:8080/usuarios/desativar/${id}`, {
+        const resposta = await fetch(`http://3.81.35.190:8080/api/usuarios/desativar/${id}`, {
             method: "PUT",
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -408,7 +408,7 @@ async function importarDados() {
 
     try {
         // Envia o arquivo ao endpoint
-        const response = await fetch('http://localhost:8080/archive/txt/usuarios', {
+        const response = await fetch('http://3.81.35.190:8080/api/archive/txt/usuarios', {
             method: 'POST',
             body: formData,
             headers: {
@@ -445,7 +445,7 @@ async function importarDados() {
 async function exportarDados() {
     console.log("Iniciando exportação de dados...");
     try {
-        const response = await fetch(`http://localhost:8080/archive/csv/usuarios/${tipo}`, {
+        const response = await fetch(`http://3.81.35.190:8080/api/archive/csv/usuarios/${tipo}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}` // Se necessário para autenticação
