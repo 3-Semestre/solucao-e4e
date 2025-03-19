@@ -37,7 +37,7 @@ async function cadastrarAluno() {
         ]
     }
 
-    const respostaCadastro = await fetch("http://3.81.35.190:8080/api/usuarios/salvar/aluno", {
+    const respostaCadastro = await fetch("http://34.228.191.184:8080/api/usuarios/salvar/aluno", {
         method: "POST",
         body: JSON.stringify(dadosAluno),
         headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
