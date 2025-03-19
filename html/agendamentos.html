@@ -134,34 +134,34 @@
                 </ol>
             </nav>
 
-            <div class="button-container">
+            <!-- <div class="button-container">
                 <button type="button" class="custom-button">
                     <i class="fas fa-download" style="margin-right: 5px;"></i> Baixar Dados
                 </button>
-            </div>
+            </div> -->
         </div>
         <br>
         <div class="dados">
             <br>
             <div class="inputs">
                 <div class="mb-3 d-flex justify-content-center align-items-center">
-                    <label for="input_nome" class="form-label me-3">Data de:</label>
+                    <label for="data_inicio" class="form-label me-3">Data de:</label>
                     <input type="date" class="form-control" id="data_inicio" required>
                 </div>
                 <div class="mb-3 d-flex justify-content-center align-items-center">
-                    <label for="input_nome" class="form-label me-3">até:</label>
+                    <label for="data_fim" class="form-label me-3">até:</label>
                     <input type="date" class="form-control" id="data_fim" required>
                 </div>
                 <div class="mb-3 d-flex justify-content-center align-items-center">
-                    <label for="input_cpf" class="form-label me-3" id="cpf">Horário de:</label>
+                    <label for="horario_inicio" class="form-label me-3" id="cpf">Horário de:</label>
                     <input type="time" class="form-control" id="horario_inicio" required>
                 </div>
                 <div class="mb-3 d-flex justify-content-center align-items-center">
-                    <label for="input_cpf" class="form-label me-3" id="cpf">até:</label>
+                    <label for="horario_fim" class="form-label me-3" id="cpf">até:</label>
                     <input type="time" class="form-control" id="horario_fim" required>
                 </div>
                 <div class="mb-3 d-flex justify-content-center align-items-center">
-                    <label for="input_cpf" class="form-label me-3" id="cpf">Aluno:</label>
+                    <label for="input_cpf" class="form-label me-3" id="input_nome">Aluno:</label>
                     <input class="form-control" id="aluno" placeholder="João" required>
                 </div>
                 <!-- <div class="button-filter">
@@ -190,8 +190,10 @@
 
     const param = new URLSearchParams(window.location.search);
 
-    console.log(param.get("tipo"));
-
+    if(Number(sessionStorage.getItem('nivel_acesso_cod')) == 1) {
+        document.getElementById('input_nome').innerHTML = 'Professor:';
+    } 
+    
     document.addEventListener("DOMContentLoaded", () => {
         // Captura todos os inputs que têm IDs relacionados aos filtros
         const filterInputs = document.querySelectorAll("#data_inicio, #data_fim, #horario_inicio, #horario_fim, #aluno");
@@ -205,11 +207,11 @@
         });
     });
 
-    if (param.get("tipo") === "passado") {
-        document.querySelector(".button-container").style.display = "flex"; // Mostra a div
-    } else {
-        document.querySelector(".button-container").style.display = "none"; // Oculta a div
-    }
+    // if (param.get("tipo") === "passado") {
+    //     document.querySelector(".button-container").style.display = "flex"; // Mostra a div
+    // } else {
+    //     document.querySelector(".button-container").style.display = "none"; // Oculta a div
+    // }
 
     $(document).ready(function () {
         if (localStorage.getItem('exibirAlerta') === 'true') {

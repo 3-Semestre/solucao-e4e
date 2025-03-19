@@ -53,11 +53,11 @@ async function plotarProximosAgendamentos() {
 
     const diasSemana = {
         "Sunday": "Domingo",
-        "Monday": "Segunda-feira",
-        "Tuesday": "Terça-feira",
-        "Wednesday": "Quarta-feira",
-        "Thursday": "Quinta-feira",
-        "Friday": "Sexta-feira",
+        "Monday": "Segunda",
+        "Tuesday": "Terça",
+        "Wednesday": "Quarta",
+        "Thursday": "Quinta",
+        "Friday": "Sexta",
         "Saturday": "Sábado"
     };
 

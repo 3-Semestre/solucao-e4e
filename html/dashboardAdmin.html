@@ -174,7 +174,7 @@
         <br>
         <div class="space-professor">
             <div class="title-agendamento">
-                <p>KPI's</p>
+                <p>KPI's - Aulas do mês</p>
             </div>
         </div>
         <div class="kpis" style="position: relative; bottom: 5vh;">
@@ -182,8 +182,16 @@
                 <div class="line-box">
                 </div>
                 <div class="content-kpis">
-                    <p>Aulas mês</p>
+                    <p>Total de aulas</p>
                     <h2 id="agendamentos-total"></h2>
+                </div>
+            </div>
+            <div class="box-kpis-admin">
+                <div class="line-box">
+                </div>
+                <div class="content-kpis">
+                    <p>Aulas confirmadas</p>
+                    <h2 id="agendamentos-confirmado"></h2>
                 </div>
             </div>
             <div class="box-kpis-admin">
@@ -198,15 +206,10 @@
                 <div class="line-box">
                 </div>
                 <div class="content-kpis">
-                    <p>Aulas transferidas</p>
-                    <h2 id="agendamentos-transferido"></h2>
-                </div>
-            </div>
-            <div class="box-kpis-admin">
-                <div class="line-box">
-                </div>
-                <div class="content-kpis">
-                    <p>Aulas canceladas</p>
+                    <p>
+                        Aulas canceladas
+                        <span class="info-icon" title="Número total de aulas canceladas e transferidas.">i</span>
+                    </p>
                     <h2 id="agendamentos-cancelado"></h2>
                 </div>
             </div>
@@ -220,11 +223,11 @@
         <div class="filtro-graph">
             <label for="mes-ano-input" class="form-filtro-graph">Selecione o período:</label>
             <input class="form-select-graph" type="text" id="mes-ano-input" />
-            <div class="button-container" style="gap: 2vw;">
+            <!-- <div class="button-container" style="gap: 2vw;">
                 <button type="button" class="custom-button">
                     <i class="fas fa-download" style="margin-right: 5px;"></i> Exportar Dados
                 </button>
-            </div>
+            </div> -->
         </div>
         <div class="kpis" id="kpis">
             <div class="box-chart-admin">
@@ -243,7 +246,7 @@
                     <div class="line-box-metas">
                     </div>
                     <div class="content-kpis" id="cancelamento">
-                        <p>Progresso atual</p>
+                        <p id="p-progresso">Progresso atual</p>
                         <h2 id="agendamento-meta-percentual">30%</h2>
                     </div>
                 </div>
@@ -295,6 +298,24 @@
                     })
                 ],
                 onChange: function (selectedDates, dateStr) {
+                    const selectedDate = selectedDates[0]; // Data selecionada
+                    const currentDate = new Date(); // Data atual
+
+                    // Obtém os elementos
+                    const progressoLabel = document.querySelector("#p-progresso");
+
+                    if (selectedDate && progressoLabel) {
+                        // Compara o mês e o ano selecionados com o mês e o ano atuais
+                        if (
+                            selectedDate.getMonth() === currentDate.getMonth() &&
+                            selectedDate.getFullYear() === currentDate.getFullYear()
+                        ) {
+                            progressoLabel.textContent = "Progresso atual";
+                        } else {
+                            progressoLabel.textContent = "Porcentagem alcançada";
+                        }
+                    }
+
                     plotarGraficoCumprimento(sessionStorage.getItem("id"));
                     plotarKpiCumprimento(sessionStorage.getItem("id"));
                 }
@@ -308,8 +329,8 @@
         if (flatpickrInputAno) {
             const flatpickrInstance = flatpickr("#ano-input", {
                 locale: "pt",
-                dateFormat: "Y", 
-                defaultDate: new Date(), 
+                dateFormat: "Y",
+                defaultDate: new Date(),
                 maxDate: new Date(),
                 onReady: function (selectedDates, dateStr, instance) {
                     const daysContainer = instance.calendarContainer.querySelector(".flatpickr-days");
