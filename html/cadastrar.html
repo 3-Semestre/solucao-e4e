@@ -195,7 +195,7 @@
     }
 
     async function buscarNivelIngles() {
-        const resposta = await fetch("http://localhost:8080/nivel-ingles", {
+        const resposta = await fetch("http://34.228.191.184:8080/api/nivel-ingles", {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -235,7 +235,7 @@
     }
 
     async function buscarNichos() {
-        const resposta = await fetch("http://localhost:8080/nichos", {
+        const resposta = await fetch("http://34.228.191.184:8080/api/nichos", {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,

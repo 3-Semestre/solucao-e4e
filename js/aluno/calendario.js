@@ -34,8 +34,6 @@ function formatDate(dateString) {
   return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
 }
 
-
-
 function undoFormatDate(dateString) {
   const [day, month, year] = dateString.split('/');
   return `${year}-${month}-${day}`;
@@ -189,7 +187,7 @@ function closeModal() {
 // Função para buscar professores
 async function buscarProfessores() {
   try {
-    const response = await fetch('http://localhost:8080/usuarios/professor', {
+    const response = await fetch('http://34.228.191.184:8080/api/usuarios/professor', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -224,8 +222,10 @@ async function buscarProfessores() {
 professorSelect.addEventListener('change', async (event) => {
   const selectedProfessor = event.target.value;
   console.log("Data selecionada: " + dateInput.value);
+  const data = undoFormatDate(dateInput.value)
+  console.log(data)
   try {
-    const response = await fetch(`http://localhost:8080/horario-professor/disponiveis/${selectedProfessor}?dia=${dateInput.value}`, {
+    const response = await fetch(`http://34.228.191.184:8080/api/horario-professor/disponiveis/${selectedProfessor}?dia=${data}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -308,7 +308,7 @@ async function salvarAgendamento(professorId, horario) {
   };
 
   try {
-    const respostaAgendamento = await fetch("http://localhost:8080/agendamento", {
+    const respostaAgendamento = await fetch("http://34.228.191.184:8080/api/agendamento", {
       method: "POST",
       body: JSON.stringify(agendamento),
       headers: {
@@ -378,7 +378,7 @@ function deleteEvent(id) {
 
 async function cancelarAgendamento(id) {
   try {
-    const respostaAgendamento = await fetch(`http://localhost:8080/agendamento/${id}`, {
+    const respostaAgendamento = await fetch(`http://34.228.191.184:8080/api/agendamento/${id}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -388,7 +388,7 @@ async function cancelarAgendamento(id) {
 
     agendamento = await respostaAgendamento.json()
 
-    const respostaStatus = await fetch(`http://localhost:8080/status/4`, {
+    const respostaStatus = await fetch(`http://34.228.191.184:8080/api/status/4`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -403,7 +403,7 @@ async function cancelarAgendamento(id) {
       "status": statusObj
     }
 
-    const novoStatus = await fetch("http://localhost:8080/historico-agendamento", {
+    const novoStatus = await fetch("http://34.228.191.184:8080/api/historico-agendamento", {
       method: "POST",
       body: JSON.stringify(dadosAlteracao),
       headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
@@ -425,7 +425,7 @@ async function carregarEventos() {
     const currentMonth = currentDate.getMonth() + 1; // O mês é baseado em zero, então somamos 1
     const currentYear = currentDate.getFullYear();
 
-    const response = await fetch(`http://localhost:8080/agendamento/1/${sessionStorage.getItem('id')}/${currentMonth}/${currentYear}`, {
+    const response = await fetch(`http://34.228.191.184:8080/api/agendamento/1/${sessionStorage.getItem('id')}/${currentMonth}/${currentYear}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,

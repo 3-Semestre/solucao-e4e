@@ -2,7 +2,7 @@ const professorSelect = document.getElementById("professores");
 var id = sessionStorage.getItem("id");
 const meta = async (id) => {
     try {
-        const response = await fetch(`http://localhost:8080/metas/usuario/${id}`, {
+        const response = await fetch(`http://34.228.191.184:8080/api/metas/usuario/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -12,7 +12,7 @@ const meta = async (id) => {
 
         if (response.ok) {
             const dados = await response.json();
-            return dados.qtdAula; // Retorna o valor de `qtdAula`
+            return dados.qtdAula;
         } else {
             console.error("Erro na resposta:", response.statusText);
             return null;
@@ -63,17 +63,11 @@ async function plotarProximosAgendamentos(id) {
                 let diaFormatado = dia.toString().padStart(2, '0');
                 let nomeMes = nomesMeses[mes];
 
-                // Formatar o horário
-                let horario = new Date(`1970-01-01T${agendamento.horario_Inicio}Z`).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
-                });
-
                 // Traduzir o dia da semana
                 let diaSemanaPortugues = diasSemana[agendamento.dia_Semana];
 
-                return `<div class="box">
+                return `
+                <div class="box">
                     <div class="data">
                         <h2 class="dia_proxima_data">${diaFormatado}</h2>
                         <p class="mes_proxima_data">${nomeMes}</p>
@@ -81,7 +75,7 @@ async function plotarProximosAgendamentos(id) {
                     <div class="content">
                         <p class="dia_semana_proxima_data">${diaSemanaPortugues}</p>
                         <p class="horario_proxima_data">${formatarHorario(agendamento.horario_Inicio)}</p>
-                        <p class="nome_aluno_proxima_data">${agendamento.aluno_Nome}</p>
+                        <p class="nome_aluno_proxima_data">${(agendamento.aluno_Nome).split(" ")[0]}</p>
                     </div>
                 </div>`;
 
@@ -95,7 +89,7 @@ async function plotarProximosAgendamentos(id) {
 
 async function plotarKPIsProfessor() {
     try {
-        const responseAgendamentos = await fetch(`http://localhost:8080/dashboard/qtd-agendamento-mes-professor/${id}`, {
+        const responseAgendamentos = await fetch(`http://34.228.191.184:8080/api/dashboard/qtd-agendamento-mes-professor/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -146,28 +140,6 @@ async function plotarKPIsProfessor() {
     }
 
     try {
-        const responseCumprimento = await fetch(`http://localhost:7000/dashboard/taxa-cumprimento-metas/${id}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (responseCumprimento.ok) {
-            const cumprimentoData = await responseCumprimento.json();
-            if (cumprimentoData.length > 0) {
-                document.getElementById("agendamento-meta-percentual").innerHTML = Number(cumprimentoData[0].taxa_cumprimento).toFixed(0) + "%";
-            } else {
-                document.getElementById("agendamento-meta-percentual").innerHTML = "0%";
-            }
-        }
-    } catch (error) {
-        console.log("Erro ao buscar a taxa de cumprimento das metas:", error);
-        document.getElementById("agendamento-meta-percentual").innerHTML = "0%";
-    }
-
-    try {
         const responseConcluido = await fetch(`http://localhost:7000/dashboard/aulas-concluidas-professor/${id}`, {
             method: 'GET',
             headers: {
@@ -202,7 +174,7 @@ async function plotarKPIsProfessor() {
 
 async function buscarProfessores() {
     try {
-        const response = await fetch('http://localhost:8080/usuarios/professor', {
+        const response = await fetch('http://34.228.191.184:8080/api/usuarios/professor', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -253,7 +225,7 @@ async function buscarQuantidadeAgendamentosTransferidos(id) {
                 'Content-Type': 'application/json'
             }
         });
-        console.log(response)
+
         if (response.ok) {
             dados = await response.json();
             document.getElementById("aulas-tranferidas-professor").innerHTML = dados;
@@ -273,10 +245,9 @@ async function buscarComprimentoMeta(id) {
                 'Content-Type': 'application/json'
             }
         });
-        console.log(response)
+        
         if (response.ok) {
             dados = await response.json();
-            console.log(dados)
         }
     } catch (error) {
         console.log(error)
@@ -285,7 +256,8 @@ async function buscarComprimentoMeta(id) {
 
 async function plotarGraficoTaxaCancelamento(id) {
     try {
-        const response = await fetch(`http://localhost:7000/dashboard/taxa-cancelamento-mes/${id}`, {
+        const ano = document.getElementById("ano-input").value;
+        const response = await fetch(`http://localhost:7000/dashboard/taxa-cancelamento-mes/${id}?ano=${ano}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -293,95 +265,88 @@ async function plotarGraficoTaxaCancelamento(id) {
             }
         });
 
-        console.log(response.status)
+        if (!response.ok) {
+            console.error(`Erro na API: ${response.status} - ${response.statusText}`);
+            return;
+        }
 
-        if (response.ok) {
-            const dados = await response.json();
-            console.log(dados)
+        const dados = await response.json();
 
-            let taxaCancelamento = {
-                labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-                datasets: [{
-                    label: 'Cancelamentos(%)',
-                    data: Array(12).fill(0),
-                    fill: false,
-                    backgroundColor: '#072b59c0',
-                    borderColor: '#072B59',
-                    borderWidth: 1
-                }]
-            };
+        let taxaCancelamento = {
+            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            datasets: [{
+                label: 'Cancelamentos(%)',
+                data: Array(12).fill(0),
+                fill: false,
+                backgroundColor: '#072b59c0',
+                borderColor: '#072B59',
+                borderWidth: 1
+            }]
+        };
 
-            const mesMap = {
-                'Janeiro': 0,
-                'Fevereiro': 1,
-                'Março': 2,
-                'Abril': 3,
-                'Maio': 4,
-                'Junho': 5,
-                'Julho': 6,
-                'Agosto': 7,
-                'Setembro': 8,
-                'Outubro': 9,
-                'Novembro': 10,
-                'Dezembro': 11
-            };
+        const mesMap = {
+            'Janeiro': 0,
+            'Fevereiro': 1,
+            'Março': 2,
+            'Abril': 3,
+            'Maio': 4,
+            'Junho': 5,
+            'Julho': 6,
+            'Agosto': 7,
+            'Setembro': 8,
+            'Outubro': 9,
+            'Novembro': 10,
+            'Dezembro': 11
+        };
 
-            if (Array.isArray(dados)) {
-                for (let i = 0; i < dados.length; i++) {
-                    console.log(dados[i])
-                    const [mes] = dados[i].mes_Ano.split(' ');
-                    const mesIndex = mesMap[mes];
-                    if (mesIndex !== undefined && dados[i].taxa_Cancelamento !== undefined) {
-                        taxaCancelamento.datasets[0].data[mesIndex] = dados[i].taxa_Cancelamento;
-                    }
+        if (Array.isArray(dados)) {
+            for (let i = 0; i < dados.length; i++) {
+                const [mes] = dados[i].mes_Ano.split(' ');
+                const mesIndex = mesMap[mes];
+                if (mesIndex !== undefined && dados[i].taxa_Cancelamento !== undefined) {
+                    taxaCancelamento.datasets[0].data[mesIndex] = dados[i].taxa_Cancelamento;
                 }
             }
+        }
 
-            if (window.chartTaxaCancelamento instanceof Chart) {
-                window.chartTaxaCancelamento.destroy();
-            }
+        if (window.chartTaxaCancelamento instanceof Chart) {
+            window.chartTaxaCancelamento.destroy();
+        }
 
-            const chartTaxaCancelamentoConfig = {
-                type: 'line',
-                data: taxaCancelamento,
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            min: 0,
-                            ticks: {
-                                callback: function(value) {
-                                    return value + '%';
-                                }
+        const chartTaxaCancelamentoConfig = {
+            type: 'line',
+            data: taxaCancelamento,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: 0,
+                        ticks: {
+                            callback: function (value) {
+                                return value + '%';
                             }
                         }
                     }
                 }
-            };
+            }
+        };
 
-            const chartTaxaCancelamento = new Chart(document.getElementById('chartCancelamento'), chartTaxaCancelamentoConfig);
-            window.chartTaxaCancelamento = chartTaxaCancelamento;
-        }
-
+        const chartTaxaCancelamento = new Chart(document.getElementById('chartCancelamento'), chartTaxaCancelamentoConfig);
+        window.chartTaxaCancelamento = chartTaxaCancelamento;
     } catch (e) {
-        console.log(e)
-        return
+        console.error('Erro ao plotar o gráfico:', e);
     }
-
 }
 
 async function plotarGraficoCumprimento(id) {
     try {
         const qtdAulaMeta = await meta(id);
 
-        if (qtdAulaMeta === null) {
-            console.error("Não foi possível obter a meta.");
-            return;
-        }
+        const periodo = document.getElementById("mes-ano-input").value;
+        const mes = periodo.split(' ')[0];
+        const ano = periodo.split(' ')[1];
 
-        const metas = Array(12).fill(qtdAulaMeta);
-
-        const response = await fetch(`http://localhost:7000/dashboard/aulas-concluidas-todos-meses/${id}`, {
+        const response = await fetch(`http://localhost:7000/dashboard/aulas-concluidas-todos-meses/${id}?mes=${mes}&ano=${ano}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -391,31 +356,6 @@ async function plotarGraficoCumprimento(id) {
 
         if (response.ok) {
             const dados = await response.json();
-            console.log(dados)
-
-            const quantidadeCumprido = Array(12).fill(0);
-
-            const mesMap = {
-                'Janeiro': 0,
-                'Fevereiro': 1,
-                'Março': 2,
-                'Abril': 3,
-                'Maio': 4,
-                'Junho': 5,
-                'Julho': 6,
-                'Agosto': 7,
-                'Setembro': 8,
-                'Outubro': 9,
-                'Novembro': 10,
-                'Dezembro': 11
-            };
-
-            dados.forEach(dado => {
-                const mesIndex = mesMap[dado.mes];
-                if (mesIndex !== undefined && dado.quantidade_Aulas_Concluidas !== undefined) {
-                    quantidadeCumprido[mesIndex] = dado.quantidade_Aulas_Concluidas;
-                }
-            });
 
             if (window.barChartMeta instanceof Chart) {
                 window.barChartMeta.destroy();
@@ -425,21 +365,27 @@ async function plotarGraficoCumprimento(id) {
             window.barChartMeta = new Chart(ctxBar, {
                 type: 'bar',
                 data: {
-                    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                    labels: [dados[0].mes],
                     datasets: [
                         {
                             label: 'Meta',
-                            data: metas,
+                            data: [qtdAulaMeta],
                             backgroundColor: 'rgba(128, 128, 128, 0.466)',
                             borderColor: 'rgba(128, 128, 128, 0.466)',
-                            borderWidth: 1
+                            borderWidth: 1,
+                            barThickness: 107,
+                            categoryPercentage: 0.6,
+                            barPercentage: 0.9
                         },
                         {
                             label: 'Cumprido',
-                            data: quantidadeCumprido,
+                            data: [dados[0].quantidade_Aulas_Concluidas],
                             backgroundColor: '#072B59',
                             borderColor: '#072B59',
-                            borderWidth: 1
+                            borderWidth: 1,
+                            barThickness: 107,
+                            categoryPercentage: 0.6,
+                            barPercentage: 0.9
                         }
                     ]
                 },
@@ -472,6 +418,35 @@ async function plotarGraficoCumprimento(id) {
     } catch (e) {
         console.error("Erro geral:", e);
     }
+}
+
+async function plotarKpiCumprimento(id) {
+    const periodo = document.getElementById("mes-ano-input").value;
+        const mes = periodo.split(' ')[0];
+        const ano = periodo.split(' ')[1];
+
+    try {
+        const responseCumprimento = await fetch(`http://localhost:7000/dashboard/taxa-cumprimento-metas/${id}?mes=${mes}&ano=${ano}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (responseCumprimento.ok) {
+            const cumprimentoData = await responseCumprimento.json();
+            if (cumprimentoData.length > 0) {
+                document.getElementById("agendamento-meta-percentual").innerHTML = Number(cumprimentoData[0].taxa_cumprimento).toFixed(0) + "%";
+            } else {
+                document.getElementById("agendamento-meta-percentual").innerHTML = "0%";
+            }
+        }
+    } catch (error) {
+        console.log("Erro ao buscar a taxa de cumprimento das metas:", error);
+        document.getElementById("agendamento-meta-percentual").innerHTML = "0%";
+    }
+
 }
 
 function limparDadosProfessor() {
@@ -512,6 +487,7 @@ async function buscarDados(id) {
     await buscarComprimentoMeta(id);
     await plotarGraficoTaxaCancelamento(id);
     await plotarGraficoCumprimento(id);
+    plotarKpiCumprimento(id)
 }
 
 buscarDados(id);
