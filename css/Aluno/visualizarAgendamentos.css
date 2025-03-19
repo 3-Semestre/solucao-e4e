@@ -29,15 +29,18 @@ body {
 }
 
 .form-control {
-    width: 10rem !important;
+    width: 8.5vw !important;
+    padding: 5px 10px !important;
+    font-size: 15px !important;
 }
 
 .inputs {
     display: flex;
     justify-content: flex-start;
     white-space: nowrap;
-    padding-left: 2.5vw;
-    gap: 2vw;
+    padding-left: 1vw;
+    gap: 3vw;
+    
 }
 
 label {
@@ -71,7 +74,7 @@ thead {
     border: none;
     font-weight: bold;
     width: 8vw !important;
-    height: 5.2vh;
+    height: 5vh;
     position: relative;
     left: 1vw;
 }
@@ -90,6 +93,40 @@ thead {
 #botaoFilter:hover{
     color: white !important;
     background-color: #a8b6bf40 !important;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    
+  }
+  
+  .custom-button i {
+    margin-right: 5px;
+  }
+
+  .custom-button {
+    background-color: #072B59;
+    color: white;
+    border: 2px solid #072B59;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bolder;
+  }
+  
+  .custom-button:hover {
+    background-color: rgba(128, 128, 128, 0.466);
+    border:  2px solid rgba(128, 128, 128, 0.466);
+    color: black;
+    font-weight: bolder;
+  }
+
+  .breadcrumb-container {
+    display: flex;
+    align-items: center; /* Alinha breadcrumb e botão verticalmente no centro */
+    justify-content: space-between; /* Distribui espaço entre breadcrumb e botão */
 }
 
 @media only screen and (max-device-width: 430px) {

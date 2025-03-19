@@ -22,7 +22,24 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <link rel="icon" type="image/png" href="../imgs/english4ever.png">
+
+    <!-- CSS do Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- JS do Flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
+    <!-- Plugin para Seleção de Mês -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
 </head>
+
+<style>
+    .flatpickr-weekdays {
+        display: none !important;
+    }
+</style>
 
 <body>
     <nav class="sidebar" id="sidebar">
@@ -71,7 +88,8 @@
                 <div class="collapse" id="professoresDropdown">
                     <ul class="nav flex-column dropdown-container">
                         <li><a href="visualizar.html?tipo=professor" class="nav-link">Visualizar</a></li>
-                        <li><a href="cadastrar.html?tipo=professor" id="cadastro_professor" class="nav-link">Cadastrar</a></li>
+                        <li><a href="cadastrar.html?tipo=professor" id="cadastro_professor"
+                                class="nav-link">Cadastrar</a></li>
                     </ul>
                 </div>
             </li>
@@ -146,6 +164,10 @@
                     <p>Aulas Realizadas</p>
                 </div>
             </div>
+            <div class="filtro-graph">
+                <label class="form-filtro-graph" for="ano-input">Selecione o Ano:</label>
+                <input class="form-select-graph" type="text" id="ano-input" placeholder="Selecione o Ano" />
+            </div>
             <br><br>
             <div class="box-chart2" id="div_chart">
                 <canvas id="chartAulasRealizadas"></canvas>
@@ -204,10 +226,60 @@
     };
 
     document.addEventListener("DOMContentLoaded", function () {
-    const agendamentos = document.querySelectorAll(".agendamentos .box");
-    if (agendamentos.length < 3) {
-        document.querySelector(".agendamentos").classList.add("horizontal");
-    }
-});
+        const agendamentos = document.querySelectorAll(".agendamentos .box");
+        if (agendamentos.length < 3) {
+            document.querySelector(".agendamentos").classList.add("horizontal");
+        }
+
+        const flatpickrInputAno = document.querySelector("#ano-input");
+        if (flatpickrInputAno) {
+            const flatpickrInstance = flatpickr("#ano-input", {
+                locale: "pt",
+                dateFormat: "Y",
+                defaultDate: new Date(),
+                maxDate: new Date(),
+                onReady: function (selectedDates, dateStr, instance) {
+                    const daysContainer = instance.calendarContainer.querySelector(".flatpickr-days");
+                    const monthDropdown = instance.calendarContainer.querySelector(".flatpickr-monthDropdown-months");
+
+                    if (daysContainer) daysContainer.style.display = "none";
+                    if (monthDropdown) monthDropdown.style.display = "none";
+
+                    const prevButton = instance.calendarContainer.querySelector(".flatpickr-prev-month");
+                    const nextButton = instance.calendarContainer.querySelector(".flatpickr-next-month");
+                    if (prevButton && nextButton) {
+                        prevButton.addEventListener("click", () => {
+                            instance.changeYear(instance.currentYear - 1);
+                            updateInputValueAndPlot(instance);
+                        });
+                        nextButton.addEventListener("click", () => {
+                            instance.changeYear(instance.currentYear + 1);
+                            updateInputValueAndPlot(instance);
+                        });
+                    }
+                },
+                onOpen: function (selectedDates, dateStr, instance) {
+                    instance.changeYear(new Date().getFullYear());
+                },
+                onChange: function (selectedDates, dateStr, instance) {
+                    flatpickrInputAno.value = dateStr;
+
+                    plotarAulasRealizadas();
+                }
+            });
+
+            function updateInputValueAndPlot(instance) {
+                const year = instance.currentYear.toString();
+                flatpickrInputAno.value = year;
+                plotarAulasRealizadas();
+            }
+
+            const initialYear = new Date().getFullYear().toString();
+            flatpickrInputAno.value = initialYear;
+        } else {
+            console.error("Elemento #ano-input não encontrado na página.");
+        }
+    });
 </script>
+
 </html>

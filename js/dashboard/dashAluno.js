@@ -53,15 +53,16 @@ async function plotarProximosAgendamentos() {
 
     const diasSemana = {
         "Sunday": "Domingo",
-        "Monday": "Segunda-feira",
-        "Tuesday": "Terça-feira",
-        "Wednesday": "Quarta-feira",
-        "Thursday": "Quinta-feira",
-        "Friday": "Sexta-feira",
+        "Monday": "Segunda",
+        "Tuesday": "Terça",
+        "Wednesday": "Quarta",
+        "Thursday": "Quinta",
+        "Friday": "Sexta",
         "Saturday": "Sábado"
     };
 
     cardsAlunos.innerHTML = listaAgendamentos.map((aluno) => {
+        console.log(aluno);
         let dataString = aluno.data;
         let data = new Date(dataString);
 
@@ -91,14 +92,15 @@ async function plotarProximosAgendamentos() {
             <div class="content">
                 <p class="dia_semana_proxima_data">${diaSemanaPortugues}</p>
                 <p class="horario_proxima_data">${formatarHorario(aluno.horario_Inicio)}</p>
-                <p class="nome_aluno_proxima_data">${aluno.aluno_Nome}</p>
+                <p class="nome_aluno_proxima_data">${(aluno.professor_Nome).split(" ")[0]}</p>
             </div>
         </div>`;
     }).join('');
 }
 
 async function plotarAulasRealizadas() {
-    const resposta = await fetch(`http://localhost:7000/dashboard/visao-mes-aluno/${sessionStorage.getItem('id')}`, {
+    const ano = document.getElementById("ano-input").value;
+    const resposta = await fetch(`http://localhost:7000/dashboard/visao-mes-aluno/${sessionStorage.getItem('id')}?ano=${ano}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -106,12 +108,20 @@ async function plotarAulasRealizadas() {
         }
     });
 
-    console.log("resposta gráfico " + resposta.status)
+    console.log("resposta gráfico " + resposta.status);
 
-    if (resposta.status == 204) {
+    const chartContainer = document.getElementById("div_chart");
+
+    if (resposta.status === 204) {
         document.getElementById("chartAulasRealizadas").style.display = "none";
-        document.getElementById("div_chart").innerHTML = "Não há histórico de registros para exibir.";
-        return
+        chartContainer.innerHTML = "<p>Não há histórico de registros para exibir.</p>";
+        return;
+    } else {
+        if (!document.getElementById("chartAulasRealizadas")) {
+            chartContainer.innerHTML = '<canvas id="chartAulasRealizadas"></canvas>';
+        } else {
+            document.getElementById("chartAulasRealizadas").style.display = "block";
+        }
     }
 
     const dados = await resposta.json();
@@ -148,6 +158,12 @@ async function plotarAulasRealizadas() {
         aulasRealizadas.datasets[0].data[mesIndex] = dados[i].quantidade_Aulas_Concluidas;
     }
 
+    const chartCanvas = document.getElementById('chartAulasRealizadas');
+    if (!chartCanvas) {
+        console.error("Elemento canvas não encontrado.");
+        return;
+    }
+
     if (window.chartAulasRealizadas instanceof Chart) {
         window.chartAulasRealizadas.destroy();
     }
@@ -158,8 +174,7 @@ async function plotarAulasRealizadas() {
         options: {}
     };
 
-    var chartAulasRealizadas = new Chart(document.getElementById('chartAulasRealizadas'), chartAulasRealizadasConfig);
-    window.chartAulasRealizadas = chartAulasRealizadas;
+    window.chartAulasRealizadas = new Chart(chartCanvas, chartAulasRealizadasConfig);
 }
 
 plotarKpi();

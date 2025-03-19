@@ -22,7 +22,23 @@
 
     <link rel="icon" type="image/png" href="../imgs/english4ever.png">
 
+    <!-- CSS do Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- JS do Flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
+    <!-- Plugin para Seleção de Mês -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
+
 </head>
+<style>
+    .flatpickr-weekdays {
+        display: none !important;
+    }
+</style>
 
 <body>
     <nav class="sidebar" id="sidebar">
@@ -71,7 +87,8 @@
                 <div class="collapse" id="professoresDropdown">
                     <ul class="nav flex-column dropdown-container">
                         <li><a href="visualizar.html?tipo=professor" class="nav-link">Visualizar</a></li>
-                        <li><a href="cadastrar.html?tipo=professor" id="cadastro_professor" class="nav-link">Cadastrar</a></li>
+                        <li><a href="cadastrar.html?tipo=professor" id="cadastro_professor"
+                                class="nav-link">Cadastrar</a></li>
                     </ul>
                 </div>
             </li>
@@ -157,7 +174,7 @@
         <br>
         <div class="space-professor">
             <div class="title-agendamento">
-                <p>KPI's</p>
+                <p>KPI's - Aulas do mês</p>
             </div>
         </div>
         <div class="kpis" style="position: relative; bottom: 5vh;">
@@ -165,8 +182,16 @@
                 <div class="line-box">
                 </div>
                 <div class="content-kpis">
-                    <p>Aulas mês</p>
+                    <p>Total de aulas</p>
                     <h2 id="agendamentos-total"></h2>
+                </div>
+            </div>
+            <div class="box-kpis-admin">
+                <div class="line-box">
+                </div>
+                <div class="content-kpis">
+                    <p>Aulas confirmadas</p>
+                    <h2 id="agendamentos-confirmado"></h2>
                 </div>
             </div>
             <div class="box-kpis-admin">
@@ -181,15 +206,10 @@
                 <div class="line-box">
                 </div>
                 <div class="content-kpis">
-                    <p>Aulas transferidas</p>
-                    <h2 id="agendamentos-transferido"></h2>
-                </div>
-            </div>
-            <div class="box-kpis-admin">
-                <div class="line-box">
-                </div>
-                <div class="content-kpis">
-                    <p>Aulas canceladas</p>
+                    <p>
+                        Aulas canceladas
+                        <span class="info-icon" title="Número total de aulas canceladas e transferidas.">i</span>
+                    </p>
                     <h2 id="agendamentos-cancelado"></h2>
                 </div>
             </div>
@@ -199,6 +219,16 @@
         <br><br>
         <h2 class="title-title">Cumprimento professor</h2>
         <span id="title-chart-admin">Aulas Concluídas vs. Meta Mensal</span>
+        <br><br>
+        <div class="filtro-graph">
+            <label for="mes-ano-input" class="form-filtro-graph">Selecione o período:</label>
+            <input class="form-select-graph" type="text" id="mes-ano-input" />
+            <!-- <div class="button-container" style="gap: 2vw;">
+                <button type="button" class="custom-button">
+                    <i class="fas fa-download" style="margin-right: 5px;"></i> Exportar Dados
+                </button>
+            </div> -->
+        </div>
         <div class="kpis" id="kpis">
             <div class="box-chart-admin">
                 <canvas id="myChartMeta"></canvas>
@@ -216,7 +246,7 @@
                     <div class="line-box-metas">
                     </div>
                     <div class="content-kpis" id="cancelamento">
-                        <p>Progresso atual</p>
+                        <p id="p-progresso">Progresso atual</p>
                         <h2 id="agendamento-meta-percentual">30%</h2>
                     </div>
                 </div>
@@ -226,6 +256,10 @@
         <hr class="line">
         <br><br>
         <h2 class="title-title">Taxa de Cancelamento</h2>
+        <div class="filtro-graph">
+            <label class="form-filtro-graph" for="ano-input">Selecione o Ano:</label>
+            <input class="form-select-graph" type="text" id="ano-input" placeholder="Selecione o Ano" />
+        </div>
         <br><br>
         <div class="box-chart2">
             <canvas id="chartCancelamento"></canvas>
@@ -238,27 +272,113 @@
 <script>
     window.onload = () => {
         const script = document.createElement("script");
-        if (ambiente === "desenvolvimento") {
+        if (typeof ambiente !== "undefined" && ambiente === "desenvolvimento") {
             script.src = "../js/mock/dashAdmin.js";
-        } else if (ambiente === "apresentacao") {
+        } else if (typeof ambiente !== "undefined" && ambiente === "apresentacao") {
             script.src = "../js/dashboard/dashAdmin.js";
         }
         script.defer = true;
         document.head.appendChild(script);
-        console.log(`VOCÊ ESTÁ EM ${ambiente.toUpperCase()}`);
-    };
-    /*
-   document.getElementById('toggle-btn').addEventListener('click', function () {
-            var boxChart2 = document.querySelector('.box-chart2');
-            var boxKpis = document.querySelectorAll('.box-kpis');
+    }
 
-            // Alterna a classe 'reduzido' para 'box-chart2'
-            boxChart2.classList.toggle('reduzido');
+    document.addEventListener("DOMContentLoaded", function () {
+        // Flatpickr para #mes-ano-input
+        const flatpickrInput = document.querySelector("#mes-ano-input");
+        if (flatpickrInput) {
+            flatpickr("#mes-ano-input", {
+                locale: "pt",
+                dateFormat: "F Y",
+                defaultDate: new Date(),
+                maxDate: new Date(),
+                plugins: [
+                    new monthSelectPlugin({
+                        shorthand: false,
+                        dateFormat: "F Y",
+                        altFormat: "F Y"
+                    })
+                ],
+                onChange: function (selectedDates, dateStr) {
+                    const selectedDate = selectedDates[0]; // Data selecionada
+                    const currentDate = new Date(); // Data atual
 
-            // Alterna a classe 'reduzido' para cada elemento 'box-kpis'
-            boxKpis.forEach(function (box) {
-                box.classList.toggle('reduzido');
+                    // Obtém os elementos
+                    const progressoLabel = document.querySelector("#p-progresso");
+
+                    if (selectedDate && progressoLabel) {
+                        // Compara o mês e o ano selecionados com o mês e o ano atuais
+                        if (
+                            selectedDate.getMonth() === currentDate.getMonth() &&
+                            selectedDate.getFullYear() === currentDate.getFullYear()
+                        ) {
+                            progressoLabel.textContent = "Progresso atual";
+                        } else {
+                            progressoLabel.textContent = "Porcentagem alcançada";
+                        }
+                    }
+
+                    plotarGraficoCumprimento(sessionStorage.getItem("id"));
+                    plotarKpiCumprimento(sessionStorage.getItem("id"));
+                }
             });
-        });
-        */
+        } else {
+            console.error("Elemento #mes-ano-input não encontrado na página.");
+        }
+
+        // Flatpickr para #ano-input
+        const flatpickrInputAno = document.querySelector("#ano-input");
+        if (flatpickrInputAno) {
+            const flatpickrInstance = flatpickr("#ano-input", {
+                locale: "pt",
+                dateFormat: "Y",
+                defaultDate: new Date(),
+                maxDate: new Date(),
+                onReady: function (selectedDates, dateStr, instance) {
+                    const daysContainer = instance.calendarContainer.querySelector(".flatpickr-days");
+                    const monthDropdown = instance.calendarContainer.querySelector(".flatpickr-monthDropdown-months");
+
+                    if (daysContainer) daysContainer.style.display = "none";
+                    if (monthDropdown) monthDropdown.style.display = "none";
+
+                    const prevButton = instance.calendarContainer.querySelector(".flatpickr-prev-month");
+                    const nextButton = instance.calendarContainer.querySelector(".flatpickr-next-month");
+                    if (prevButton && nextButton) {
+                        prevButton.addEventListener("click", () => {
+                            instance.changeYear(instance.currentYear - 1);
+                            updateInputValueAndPlot(instance);
+                        });
+                        nextButton.addEventListener("click", () => {
+                            instance.changeYear(instance.currentYear + 1);
+                            updateInputValueAndPlot(instance);
+                        });
+                    }
+                },
+                onOpen: function (selectedDates, dateStr, instance) {
+                    instance.changeYear(new Date().getFullYear());
+                },
+                onChange: function (selectedDates, dateStr, instance) {
+                    flatpickrInputAno.value = dateStr;
+
+                    plotarGraficoTaxaCancelamento(sessionStorage.getItem("id"));
+                }
+            });
+
+            function updateInputValueAndPlot(instance) {
+                const year = instance.currentYear.toString();
+                flatpickrInputAno.value = year;
+                plotarGraficoTaxaCancelamento(sessionStorage.getItem("id"));
+            }
+
+            const initialYear = new Date().getFullYear().toString();
+            flatpickrInputAno.value = initialYear;
+        } else {
+            console.error("Elemento #ano-input não encontrado na página.");
+        }
+
+        if (typeof ambiente !== "undefined") {
+            console.log(`VOCÊ ESTÁ EM ${ambiente.toUpperCase()}`);
+        } else {
+            console.log("Ambiente não definido.");
+        }
+    });
+
 </script>

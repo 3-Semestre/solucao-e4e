@@ -59,12 +59,6 @@ body {
     justify-content: center;
 }
 
-.agendamentos {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
 .data {
     display: flex;
     flex-direction: column;
@@ -350,6 +344,125 @@ body {
     height: 16vh;
     border-radius: 10px;
     position: relative;
+}
+
+.filtro-graph {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-filtro-graph {
+    font-weight: bold;
+    color: #072B59;
+}
+
+/* Estilo para o select */
+.form-select-graph {
+    border: 2px solid #072B59;
+    border-radius: 5px;
+    color: #072B59;
+    font-weight: bolder;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+.form-select-graph option {
+    color: #072B59;
+    font-weight: bolder;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .custom-button i {
+    margin-right: 5px;
+  }
+
+  .custom-button {
+    background-color: #072B59;
+    color: white;
+    border: 2px solid #072B59;
+    border-radius: 5px;
+    padding: 2px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bolder;
+  }
+  
+  .custom-button:hover {
+    background-color: rgba(128, 128, 128, 0.466);
+    border:  2px solid rgba(128, 128, 128, 0.466);
+    color: black;
+    font-weight: bolder;
+  }    
+
+  .flatpickr-current-month{
+    color: #072B59 !important;
+    font-weight: bolder;
+  }
+
+  .flatpickr-next-month, .flatpickr-prev-month {
+    color: #072B59 !important;
+  }
+
+  .flatpickr-next-month:hover, .flatpickr-prev-month:hover svg {
+    fill: #072B59 !important;
+}
+
+  .flatpickr-current-month input.cur-year{
+    color: #072B59 !important;
+    font-weight: bolder;
+  }
+
+  .flatpickr-monthSelect-month{
+    color: #072B59 !important;
+    font-weight: bolder;
+  }
+
+  .flatpickr-monthSelect-month.selected{
+    border: #a8b6bf40 !important;
+    background-color: #a8b6bf40 !important;
+    color: #072B59 !important;
+    font-weight: bolder;
+  }
+
+  .info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin-left: 8px; /* Espaço entre o texto e o ícone */
+    background-color: #072B59; /* Azul */
+    color: white;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    line-height: 16px;
+    position: relative;
+    bottom: 0.3vh;
+}
+
+.info-icon:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 7vh;
+    left: -4.5vw;
+    transform: translateX(-50%);
+    background:#072B59;
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 1;
 }
 
 

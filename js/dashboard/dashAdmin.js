@@ -2,7 +2,7 @@ const professorSelect = document.getElementById("professores");
 var id = sessionStorage.getItem("id");
 const meta = async (id) => {
     try {
-        const response = await fetch(`http://34.228.191.184:8080/api/metas/usuario/${id}`, {
+        const response = await fetch(`http://3.81.35.190:8080/api/metas/usuario/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -44,11 +44,11 @@ async function plotarProximosAgendamentos(id) {
 
             const diasSemana = {
                 "Sunday": "Domingo",
-                "Monday": "Segunda-feira",
-                "Tuesday": "Terça-feira",
-                "Wednesday": "Quarta-feira",
-                "Thursday": "Quinta-feira",
-                "Friday": "Sexta-feira",
+                "Monday": "Segunda",
+                "Tuesday": "Terça",
+                "Wednesday": "Quarta",
+                "Thursday": "Quinta",
+                "Friday": "Sexta",
                 "Saturday": "Sábado"
             };
 
@@ -89,7 +89,7 @@ async function plotarProximosAgendamentos(id) {
 
 async function plotarKPIsProfessor() {
     try {
-        const responseAgendamentos = await fetch(`http://34.228.191.184:8080/api/dashboard/qtd-agendamento-mes-professor/${id}`, {
+        const responseAgendamentos = await fetch(`http://3.81.35.190:8080/api/dashboard/qtd-agendamento-mes-professor/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -106,6 +106,24 @@ async function plotarKPIsProfessor() {
     }
 
     try {
+        const responseAgendamentos = await fetch(`http://localhost:7000/dashboard/qtd-agendamento-confirmado-mes-professor/${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        if (responseAgendamentos.ok) {
+            const agendamentosData = await responseAgendamentos.json();
+            document.getElementById("agendamentos-confirmado").innerHTML = agendamentosData;
+        }
+    } catch {
+        console.log("Erro ao buscar a quantidade de agendamentos confirmados");
+        document.getElementById("agendamentos-confirmado").innerHTML = 0;
+    }
+
+    var cancelado;
+    try {
         const responseCancelados = await fetch(`http://localhost:7000/dashboard/qtd-agendamentos-cancelados/${id}`, {
             method: 'GET',
             headers: {
@@ -115,13 +133,13 @@ async function plotarKPIsProfessor() {
         });
         if (responseCancelados.ok) {
             const canceladosData = await responseCancelados.json();
-            document.getElementById("agendamentos-cancelado").innerHTML = canceladosData;
+            cancelado = canceladosData;
         }
     } catch (error) {
         console.log("Erro ao buscar a quantidade de agendamentos cancelados:", error);
-        document.getElementById("agendamentos-cancelado").innerHTML = 0;
     }
 
+    var transferido;
     try {
         const responseTransferidos = await fetch(`http://localhost:7000/dashboard/aulas-tranferidas-professor/${id}`, {
             method: 'GET',
@@ -132,12 +150,16 @@ async function plotarKPIsProfessor() {
         });
         if (responseTransferidos.ok) {
             const transferidosData = await responseTransferidos.json();
-            document.getElementById("agendamentos-transferido").innerHTML = transferidosData;
+            transferido = transferidosData;
         }
     } catch (error) {
         console.log("Erro ao buscar a quantidade de aulas transferidas:", error);
-        document.getElementById("agendamentos-transferido").innerHTML = 0;
     }
+
+    console.log(transferido)
+    console.log(cancelado)
+
+    document.getElementById("agendamentos-cancelado").innerHTML = (Number(cancelado) + Number(transferido));
 
     try {
         const responseConcluido = await fetch(`http://localhost:7000/dashboard/aulas-concluidas-professor/${id}`, {
@@ -174,7 +196,7 @@ async function plotarKPIsProfessor() {
 
 async function buscarProfessores() {
     try {
-        const response = await fetch('http://34.228.191.184:8080/api/usuarios/professor', {
+        const response = await fetch('http://3.81.35.190:8080/api/usuarios/professor', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -237,8 +259,12 @@ async function buscarQuantidadeAgendamentosTransferidos(id) {
 }
 
 async function buscarComprimentoMeta(id) {
+    const periodo = document.getElementById("mes-ano-input").value;
+    const mes = periodo.split(' ')[0];
+    const ano = periodo.split(' ')[1];
+
     try {
-        const response = await fetch(`http://localhost:7000/dashboard/taxa-cumprimento-metas/${id}`, {
+        const response = await fetch(`http://localhost:7000/dashboard/taxa-cumprimento-metas/${id}?mes=${mes}&ano=${ano}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -437,10 +463,11 @@ async function plotarKpiCumprimento(id) {
         if (responseCumprimento.ok) {
             const cumprimentoData = await responseCumprimento.json();
             if (cumprimentoData.length > 0) {
-                document.getElementById("agendamento-meta-percentual").innerHTML = Number(cumprimentoData[0].taxa_cumprimento).toFixed(0) + "%";
+                const taxaCumprimento = Math.min(Number(cumprimentoData[0].taxa_cumprimento).toFixed(0), 100);
+                document.getElementById("agendamento-meta-percentual").innerHTML = `${taxaCumprimento}%`;
             } else {
                 document.getElementById("agendamento-meta-percentual").innerHTML = "0%";
-            }
+            }   
         }
     } catch (error) {
         console.log("Erro ao buscar a taxa de cumprimento das metas:", error);
@@ -452,7 +479,8 @@ async function plotarKpiCumprimento(id) {
 function limparDadosProfessor() {
     document.getElementById("agendamentos-total").innerHTML = "0";
     document.getElementById("agendamentos-cancelado").innerHTML = "0";
-    document.getElementById("agendamentos-transferido").innerHTML = "0";
+    // document.getElementById("agendamentos-transferido").innerHTML = "0";
+    document.getElementById("agendamentos-confirmado").innerHTML = "0";
     document.getElementById("agendamento-meta-percentual").innerHTML = "0";
     document.getElementById("agendamentos-concluido").innerHTML = "0";
     document.getElementById("agendamento-meta").innerHTML = "0";

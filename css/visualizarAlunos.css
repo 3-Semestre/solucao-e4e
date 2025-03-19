@@ -35,7 +35,7 @@ body {
 
 .dados {
     width: 100%;
-    height: 20vh;
+    height: 12vh;
     background-color: #a8b6bf40;
     border-radius: 10px;
 }
@@ -43,7 +43,6 @@ body {
 .filter {
     width: 100%;
     height: 7vh;
-    background-color: #072B59;
     display: flex;
     justify-content: space-around;
     gap: 10rem;
@@ -52,7 +51,7 @@ body {
 }
 
 .filter p {
-    color: white;
+    color: #072B59;
     font-weight: bold;
     position: relative;
     right: 33.5vw;
@@ -93,7 +92,6 @@ label {
     color: #072B59;
     font-weight: bold;
     position: relative;
-    top: 0.5vh;
 }
 
 .dados-student {
@@ -102,6 +100,7 @@ label {
     justify-content: space-between;
     padding: 20px;
     width: 100%;
+    height: 50vh;
     gap: 20px;
 }
 
@@ -146,6 +145,35 @@ label {
     gap: 1vw;
 }
 
+.form-student.inativo{
+    opacity: 0.5 !important; /* Deixa opaco */
+    color: #f2f2f2 !important; /* Adiciona um cinza claro */ 
+}
+
+.header-student.inativo{
+    opacity: 0.5 !important; /* Deixa opaco */
+    color: #f2f2f2 !important; /* Adiciona um cinza claro */ 
+}
+
+.course-information.inativo{
+    opacity: 0.5 !important; /* Deixa opaco */
+    color: #f2f2f2 !important; /* Adiciona um cinza claro */ 
+}
+
+#status{
+    position: relative;
+    right: 20vw;
+}
+
+.inativo #status{
+    position: relative;
+    right: 20.5vw;
+}
+
+#select_ativo_inativo select option{
+    color: #072B59 !important;
+}
+
 .form-group {
     flex: 1 1 30%;
 }
@@ -167,6 +195,10 @@ label {
     color: #072B59;
 }
 
+.inputs select{
+    width: 10.5vw;
+}
+
 /* Estilo do select desativado para parecer com a label */
 select[disabled]:not(.no-custom-style),
 .form-select[disabled]:not(.no-custom-style) {
@@ -175,7 +207,7 @@ select[disabled]:not(.no-custom-style),
     -webkit-appearance: none;
     background: none;
     border: none;
-    color: #333;
+    color: #072B59;
     cursor: not-allowed;
     font-weight: 300;
     min-width: 250px;
@@ -195,7 +227,7 @@ select:not([disabled]):not(.no-custom-style),
     appearance: auto;
     background-color: #fff;
     border: 1px solid #ccc;
-    color: #333;
+    color: #072B59;
     cursor: pointer;
     font-weight: 300;
     min-width: 250px;
@@ -230,6 +262,10 @@ select:not(.no-custom-style),
     text-overflow: ellipsis;
 }
 
+.form-control{
+    width: 10.5vw !important;
+}
+
 .photo-student {
     display: flex;
     gap: 2vw;
@@ -240,8 +276,6 @@ select:not(.no-custom-style),
 .lapis{
     display: flex;
     justify-content: flex-end;
-    position: relative;
-    bottom: 6vh;
     cursor: pointer;
 }
 
@@ -249,14 +283,14 @@ select:not(.no-custom-style),
     display: flex;
     justify-content: flex-end;
     position: relative;
-    bottom: 28vh;
     cursor: pointer;
+    bottom: 2.5vw !important;
 }
 
 .lapis img{
-    width: 3vw;
-    height: 6vh;
     cursor: pointer;
+    position: relative;
+    bottom: 3.1vw !important;
 }
 
 .lixeira {
@@ -271,13 +305,13 @@ select:not(.no-custom-style),
     display: flex;
     justify-content: flex-end;
     position: relative;
-    bottom: 23vh;
+    bottom: 17vh;
     cursor: pointer;
 }
 
 .lixeira img {
-    width: 3vw;
-    height: 6vh;
+    /* width: 3vw;
+    height: 6vh; */
     cursor: pointer;
 }
 
@@ -293,9 +327,8 @@ hr.line {
     border: none;
     font-weight: bold;
     width: 8vw !important;
-    height: 5.2vh;
+    height: 5vh;
     position: relative;
-    left: vw;
 }
 
 .active>.page-link{
@@ -312,6 +345,39 @@ hr.line {
 #botaoFilter:hover{
     color: white !important;
     background-color: #a8b6bf40 !important;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .custom-button i {
+    margin-right: 5px;
+  }
+
+  .custom-button {
+    background-color: #072B59;
+    color: white;
+    border: 2px solid #072B59;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bolder;
+  }
+  
+  .custom-button:hover {
+    background-color: rgba(128, 128, 128, 0.466);
+    border:  2px solid rgba(128, 128, 128, 0.466);
+    color: black;
+    font-weight: bolder;
+  }
+
+  .breadcrumb-container {
+    display: flex;
+    align-items: center; /* Alinha breadcrumb e botão verticalmente no centro */
+    justify-content: space-between; /* Distribui espaço entre breadcrumb e botão */
 }
 
 @media only screen and (max-device-width: 430px) {
