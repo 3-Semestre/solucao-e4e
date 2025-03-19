@@ -2,7 +2,7 @@ const professorSelect = document.getElementById("professores");
 var id = sessionStorage.getItem("id");
 const meta = async (id) => {
     try {
-        const response = await fetch(`http://3.81.35.190:8080/api/metas/usuario/${id}`, {
+        const response = await fetch(`http://34.228.191.184:8080/api/metas/usuario/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -89,7 +89,7 @@ async function plotarProximosAgendamentos(id) {
 
 async function plotarKPIsProfessor() {
     try {
-        const responseAgendamentos = await fetch(`http://3.81.35.190:8080/api/dashboard/qtd-agendamento-mes-professor/${id}`, {
+        const responseAgendamentos = await fetch(`http://34.228.191.184:8080/api/dashboard/qtd-agendamento-mes-professor/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -196,7 +196,7 @@ async function plotarKPIsProfessor() {
 
 async function buscarProfessores() {
     try {
-        const response = await fetch('http://3.81.35.190:8080/api/usuarios/professor', {
+        const response = await fetch('http://34.228.191.184:8080/api/usuarios/professor', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,

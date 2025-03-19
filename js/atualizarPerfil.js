@@ -27,7 +27,7 @@ async function atualizarPerfil() {
     }
 
     try {
-        const respostaCadastro = await fetch(`http://3.81.35.190:8080/api/usuarios/${retornaNivelRequisicao(Number(sessionStorage.getItem('nivel_acesso_cod')))}/${sessionStorage.getItem('id')}`, {
+        const respostaCadastro = await fetch(`http://34.228.191.184:8080/api/usuarios/${retornaNivelRequisicao(Number(sessionStorage.getItem('nivel_acesso_cod')))}/${sessionStorage.getItem('id')}`, {
             method: "PUT",
             body: JSON.stringify(dados),
             headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
@@ -78,7 +78,7 @@ async function atualizarMeta() {
     const meta = document.getElementById("input_meta").value;
 
     if (meta != sessionStorage.getItem("meta")) {
-        const respostaAtt = await fetch(`http://3.81.35.190:8080/api/metas/${sessionStorage.getItem("id")}`, {
+        const respostaAtt = await fetch(`http://34.228.191.184:8080/api/metas/${sessionStorage.getItem("id")}`, {
             method: "PUT",
             body: meta,
             headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
@@ -111,7 +111,7 @@ async function atualizaHorarioAtendimento() {
             "pausaFim": horarioIntervaloFim
         }
 
-        const respostaAtt = await fetch(`http://3.81.35.190:8080/api/horario-professor/${id}`, {
+        const respostaAtt = await fetch(`http://34.228.191.184:8080/api/horario-professor/${id}`, {
             method: "PUT",
             body: JSON.stringify(dados),
             headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
@@ -142,7 +142,7 @@ async function atualizarNivelIngles() {
             };
 
             try {
-                const respostaCadastro = await fetch(`http://3.81.35.190:8080/api/usuario-nivel-ingles`, {
+                const respostaCadastro = await fetch(`http://34.228.191.184:8080/api/usuario-nivel-ingles`, {
                     method: "POST",
                     body: JSON.stringify(dadosNivel),
                     headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
@@ -206,7 +206,7 @@ async function atualizarItensUsuario(prefixo, todosItens, selectedSet) {
     };
 
     try {
-        const url = `http://3.81.35.190:8080/api/usuario-${prefixo === 'nivel' ? 'nivel-ingles' : 'nicho'}/professor/${sessionStorage.getItem("id")}`;
+        const url = `http://34.228.191.184:8080/api/usuario-${prefixo === 'nivel' ? 'nivel-ingles' : 'nicho'}/professor/${sessionStorage.getItem("id")}`;
         console.log(dados)
         const resposta = await fetch(url, {
             method: "POST",
