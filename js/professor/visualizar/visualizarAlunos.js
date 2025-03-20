@@ -7,7 +7,7 @@ async function buscarAlunos(paginaAtual) {
 
     const cardsAlunos = document.getElementById("listagem_usuarios");
 
-    const resposta = await fetch(`http://34.228.191.184:8080/api/usuarios/aluno/paginado?page=${paginaAtual}` + Filters.buildQueryString(), {
+    const resposta = await fetch(`http://3.81.97.189:8080/api/usuarios/aluno/paginado?page=${paginaAtual}` + Filters.buildQueryString(), {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -250,7 +250,7 @@ function cancelarEdicao(id) {
 }
 
 async function deletarAluno(id) {
-    const respostaDelete = await fetch(`http://34.228.191.184:8080/api/usuarios/aluno/${id}`, {
+    const respostaDelete = await fetch(`http://3.81.97.189:8080/api/usuarios/aluno/${id}`, {
         method: "DELETE",
         headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
     });
@@ -329,7 +329,7 @@ function atualizarBotoesPaginacaoAluno(total, atual) {
 async function buscarNivel(selectElement) {
     const textoSelecionado = selectElement.options[selectElement.selectedIndex]?.textContent;
 
-    const resposta = await fetch("http://34.228.191.184:8080/api/nivel-ingles", {
+    const resposta = await fetch("http://3.81.97.189:8080/api/nivel-ingles", {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -363,7 +363,7 @@ async function buscarNivel(selectElement) {
 async function buscarNicho(selectElement) {
     const textoSelecionado = selectElement.options[selectElement.selectedIndex]?.textContent;
 
-    const resposta = await fetch("http://34.228.191.184:8080/api/nichos", {
+    const resposta = await fetch("http://3.81.97.189:8080/api/nichos", {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -399,7 +399,7 @@ async function atualizarNivel(id) {
     var id_nivel = nivelSelect.value;
 
     try {
-        var resposta = await fetch(`http://34.228.191.184:8080/api/usuario-nivel-ingles/${id}`, {
+        var resposta = await fetch(`http://3.81.97.189:8080/api/usuario-nivel-ingles/${id}`, {
             method: "PUT",
             body: id_nivel,
             headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
@@ -431,7 +431,7 @@ async function atualizarNicho(id) {
     console.log(id_nicho);
 
     try {
-        var resposta = await fetch(`http://34.228.191.184:8080/api/usuario-nicho/${id}`, {
+        var resposta = await fetch(`http://3.81.97.189:8080/api/usuario-nicho/${id}`, {
             method: "PUT",
             body: id_nicho,
             headers: { 'Authorization': `Bearer ${token}`, "Content-type": "application/json; charset=UTF-8" }
@@ -457,7 +457,7 @@ async function atualizarNicho(id) {
 
 async function atualizarStatus(id, novoStatus) {
     try {
-        const resposta = await fetch(`http://34.228.191.184:8080/api/usuarios/desativar/${id}`, {
+        const resposta = await fetch(`http://3.81.97.189:8080/api/usuarios/desativar/${id}`, {
             method: "PUT",
             headers: {
                 'Authorization': `Bearer ${token}`,

@@ -1,7 +1,7 @@
 // top3-meses
 async function plotarKpi() {
 
-    const top3MesesAula = await fetch(`http://localhost:7000/dashboard/top-3-meses-aluno/${sessionStorage.getItem('id')}`, {
+    const top3MesesAula = await fetch(`http://3.81.97.189:7000/api-dashboard/dashboard/top-3-meses-aluno/${sessionStorage.getItem('id')}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -35,7 +35,7 @@ async function plotarKpi() {
 }
 
 async function plotarProximosAgendamentos() {
-    var resposta = await fetch(`http://localhost:7000/dashboard/ultimos-3-agendamentos-aluno/${sessionStorage.getItem('id')}`, {
+    var resposta = await fetch(`http:/3.81.97.189:7000/api-dashboard/dashboard/ultimos-3-agendamentos-aluno/${sessionStorage.getItem('id')}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -100,7 +100,7 @@ async function plotarProximosAgendamentos() {
 
 async function plotarAulasRealizadas() {
     const ano = document.getElementById("ano-input").value;
-    const resposta = await fetch(`http://localhost:7000/dashboard/visao-mes-aluno/${sessionStorage.getItem('id')}?ano=${ano}`, {
+    const resposta = await fetch(`http://3.81.97.189:7000/api-dashboard/dashboard/visao-mes-aluno/${sessionStorage.getItem('id')}?ano=${ano}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,

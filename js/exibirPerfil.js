@@ -5,7 +5,7 @@ const token = sessionStorage.getItem('token')
 async function exibirDadosPerfil() {
     const nivel_acesso = sessionStorage.getItem('nivel_acesso').toLowerCase();
 
-    const resposta = await fetch(`http://3.90.20.205:8080/api/usuarios/perfil/${nivel_acesso}/${id}`, {
+    const resposta = await fetch(`http://3.81.97.189:8080/api/usuarios/perfil/${nivel_acesso}/${id}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -73,7 +73,7 @@ function preencherInput(dados) {
 }
 
 async function buscarNivelIngles() {
-    const resposta = await fetch("http://3.90.20.205:8080/api/nivel-ingles", {
+    const resposta = await fetch("http://3.81.97.189:8080/api/nivel-ingles", {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -103,7 +103,7 @@ async function buscarNivelIngles() {
 }
 
 async function buscarNichos() {
-    const resposta = await fetch("http://3.90.20.205:8080/api/nichos", {
+    const resposta = await fetch("http://3.81.97.189:8080/api/nichos", {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
