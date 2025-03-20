@@ -8,7 +8,7 @@ async function autenticar() {
     }
 
     try {
-        const respostaLogin = await fetch("http://3.90.20.205:8080/api/usuarios/autenticar", {
+        const respostaLogin = await fetch("http://3.81.97.189:8080/api/usuarios/autenticar", {
             method: "POST",
             body: JSON.stringify(dadosAluno),
             headers: { "Content-type": "application/json; charset=UTF-8" }

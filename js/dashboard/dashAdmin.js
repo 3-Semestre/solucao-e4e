@@ -2,7 +2,7 @@ const professorSelect = document.getElementById("professores");
 var id = sessionStorage.getItem("id");
 const meta = async (id) => {
     try {
-        const response = await fetch(`http://3.90.20.205:8080/api/metas/usuario/${id}`, {
+        const response = await fetch(`http://3.81.97.189:8080/api/metas/usuario/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -25,7 +25,7 @@ const meta = async (id) => {
 
 async function plotarProximosAgendamentos(id) {
     try {
-        const proximosAgendamentosFetch = await fetch(`http://localhost:7000/dashboard/ultimos-3-agendamentos-professor/${id}`, {
+        const proximosAgendamentosFetch = await fetch(`http://3.81.97.189:7000/api-dashboard/dashboard/ultimos-3-agendamentos-professor/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -89,7 +89,7 @@ async function plotarProximosAgendamentos(id) {
 
 async function plotarKPIsProfessor() {
     try {
-        const responseAgendamentos = await fetch(`http://3.90.20.205:8080/api/dashboard/qtd-agendamento-mes-professor/${id}`, {
+        const responseAgendamentos = await fetch(`http://3.81.97.189:7000/api-dashboard/dashboard/qtd-agendamento-mes-professor/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -106,7 +106,7 @@ async function plotarKPIsProfessor() {
     }
 
     try {
-        const responseAgendamentos = await fetch(`http://localhost:7000/dashboard/qtd-agendamento-confirmado-mes-professor/${id}`, {
+        const responseAgendamentos = await fetch(`http://3.81.97.189:7000/api-dashboard/api-dashboard/dashboard/qtd-agendamento-confirmado-mes-professor/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -124,7 +124,7 @@ async function plotarKPIsProfessor() {
 
     var cancelado;
     try {
-        const responseCancelados = await fetch(`http://localhost:7000/dashboard/qtd-agendamentos-cancelados/${id}`, {
+        const responseCancelados = await fetch(`http://3.81.97.189:7000/api-dashboard/api-dashboard/dashboard/qtd-agendamentos-cancelados/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -141,7 +141,7 @@ async function plotarKPIsProfessor() {
 
     var transferido;
     try {
-        const responseTransferidos = await fetch(`http://localhost:7000/dashboard/aulas-tranferidas-professor/${id}`, {
+        const responseTransferidos = await fetch(`http://3.81.97.189:7000/api-dashboard/dashboard/aulas-tranferidas-professor/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -162,7 +162,7 @@ async function plotarKPIsProfessor() {
     document.getElementById("agendamentos-cancelado").innerHTML = (Number(cancelado) + Number(transferido));
 
     try {
-        const responseConcluido = await fetch(`http://localhost:7000/dashboard/aulas-concluidas-professor/${id}`, {
+        const responseConcluido = await fetch(`http://3.81.97.189:7000/api-dashboard/dashboard/aulas-concluidas-professor/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -196,7 +196,7 @@ async function plotarKPIsProfessor() {
 
 async function buscarProfessores() {
     try {
-        const response = await fetch('http://3.90.20.205:8080/api/usuarios/professor', {
+        const response = await fetch('http://3.81.97.189:8080/api/usuarios/professor', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -240,7 +240,7 @@ async function buscarProfessores() {
 
 async function buscarQuantidadeAgendamentosTransferidos(id) {
     try {
-        const response = await fetch(`http://localhost:7000/dashboard/aulas-tranferidas-professor/${id}`, {
+        const response = await fetch(`http://3.81.97.189:7000/api-dashboard/dashboard/aulas-tranferidas-professor/${id}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -283,7 +283,7 @@ async function buscarComprimentoMeta(id) {
 async function plotarGraficoTaxaCancelamento(id) {
     try {
         const ano = document.getElementById("ano-input").value;
-        const response = await fetch(`http://localhost:7000/dashboard/taxa-cancelamento-mes/${id}?ano=${ano}`, {
+        const response = await fetch(`http://3.81.97.189:7000/api-dashboard/dashboard/taxa-cancelamento-mes/${id}?ano=${ano}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
@@ -452,7 +452,7 @@ async function plotarKpiCumprimento(id) {
         const ano = periodo.split(' ')[1];
 
     try {
-        const responseCumprimento = await fetch(`http://localhost:7000/dashboard/taxa-cumprimento-metas/${id}?mes=${mes}&ano=${ano}`, {
+        const responseCumprimento = await fetch(`http://3.81.97.189:7000/api-dashboard/dashboard/taxa-cumprimento-metas/${id}?mes=${mes}&ano=${ano}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
